@@ -7,6 +7,10 @@
     grid-template-columns: repeat(3 , 1fr);
     gap: 25px;  
 
+    @include respond-to("sm") {
+        gap: 16px;
+    }
+
     .whiteButton {
         background-color: var(--bg-white);
         padding: 17px;
@@ -18,6 +22,16 @@
         align-items: center;
         justify-content: center;
         transition: .3s ease-in-out;
+
+        @include respond-to("sm") {
+            padding: 10px;
+        }
+
+        img {
+            @include respond-to("sm") {
+                max-width: 24px;
+            }
+        }
 
         &:hover {
             border: 1px solid var(--orange);
