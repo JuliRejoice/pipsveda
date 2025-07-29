@@ -5,6 +5,7 @@
     --black-190:#192335;
     --black-100:#141414;
     --black-300:#303030;
+    --black-250:#2E2E2E;
     --bg-black-70:#070305;
     --grey-600:#6F756D;
     --grey-650:#6B7385;
@@ -20,6 +21,8 @@
     --border-color:#00000021;
     --border-color2:#DADADA;
     --border-color3:#CDCDCD;
+    --border-color4:#DBDDE1;
+    --orange:#FE6917;
     --button-gradient:linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%);
     --button-gradient-hover:linear-gradient(90deg, #FE6917 0%, #6E30F9 85.71%);
     --card-gradient-border:linear-gradient(109.33deg, #2F2F2F 74.94%, #FE6917 86.48%, #6F31F8 92.3%);

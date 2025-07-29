@@ -2,7 +2,7 @@
 @use '../../scss/typography/typography.scss' as *;
 @use '../../scss/breakpoints/breakpoints.scss' as *;
 
-.signinBanner {
+.signup {
     background-image: url('/assets/images/login.png');
     width: 100%;
     background-size: cover;
@@ -10,15 +10,21 @@
     background-repeat: no-repeat;
     display: flex;
     align-items: center;
+    background-attachment: fixed;
     padding: 40px 0;
 
     .signinBox {
-        max-width: 502px;
+        max-width: 580px;
         margin: 0 auto;
 
 
         .inputAlignment {
             padding: 0 0 24px 0;
+        }
+
+        .leftRightAlignment {
+            max-width: 500px;
+            margin: 0 auto;
         }
 
         .buttonWidthFull {
