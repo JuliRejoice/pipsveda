@@ -1,0 +1,29 @@
+body {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-lexend);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+img {
+  max-width: 100%;
+}
+
+p:last-child {
+  margin: 0;
+}
+
+h1,h2,h3,h4,h5,h6,p {
+  margin: 0;
+}
+
+
+.container {
+  max-width: calc(1460px + 40px);
+  padding: 0 20px;
+  margin: 0 auto;
+}

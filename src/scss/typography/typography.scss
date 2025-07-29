@@ -1,0 +1,127 @@
+@mixin font16 {
+    font-family: var(--font-lexend);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+@mixin font12-medium {
+    font-family: var(--font-lexend);
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+@mixin font14 {
+    font-family: var(--font-lexend);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 27px;
+}
+
+@mixin font16normal {
+    font-family: var(--font-lexend);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 28px;
+}
+
+@mixin font16-light {
+    font-family: var(--font-lexend);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: normal;
+}
+
+@mixin heading1 {
+    font-family: var(--font-funneldisplay);
+    font-size: 76px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 80px;
+}
+
+@mixin heading2 {
+    font-family: var(--font-funneldisplay);
+    font-size: 46px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+@mixin heading40 {
+    font-family: var(--font-funneldisplay);
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+@mixin heading32 {
+    font-family: var(--font-funneldisplay);
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: normal;
+}
+
+@mixin heading28 {
+    font-family: var(--font-funneldisplay);
+    font-size: 28px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 39.99px;
+}
+
+@mixin heading26 {
+    font-family: var(--font-funneldisplay);
+    font-size: 26px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+@mixin heading20 {
+    font-family: var(--font-funneldisplay);
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+@mixin heading30 {
+    font-family: var(--font-funneldisplay);
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 40px;
+}
+
+@mixin heading18 {
+    font-family: var(--font-funneldisplay);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 600;
+    line-height: normal;
+}
+
+@mixin heading24 {
+    font-family: var(--font-funneldisplay);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 24px;
+}
+
+@mixin font18 {
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    font-family: var(--font-lexend);
+    line-height: normal;
+}

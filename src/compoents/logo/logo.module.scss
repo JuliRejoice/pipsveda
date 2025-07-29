@@ -1,0 +1,12 @@
+@use '../../scss/main.scss' as *;
+@use '../../scss/breakpoints/breakpoints.scss' as *;
+.logo {
+    img {
+        display: block;
+        max-width: 176px;
+        cursor: pointer;
+        @include respond-to("sm") {
+            max-width: 120px;
+        }
+    }
+}

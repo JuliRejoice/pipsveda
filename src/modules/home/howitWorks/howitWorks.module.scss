@@ -1,0 +1,254 @@
+@use '../../../scss/main.scss' as *;
+@use '../../../scss/typography/typography.scss' as *;
+@use '../../../scss/breakpoints/breakpoints.scss' as *;
+
+
+.howitWorks {
+    padding: 180px 0 120px 0;
+    position: relative;
+    @include respond-to("md") {
+        padding: 80px 0;
+    }
+    
+    .bottomVec {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        z-index: -1;
+
+        img {
+            @include respond-to("sm") {
+                width: 100%;
+            }
+        }
+    }
+
+    &::before {
+        position: absolute;
+        top: 0;
+        left: 0;
+        border-radius: 15520038px;
+        width: 291px;
+        height: 291px;
+        flex-shrink: 0;
+        opacity: 0.45;
+        background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
+        filter: blur(215px);
+        content: '';
+        z-index: -1;
+    }
+
+    &::after {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        border-radius: 15520038px;
+        z-index: -1;
+        width: 291px;
+        height: 291px;
+        flex-shrink: 0;
+        opacity: 0.45;
+        background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
+        filter: blur(215px);
+        content: '';
+    }
+
+    .text {
+        position: relative;
+        padding: 0 0 60px 0;
+        @include respond-to("sm") {
+            padding: 0 0 40px 0;
+        }
+        h2 {
+            @include heading2;
+            color: var(--black-500);
+            margin: 0 0 16px 0;
+            text-align: center;
+            @include respond-to("md") {
+                @include heading40;
+            }
+            @include respond-to("sm") {
+                @include heading32;
+            }
+        }
+
+        p {
+            @include font18;
+            color: var(--black-500);
+            opacity: 0.9;
+            text-align: center;
+            @include respond-to("sm") {
+                @include font16normal;
+            }
+        }
+
+        h3 {
+            color: rgba(214, 211, 213, 0.12);
+            text-align: center;
+            font-size: 308px;
+            position: absolute;
+            top: -100%;
+            left: 0;
+            z-index: -1;
+            font-style: normal;
+            font-weight: 700;
+            line-height: normal;
+            font-family: var(--font-funneldisplay);
+            @include respond-to("md") {
+                font-size: 100px;
+                display: none;
+            }
+        }
+    }
+
+       .textStyle {
+            h3 {
+                @include heading30;
+                text-transform: capitalize;
+                color: var(--black-500);
+                max-width: 286px;
+                margin: 0 auto 20px auto;
+                text-align: center;
+
+                @include respond-to("md") {
+                    @include heading20;
+                    max-width: 200px;
+                }
+            }
+
+            p {
+                @include font16normal;
+                color: var(--grey-600);
+                text-align: center;
+                max-width: 326px;
+                margin: 0 auto;
+                @include respond-to("md") {
+                    @include font14;
+                }
+            }
+        }
+
+    .sectimeLine {
+        display: flex;
+        justify-content: space-between;
+     @include respond-to("sm") {
+            display: none;
+        }
+        .first {
+            width: 100%;
+            max-width: 326px;
+
+            .textStyle {
+                padding: 23px 0 0 0;
+
+                h3 {
+                margin: 10px auto 20px auto;
+                }
+            }
+
+            .dot {
+                width: 24px;
+                height: 24px;
+                background: var(--button-gradient);
+                border-radius: 50%;
+                margin: -12px auto 0 auto;
+            }
+
+            .image {
+                max-width: 200px;
+                margin: 0 auto;
+
+                img {
+                    width: 100%;
+                    display: block;
+                }
+
+                h5 {
+                    color: var(--border-light);
+                    text-align: center;
+                    font-size: 84px;
+                    font-style: normal;
+                    font-weight: 700;
+                    font-family: var(--font-funneldisplay);
+                    line-height: 70px;
+                }
+            }
+        }
+    }
+
+    .firstTimeline {
+        padding: 60px 0 50px 0;
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        border-bottom: 1px solid var(--border-light);
+        @include respond-to("md") {
+            padding: 0 0 50px 0;
+        }
+        @include respond-to("sm") {
+            display: none;
+        }
+
+        .image {
+            max-width: 200px;
+
+            img {
+                width: 100%;
+                display: block;
+            }
+
+            h5 {
+                color: var(--border-light);
+                text-align: center;
+                font-size: 84px;
+                font-style: normal;
+                font-weight: 700;
+                font-family: var(--font-funneldisplay);
+                line-height: 70px;
+            }
+        }
+
+     
+    }
+
+    .mobileviewTimeline {
+        display: none;
+
+        @include respond-to("sm") {
+            display: block;
+        }
+
+        .mainGrid {
+            display: grid;
+            grid-template-columns: repeat(1 , 1fr);
+            gap: 20px;
+
+            .mainGridItems {
+                background-color: var(--light-bg);
+                padding: 40px 20px;
+                @include sm-sec-clip-path;
+                border-radius: 12px;
+
+                h4 {
+                    @include heading40;
+                    color: var(--border-light);
+                    margin: 0 0 6px 0;
+                }
+
+                h3 {
+                    @include heading24;
+                    color: var(--black-500);
+                    line-height: 35px;
+                    margin: 0 0 10px 0;
+                }
+
+                p {
+                    @include font16normal;
+                    color: var(--grey-600);
+                    margin: 0 0 20px 0;
+                }
+            }
+        }
+    }
+    
+}

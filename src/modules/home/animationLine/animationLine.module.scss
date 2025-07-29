@@ -1,0 +1,81 @@
+@use '../../../scss/main.scss' as *;
+@use '../../../scss/typography/typography.scss' as *;
+@use '../../../scss/breakpoints/breakpoints.scss' as *;
+
+.animationline {
+    padding: 50px 0 0 0;
+
+    @include respond-to("sm") {
+        overflow: hidden;
+    }
+
+    .firstLine {
+        background: var(--button-gradient);
+        padding: 15px 0;
+        transform: rotate(3deg);
+        box-sizing: border-box;
+
+        @include respond-to("sm") {
+            padding: 10px 0;
+        }
+
+
+        .iconText {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-right: 20px;
+
+            @include respond-to("sm") {
+                gap: 10px;
+            }
+
+            span {
+                display: block;
+                @include heading26;
+                color: var(--text-white);
+                font-weight: 400;
+
+                @include respond-to("sm") {
+                    @include heading20;
+                }
+            }
+        }
+    }
+
+    .secLine {
+        background: var(--black-100);
+        padding: 15px 0;
+        transform: rotate(-6deg);
+        box-sizing: border-box;
+        position: relative;
+        top: -20px;
+
+        @include respond-to("sm") {
+            padding: 10px 0;
+        }
+
+
+        .iconText {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-right: 20px;
+
+            @include respond-to("sm") {
+                gap: 10px;
+            }
+
+            span {
+                display: block;
+                @include heading26;
+                color: var(--text-white);
+                font-weight: 400;
+
+                @include respond-to("sm") {
+                    @include heading20;
+                }
+            }
+        }
+    }
+}

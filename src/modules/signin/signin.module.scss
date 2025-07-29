@@ -1,0 +1,64 @@
+@use '../../scss/main.scss' as *;
+@use '../../scss/typography/typography.scss' as *;
+@use '../../scss/breakpoints/breakpoints.scss' as *;
+
+.signinBanner {
+    background-image: url('/assets/images/herobanner.png');
+    width: 100%;
+    background-size: cover;
+    min-height: 100dvh;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: center;
+    padding: 40px 0;
+
+    .signinBox {
+        max-width: 510px;
+        margin: 0 auto;
+
+        .leftRightAlignment {
+            padding: 0 40px;
+        }
+
+        .inputAlignment {
+            padding: 0 0 20px 0;
+        }
+
+        .forgotPassword {
+            padding: 10px 0 0 0;
+
+            a {
+                display: block;
+                @include font16;
+                background: var(--button-gradient);
+                background-clip: text;
+                -webkit-background-clip: text;
+                text-align: right;
+                -webkit-text-fill-color: transparent;
+            }
+        }
+
+        .logoAlignment {
+            display: flex;
+            justify-content: center;
+            padding: 0 0 20px 0;
+        }
+
+        .text {
+            padding: 0 0 40px 0;
+
+            h2 {
+                margin: 0 0 14px 0;
+                @include heading32;
+                color: var(--black-500);
+                text-align: center;
+            }
+
+            p {
+                @include font18;
+                color: var(--grey-600);
+                text-align: center;
+            }
+        }
+    }
+}

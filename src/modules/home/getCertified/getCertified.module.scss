@@ -1,0 +1,188 @@
+@use '../../../scss/main.scss' as *;
+@use '../../../scss/typography/typography.scss' as *;
+@use '../../../scss/breakpoints/breakpoints.scss' as *;
+
+.getCertified {
+    background-color: var(--black);
+    padding: 120px 0;
+
+    @include respond-to("md") {
+        padding: 80px 0;
+    }
+
+    @include respond-to("sm") {
+        padding: 60px 0;
+    }
+
+    .text {
+        padding: 0 0 50px 0;
+
+        @include respond-to("sm") {
+            padding: 0 0 40px 0;
+        }
+
+        h2 {
+            @include heading2;
+            color: var(--text-white);
+            text-align: center;
+            margin: 0 0 16px 0;
+
+            @include respond-to("md") {
+                @include heading40;
+            }
+
+            @include respond-to("sm") {
+                @include heading32;
+            }
+        }
+
+        p {
+            @include font18;
+            color: var(--grey);
+            opacity: 0.9;
+            text-align: center;
+
+            @include respond-to("sm") {
+                @include font16normal;
+            }
+        }
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 620px;
+        gap: 44px;
+
+        @include respond-to("md") {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
+        .griditems {
+            background: var(--border-200);
+            border-radius: 12px;
+            clip-path: polygon(0 50px, 45px 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%, 0 100%, 0 50px);
+            height: 100%;
+            padding: 1px;
+            transition: .3s ease-in-out;
+
+            @include respond-to("sm") {
+                    @include sm-sec-clip-path;
+            }
+
+            &:hover {
+                background: var(--button-gradient);
+            }
+
+            .uplodBox {
+                height: 100%;
+                border: 1px dashed #6E30F9;
+                border-radius: 12px;
+                padding: 20px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                .centerButton {
+                    display: flex;
+                    justify-content: center;
+
+                    button {
+                        color: var(--text-white);
+                        display: flex;
+                        background: var(--button-gradient);
+                        align-items: center;
+                        cursor: pointer;
+                        border: none;
+                        border-radius: 999px;
+                        padding: 10px 20px;
+                        @include font16normal;
+                        gap: 6px;
+                    }
+                }
+
+                .center {
+                    display: flex;
+                    justify-content: center;
+                }
+
+                h4 {
+                    @include heading20;
+                    font-size: 22px;
+                    color: var(--text-white);
+                    text-align: center;
+                    margin: 0 0 6px 0;
+                }
+
+                p {
+                    @include font18;
+                    color: var(--text-white);
+                    margin: 0 0 36px 0;
+                    text-align: center;
+                }
+            }
+
+            .card {
+                padding: 48px 40px 29px 40px;
+                background-color: var(--black-100);
+                height: 100%;
+                border-radius: 12px;
+                @include sec-clip-path;
+
+                @include respond-to("sm") {
+                    padding: 20px;
+                    @include sm-sec-clip-path;
+                }
+
+                .allIconText {
+                    .iconText:last-child {
+                        padding: 0;
+                    }
+
+                    .iconText {
+                        display: flex;
+                        padding: 0 0 18px 0;
+                        align-items: center;
+                        gap: 10px;
+
+                        span {
+                            display: block;
+                            @include font18;
+                            color: var(--text-white);
+
+                            @include respond-to("sm") {
+                                @include font16normal;
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            p {
+                @include font18;
+                max-width: 680px;
+                color: var(--text-white);
+                line-height: 26px;
+                margin: 0 0 26px 0;
+
+                @include respond-to("sm") {
+                    @include font16normal;
+                }
+            }
+
+            .iconText {
+                display: flex;
+                align-items: center;
+                padding: 0 0 20px 0;
+                gap: 10px;
+
+                h3 {
+                    @include heading20;
+                    color: var(--text-white);
+
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,37 @@
+@use 'typography/typography.scss' as *;
+
+@mixin first-clip-path {
+    clip-path: polygon(0 50px, 45px 0, 100% 0,
+            100% calc(100% - 50px),
+            calc(100% - 50px) 100%, 0 100%, 0 50px);
+}
+
+@mixin sec-clip-path {
+    clip-path: polygon(0 50px, 45px 0, 100% 0,
+            100% calc(100% - 50px),
+            calc(100% - 50px) 100%, 0 100%, 0 50px);
+            
+}
+
+@mixin input-clip-path {
+    clip-path: polygon(0 35px, 30px 0, 100% 0,
+            100% calc(100% - 35px),
+ 
+            calc(100% - 35px) 100%, 0 100%, 0 35px);          
+}
+
+@mixin first-clip-path {
+    clip-path: polygon(0 30px, 25px 0, 100% 0,
+            100% calc(100% - 30px),
+            calc(100% - 30px) 100%, 0 100%, 0 30px);
+}
+
+@mixin sm-input-clip-path {
+    clip-path: polygon(0 22px, 20px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px);
+}
+
+@mixin sm-sec-clip-path {
+    clip-path: polygon(0 30px, 25px 0, 100% 0,
+            100% calc(100% - 30px),
+            calc(100% - 30px) 100%, 0 100%, 0 30px);
+}

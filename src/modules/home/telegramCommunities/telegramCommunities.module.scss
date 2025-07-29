@@ -1,0 +1,205 @@
+@use '../../../scss/main.scss' as *;
+@use '../../../scss/typography/typography.scss' as *;
+@use '../../../scss/breakpoints/breakpoints.scss' as *;
+
+.telegramCommunities {
+    background-image: url('/assets/images/light-background.png');
+    width: 100%;
+    background-size: cover;
+    width: 100%;
+    padding: 120px 0;
+    @include respond-to("md") {
+        padding: 80px 0;
+    }
+    @include respond-to("sm") {
+        padding: 60px 0;
+    }
+
+    .text {
+        padding: 0 0 60px 0;
+
+        @include respond-to("sm") {
+            padding: 0 0 40px 0;
+        }
+
+        h2 {
+            @include heading2;
+            margin: 0 0 16px 0;
+            color: var(--black-500);
+            text-align: center;
+            @include respond-to("md") {
+                @include heading40;
+                max-width: 600px;
+                margin: 0 auto 16px auto;
+            }
+            @include respond-to("sm") {
+                @include heading32;
+            }
+        }
+
+        p {
+            @include font18;
+            color: var(--black-500);
+            opacity: 0.9;
+            text-align: center;
+            @include respond-to("sm") {
+                @include font16normal;
+            }
+        }
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+
+        @include respond-to("md") {
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @include respond-to("sm") {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
+
+        .griditems {
+            background-color: var(--bg-white);
+            padding: 50px;
+            @include first-clip-path;
+            border-radius: 12px;
+            @include respond-to("md") {
+                padding: 20px;
+            }
+            .btn {
+                max-width: 180px;
+                button {
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                }
+            }
+            .freeaccess {
+                padding: 0 0 25px 0;
+                @include respond-to("sm") {
+                    padding: 0 0 20px 0;
+                } 
+                span {
+                    background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    @include font18;
+                    font-weight: 500;
+                }
+            }
+
+            .listAlignment {
+                padding: 0 0 28px 0;
+                @include respond-to("sm") {
+                    padding: 0 0 20px 0;
+                }
+
+                ul {
+                    padding: 0 0 0 15px;
+                    margin: 0;
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 11px 40px;
+                    list-style: none;
+
+                    li {
+                        @include font16;
+                        color: var(--border-200);
+                        position: relative;
+
+                        &::before {
+                            content: "";
+                            position: absolute;
+                            top: 50%;
+                            left: -14px;
+                            transform: translateY(-50%);
+                            width: 6px;
+                            background: var(--button-gradient);
+                            height: 6px;
+                            border-radius: 50%;
+                        }
+                    }
+                }
+            }
+
+            .textStyle {
+                h3 {
+                    @include heading20;
+                    margin: 0 0 12px 0;
+                    color: var(--black-500);
+                }
+
+                .textImagealignment {
+                    display: flex;
+                    align-items: center;
+                    padding: 0 0 14px 0;
+                    gap: 10px;
+
+                    span {
+                        display: block;
+                        @include font14;
+                        color: var(--grey-500);
+                    }
+                }
+
+                .imageAlignment {
+                    display: flex;
+                    align-items: center;
+
+                    .plus {
+                        width: 34px;
+                        height: 34px;
+                        background-color: var(--black-190);
+                        border: 1px solid var(--bg-white);
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        @include heading20;
+                        color: var(--text-white);
+                        cursor: pointer;
+                    }
+
+                    img {
+                        width: 34px;
+                        height: 34px;
+                        margin-right: -10px;
+                        border-radius: 50%;
+                        display: block;
+                        object-fit: cover;
+                        border: 1px solid var(--bg-white);
+                    }
+                }
+            }
+
+            .cardHeader {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 0 16px 0;
+
+                button {
+                    background-color: transparent;
+                    padding: 8px 30px;
+                    @include font16;
+                    border: 1px solid var(--border-light);
+                    border-radius: 99px;
+
+                    span {
+                        background: var(--button-gradient);
+                        background-clip: text;
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        display: block;
+                    }
+                }
+            }
+        }
+    }
+}

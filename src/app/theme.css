@@ -1,0 +1,29 @@
+:root {
+    --bg-white:#fff;
+    --black-500:#051600;
+    --black:#000;
+    --black-190:#192335;
+    --black-100:#141414;
+    --black-300:#303030;
+    --bg-black-70:#070305;
+    --grey-600:#6F756D;
+    --grey-650:#6B7385;
+    --grey-500:#6B7280;
+    --green:#16A249;
+    --input-bg:rgba(0, 0, 0, 0.20);
+    --grey:#A1A1A1;
+    --border-light:#D7D7D7;
+    --border-200:#2A303C;
+    --text-white:#fff;
+    --text-white-80:rgba(255, 255, 255, 0.80);
+    --bg-white-80:rgba(255, 255, 255, 0.08);
+    --border-color:#00000021;
+    --border-color2:#DADADA;
+    --border-color3:#CDCDCD;
+    --button-gradient:linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%);
+    --button-gradient-hover:linear-gradient(90deg, #FE6917 0%, #6E30F9 85.71%);
+    --card-gradient-border:linear-gradient(109.33deg, #2F2F2F 74.94%, #FE6917 86.48%, #6F31F8 92.3%);
+    --button-gradient-border:linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%);
+    --button-gradient-border-hover:linear-gradient(90deg, #FE6917 0%, #6E30F9 85.71%);
+    --light-bg:#FFF5F1;
+}

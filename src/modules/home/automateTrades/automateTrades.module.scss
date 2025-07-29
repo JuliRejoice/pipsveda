@@ -1,0 +1,234 @@
+@use '../../../scss/main.scss' as *;
+@use '../../../scss/typography/typography.scss' as *;
+@use '../../../scss/breakpoints/breakpoints.scss' as *;
+
+.automateTrades {
+    background-color: var(--black);
+    padding: 120px 0;
+
+    @include respond-to("md") {
+        padding: 80px 0;
+    }
+
+    @include respond-to("sm") {
+        padding: 60px 0;
+    }
+
+    .text {
+        padding: 0 0 50px 0;
+
+        @include respond-to("sm") {
+            padding: 0 0 40px 0;
+        }
+
+        h2 {
+            @include heading2;
+            color: var(--text-white);
+            text-align: center;
+            margin: 0 0 16px 0;
+
+            @include respond-to("md") {
+                @include heading40;
+            }
+
+            @include respond-to("sm") {
+                @include heading32;
+            }
+        }
+
+        p {
+            @include font18;
+            color: var(--grey);
+            opacity: 0.9;
+            text-align: center;
+
+            @include respond-to("sm") {
+                @include font16normal;
+            }
+        }
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 22px;
+
+        @include respond-to("md") {
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @include respond-to("sm") {
+            grid-template-columns: 1fr;
+        }
+
+        .mainCard {
+            padding: 1px;
+            background: #2A303C;
+            clip-path: polygon(0 50px, 45px 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%, 0 100%, 0 50px);
+            width: 100%;
+            border-radius: 12px;
+            transition: .3s ease-in-out;
+            position: relative;
+
+            @include respond-to("sm") {
+                clip-path: polygon(0 30px, 25px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);
+
+            }
+
+            &:hover {
+                background: var(--button-gradient);
+            }
+
+
+
+            .card {
+                width: 100%;
+                padding: 50px;
+                border-radius: 12px;
+                @include sec-clip-path;
+                background-color: var(--black-100);
+                gap: 9px;
+
+                @media (max-width:1600px) {
+                    padding: 50px 25px;
+                }
+
+                @include respond-to("md") {
+                    padding: 30px;
+                }
+
+                @include respond-to("sm") {
+                    clip-path: polygon(0 30px, 25px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);
+                    padding: 30px 16px;
+                }
+
+                img {
+                    transition: .3s ease-in-out;
+                }
+            }
+
+            .buttonGrid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+
+                @include respond-to("md") {
+                    grid-template-columns: 1fr;
+                    gap: 10px;
+                }
+
+                button {
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+                }
+
+                .btndesign {
+                    button {
+                        background-color: var(--black-100);
+                        color: var(--text-white);
+                    }
+                }
+            }
+
+            .details {
+                padding: 22px 0 30px 0;
+
+                @include respond-to("md") {
+                    padding: 20px 0;
+                }
+
+                ul {
+                    padding: 0 0 0 15px;
+                    margin: 0;
+                    list-style-type: none;
+
+                    li {
+                        @include font16;
+                        font-weight: 400;
+                        color: var(--text-white);
+                        position: relative;
+                        margin: 0 0 20px 0;
+
+                        &::before {
+                            content: "";
+                            position: absolute;
+                            top: 50%;
+                            left: -14px;
+                            transform: translateY(-50%);
+                            width: 6px;
+                            background: var(--button-gradient);
+                            height: 6px;
+                            border-radius: 50%;
+                        }
+                    }
+                }
+            }
+
+            .textstyle {
+                padding: 0 0 22px 0;
+                border-bottom: 1px solid var(--black-300);
+
+                h3 {
+                    @include heading20;
+                    color: var(--text-white);
+                    margin: 0 0 8px 0;
+                }
+
+                p {
+                    @include font16normal;
+                    color: var(--text-white);
+                    margin: 0 0 22px 0;
+                }
+
+                h4 {
+                    font-family: var(--font-funneldisplay);
+                    font-size: 38px;
+
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: normal;
+
+                    font-family: "Funnel Display";
+                    font-size: 38px;
+                    font-style: normal;
+                    font-weight: 600;
+                    line-height: normal;
+
+                    background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+
+                    sub {
+                        position: relative;
+                        top: -5px;
+                        background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
+                        background-clip: text;
+                        -webkit-background-clip: text;
+                        @include font18;
+                        font-weight: 400;
+                        -webkit-text-fill-color: transparent;
+                    }
+                }
+            }
+
+            .headerAlignment {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 0 22px 0;
+
+                button {
+                    @include font16;
+                    color: var(--text-white);
+                    padding: 8px 30px;
+                    background-color: var(--black-300);
+                    border-radius: 999px;
+                    border: none;
+                }
+            }
+        }
+    }
+}

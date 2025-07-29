@@ -1,0 +1,51 @@
+@use '../../scss/main.scss' as *;
+@use '../../scss/typography/typography.scss' as *;
+
+.button {
+    .btnwrapper {
+        padding: 1px; // border thickness
+        background: var(--button-gradient-border);
+        clip-path: polygon(0 22px, 20px 0, 100% 0,
+                100% calc(100% - 22px),
+                calc(100% - 22px) 100%, 0 100%, 0 22px);
+        border-radius: 8px;
+        transition: .3s ease-in-out;
+
+        &:hover {
+            background: var(--button-gradient-border-hover);
+
+            button {
+                background: var(--button-gradient-border-hover);
+                color: var(--text-white);
+                img {
+                    transform: translateX(2px);
+                        filter: invert(1);
+                }
+            }
+        }
+
+        button {
+            width: 100%;
+            height: 100%;
+            padding: 16px 26px;
+            background-color: transparent; // transparent inner background
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: none;
+            border-radius: 8px;
+            clip-path: polygon(0 22px, 20px 0, 100% 0,
+                    100% calc(100% - 22px),
+                    calc(100% - 22px) 100%, 0 100%, 0 22px);
+            color: var(--black-500);
+            @include font16;
+            background-color: var(--bg-white);
+            gap: 9px;
+
+            img {
+                transition: .3s ease-in-out;
+            }
+        }
+    }
+}

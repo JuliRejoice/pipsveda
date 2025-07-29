@@ -1,0 +1,33 @@
+@use '../../scss/main.scss' as *;
+@use '../../scss/typography/typography.scss' as *;
+
+.textarea {
+    label {
+        display: block;
+        @include font18;
+        color: var(--border-200);
+        padding: 0 0 8px 0;
+    }
+
+    textarea {
+        width: 100%;
+        padding: 16px;
+        background-color: var(--bg-white);
+        @include font16;
+        color: var(--black-500);
+        height: 120px;
+        border: 1px solid var(--border-color2);
+        transition: .3s ease-in-out;
+        border-radius: 10px;
+
+        &:focus {
+            outline: none;
+            border: 1px solid var(--black-500);
+        }
+    }
+
+    ::placeholder {
+        @include font16;
+        color: var(--grey-500);
+    }
+}

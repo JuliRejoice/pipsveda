@@ -1,0 +1,160 @@
+@use '../../../scss/main.scss' as *;
+@use '../../../scss/typography/typography.scss' as *;
+@use '../../../scss/breakpoints/breakpoints.scss' as *;
+
+.ourStudents {
+    background-image: url('/assets/images/light-background.png');
+    width: 100%;
+    background-size: cover;
+    width: 100%;
+    padding: 120px 0;
+    @include respond-to("md") {
+        padding: 80px 0;
+    }
+    @include respond-to("sm") {
+        padding: 60px 0;
+    }
+    .text {
+        padding: 0 0 60px 0;
+        @include respond-to("sm") {
+            padding: 0 0 40px 0;
+        }
+
+        h2 {
+            @include heading2;
+            margin: 0 0 16px 0;
+            color: var(--black-500);
+            @include respond-to("md") {
+                @include heading40;
+            }
+
+            @include respond-to("sm") {
+                @include heading32;
+            }
+        }
+
+        p {
+            @include font18;
+            color: var(--black-500);
+            opacity: 0.9;
+            @include respond-to("sm") {
+                @include font16normal;
+            }
+        }
+    }
+
+      :global(.slick-slide) {
+        padding: 0 11px;
+    }
+
+    :global(.slick-list) {
+        margin: 0 -11px;
+    }
+
+    
+    .arrow {
+        width: 80px;
+        height: 40px;
+        border: 1px solid var(--border-color3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: absolute;
+        top: -100px;
+        border-radius: 99px;
+        z-index: 9;
+        background-color: transparent;
+        transition: .3s ease-in-out;
+        cursor: pointer;
+
+        @include respond-to("md") {
+            top: -48px;
+        }
+
+        &:hover {
+            border: 1px solid var(--black-500);
+        }
+
+        &.leftIcon {
+            right: 90px;
+        }
+        &.rightIcon {
+            right: 0;
+            svg {
+                transform: rotate(180deg);
+            }
+        }
+
+    }
+
+    .whiteBox {
+        background-color: var(--bg-white);
+        padding: 50px;
+        @include first-clip-path;
+        border-radius: 12px;
+
+        @include respond-to("md") {
+            padding: 30px 16px;
+        }
+
+        p {
+            margin: 12px 0 20px 0;
+            @include font16normal;
+            font-weight: 400;
+            color: var(--grey-650);
+        }
+
+        .profilealignment {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 18px 0 0 0;
+            h4 {
+                @include heading18;
+                color: var(--black-190);
+            }
+            span {
+                display: block;
+                @include font16normal;
+                line-height: normal;
+                color: var(--grey-650);
+            }
+            .profile {
+                width: 50px;
+                height: 50px;
+                background-color: var(--black-190);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                @include heading20;
+                color: var(--text-white);
+            }
+        }
+
+        .contentAlignment {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 0 0 26px 0;
+            border-bottom: 1px solid var(--border-color2);
+            @include respond-to("md") {
+                padding: 0 0 20px 0;
+                gap: 16px;
+            }
+
+            .ratingAlignment {
+                display: flex;
+                align-items: center;
+                gap: 4px;
+            }
+
+            span {
+                display: block;
+                @include font16normal;
+                color: var(--green);
+            }
+        }
+    }
+
+}
