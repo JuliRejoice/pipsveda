@@ -24,7 +24,7 @@ export default function Signin() {
                         </div>
                         <Input label='Password' icon={EyeIcon} placeholder='Enter your password' />
                         <div className={styles.forgotPassword}>
-                            <a>Forgot password?</a>
+                            <Link href="/reset-password" aria-label='reset-password'>Forgot password?</Link>
                         </div>
                         <div className={styles.buttonWidthFull}>
                             <Button text="Sign In" icon={RightIcon}/>

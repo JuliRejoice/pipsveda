@@ -30,7 +30,7 @@ export default function Signup() {
                         </div>
                         <Input label='Confirm Password' icon={EyeIcon} placeholder='Enter your confirm password' />
                         <div className={styles.forgotPassword}>
-                            <a>Forgot password?</a>
+                            <Link href="/reset-password" aria-label='reset-password'>Forgot password?</Link>
                         </div>
                         <div className={styles.buttonWidthFull}>
                             <Button text="Sign Up" icon={RightIcon} />

@@ -6,6 +6,7 @@ import Button from '../button';
 import classNames from 'classnames';
 import MenuIcon from '@/icons/menuIcon';
 import CloseIcon from '@/icons/closeIcon';
+import Link from 'next/link';
 const RightIcon = '/assets/icons/right.svg';
 function useScrollDirection() {
   const [scrollDirection, setScrollDirection] = useState("noScroll");
@@ -56,7 +57,9 @@ export default function Header() {
             <a aria-label='About Us'>About Us</a>
           </div>
           <div className={styles.buttonDesign}>
-          <Button text="Login" icon={RightIcon} />
+          <Link href="/signin">
+            <Button text="Login" icon={RightIcon} />
+          </Link>
           </div>
          <div className={styles.menuIcon} onClick={()=> setHeader(!header)}>
           <MenuIcon/>
