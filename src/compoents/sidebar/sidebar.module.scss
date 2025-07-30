@@ -1,0 +1,148 @@
+@use '../../scss/main.scss' as *;
+@use '../../scss/breakpoints/breakpoints.scss' as *;
+@use '../../scss/typography/typography.scss' as *;
+
+.sidebar {
+    background-color: var(--light-bg);
+    width: 100%;
+    height: 100dvh;
+    border-right: 1px solid #FF691726;
+    position: relative;
+
+    .sidebarLayer {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        img {
+            width: 100%;
+        }
+    }
+
+    .logo {
+        padding: 30px;
+
+        img {
+            max-width: 177px;
+        }
+    }
+
+    .sidebarFooter {
+        padding: 0 30px 14px 14px;
+                position: relative;
+        z-index: 9;
+
+        button {
+            width: 100%;
+            justify-content: center;
+        }
+    }
+
+    .sidebarBody {
+        padding: 0 14px 30px 14px;
+                    height: calc(100dvh - 191px);
+            overflow: auto;
+        position: relative;
+        z-index: 9;
+
+        .menu {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px;
+            margin: 0 0 4px 0;
+            border-radius: 8px;
+            border: 1px solid var(--light-bg);
+            transition: .3s ease-in-out;
+            cursor: pointer;
+
+            &:hover {
+                background-color: var(--bg-white);
+                border: 1px solid #FF691726;
+            }
+
+            .contentAlignment {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                width: 100%;
+
+                div {
+                    display: flex;
+                    align-items: center;
+                }
+
+                .toogle {
+                    svg {
+                        transform: rotate(180deg);
+                    }
+                }
+
+                svg {
+                    cursor: pointer;
+                    transition: .3s ease-in-out;
+                }
+            }
+
+            span {
+                display: block;
+                @include font16;
+                color: var(--black-100-light);
+            }
+        }
+
+        .relative {
+            position: relative;
+            z-index: 9;
+
+            .dropdown {
+                width: 100%;
+                left: 0;
+
+                &.hide {
+                    max-height: 0px;
+                    overflow: hidden;
+                    transition: .3s ease-in-out;
+                }
+
+                &.show {
+                    max-height: 100dvh;
+                    overflow: hidden;
+                    transition: .3s ease-in-out;
+                }
+
+                .dropdownAlignment {
+                    padding-left: 10px;
+
+                    span {
+                        position: relative;
+                        padding: 10px 0 10px 20px;
+                        border-left: 1px solid var(--black-500);
+                        display: block;
+                        color: var(--grey-600);
+                        cursor: pointer;
+
+                        &:hover {
+                            color: var(--black-100-light);
+                        }
+
+                        &::before {
+                            width: 10px;
+                            height: 1px;
+                            background-color: #D3C6C1;
+                            position: absolute;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            left: 0;
+                            content: '';
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+.stickyBar {
+    position: sticky;
+    top: 0;
+}

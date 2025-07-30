@@ -1,0 +1,78 @@
+@use '../../../../scss/main.scss' as *;
+@use '../../../../scss/breakpoints/breakpoints.scss' as *;
+@use '../../../../scss/typography/typography.scss' as *;
+
+.recentCourse {
+    padding: 40px 0 0 0;
+
+    .title {
+        padding: 0 0 15px 0;
+        border-bottom: 1px solid var(--border-color5);
+
+        h3 {
+            @include heading20;
+            color: var(--black-500);
+        }
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        padding: 20px 0 0 0;
+        gap: 20px;
+
+
+        .griditems {
+            border: 1px solid var(--border-color5);
+            border-radius: 12px;
+
+            .img {
+                img {
+                    border-radius: 12px 12px 0 0;
+                    display: block;
+                    width: 100%;
+                    object-fit: cover;
+                    height: 220px;
+                }
+            }
+
+            .details {
+                padding: 15px;
+
+                .textbuttonAlignment {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    h6 {
+                        display: inline;
+                        background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
+                        background-clip: text;
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        @include heading20;
+                    }
+                }
+
+                .iconText {
+                    display: flex;
+                    padding: 0 0 16px 0;
+                    align-items: center;
+                    gap: 4px;
+
+                    span {
+                        display: block;
+                        @include font16;
+                        color: var(--grey-600);
+                    }
+                }
+
+                h4 {
+                    @include heading18;
+                    color: var(--black-500);
+                    margin: 0 0 10px 0;
+                }
+            }
+        }
+    }
+}
