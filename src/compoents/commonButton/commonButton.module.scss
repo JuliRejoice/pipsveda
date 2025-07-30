@@ -1,0 +1,41 @@
+@use '../../scss/main.scss' as *;
+@use '../../scss/breakpoints/breakpoints.scss' as *;
+@use '../../scss/typography/typography.scss' as *;
+
+.commonButton {
+    &.outlineButton {
+        button {
+            border: 1px solid #FE6917;
+            background: transparent;
+            color: var(--black-500);
+            display: flex;
+            align-items: center;
+            transition: .3s ease-in-out;
+
+            &:hover {
+                background: var(--button-gradient);
+                color: var(--text-white);
+
+                img {
+                    filter: invert(1);
+                }
+            }
+
+            img {
+                margin-right: 10px;
+                transition: .3s ease-in-out;
+            }
+        }
+    }
+
+    button {
+        padding: 12px 22px;
+        border-radius: 7px;
+        background: var(--button-gradient);
+        color: var(--text-white);
+        border-radius: 7px;
+        @include font16;
+        cursor: pointer;
+        border: none;
+    }
+}

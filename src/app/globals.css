@@ -45,3 +45,17 @@ img {
   user-drag: none;
   -webkit-user-drag: none;
 }
+
+.admin-layout {
+  display: flex;
+background: #F7F8FA;
+}
+
+
+.admin-layout-sidebar {
+  width: 235px;
+}
+.admin-layout-children {
+  padding: 30px;
+  width: calc(100% - 235px);
+}
