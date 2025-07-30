@@ -6,6 +6,7 @@ import Button from '@/compoents/button';
 import Link from 'next/link';
 import { forgetPassword } from '@/compoents/api/auth';
 import { useRouter } from 'next/navigation';
+import Logo from '@/compoents/logo';
 
 const RightIcon = '/assets/icons/right-lg.svg';
 
@@ -14,16 +15,16 @@ export default function ResetPassword() {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
     const router = useRouter();
-   
+
     const handleReset = () => {
         if (!email) {
             setError('Please enter your email address');
             return;
         }
-        
+
         setIsLoading(true);
         setError(null);
-        
+
         forgetPassword({ email })
             .then((data) => {
                 console.log(data);
@@ -42,26 +43,29 @@ export default function ResetPassword() {
         <div className={styles.resetPassword}>
             <div className='container'>
                 <div className={styles.signinBox}>
+                    <div className={styles.logoCenter}>
+                        <Logo />
+                    </div>
                     <div className={styles.text}>
                         <h2>Reset Your Password</h2>
                         <p>We'll send you an email to reset your password.</p>
                     </div>
                     <div className={styles.leftRightAlignment}>
                         <div className={styles.inputAlignment}>
-                            <Input 
-                                name="email" 
-                                type="email" 
-                                label='Email Address' 
-                                placeholder='Enter your email' 
-                                value={email} 
+                            <Input
+                                name="email"
+                                type="email"
+                                label='Email Address'
+                                placeholder='Enter your email'
+                                value={email}
                                 onChange={(e) => setEmail(e.target.value)}
                                 disabled={isLoading}
                             />
                             {error && <p className={styles.errorText}>{error}</p>}
                         </div>
                         <div className={styles.buttonWidthFull}>
-                            <Button 
-                                text={isLoading ? 'Sending...' : 'Continue'} 
+                            <Button
+                                text={isLoading ? 'Sending...' : 'Continue'}
                                 icon={isLoading ? null : RightIcon}
                                 onClick={handleReset}
                                 disabled={isLoading}

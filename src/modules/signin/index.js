@@ -7,6 +7,7 @@ import Authentication from "@/compoents/authentication";
 import Link from "next/link";
 import { signIn } from "@/compoents/api/auth";
 import { useRouter } from "next/navigation";
+import Logo from "@/compoents/logo";
 const RightIcon = "/assets/icons/right-lg.svg";
 const EyeIcon = "/assets/icons/eye.svg";
 export default function Signin() {
@@ -56,6 +57,9 @@ export default function Signin() {
     <div className={styles.signinBanner}>
       <div className="container">
         <div className={styles.signinBox}>
+          <div className={styles.logoCenter}>
+            <Logo/>
+          </div>
           <div className={styles.text}>
             <h2>Welcome Back</h2>
             <p>Continue your journey into the world of financial mastery.</p>

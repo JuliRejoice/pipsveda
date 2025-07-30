@@ -72,11 +72,14 @@ export default function Signup() {
                 setErrors((prev) => ({ ...prev, submit: error?.message || "Signup failed. Please try again." }));
             });
     };
-    
+
     return (
         <div className={styles.signup}>
             <div className='container'>
                 <div className={styles.signinBox}>
+                    <div className={styles.logoCenter}>
+                        <Logo />
+                    </div>
                     <div className={styles.text}>
                         <h2>Create Your Free Account</h2>
                         <p>
