@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import styles from './otpVerification.module.scss';
 import Button from '@/compoents/button';
 import Link from 'next/link';
-import { verifyOtp } from '@/compoents/api/auth';
+import { forgetPassword, verifyOtp } from '@/compoents/api/auth';
 import { useRouter } from 'next/navigation';
 
 const RightIcon = '/assets/icons/right-lg.svg';
@@ -11,6 +11,9 @@ const RightIcon = '/assets/icons/right-lg.svg';
 export default function OtpVerification() {
     const [otp, setOtp] = useState(["", "", "", "", "", ""]);
     const [email, setEmail] = useState("");
+    const [error, setError] = useState(null);
+    const [isVerifying, setIsVerifying] = useState(false);
+    const [isResending, setIsResending] = useState(false);
     const router = useRouter();
 
 
@@ -45,16 +48,46 @@ export default function OtpVerification() {
         }
     };
 
-    const handleVerifyOtp = () => {
+    const handleVerifyOtp = async () => {
         const otpString = otp.join('');
-        verifyOtp({ otp: otpString, email })
-            .then((data) => {
-                console.log(data);
+        if (otpString.length !== 6) {
+            setError('Please enter a valid 6-digit OTP');
+            return;
+        }
+
+        setError(null);
+        setIsVerifying(true);
+        
+        try {
+            const data = await verifyOtp({ otp: otpString, email });
+            if (data && data.success) {
+                console.log(data)
                 router.push('/new-password');
+            } else {
+                setError(data?.message || 'Invalid OTP. Please try again.');
+            }
+        } catch (error) {
+            console.error('OTP verification failed:', error);
+            setError(error.message || 'Failed to verify OTP. Please try again.');
+        } finally {
+            setIsVerifying(false);
+        }
+    };
+
+    const handleResendOtp = () => {
+        setIsResending(true);
+        setError(null);
+        
+        forgetPassword({ email })
+            .then((data) => {
+                console.log(data)
             })
             .catch((error) => {
-                console.error('OTP verification failed:', error);
-                // Optionally show error message to user
+                console.error('Password reset error:', error);
+                setError('Failed to resend OTP. Please try again.');
+            })
+            .finally(() => {
+                setIsResending(false);
             });
     };
 
@@ -82,17 +115,22 @@ export default function OtpVerification() {
                             />
                         ))}
                     </div>
+                    {error && <span className={styles.error}>{error}</span>}
                     <div className={styles.otpCode}>
                         <p>Didn't receive OTP code?</p>
                     </div>
                     <div className={styles.dontHaveAccount}>
-                        <p>Resend Code</p>
+                        <p onClick={!isResending ? handleResendOtp : undefined}>
+                            {isResending ? 'Sending...' : 'Resend Code'}
+                        </p>
                     </div>
                     <div className={styles.leftRightAlignment}>
-                        <div className={styles.buttonWidthFull} onClick={handleVerifyOtp}>
-                            <Link aria-label='otp-verification' href="/new-password">
-                                <Button text="Continue" icon={RightIcon} />
-                            </Link>
+                        <div className={styles.buttonWidthFull} onClick={!isVerifying ? handleVerifyOtp : undefined}>
+                                <Button 
+                                    text={isVerifying ? 'Verifying...' : 'Continue'} 
+                                    icon={isVerifying ? null : RightIcon} 
+                                    disabled={isVerifying}
+                                />
                         </div>
                     </div>
                 </div>

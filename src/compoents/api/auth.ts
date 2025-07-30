@@ -1,3 +1,4 @@
+
 const BASEURL = process.env.NEXT_PUBLIC_BASE_URL;
 console.log('BASEURL:', BASEURL);
 export const signIn = async (email, password) => {
@@ -9,10 +10,6 @@ export const signIn = async (email, password) => {
       },
       body: JSON.stringify({ email, password }),
     });
-
-    if (!response.ok) {
-      throw new Error('Failed to sign in');
-    }
 
     return await response.json();
   } catch (error) {
@@ -31,10 +28,6 @@ export const signUp = async (data) => {
       body: JSON.stringify(data),
     });
 
-    if (!response.ok) {
-      throw new Error('Failed to sign up');
-    }
-
     return await response.json();
   } catch (error) {
     console.error('Error during sign up:', error);
@@ -51,11 +44,6 @@ export const forgetPassword = async (data) => {
       },
       body: JSON.stringify(data),
     });
-
-    if (!response.ok) {
-      const errorData = await response.json().catch(() => ({}));
-      throw new Error(errorData.message || 'Failed to send password reset email');
-    }
 
     return await response.json();
   } catch (error) {
@@ -74,10 +62,6 @@ export const verifyOtp = async (data) => {
       body: JSON.stringify(data),
     });
 
-    if (!response.ok) {
-      throw new Error('Failed to verify OTP');
-    }
-
     return await response.json();
   } catch (error) {
     console.error('Error during verify OTP:', error);
@@ -94,10 +78,6 @@ export const updatePassword = async (data) => {
       },
       body: JSON.stringify(data),
     });
-
-    if (!response.ok) {
-      throw new Error('Failed to update password');
-    }
 
     return await response.json();
   } catch (error) {

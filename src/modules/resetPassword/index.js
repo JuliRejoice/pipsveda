@@ -26,7 +26,7 @@ export default function ResetPassword() {
         
         forgetPassword({ email })
             .then((data) => {
-                console.log(data);
+                localStorage.setItem('email', email);
                 router.push('/otp-verification');
             })
             .catch((error) => {
@@ -57,13 +57,12 @@ export default function ResetPassword() {
                                 onChange={(e) => setEmail(e.target.value)}
                                 disabled={isLoading}
                             />
-                            {error && <p className={styles.errorText}>{error}</p>}
+                            {error && <span className={styles.error}>{error}</span>}
                         </div>
-                        <div className={styles.buttonWidthFull}>
+                        <div className={styles.buttonWidthFull} onClick={handleReset}>
                             <Button 
                                 text={isLoading ? 'Sending...' : 'Continue'} 
                                 icon={isLoading ? null : RightIcon}
-                                onClick={handleReset}
                                 disabled={isLoading}
                                 showLoader={isLoading}
                             />
