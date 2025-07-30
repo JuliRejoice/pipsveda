@@ -22,7 +22,11 @@
             width: 100%;
         }
     }
-
+   .error {
+      @include font14;
+      color: red;
+      
+    }
     .signinBox {
         max-width: 580px;
         margin: 0 auto;

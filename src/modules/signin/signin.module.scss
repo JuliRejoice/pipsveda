@@ -30,9 +30,14 @@
             width: 100%;
         }
 
-        .inputAlignment {
-            padding: 0 0 24px 0;
-        }
+    .inputAlignment {
+      padding: 0 0 24px 0;
+    }
+    .errormsg {
+      @include font14;
+      color: red;
+      text-align: center;
+    }
 
         .buttonWidthFull {
             padding: 0 0 34px 0;
