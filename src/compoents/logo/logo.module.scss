@@ -5,8 +5,8 @@
         display: block;
         max-width: 176px;
         cursor: pointer;
-        @include respond-to("sm") {
-            max-width: 120px;
+        @include respond-to("md") {
+            max-width: 80px;
         }
     }
 }

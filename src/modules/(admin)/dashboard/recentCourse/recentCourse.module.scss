@@ -4,6 +4,9 @@
 
 .recentCourse {
     padding: 35px 0 0 0;
+    @include respond-to("sm") {
+        padding: 20px 0 0 0;
+    }
 
     .title {
         padding: 0 0 18px 0;
@@ -25,6 +28,15 @@
             grid-template-columns: repeat(3 , 1fr);
         }
 
+        @include respond-to("md") {
+            grid-template-columns: repeat(2 , 1fr);
+        }
+
+        @include respond-to("sm") {
+            grid-template-columns: repeat(1 , 1fr);
+            padding: 20px 0;
+        }
+
         .griditems {
             background-color: var(--bg-white);
             @include first-clip-path;
@@ -38,6 +50,9 @@
                     object-fit: cover;
                     display: block;
                     @include first-clip-path;
+                    @include respond-to("md") {
+                        height: 180px;
+                    }
                 }
             }
 

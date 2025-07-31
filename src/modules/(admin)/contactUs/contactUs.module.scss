@@ -2,98 +2,68 @@
 @use '../../../scss/typography/typography.scss' as *;
 @use '../../../scss/breakpoints/breakpoints.scss' as *;
 
-.havequestions {
-    background-image: url('/assets/images/light-background.png');
-    width: 100%;
-    background-size: cover;
-    width: 100%;
-    padding: 120px 0;
+.contactUsPage {
+    background-color: var(--bg-white);
+    border: 1px solid var(--border-color5);
+    padding: 30px;
+    border-radius: 16px;
 
-    @include respond-to("md") {
-        padding: 80px 0;
-    }
-
-    @include respond-to("sm") {
-        padding: 60px 0;
-    }
-
-    .text {
-        padding: 0 0 60px 0;
-
-        @include respond-to("sm") {
-            padding: 0 0 40px 0;
-        }
+    .textstyle {
+        padding: 0 0 14px 0;
+        border-bottom: 1px solid var(--border-color5);
 
         h2 {
-            @include heading2;
-            margin: 0 0 16px 0;
+            @include heading20;
+            margin: 0 0 4px 0;
             color: var(--black-500);
-            text-align: center;
-
-            @include respond-to("md") {
-                @include heading40;
-            }
-
-            @include respond-to("sm") {
-                @include heading32;
-            }
         }
 
         p {
-            @include font18;
+            @include font16normal;
             color: var(--black-500);
-            opacity: 0.9;
-            text-align: center;
-
-            @include respond-to("sm") {
-                @include font16normal;
-            }
+            font-weight: 400;
         }
     }
 
     .grid {
+        padding: 30px 0 0 0;
         display: grid;
-        grid-template-columns: 590px 1fr;
-        gap: 49px;
+        grid-template-columns: 1fr 540px;
+        gap: 30px;
 
-        @include respond-to("md") {
-            grid-template-columns: 1fr;
-            gap: 40px;
+        @media (max-width:1500px) {
+            grid-template-columns: 1fr 440px;
         }
 
-        .buttonAlignment {
-            padding: 40px 0 0 0;
-
-            @include respond-to("sm") {
-                padding: 20px 0 0 0;
-            }
-        }
-
-        .colGrid {
+        .twoColGrid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 21px;
-            padding: 0 0 21px 0;
-
-            @include respond-to("sm") {
-                grid-template-columns: 1fr;
+            grid-template-columns: repeat(2 , 1fr);
+            gap: 22px;
+            padding: 0 0 22px 0;
+            @media (max-width:1500px) {
                 gap: 16px;
+                padding: 0 0 16px 0;
             }
-
-            .lastCol {
+            .fullwidth {
                 grid-column: span 2;
-
-                @include respond-to("sm") {
-                    grid-column: inherit;
-                }
             }
         }
 
-        .blockBox {
-            background-color: var(--bg-black-70);
+        .btnAlignment {
+            padding: 40px 0 0 0;
+            @media (max-width:1500px) {
+                padding: 16px 0 0 0;
+            }
+        }
+
+        .whiteBox {
+            background-color: var(--light-bg);
             padding: 50px;
             @include first-clip-path;
             border-radius: 12px;
+            @media (max-width:1500px) {
+                padding: 30px;
+            }
 
             @include respond-to("sm") {
                 padding: 30px 16px;
@@ -104,15 +74,18 @@
             }
 
             .box {
-                background-color: var(--black-100);
+                background-color: var(--bg-white);
                 border-radius: 14px;
-                border: 1px solid var(--border-200);
+                border: 1px solid var(--border-color6);
                 padding: 17px 20px;
                 display: grid;
                 grid-template-columns: 58px 1fr;
                 gap: 18px;
                 align-items: center;
                 margin: 0 0 13px 0;
+                @media (max-width:1500px) {
+                    padding: 14px;
+                }
 
                 @include respond-to("sm") {
                     padding: 14px;
@@ -124,21 +97,22 @@
                     width: 58px;
                     height: 58px;
                     border-radius: 8px;
+                    border: 1px solid var(--border-color6);
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    background: rgba(255, 255, 255, 0.10);
+                    background: #F7F8FA;
                 }
 
                 h3 {
                     @include heading18;
-                    color: var(--text-white);
+                    color: var(--border-200);
                 }
 
                 p {
                     @include font14;
-                    color: var(--text-white);
-                    margin: 0 0 6px 0;
+                    color: var(--border-200);
+                    margin: 0 0 0 0;
                 }
 
                 a {
@@ -147,6 +121,9 @@
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
                     @include font18;
+                    @media (max-width:1500px) {
+                        @include font16;
+                    }
                 }
             }
         }

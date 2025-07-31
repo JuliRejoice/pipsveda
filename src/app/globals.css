@@ -13,7 +13,7 @@ p:last-child {
   margin: 0;
 }
 
-h1,h2,h3,h4,h5,h6,p {
+h1, h2, h3, h4, h5, h6, p {
   margin: 0;
 }
 
@@ -40,6 +40,7 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
 img {
   max-width: 100%;
   user-drag: none;
@@ -48,14 +49,30 @@ img {
 
 .admin-layout {
   display: flex;
-background: #F7F8FA;
+  background: #F7F8FA;
 }
 
 
 .admin-layout-sidebar {
   width: 235px;
 }
+
 .admin-layout-children {
   padding: 30px;
   width: calc(100% - 235px);
+}
+
+@media (max-width:1024px) {
+  .admin-layout {
+    display: block;
+  }
+
+  .admin-layout-sidebar {
+    display: none;
+  }
+
+  .admin-layout-children {
+    width: 100%;
+    padding: 20px;
+  }
 }

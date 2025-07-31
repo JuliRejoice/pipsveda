@@ -11,9 +11,10 @@ import SettingsIcon from '@/icons/settingsIcon';
 import NotificationIcon from '@/icons/notificationIcon';
 import ProfileI from '@/icons/profileI';
 import CommonButton from '../commonButton';
+import CloseIcon from '@/icons/closeIcon';
 const SidebarLayer = '/assets/images/sidebar-layer.png';
 const LogoutIcon = '/assets/icons/logout.svg';
-export default function Sidebar() {
+export default function Sidebar({setToogle , toogle}) {
     const [dropdown, setDropdown] = useState(false);
     return (
         <div className={styles.stickyBar}>
@@ -23,6 +24,9 @@ export default function Sidebar() {
             </div>
             <div className={styles.logo}>
                 <Logo />
+                <div className={styles.close} onClick={()=> setToogle(false)}>
+                <CloseIcon/>
+                </div>
             </div>
             <div className={styles.sidebarBody}>
                 <div className={styles.menu}>

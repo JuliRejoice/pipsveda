@@ -105,6 +105,7 @@
                 @include font16normal;
                 color: var(--grey-600);
                 margin: 0 0 15px 0;
+
                 @media (max-width:1500px) {
                     @include font14;
                     margin: 0 0 10px 0;

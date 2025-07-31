@@ -12,12 +12,33 @@
     .logo {
         display: flex;
         justify-content: center;
+
+        @include respond-to("md") {
+            justify-content: space-between;
+            border-bottom: 1px solid #FF691726;
+
+        }
+
+        svg {
+            width: 30px;
+            height: 30px;
+        }
+
+        .close {
+            display: none;
+
+            @include respond-to("md") {
+                display: flex;
+                align-items: center;
+            }
+        }
     }
 
     .sidebarLayer {
         position: absolute;
         bottom: 0;
         left: 0;
+
         img {
             width: 100%;
         }
@@ -33,7 +54,7 @@
 
     .sidebarFooter {
         padding: 0 30px 14px 14px;
-                position: relative;
+        position: relative;
         z-index: 9;
 
         button {
@@ -44,8 +65,8 @@
 
     .sidebarBody {
         padding: 0 14px 30px 14px;
-                    height: calc(100dvh - 191px);
-            overflow: auto;
+        height: calc(100dvh - 191px);
+        overflow: auto;
         position: relative;
         z-index: 9;
 

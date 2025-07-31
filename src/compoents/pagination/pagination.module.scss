@@ -7,11 +7,17 @@
     align-items: center;
     justify-content: center;
     gap: 30px;
-.arrow:last-child {
-    svg {
-        transform: rotate(180deg);
+
+    @include respond-to("sm") {
+        gap: 16px;
     }
-}
+
+    .arrow:last-child {
+        svg {
+            transform: rotate(180deg);
+        }
+    }
+
     .arrow {
         width: 70px;
         height: 40px;
@@ -23,14 +29,26 @@
         border: 1px solid var(--border-light);
         border-radius: 999px;
 
-        &:hover {
-                background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
+        @include respond-to("sm") {
+            width: 50px;
+            height: 30px;
+        }
 
-                svg {
-                    path {
-                        fill: var(--text-white);
-                    }
+        &:hover {
+            background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
+
+            svg {
+                path {
+                    fill: var(--text-white);
                 }
+            }
+        }
+
+        svg {
+            @include respond-to("sm") {
+                width: 12px;
+                height: 12px;
+            }
         }
     }
 
@@ -54,6 +72,12 @@
             align-items: center;
             justify-content: center;
             transition: .3s ease-in-out;
+
+            @include respond-to("sm") {
+                width: 30px;
+                height: 30px;
+                font-size: 10px;
+            }
 
             &:hover {
                 color: var(--text-white);
