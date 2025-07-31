@@ -1,3 +1,4 @@
+'use client'
 import React from 'react'
 import styles from './dashboard.module.scss';
 import CourseBanner from './courseBanner';
