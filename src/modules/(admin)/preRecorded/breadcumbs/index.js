@@ -5,9 +5,9 @@ import Link from 'next/link';
 export default function Breadcumbs() {
     return (
         <div className={styles.breadcumbsAlignment}>
-            <span><Link href="/">Home</Link></span>
+            <Link href="/">Home</Link>
             <RightMdcon />
-            <span><Link href="/dashboard">Course</Link></span>
+            <Link href="/dashboard">Course</Link>
             <RightMdcon />
             <span>Pre-Recorded</span>
 

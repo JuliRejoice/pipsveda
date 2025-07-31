@@ -12,66 +12,80 @@ import NotificationIcon from '@/icons/notificationIcon';
 import ProfileI from '@/icons/profileI';
 import CommonButton from '../commonButton';
 import CloseIcon from '@/icons/closeIcon';
+import SignoutIcon from '@/icons/signoutIcon';
 const SidebarLayer = '/assets/images/sidebar-layer.png';
 const LogoutIcon = '/assets/icons/logout.svg';
-export default function Sidebar({setToogle , toogle}) {
+const DownIcon = '/assets/icons/down-white.svg';
+export default function Sidebar({ setToogle, toogle }) {
     const [dropdown, setDropdown] = useState(false);
+    const [ profileDropdown , setProfileDropdown ] = useState(false);
     return (
         <div className={styles.stickyBar}>
-        <aside className={styles.sidebar}>
-            <div className={styles.sidebarLayer}>
-                <img src={SidebarLayer} alt='SidebarLayer'/>
-            </div>
-            <div className={styles.logo}>
-                <Logo />
-                <div className={styles.close} onClick={()=> setToogle(false)}>
-                <CloseIcon/>
+            <aside className={styles.sidebar}>
+                <div className={styles.sidebarLayer}>
+                    <img src={SidebarLayer} alt='SidebarLayer' />
                 </div>
-            </div>
-            <div className={styles.sidebarBody}>
-                <div className={styles.menu}>
-                    <DashboardIcon />
-                    <span>Dashboard</span>
+                <div className={styles.logo}>
+                    <Logo />
+                    <div className={styles.close} onClick={() => setToogle(false)}>
+                        <CloseIcon />
+                    </div>
                 </div>
-                <div className={styles.relative}>
+                <div className={styles.sidebarBody}>
                     <div className={styles.menu}>
-                        <CourseIcon />
-                        <div className={styles.contentAlignment}>
-                            <span>Course</span>
-                            <div className={dropdown ? styles.toogle : ''} onClick={() => setDropdown(!dropdown)}>
-                                <DownArrow />
+                        <DashboardIcon />
+                        <span>Dashboard</span>
+                    </div>
+                    <div className={styles.relative}>
+                        <div className={styles.menu}>
+                            <CourseIcon />
+                            <div className={styles.contentAlignment}>
+                                <span>Course</span>
+                                <div className={dropdown ? styles.toogle : ''} onClick={() => setDropdown(!dropdown)}>
+                                    <DownArrow />
+                                </div>
+                            </div>
+                        </div>
+                        <div className={classNames(styles.dropdown, dropdown ? styles.show : styles.hide)}>
+                            <div className={styles.dropdownAlignment}>
+                                <span>Pre-Recorded</span>
+                                <span>Live Online</span>
+                                <span>In-Person</span>
                             </div>
                         </div>
                     </div>
-                    <div className={classNames(styles.dropdown, dropdown ? styles.show : styles.hide)}>
-                        <div className={styles.dropdownAlignment}>
-                            <span>Pre-Recorded</span>
-                            <span>Live Online</span>
-                            <span>In-Person</span>
+                    <div className={styles.menu}>
+                        <ContactUs />
+                        <span>Contact Us</span>
+                    </div>
+                </div>
+                <div className={styles.sidebarFooter}>
+                    <div className={styles.relativeDiv}>
+                        <div onClick={()=> setProfileDropdown(!profileDropdown)} className={ classNames(styles.buttonDeisgn , profileDropdown ? styles.iconRotate : "") }>
+                       <button>
+                        Ahmad Khan
+                        <img src={DownIcon} alt="DownIcon"/>
+                       </button>
+                        </div>
+                        <div className={ classNames(styles.dropdown , profileDropdown ? styles.show : styles.hide) }>
+                            <div className={styles.dropdownSpacing}>
+                                <div className={styles.iconText}>
+                                    <ProfileI />
+                                    <span>Profile</span>
+                                </div>
+                                <div className={styles.iconText}>
+                                    <SettingsIcon />
+                                    <span>Settings</span>
+                                </div>
+                                <div className={styles.iconText}>
+                                    <SignoutIcon />
+                                    <span>Logout</span>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div className={styles.menu}>
-                    <ContactUs />
-                    <span>Contact Us</span>
-                </div>
-                <div className={styles.menu}>
-                    <SettingsIcon />
-                    <span>Settings</span>
-                </div>
-                <div className={styles.menu}>
-                    <NotificationIcon />
-                    <span>Notification</span>
-                </div>
-                <div className={styles.menu}>
-                    <ProfileI />
-                    <span>Profile</span>
-                </div>
-            </div>
-            <div className={styles.sidebarFooter}>
-                <CommonButton text="Enroll Now" outline icon={LogoutIcon} />
-            </div>
-        </aside>
-</div>
+            </aside>
+        </div>
     )
 }

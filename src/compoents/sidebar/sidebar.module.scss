@@ -52,6 +52,83 @@
         }
     }
 
+    .relativeDiv {
+        position: relative;
+
+        .buttonDeisgn {
+            &.iconRotate {
+                button {
+                    img {
+                        transform: rotate(180deg);
+                    }
+                }
+            }
+
+            button {
+                padding: 14px 22px;
+                width: 100%;
+                border-radius: 7px;
+                background: var(--button-gradient);
+                color: var(--text-white);
+                border-radius: 7px;
+                @include font16;
+                clip-path: polygon(0 22px, 20px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px);
+                cursor: pointer;
+                border: none;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+
+                img {
+                    transition: .3s ease-in-out;
+                }
+            }
+        }
+
+        .dropdown {
+            position: absolute;
+            bottom: 50px;
+            left: 0;
+            width: 100%;
+            background-color: var(--bg-white);
+            border-radius: 12px;
+
+            &.hide {
+                max-height: 0px;
+                overflow: hidden;
+                transition: .3s ease-in-out;
+            }
+
+            &.show {
+                max-height: 100vh;
+                overflow: hidden;
+                transition: .3s ease-in-out;
+            }
+
+            .dropdownSpacing {
+                padding: 16px;
+
+                .iconText:last-child {
+                    padding: 0;
+                }
+
+                .iconText {
+                    display: flex;
+                    align-items: center;
+                    padding: 0 0 25px 0;
+                    gap: 10px;
+
+                    span {
+                        display: block;
+                        @include font16;
+                        color: #051600CC;
+                    }
+                }
+            }
+
+        }
+    }
+
     .sidebarFooter {
         padding: 0 30px 14px 14px;
         position: relative;
@@ -84,6 +161,12 @@
             &:hover {
                 background-color: var(--bg-white);
                 border: 1px solid #FF691726;
+            }
+
+            svg {
+                width: 24px;
+                height: 24px;
+                min-width: 24px;
             }
 
             .contentAlignment {
