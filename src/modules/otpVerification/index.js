@@ -5,6 +5,7 @@ import Button from '@/compoents/button';
 import Link from 'next/link';
 import { forgetPassword, verifyOtp } from '@/compoents/api/auth';
 import { useRouter } from 'next/navigation';
+import Logo from '@/compoents/logo';
 
 const RightIcon = '/assets/icons/right-lg.svg';
 
@@ -26,7 +27,7 @@ export default function OtpVerification() {
         }
     }, []);
     console.log(window.location)
-    
+
     const handleChange = (e, index) => {
         const value = e.target.value;
         if (/^\d*$/.test(value)) {
@@ -97,6 +98,9 @@ export default function OtpVerification() {
         <div className={styles.otpVerification}>
             <div className='container'>
                 <div className={styles.signinBox}>
+                    <div className={styles.logoCenter}>
+                        <Logo />
+                    </div>
                     <div className={styles.text}>
                         <h2>OTP Verification</h2>
                         <p>Enter OTP Code sent to {maskedEmail}.</p>

@@ -2,6 +2,7 @@
 @use '../../scss/typography/typography.scss' as *;
 
 .button {
+        display: inline-block;
     .btnwrapper {
         padding: 1px; // border thickness
         background: var(--button-gradient-border);

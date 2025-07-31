@@ -27,8 +27,8 @@ const container = {
 
 const item = {
   hidden: { y: 20, opacity: 0 },
-  show: { 
-    y: 0, 
+  show: {
+    y: 0,
     opacity: 1,
     transition: {
       type: 'spring',
@@ -40,9 +40,9 @@ const item = {
 
 const fadeIn = {
   hidden: { opacity: 0 },
-  visible: { 
+  visible: {
     opacity: 1,
-    transition: { 
+    transition: {
       duration: 0.8,
       ease: "easeOut"
     }
@@ -76,7 +76,7 @@ const AnimatedText = ({ text, className = '' }) => {
   const words = text.split(' ');
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.5 });
-  
+
   return (
     <span ref={containerRef} className={className}>
       {words.map((word, wordIndex) => (
@@ -118,7 +118,7 @@ export default function Herobanner() {
         variants={container}
         ref={ref}
       >
-        <motion.div 
+        <motion.div
           className={styles.herobannerDesign}
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -126,25 +126,25 @@ export default function Herobanner() {
         >
           <div className='container'>
             <div className={styles.text}>
-              <motion.div 
+              <motion.div
                 className={styles.pipsvedaRound}
                 variants={item}
               >
                 <span>Master Forex Trading Pips Veda</span>
-                <motion.img 
-                  src={LineImage} 
+                <motion.img
+                  src={LineImage}
                   alt='LineImage'
                   initial={{ scaleX: 0, transformOrigin: 'left' }}
                   animate={{ scaleX: 1 }}
                   transition={{ delay: 0.8, duration: 0.8, ease: 'easeOut' }}
                 />
               </motion.div>
-              
-            <h1>
-            Master the Markets Build  <br/> a Financial Future That Lasts
-            </h1>
-              
-              <motion.p 
+
+              <h1>
+                Master the Markets Build  <br /> a Financial Future That Lasts
+              </h1>
+
+              <motion.p
                 variants={item}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -153,18 +153,18 @@ export default function Herobanner() {
                 AI technology services aim to provide intelligent solutions that help businesses
                 improve efficiency,
               </motion.p>
-              
-              <motion.div 
+
+              <motion.div
                 className={styles.searchbar}
                 variants={item}
               >
-                <motion.div 
+                <motion.div
                   className={styles.inputwrapper}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
                   <input type='text' placeholder='Search for Course...' />
-                  <motion.div 
+                  <motion.div
                     className={styles.searchIcon}
                     whileHover={{ scale: 1.1 }}
                     whileTap={{ scale: 0.9 }}
@@ -173,8 +173,8 @@ export default function Herobanner() {
                   </motion.div>
                 </motion.div>
               </motion.div>
-              
-              <motion.div 
+
+              <motion.div
                 className={styles.buttonAlignment}
                 variants={item}
               >
@@ -184,34 +184,34 @@ export default function Herobanner() {
             </div>
           </div>
         </motion.div>
-        
-        <motion.div 
+
+        <motion.div
           className={styles.herobannerVideo}
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.6, duration: 0.8 }}
         >
           <div className='container'>
-            <motion.div 
+            <motion.div
               className={styles.videoPoster}
               whileHover={{ scale: 1.02 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
-              <motion.img 
-                src={VideoPoster} 
-                alt='VideoPoster' 
+              <motion.img
+                src={VideoPoster}
+                alt='VideoPoster'
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.8, duration: 0.6 }}
               />
-              <div 
+              <div
                 className={styles.roundTopalignment}
               >
                 <div className={styles.circleanimation}>
                   <CircleAnimation />
-                  <div 
+                  <div
                     className={styles.circleanimatiopnlogomain}
-                   
+
                   >
                     <div className={styles.circleanimatiopnlogo}>
                       <img src={IconLogo} alt="logo" />

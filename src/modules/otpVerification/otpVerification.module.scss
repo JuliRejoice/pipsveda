@@ -28,6 +28,18 @@
  
     }
     
+    .logoCenter {
+        display: flex;
+        justify-content: center;
+        padding: 0 0 20px 0;
+    }
+
+    .error {
+        color: red;
+        font-size: 12px;
+ 
+    }
+    
     .signinBox {
         width: 502px;
         margin: 0 auto;

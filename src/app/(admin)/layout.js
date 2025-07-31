@@ -9,7 +9,6 @@ export default function layout({ children }) {
                 <Sidebar/>
             </div>
             <div className='admin-layout-children'>
-                <AdminHeader/>
                 {children}
             </div>
         </div>

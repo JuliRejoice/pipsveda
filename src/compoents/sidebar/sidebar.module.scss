@@ -9,6 +9,11 @@
     border-right: 1px solid #FF691726;
     position: relative;
 
+    .logo {
+        display: flex;
+        justify-content: center;
+    }
+
     .sidebarLayer {
         position: absolute;
         bottom: 0;

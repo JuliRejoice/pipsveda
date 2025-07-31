@@ -22,6 +22,11 @@
             width: 100%;
         }
     }
+        .logoCenter {
+        display: flex;
+        justify-content: center;
+        padding:  0 0 20px 0;
+    }
    .error {
       @include font14;
       color: red;

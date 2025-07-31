@@ -1,0 +1,64 @@
+@use '../../scss/main.scss' as *;
+@use '../../scss/breakpoints/breakpoints.scss' as *;
+@use '../../scss/typography/typography.scss' as *;
+
+.paginationAlignment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+.arrow:last-child {
+    svg {
+        transform: rotate(180deg);
+    }
+}
+    .arrow {
+        width: 70px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--bg-white);
+        cursor: pointer;
+        border: 1px solid var(--border-light);
+        border-radius: 999px;
+
+        &:hover {
+                background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
+
+                svg {
+                    path {
+                        fill: var(--text-white);
+                    }
+                }
+        }
+    }
+
+    .counterAlignment {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        justify-content: center;
+
+        div {
+            background-color: var(--bg-white);
+            cursor: pointer;
+            border: 1px solid var(--border-light);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            @include heading18;
+            border-radius: 8px;
+            font-size: 16px;
+            color: var(--black);
+            align-items: center;
+            justify-content: center;
+            transition: .3s ease-in-out;
+
+            &:hover {
+                color: var(--text-white);
+                background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
+            }
+        }
+    }
+}

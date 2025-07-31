@@ -1,0 +1,22 @@
+@use '../../../../scss/main.scss' as *;
+@use '../../../../scss/breakpoints/breakpoints.scss' as *;
+@use '../../../../scss/typography/typography.scss' as *;
+
+.breadcumbsAlignment {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0 0 20px 0;
+
+    span {
+        display: block;
+        cursor: pointer;
+        @include heading18;
+        font-size: 16px;
+        color: var(--grey-600);
+    }
+
+    span:last-child {
+        color: var(--black-500);
+    }
+}

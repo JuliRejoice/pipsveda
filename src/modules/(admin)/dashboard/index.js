@@ -1,20 +1,14 @@
 import React from 'react'
 import styles from './dashboard.module.scss';
-import TrendingCourse from './trendingCourse';
-import OurSyllabus from './ourSyllabus';
+import CourseBanner from './courseBanner';
 import RecentCourse from './recentCourse';
+import AdminHeader from '@/compoents/adminHeader';
 export default function Dashboard() {
   return (
-    <div className={styles.dashboardLayout}>
-      <div className={styles.grid}>
-        <div className={styles.griditems}>
-            <TrendingCourse/>
-        </div>
-        <div className={styles.griditems}>
-            <OurSyllabus/>
-        </div>
-      </div>
-      <RecentCourse/>
+    <div>
+      <AdminHeader />
+      <CourseBanner />
+      <RecentCourse />
     </div>
   )
 }
