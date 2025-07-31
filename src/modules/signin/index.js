@@ -8,6 +8,7 @@ import Link from "next/link";
 import { signIn } from "@/compoents/api/auth";
 import { useRouter } from "next/navigation";
 import Logo from "@/compoents/logo";
+
 const RightIcon = "/assets/icons/right-lg.svg";
 const EyeIcon = "/assets/icons/eye.svg";
 const EyeSlashIcon = "/assets/icons/eye-slash.svg";
@@ -19,7 +20,6 @@ export default function Signin() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  // Redirect if already logged in
   // useEffect(() => {
   //   const token = localStorage.getItem("token");
   //   if (token) {
