@@ -8,6 +8,7 @@ import Link from "next/link";
 import { signIn } from "@/compoents/api/auth";
 import { useRouter } from "next/navigation";
 import Logo from "@/compoents/logo";
+import { getCookie, setCookie } from "../../../cookie";
 
 const RightIcon = "/assets/icons/right-lg.svg";
 const EyeIcon = "/assets/icons/eye.svg";
@@ -20,8 +21,9 @@ export default function Signin() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
+  // Check if user is already logged in
   // useEffect(() => {
-  //   const token = localStorage.getItem("token");
+  //   const token = getCookie("userToken");
   //   if (token) {
   //     router.push("/dashboard");
   //   }
@@ -41,32 +43,42 @@ export default function Signin() {
     return "";
   };
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     const emailError = validateEmail(email);
     const passwordError = validatePassword(password);
+    
     if (emailError || passwordError) {
-      setErrors({ email: emailError, password: passwordError, submit: "" });
+      setErrors({
+        email: emailError,
+        password: passwordError,
+        submit: ""
+      });
       return;
     }
+
     setIsSubmitting(true);
-  
-    signIn(email, password)
-      .then((data) => {
-        setIsSubmitting(false);
-        setErrors({ email: "", password: "", submit: "" });
-        if(data.success){
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("user", JSON.stringify(data.user));
-          router.push("/dashboard");
-        }else{
-          setErrors((prev) => ({ ...prev, submit: data.message || "Login failed. Please try again." }));
-        }
-      })
-      .catch((error) => {
-        setIsSubmitting(false);
-        setErrors((prev) => ({ ...prev, submit: error?.message || "Login failed. Please try again." }));
-      });
+    try {
+      const data = await signIn(email, password);
+      console.log(data);
+      if (data.success) {
+        setCookie("userToken", data.payload.token);
+        router.push("/dashboard");
+      } else {
+        setErrors(prev => ({
+          ...prev,
+          submit: data.message || "Login failed. Please try again."
+        }));
+      }
+    } catch (error) {
+      setErrors(prev => ({
+        ...prev,
+        submit: "An error occurred. Please try again."
+      }));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
   return (
     <div className={styles.signinBanner}>
       <div className="container">

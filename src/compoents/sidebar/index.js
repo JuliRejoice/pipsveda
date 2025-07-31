@@ -13,12 +13,37 @@ import ProfileI from '@/icons/profileI';
 import CommonButton from '../commonButton';
 import CloseIcon from '@/icons/closeIcon';
 import SignoutIcon from '@/icons/signoutIcon';
+import { removeCookie } from '../../../cookie';
+import { useRouter } from 'next/navigation';
 const SidebarLayer = '/assets/images/sidebar-layer.png';
 const LogoutIcon = '/assets/icons/logout.svg';
 const DownIcon = '/assets/icons/down-white.svg';
+
 export default function Sidebar({ setToogle, toogle }) {
     const [dropdown, setDropdown] = useState(false);
-    const [ profileDropdown , setProfileDropdown ] = useState(false);
+    const [profileDropdown, setProfileDropdown] = useState(false);
+    const [activeTab, setActiveTab] = useState('dashboard');
+    const [activeSubTab, setActiveSubTab] = useState('');
+    const router = useRouter();
+
+    const handleTabClick = (tab) => {
+        const goTo = '/' + tab;
+        router.replace(goTo);
+        setActiveTab(tab);
+        setActiveSubTab('');
+        setToogle(false);
+    };
+
+    const handleSubTabClick = (subTab) => {
+        setActiveTab("course");
+        setActiveSubTab(subTab);
+        setToogle(false);
+    };
+
+    const handleLogout = () => {
+        removeCookie('userToken');
+        router.push('/signin');
+    }
     return (
         <div className={styles.stickyBar}>
             <aside className={styles.sidebar}>
@@ -32,42 +57,72 @@ export default function Sidebar({ setToogle, toogle }) {
                     </div>
                 </div>
                 <div className={styles.sidebarBody}>
-                    <div className={styles.menu}>
+                    <div
+                        className={`${styles.menu} ${activeTab === 'dashboard' ? styles.active : ''}`}
+                        onClick={() => { handleTabClick('dashboard'); router.push('/dashboard') }}
+                    >
                         <DashboardIcon />
                         <span>Dashboard</span>
                     </div>
                     <div className={styles.relative}>
-                        <div className={styles.menu}>
+                        <div
+                            className={`${styles.menu} ${activeTab === 'course' || activeTab === 'pre-recorded' ? styles.active : ''}`}
+                            onClick={() => setDropdown(!dropdown)}
+                        >
                             <CourseIcon />
                             <div className={styles.contentAlignment}>
                                 <span>Course</span>
-                                <div className={dropdown ? styles.toogle : ''} onClick={() => setDropdown(!dropdown)}>
+                                <div className={dropdown ? styles.toogle : ''} onClick={(e) => {
+                                    e.stopPropagation();
+                                    setDropdown(!dropdown);
+                                }}>
                                     <DownArrow />
                                 </div>
                             </div>
                         </div>
                         <div className={classNames(styles.dropdown, dropdown ? styles.show : styles.hide)}>
                             <div className={styles.dropdownAlignment}>
-                                <span>Pre-Recorded</span>
-                                <span>Live Online</span>
-                                <span>In-Person</span>
+                                <span
+                                    className={activeTab === 'pre-recorded' ? styles.activeSubTab : ''}
+                                    onClick={() => handleSubTabClick('pre-recorded')}
+                                >
+                                    Pre-Recorded
+                                </span>
+                                <span
+                                    className={activeTab === 'live-online' ? styles.activeSubTab : ''}
+                                    onClick={() => handleSubTabClick('live-online')}
+                                >
+                                    Live Online
+                                </span>
+                                <span
+                                    className={activeTab === 'in-person' ? styles.activeSubTab : ''}
+                                    onClick={() => handleSubTabClick('in-person')}
+                                >
+                                    In-Person
+                                </span>
                             </div>
                         </div>
                     </div>
-                    <div className={styles.menu}>
+                    <div
+                        className={`${styles.menu} ${activeTab === 'contact-us' ? styles.active : ''}`}
+                        onClick={() => {
+                            handleTabClick('contact-us');
+                            // router.push('/contact-us')
+                        }}
+                    >
                         <ContactUs />
                         <span>Contact Us</span>
                     </div>
                 </div>
                 <div className={styles.sidebarFooter}>
                     <div className={styles.relativeDiv}>
-                        <div onClick={()=> setProfileDropdown(!profileDropdown)} className={ classNames(styles.buttonDeisgn , profileDropdown ? styles.iconRotate : "") }>
-                       <button>
-                        Ahmad Khan
-                        <img src={DownIcon} alt="DownIcon"/>
-                       </button>
+                        <div onClick={() => setProfileDropdown(!profileDropdown)} className={classNames(styles.buttonDeisgn, profileDropdown ? styles.iconRotate : "")}>
+                            <button>
+                                Ahmad Khan
+                                <img src={DownIcon} alt="DownIcon" />
+                            </button>
                         </div>
-                        <div className={ classNames(styles.dropdown , profileDropdown ? styles.show : styles.hide) }>
+                        <div className={classNames(styles.dropdown, profileDropdown ? styles.show : styles.hide)}>
                             <div className={styles.dropdownSpacing}>
                                 <div className={styles.iconText}>
                                     <ProfileI />
@@ -77,7 +132,7 @@ export default function Sidebar({ setToogle, toogle }) {
                                     <SettingsIcon />
                                     <span>Settings</span>
                                 </div>
-                                <div className={styles.iconText}>
+                                <div className={styles.iconText} onClick={handleLogout}>
                                     <SignoutIcon />
                                     <span>Logout</span>
                                 </div>

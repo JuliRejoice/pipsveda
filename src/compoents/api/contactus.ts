@@ -3,14 +3,15 @@ import { getCookie } from "../../../cookie";
 const BASEURL = process.env.NEXT_PUBLIC_BASE_URL;
 export const getAuthToken = (): string | null => {
     if (typeof window !== 'undefined') {
-        return getCookie('token');
+        return getCookie('authToken') || '';
     }
     return null;
 };
 
 export const sendMessage = async (data: any) => {
     const token = getAuthToken();
-    const response = await fetch(`${BASEURL}/contact-us`, {
+    console.log(token)
+    const response = await fetch(`${BASEURL}/contactUs/createContact`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
