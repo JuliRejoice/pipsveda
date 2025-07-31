@@ -1,10 +1,10 @@
 import React from 'react'
 import styles from './outlineButton.module.scss';
-export default function OutlineButton({ text, icon }) {
+export default function OutlineButton({ text, icon , onClick }) {
     return (
         <div className={styles.button}>
             <div className={styles.btnwrapper}>
-                <button aria-label={text}>
+                <button aria-label={text} onClick={onClick}>
                     {text}
                     {
                         icon && (
