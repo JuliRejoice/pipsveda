@@ -1,23 +1,20 @@
 import React from 'react'
 import styles from './recentCourse.module.scss';
 import OutlineButton from '@/compoents/outlineButton';
-import Pagination from '@/compoents/pagination';
 const CardImage = '/assets/images/crypto.png';
 const BathIcon = '/assets/icons/bath.svg';
 const RightBlackIcon = '/assets/icons/right-black.svg';
-
-
 export default function RecentCourse() {
-    return (
-        <div className={styles.recentCourse}>
-            <div className={styles.title}>
+  return (
+    <div className={styles.recentCourseAlignment}>
+        <div className={styles.title}>
                 <h2>
                     Recent Course
                 </h2>
             </div>
             <div className={styles.grid}>
                 {
-                    [...Array(8)].map(() => {
+                    [...Array(4)].map(() => {
                         return (
                             <div className={styles.griditems}>
                                 <div className={styles.image}>
@@ -45,9 +42,6 @@ export default function RecentCourse() {
                     })
                 }
             </div>
-            <div className={styles.paginationAlignment}>
-                <Pagination/>
-            </div>
-        </div>
-    )
+    </div>
+  )
 }

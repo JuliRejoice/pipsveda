@@ -1,0 +1,115 @@
+@use '../../../../scss/main.scss' as *;
+@use '../../../../scss/breakpoints/breakpoints.scss' as *;
+@use '../../../../scss/typography/typography.scss' as *;
+
+.courseDetailsBox {
+    background-color: var(--bg-white);
+    border-radius: 18px;
+    border: 1px solid var(--border-color5);
+    padding: 30px;
+
+    .textStyle {
+        h3 {
+            @include heading20;
+            margin: 0 0 10px 0;
+            color: var(--black-500);
+        }
+
+        p {
+            @include font16normal;
+            margin: 0 0 14px 0;
+            color: var(--grey-600);
+        }
+    }
+
+    .allIconTextAlignment {
+        display: flex;
+        align-items: center;
+        gap: 30px;
+        padding: 0 0 24px 0;
+
+        .iconText:first-child {
+            svg {
+                path {
+                    fill: #6F756D;
+                }
+            }
+        }
+
+        .iconText {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+
+            span {
+                display: block;
+                @include font16normal;
+                color: var(--grey-600);
+            }
+        }
+    }
+
+    .tabAlignment {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 0 0 30px 0;
+
+        button:first-child {
+            background: var(--button-gradient);
+            color: var(--text-white);
+        }
+
+        button {
+            border: none;
+            padding: 16px 30px;
+            cursor: pointer;
+            clip-path: polygon(0 22px, 20px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px);
+            @include heading18;
+            background: rgba(218, 218, 218, 0.80);
+            color: var(--black-500);
+            transition: .3s ease-in-out;
+
+            @media (max-width:1500px) {
+                padding: 12px 26px;
+                font-size: 15px;
+            }
+
+            &:hover {
+                background: var(--button-gradient);
+                color: var(--text-white);
+            }
+        }
+    }
+
+    .mainGrid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 30px;
+
+        .image {
+            background: rgba(1, 11, 29, 0.20);
+            height: 400px;
+            border-radius: 20px;
+            width: 100%;
+        }
+
+        .details {
+            h4 {
+                @include heading18;
+                color: var(--black-500);
+                margin: 0 0 15px 0;
+            }
+
+            p {
+                @include font16normal;
+                color: var(--grey-600);
+                margin: 0 0 15px 0;
+                @media (max-width:1500px) {
+                    @include font14;
+                    margin: 0 0 10px 0;
+                }
+            }
+        }
+    }
+}

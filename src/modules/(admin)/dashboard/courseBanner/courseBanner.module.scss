@@ -1,0 +1,224 @@
+@use '../../../../scss/main.scss' as *;
+@use '../../../../scss/breakpoints/breakpoints.scss' as *;
+@use '../../../../scss/typography/typography.scss' as *;
+
+.courseBanner {
+    background-image: url('/assets/images/herobanner.png');
+    width: 100%;
+    padding: 114px 95px 56px 95px;
+    clip-path: polygon(0 65px, 60px 0, 100% 0, 100% calc(100% - 65px), calc(100% - 65px) 100%, 0 100%, 0 65px);
+
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 719px;
+        gap: 20px;
+        align-items: center;
+
+        .footerButtonalignment {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            .iconText {
+                display: flex;
+                align-items: center;
+                gap: 5px;
+                cursor: pointer;
+
+                &:hover {
+                    svg {
+                        transform: translateY(2px);
+                    }
+                }
+
+                svg {
+                    position: relative;
+                    top: 1px;
+                    transition: .3s ease-in-out;
+                }
+
+                span {
+                    background: var(--button-gradient);
+                    @include font16;
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+            }
+        }
+
+
+        .searchbar {
+            max-width: 530px;
+            padding: 0 0 33px 0;
+
+            @include respond-to("md") {
+                max-width: 420px;
+            }
+
+            @include respond-to("sm") {
+                padding: 0 0 20px 0;
+            }
+
+            .inputwrapper {
+                position: relative;
+                padding: 1px;
+                background: var(--border-color);
+                clip-path: polygon(0 30px, 28px 0, 100% 0,
+                        100% calc(100% - 30px),
+                        calc(100% - 30px) 100%, 0 100%, 0 30px);
+                border-radius: 8px;
+
+                input {
+                    width: 100%;
+                    height: 58px;
+                    border: none;
+                    background-color: var(--bg-white);
+                    padding-left: 78px;
+                    padding-right: 40px;
+                    @include font16-light;
+                    color: var(--black-500);
+                    border-radius: 8px;
+                    clip-path: polygon(0 30px, 28px 0, 100% 0,
+                            100% calc(100% - 30px),
+                            calc(100% - 30px) 100%, 0 100%, 0 30px);
+
+                    &:focus {
+                        outline: none;
+                    }
+                }
+
+                input::placeholder {
+                    @include font16-light;
+                    color: var(--black-100);
+                    opacity: 0.46;
+                }
+            }
+
+            .searchIcon {
+                position: absolute;
+                top: 50%;
+                transform: translateY(-50%) !important;
+                left: 40px;
+                display: flex;
+                align-items: center;
+            }
+        }
+
+        .text {
+            h2 {
+                @include heading32;
+                color: var(--black-500);
+                max-width: 592px;
+                margin: 0 0 16px 0;
+                opacity: 0.90;
+            }
+
+            p {
+                @include font16normal;
+                color: var(--black-500);
+                opacity: 0.9;
+                max-width: 576px;
+                margin: 0 0 16px 0;
+            }
+        }
+
+        .griditems:last-child {
+            position: relative;
+            display: flex;
+            justify-content: space-between;
+
+            .card:nth-child(2) {
+                position: absolute;
+                top: -60px;
+                left: 50%;
+                transform: translateX(-50%);
+                z-index: 9;
+            }
+        }
+
+        .card {
+            width: 337px;
+            max-width: 337px;
+            background-color: var(--bg-white);
+            padding: 20px;
+            @include first-clip-path;
+            border-radius: 12px;
+
+            .image {
+                img {
+                    width: 100%;
+                    height: 165px;
+                    display: block;
+                    @include first-clip-path;
+                }
+            }
+
+            .details {
+                padding: 15px 0 0 0;
+
+                .iconText {
+                    display: flex;
+                    align-items: center;
+                    padding: 0 0 10px 0;
+                    gap: 4px;
+
+                    span {
+                        display: block;
+                        @include font16;
+                        font-weight: 400;
+                        color: var(--grey-600);
+                    }
+                }
+
+                .lastContentAlignment {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+
+                    .iconText {
+                        display: flex;
+                        align-items: center;
+                        gap: 8px;
+                        cursor: pointer;
+
+                        &:hover {
+                            svg {
+                                transform: translateX(2px);
+                            }
+                        }
+
+                        svg {
+                            position: relative;
+                            transition: .3s ease-in-out;
+                            top: 1px;
+                        }
+
+                        p {
+                            background: var(--button-gradient);
+                            background-clip: text;
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                        }
+                    }
+
+                    h4 {
+                        @include heading20;
+                        font-size: 22px;
+                        background: var(--button-gradient);
+                        display: inline;
+                        background-clip: text;
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                    }
+                }
+
+                h3 {
+                    @include heading18;
+                    color: var(--black-500);
+                    margin: 0 0 10px 0;
+                }
+            }
+        }
+    }
+}

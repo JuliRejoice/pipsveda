@@ -1,21 +1,3 @@
 @use '../../../scss/main.scss' as *;
 @use '../../../scss/breakpoints/breakpoints.scss' as *;
 @use '../../../scss/typography/typography.scss' as *;
-
-.dashboardLayout {
-    background-color: var(--bg-white);
-    padding: 30px;
-    border: 1px solid var(--border-color5);
-    border-radius: 20px;
-
-    .grid {
-        display: grid;
-        grid-template-columns: 1fr 647px;
-        gap: 30px;
-
-        @media (max-width:1500px) {
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-    }
-}
