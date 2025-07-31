@@ -46,7 +46,7 @@ export default function Signin() {
         setErrors({ email: "", password: "", submit: "" });
         localStorage.setItem("token", data.token);
         localStorage.setItem("user", JSON.stringify(data.user));
-        router.push("/");
+        router.push("/dashboard");
       })
       .catch((error) => {
         setIsSubmitting(false);

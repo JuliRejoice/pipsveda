@@ -1,13 +1,26 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
 import styles from './recentCourse.module.scss';
 import OutlineButton from '@/compoents/outlineButton';
 import Pagination from '@/compoents/pagination';
+import { getCourses } from '@/compoents/api/dashboard';
 const CardImage = '/assets/images/crypto.png';
 const BathIcon = '/assets/icons/bath.svg';
 const RightBlackIcon = '/assets/icons/right-black.svg';
 
 
 export default function RecentCourse() {
+const [courses, setCourses] = useState([]); // Assuming you will fetch courses data later
+useEffect(()=>{
+    getCourses().then((data) => {
+        setCourses(data);
+    }).catch((error) => {
+        console.error('Error fetching courses:', error);
+        // Handle error state if needed
+    });
+}, []);
+
+console.log('courses', courses);
     return (
         <div className={styles.recentCourse}>
             <div className={styles.title}>
