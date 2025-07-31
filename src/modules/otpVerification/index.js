@@ -17,8 +17,6 @@ export default function OtpVerification() {
     const [isResending, setIsResending] = useState(false);
     const router = useRouter();
 
-
-
     useEffect(() => {
         // Get email from URL state when component mounts
         const emailFromState = localStorage.getItem('email');
@@ -26,8 +24,7 @@ export default function OtpVerification() {
             setEmail(emailFromState);
         }
     }, []);
-    console.log(window.location)
-
+    
     const handleChange = (e, index) => {
         const value = e.target.value;
         if (/^\d*$/.test(value)) {
