@@ -164,6 +164,12 @@
                 border: 1px solid #FF691726;
             }
 
+            &.active {
+               background-color: var(--bg-white);
+                border-radius: 8px;
+                
+            }
+
             svg {
                 width: 24px;
                 height: 24px;

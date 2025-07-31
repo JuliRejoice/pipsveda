@@ -1,7 +1,9 @@
+import { getCookie } from "../../../cookie";
+
 const BASEURL = process.env.NEXT_PUBLIC_BASE_URL;
 export const getAuthToken = (): string | null => {
     if (typeof window !== 'undefined') {
-        return localStorage.getItem('token');
+        return getCookie('token');
     }
     return null;
 };
