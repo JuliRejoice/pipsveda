@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './sidebar.module.scss';
 import Logo from '../logo';
 import DashboardIcon from '@/icons/dashboardIcon';
@@ -20,6 +20,7 @@ const LogoutIcon = '/assets/icons/logout.svg';
 const DownIcon = '/assets/icons/down-white.svg';
 
 export default function Sidebar({ setToogle, toogle }) {
+    const [user, setUser] = useState(null);
     const [dropdown, setDropdown] = useState(false);
     const [profileDropdown, setProfileDropdown] = useState(false);
     const [activeSubTab, setActiveSubTab] = useState('');
@@ -43,8 +44,11 @@ export default function Sidebar({ setToogle, toogle }) {
         removeCookie('userToken');
         router.push('/signin');
     }
-   const user = getCookie('user');
-   const userName=(user?.name && JSON.parse(user)?.name);
+    useEffect(() => {
+        const user = getCookie('user');
+        const userName = (user?.name && JSON.parse(user)?.name);
+        setUser(userName);
+    }, []);
 
     return (
         <div className={styles.stickyBar}>
@@ -119,7 +123,7 @@ export default function Sidebar({ setToogle, toogle }) {
                     <div className={styles.relativeDiv}>
                         <div onClick={() => setProfileDropdown(!profileDropdown)} className={classNames(styles.buttonDeisgn, profileDropdown ? styles.iconRotate : "")}>
                             <button>
-                                {userName ?? "User"}
+                                {user ?? "User"}
                                 <img src={DownIcon} alt="DownIcon" />
                             </button>
                         </div>
