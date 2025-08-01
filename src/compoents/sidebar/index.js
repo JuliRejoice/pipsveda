@@ -13,8 +13,8 @@ import ProfileI from '@/icons/profileI';
 import CommonButton from '../commonButton';
 import CloseIcon from '@/icons/closeIcon';
 import SignoutIcon from '@/icons/signoutIcon';
-import { removeCookie } from '../../../cookie';
-import { useRouter } from 'next/navigation';
+import { getCookie, removeCookie } from '../../../cookie';
+import { usePathname, useRouter } from 'next/navigation';
 const SidebarLayer = '/assets/images/sidebar-layer.png';
 const LogoutIcon = '/assets/icons/logout.svg';
 const DownIcon = '/assets/icons/down-white.svg';
@@ -22,20 +22,19 @@ const DownIcon = '/assets/icons/down-white.svg';
 export default function Sidebar({ setToogle, toogle }) {
     const [dropdown, setDropdown] = useState(false);
     const [profileDropdown, setProfileDropdown] = useState(false);
-    const [activeTab, setActiveTab] = useState('dashboard');
     const [activeSubTab, setActiveSubTab] = useState('');
     const router = useRouter();
+    const pathname=usePathname();
 
     const handleTabClick = (tab) => {
         const goTo = '/' + tab;
         router.replace(goTo);
-        setActiveTab(tab);
         setActiveSubTab('');
         setToogle(false);
     };
 
     const handleSubTabClick = (subTab) => {
-        setActiveTab("course");
+     
         setActiveSubTab(subTab);
         setToogle(false);
     };
@@ -44,6 +43,10 @@ export default function Sidebar({ setToogle, toogle }) {
         removeCookie('userToken');
         router.push('/signin');
     }
+   
+    const user = getCookie('user');
+    const userName=(JSON.parse(user)?.name);
+
     return (
         <div className={styles.stickyBar}>
             <aside className={styles.sidebar}>
@@ -58,15 +61,15 @@ export default function Sidebar({ setToogle, toogle }) {
                 </div>
                 <div className={styles.sidebarBody}>
                     <div
-                        className={`${styles.menu} ${activeTab === 'dashboard' ? styles.active : ''}`}
-                        onClick={() => { handleTabClick('dashboard'); router.push('/dashboard') }}
+                        className={`${styles.menu} ${pathname === '/dashboard' ? styles.active : ''}`}
+                        onClick={() => { handleTabClick('dashboard') }}
                     >
                         <DashboardIcon />
                         <span>Dashboard</span>
                     </div>
                     <div className={styles.relative}>
                         <div
-                            className={`${styles.menu} ${activeTab === 'course' || activeTab === 'pre-recorded' ? styles.active : ''}`}
+                            className={`${styles.menu} ${pathname === '/course' || pathname === '/pre-recorded' ? styles.active : ''}`}
                             onClick={() => setDropdown(!dropdown)}
                         >
                             <CourseIcon />
@@ -83,19 +86,19 @@ export default function Sidebar({ setToogle, toogle }) {
                         <div className={classNames(styles.dropdown, dropdown ? styles.show : styles.hide)}>
                             <div className={styles.dropdownAlignment}>
                                 <span
-                                    className={activeTab === 'pre-recorded' ? styles.activeSubTab : ''}
+                                    className={pathname === '/pre-recorded' ? styles.activeSubTab : ''}
                                     onClick={() => handleSubTabClick('pre-recorded')}
                                 >
                                     Pre-Recorded
                                 </span>
                                 <span
-                                    className={activeTab === 'live-online' ? styles.activeSubTab : ''}
+                                    className={pathname === '/live-online' ? styles.activeSubTab : ''}
                                     onClick={() => handleSubTabClick('live-online')}
                                 >
                                     Live Online
                                 </span>
                                 <span
-                                    className={activeTab === 'in-person' ? styles.activeSubTab : ''}
+                                    className={pathname === '/in-person' ? styles.activeSubTab : ''}
                                     onClick={() => handleSubTabClick('in-person')}
                                 >
                                     In-Person
@@ -104,10 +107,9 @@ export default function Sidebar({ setToogle, toogle }) {
                         </div>
                     </div>
                     <div
-                        className={`${styles.menu} ${activeTab === 'contact-us' ? styles.active : ''}`}
+                        className={`${styles.menu} ${pathname === '/contact-us' ? styles.active : ''}`}
                         onClick={() => {
                             handleTabClick('contact-us');
-                            // router.push('/contact-us')
                         }}
                     >
                         <ContactUs />
@@ -118,7 +120,7 @@ export default function Sidebar({ setToogle, toogle }) {
                     <div className={styles.relativeDiv}>
                         <div onClick={() => setProfileDropdown(!profileDropdown)} className={classNames(styles.buttonDeisgn, profileDropdown ? styles.iconRotate : "")}>
                             <button>
-                                Ahmad Khan
+                                {userName}
                                 <img src={DownIcon} alt="DownIcon" />
                             </button>
                         </div>

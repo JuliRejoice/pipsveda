@@ -8,20 +8,57 @@ export const getAuthToken = (): string | null => {
     return null;
 };
 
-export const getCourses = async () => {
-  const token = getAuthToken();
-  const response = await fetch(`${BASEURL}/course/getAllCourse`,
-    {method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      ['x-auth-token']: token,
-        },
-  });
-  if (!response.ok) {
-    throw new Error('Failed to fetch courses');
+export const getCourses = async ({
+  page = 1,
+  limit = 10,
+  searchQuery = "",
+  courseType = "",
+}: {
+  page?: number;
+  limit?: number;
+  searchQuery?: string;
+  courseType?: string;
+} = {}) => {
+  console.log(searchQuery);
+  try {
+    const token = getAuthToken();
+
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
+
+    if (token) {
+      headers["x-auth-token"] = token;
+    }
+
+    // Build query string (map searchQuery -> search)
+    const params = new URLSearchParams({
+      page: page.toString(),
+      limit: limit.toString(),
+    });
+
+    if (searchQuery) {
+      params.append("search", searchQuery); // ✅ correctly send as "search"
+    }
+    if (courseType) {
+      params.append("courseType", courseType);
+    }
+
+    const response = await fetch(
+      `${BASEURL}/course/getAllCourse?${params.toString()}`,
+      { method: "GET", headers }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to fetch courses");
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error("Error fetching courses", error);
+    throw error;
   }
-  return response.json();
-}
+};
 
 
 export const getChapters = async (id: string) => {
@@ -33,7 +70,7 @@ export const getChapters = async (id: string) => {
             headers['x-auth-token'] = token;
         }
 
-        const res = await fetch(`${BASEURL}/chapter/getAllChapter?courseId=${id}`, { headers });
+        const res = await fetch(`${BASEURL}/chapter/getAllChapter?courseId=${id}&sortBy=chapterNo&sortOrder=1`, { headers });
         const data = await res.json();
         console.log(data);
         return data;

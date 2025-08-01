@@ -4,6 +4,7 @@ import "./theme.css";
 import '../scss/main.scss';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
+import { ToastContainer } from "react-toastify";
 const lexend = Lexend({
   variable: "--font-lexend",
   subsets: ["latin"],
@@ -28,6 +29,20 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${lexend.variable} ${funneldisplay.variable}`}>
         {children}
+        <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        toastClassName="custom-toast"
+        bodyClassName="custom-body"
+      />
       </body>
     </html>
   );

@@ -3,7 +3,7 @@ import { getCookie } from "../../../cookie";
 const BASEURL = process.env.NEXT_PUBLIC_BASE_URL;
 export const getAuthToken = (): string | null => {
     if (typeof window !== 'undefined') {
-        return getCookie('authToken') || '';
+        return getCookie('userToken') || '';
     }
     return null;
 };

@@ -1,5 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import styles from "./signin.module.scss";
 import Input from "@/compoents/input";
 import Button from "@/compoents/button";
@@ -61,19 +63,15 @@ export default function Signin() {
       const data = await signIn(email, password);
       console.log(data);
       if (data.success) {
+        toast.success('Login successfully.');
         setCookie("userToken", data.payload.token);
+        setCookie("user", data.payload);
         router.push("/dashboard");
       } else {
-        setErrors(prev => ({
-          ...prev,
-          submit: data.message || "Login failed. Please try again."
-        }));
+        toast.error(data.message || "Login failed. Please try again.");
       }
     } catch (error) {
-      setErrors(prev => ({
-        ...prev,
-        submit: "An error occurred. Please try again."
-      }));
+      toast.error("An error occurred. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

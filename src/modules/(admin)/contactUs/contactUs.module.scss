@@ -37,23 +37,53 @@
 
         .twoColGrid {
             display: grid;
-            grid-template-columns: repeat(2 , 1fr);
-            gap: 22px;
-            padding: 0 0 22px 0;
-            @media (max-width:1500px) {
-                gap: 16px;
-                padding: 0 0 16px 0;
-            }
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            padding: 0 0 16px 0;
+            
             .fullwidth {
                 grid-column: span 2;
             }
+            
+            /* Style for each form field container */
+            > div {
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                
+                /* For full width fields */
+                &.fullwidth {
+                    grid-column: span 2;
+                }
+            }
+            
+            /* Error message styling */
+            .error {
+                color: #e53e3e;
+                font-size: 12px;
+                margin-top: 2px;
+                line-height: 1.4;
+            }
         }
 
-        .btnAlignment {
-            padding: 40px 0 0 0;
-            @media (max-width:1500px) {
-                padding: 16px 0 0 0;
+        /* Textarea container */
+        > div:not(.twoColGrid) {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            margin-bottom: 16px;
+            
+            .error {
+                color: #e53e3e;
+                font-size: 12px;
+                margin-top: 2px;
+                line-height: 1.4;
             }
+        }
+
+        /* Button alignment */
+        .btnAlignment {
+            margin-top: 8px;
         }
 
         .whiteBox {

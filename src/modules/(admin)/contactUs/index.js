@@ -6,11 +6,15 @@ import Input from '@/compoents/input';
 import Textarea from '@/compoents/textarea';
 import Button from '@/compoents/button';
 import { sendMessage } from '@/compoents/api/contactus';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 const ChatIcon = '/assets/icons/chat.svg';
 const EmailIcon = '/assets/icons/email-icon.svg';
 const CallIcon = '/assets/icons/call.svg';
 const LocationIcon = '/assets/icons/location.svg';
 const RightIcon = '/assets/icons/right.svg';
+
 export default function ContactUs() {
     const [form, setForm] = useState({
         firstName: '',
@@ -21,6 +25,7 @@ export default function ContactUs() {
         description: ''
     });
     const [errors, setErrors] = useState({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
 
     const validate = () => {
         const newErrors = {};
@@ -39,12 +44,44 @@ export default function ContactUs() {
     };
 
     const handleChange = (field, value) => {
+        if (errors[field]) {
+            setErrors(prev => ({
+                ...prev,
+                [field]: ''
+            }));
+        }
         setForm(prev => ({ ...prev, [field]: value }));
     };
 
-    const handleSubmit = () => {
-      sendMessage(form);
-      
+    const handleSubmit = async () => {
+        const isValid = validate();
+        if (!isValid) {
+            toast.error('Please fill in all required fields correctly');
+            return;
+        }
+        
+        setIsSubmitting(true);
+        try {
+            const response = await sendMessage(form);
+            if (response.success) {
+                toast.success('Your message has been sent successfully!');
+                setForm({
+                    firstName: '',
+                    lastName: '',
+                    email: '',
+                    phone: '',
+                    subject: '',
+                    description: ''
+                });
+            } else {
+                toast.error('Failed to send message. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error sending message:', error);
+            toast.error('An error occurred. Please try again later.');
+        } finally {
+            setIsSubmitting(false);
+        }
     };
 
     return (
@@ -58,53 +95,63 @@ export default function ContactUs() {
                 <div className={styles.grid}>
                     <div className={styles.griditems}>
                         <div className={styles.twoColGrid}>
-                            <Input
-                                label='First Name'
-                                placeholder='Enter your first name'
-                                value={form.firstName}
-                                onChange={e => handleChange('firstName', e.target.value)}
-                                error={errors.firstName}
-                            />
-                            <Input
-                                label='Last Name'
-                                placeholder='Enter your last name'
-                                value={form.lastName}
-                                onChange={e => handleChange('lastName', e.target.value)}
-                                error={errors.lastName}
-                            />
-                            <Input
-                                label='Email'
-                                placeholder='your.email@example.com'
-                                value={form.email}
-                                onChange={e => handleChange('email', e.target.value)}
-                                error={errors.email}
-                            />
-                            <Input
-                                label='Phone Number'
-                                placeholder='+91 9999999999'
-                                value={form.phone}
-                                onChange={e => handleChange('phone', e.target.value)}
-                                error={errors.phone}
-                            />
+                            <div>
+                                <Input
+                                    label='First Name'
+                                    placeholder='Enter your first name'
+                                    value={form.firstName}
+                                    onChange={e => handleChange('firstName', e.target.value)} 
+                                />
+                                {errors.firstName && <span className={styles.error}>{errors.firstName}</span>}
+                            </div>
+                            <div>
+                                <Input
+                                    label='Last Name'
+                                    placeholder='Enter your last name'
+                                    value={form.lastName}
+                                    onChange={e => handleChange('lastName', e.target.value)}
+                                />
+                                {errors.lastName && <span className={styles.error}>{errors.lastName}</span>}
+                            </div>
+                            <div>
+                                <Input
+                                    label='Email'
+                                    placeholder='your.email@example.com'
+                                    value={form.email}
+                                    onChange={e => handleChange('email', e.target.value)}
+                                />
+                                {errors.email && <span className={styles.error}>{errors.email}</span>}
+                            </div>
+                            <div>
+                                <Input
+                                    label='Phone Number'
+                                    placeholder='+91 9999999999'
+                                    value={form.phone}
+                                    onChange={e => handleChange('phone', e.target.value)}
+                                />
+                                {errors.phone && <span className={styles.error}>{errors.phone}</span>}
+                            </div>
                             <div className={styles.fullwidth}>
                                 <Input
                                     label='Subject'
                                     placeholder='How can we help you?'
                                     value={form.subject}
                                     onChange={e => handleChange('subject', e.target.value)}
-                                    error={errors.subject}
                                 />
+                                {errors.subject && <span className={styles.error}>{errors.subject}</span>}
                             </div>
                         </div>
-                        <Textarea
-                            label='Message'
-                            placeholder='Tell us more about your trading goals or questions...'
-                            value={form.description}
-                            onChange={e => handleChange('description', e.target.value)}
-                            error={errors.description}
-                        />
+                        <div>
+                            <Textarea
+                                label='Message'
+                                placeholder='Tell us more about your trading goals or questions...'
+                                value={form.description}
+                                onChange={e => handleChange('description', e.target.value)}
+                            />
+                            {errors.description && <span className={styles.error}>{errors.description}</span>}
+                        </div>
                         <div className={styles.btnAlignment} onClick={handleSubmit}>
-                            <Button text="Send Message" icon={RightIcon}  />
+                            <Button text="Send Message" icon={RightIcon}  disabled={isSubmitting} />
                         </div>
                     </div>
                     <div className={styles.griditems}>

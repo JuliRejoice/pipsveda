@@ -12,17 +12,17 @@ const CardImage = '/assets/images/crypto.png';
 const BathIcon = '/assets/icons/bath.svg';
 const RightBlackIcon = '/assets/icons/right-black.svg';
 
-export default function RecentCourse() {
+export default function RecentCourse({searchQuery}) {
     const [courses, setCourses] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const router = useRouter();
-
     useEffect(() => {
         const fetchCourses = async () => {
             try {
+                console.log(searchQuery);
                 setIsLoading(true);
-                const data = await getCourses();
+                const data = await getCourses({searchQuery});
                 setCourses(data?.payload?.data || []);
                 setError(null);
             } catch (error) {
@@ -35,7 +35,7 @@ export default function RecentCourse() {
         };
 
         fetchCourses();
-    }, []);
+    }, [searchQuery]);
 
     // Skeleton loader
     const renderSkeletons = () => {
@@ -58,10 +58,19 @@ export default function RecentCourse() {
     // Empty state
     const renderEmptyState = () => (
         <div className={styles.emptyState}>
-            <img src="/assets/images/no-courses.svg" alt="No courses" className={styles.emptyImage} />
-            <h3>No Courses Available</h3>
-            <p>There are no courses to display at the moment. Please check back later.</p>
-        </div>
+        <img
+          src="/assets/images/no-courses.svg"
+          alt="No courses"
+          className={styles.emptyImage}
+        />
+        <h3>No Courses Available</h3>
+        <p>
+          There are no courses to display at the moment.  
+          Please check back later.
+        </p>
+       
+      </div>
+      
     );
 
     return (

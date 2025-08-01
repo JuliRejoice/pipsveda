@@ -11,7 +11,7 @@ export default function AdminTabHeader() {
         <>
             <div className={styles.adminHeader}>
                 <Logo />
-                <div className={styles.menu} onClick={()=> setToogle(!toogle)}>
+                <div className={styles.menu} onClick={() => setToogle(!toogle)}>
                     <MenuIcon />
                 </div>
             </div>

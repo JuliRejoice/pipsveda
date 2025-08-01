@@ -1,12 +1,13 @@
 
 'use client'
 import { motion, useAnimation, useInView, AnimatePresence, useTransform } from 'framer-motion';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './courseBanner.module.scss';
 import BathIcon from '@/icons/bathIcon';
 import RightLgIcon from '@/icons/rightLgIcon';
 import SearchIcon from '@/icons/searchIcon';
 import TopIcon from '@/icons/topIcon';
+import { getCourses } from '@/compoents/api/dashboard';
 const CardImage = '/assets/images/crypto.png';
 const item = {
     hidden: { y: 20, opacity: 0 },
@@ -20,19 +21,26 @@ const item = {
         },
     },
 };
-export default function CourseBanner() {
+export default function CourseBanner({searchQuery, setSearchQuery}) {
+    const [courses, setCourses] = useState([]);
+    const handleSearch = (value) => {
+        setSearchQuery(value); 
+    }
+    useEffect(() => {
+        getCourses().then((res) => {
+            setCourses(res.payload.data.slice(0, 3));
+        });
+    }, []);
     return (
         <div className={styles.courseBanner}>
             <div className={styles.grid}>
                 <div className={styles.griditems}>
                     <div className={styles.text}>
                         <h2>
-                            Lorem Ipsum simply dummy printing
-                            and typesetting industry.
+                        Trade crypto CFDs with FOREX.com without needing to own the cryptocurrency itself. 
                         </h2>
                         <p>
-                            Lorem Ipsum has been the industry's standard dummy text ever since
-                            when an unknown printer took a galley of type.
+                        Trade crypto CFDs with FOREX.com without needing to own the cryptocurrency itself. With competitive spreads on Ripple, Ether and Bitcoin CFDs. Go long or short on CFDs - Get competitive spreads - Trade without the need for a digital wallet
                         </p>
                         <motion.div
                             className={styles.searchbar}
@@ -43,7 +51,7 @@ export default function CourseBanner() {
                                 whileHover={{ scale: 1.02 }}
                                 whileTap={{ scale: 0.98 }}
                             >
-                                <input type='text' placeholder='Search for Course...' />
+                                <input type='text' placeholder='Search for Course...' onChange={(e) => handleSearch(e.target.value)} value={searchQuery} />
                                 <motion.div
                                     className={styles.searchIcon}
                                     whileHover={{ scale: 1.1 }}
@@ -67,21 +75,21 @@ export default function CourseBanner() {
                 </div>
                 <div className={styles.griditems}>
                     {
-                        [...Array(3)].map((_, i) => {
+                        [...Array(courses.length)].map((_, i) => {
                             return (
                                 <div className={styles.card} key={i}>
                                     <div className={styles.image}>
-                                        <img src={CardImage} alt='CardImage' />
+                                        <img src={courses[i].courseVideo} alt='CardImage' />
                                     </div>
                                     <div className={styles.details}>
-                                        <h3>Crypto Currency for Beginners</h3>
+                                        <h3>{courses[i].CourseName}</h3>
                                         <div className={styles.iconText}>
                                             <BathIcon />
-                                            <span>John  Doe</span>
+                                            <span>{courses[i].instructor || 'John Doe'}</span>
                                         </div>
                                         <div className={styles.lastContentAlignment}>
                                             <h4>
-                                                $864
+                                                ${courses[i].price || 199}
                                             </h4>
                                             <div className={styles.iconText}>
                                                 <p>
