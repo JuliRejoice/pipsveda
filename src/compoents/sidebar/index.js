@@ -43,9 +43,8 @@ export default function Sidebar({ setToogle, toogle }) {
         removeCookie('userToken');
         router.push('/signin');
     }
-   
-    const user = getCookie('user');
-    const userName=(JSON.parse(user)?.name);
+   const user = getCookie('user');
+   const userName=(user?.name && JSON.parse(user)?.name);
 
     return (
         <div className={styles.stickyBar}>
@@ -120,7 +119,7 @@ export default function Sidebar({ setToogle, toogle }) {
                     <div className={styles.relativeDiv}>
                         <div onClick={() => setProfileDropdown(!profileDropdown)} className={classNames(styles.buttonDeisgn, profileDropdown ? styles.iconRotate : "")}>
                             <button>
-                                {userName}
+                                {userName ?? "User"}
                                 <img src={DownIcon} alt="DownIcon" />
                             </button>
                         </div>
