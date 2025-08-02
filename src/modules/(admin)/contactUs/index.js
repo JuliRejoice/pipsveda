@@ -150,8 +150,8 @@ export default function ContactUs() {
                             />
                             {errors.description && <span className={styles.error}>{errors.description}</span>}
                         </div>
-                        <div className={styles.btnAlignment} onClick={handleSubmit}>
-                            <Button text="Send Message" icon={RightIcon}  disabled={isSubmitting} />
+                        <div className={styles.btnAlignment}>
+                            <Button text="Send Message" icon={RightIcon}  disabled={isSubmitting} onClick={handleSubmit}/>
                         </div>
                     </div>
                     <div className={styles.griditems}>

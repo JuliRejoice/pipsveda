@@ -71,37 +71,35 @@ export default function CourseDetails() {
   const searchParams = useSearchParams();
   const id = searchParams.get("id");
 
+  const fetchChapters = async () => {
+    try {
+      setLoading(true);
+      const data = await getChapters(id);
+      setChapters(data?.payload?.data || []);
+      
+      // Set the first chapter as selected by default if available
+      if (data?.payload?.data?.length > 0) {
+        setSelectedChapter(data.payload.data[0]);
+      }
+      setError(null);
+    } catch (err) {
+      console.error("Error fetching chapters:", err);
+      setError("Failed to load course details. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     if (!id) return;
-    
-    const fetchChapters = async () => {
-      try {
-        setLoading(true);
-        const data = await getChapters(id);
-        setChapters(data?.payload?.data || []);
-        
-        // Set the first chapter as selected by default if available
-        if (data?.payload?.data?.length > 0) {
-          setSelectedChapter(data.payload.data[0]);
-        }
-        setError(null);
-      } catch (err) {
-        console.error("Error fetching chapters:", err);
-        setError("Failed to load course details. Please try again later.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchChapters();
   }, [id]);
 
-  // Show skeleton while loading
+
   if (loading) {
     return <CourseDetailsSkeleton />;
   }
 
-  // Show error message if there's an error
   if (error) {
     return (
       <div className={styles.courseDetailsBox}>
@@ -132,7 +130,6 @@ export default function CourseDetails() {
     );
   }
 
-  // Show empty state if no chapters
   if (chapters.length === 0) {
     return (
       <div className={styles.courseDetailsBox}>
@@ -146,7 +143,6 @@ export default function CourseDetails() {
     );
   }
 
-  // Get course details from the first chapter
   const course = chapters[0]?.courseId || {};
 
   return (

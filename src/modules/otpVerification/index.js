@@ -126,11 +126,12 @@ export default function OtpVerification() {
                         </p>
                     </div>
                     <div className={styles.leftRightAlignment}>
-                        <div className={styles.buttonWidthFull} onClick={!isVerifying ? handleVerifyOtp : undefined}>
+                        <div className={styles.buttonWidthFull} >
                                 <Button 
                                     text={isVerifying ? 'Verifying...' : 'Continue'} 
                                     icon={isVerifying ? null : RightIcon} 
                                     disabled={isVerifying}
+                                    onClick={!isVerifying && handleVerifyOtp }
                                 />
                         </div>
                     </div>

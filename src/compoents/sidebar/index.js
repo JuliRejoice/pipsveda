@@ -46,7 +46,7 @@ export default function Sidebar({ setToogle, toogle }) {
     }
     useEffect(() => {
         const user = getCookie('user');
-        const userName = (user?.name && JSON.parse(user)?.name);
+        const userName = (user && JSON.parse(user)?.name);
         setUser(userName);
     }, []);
 
@@ -123,7 +123,7 @@ export default function Sidebar({ setToogle, toogle }) {
                     <div className={styles.relativeDiv}>
                         <div onClick={() => setProfileDropdown(!profileDropdown)} className={classNames(styles.buttonDeisgn, profileDropdown ? styles.iconRotate : "")}>
                             <button>
-                                {user ?? "User"}
+                                {user}
                                 <img src={DownIcon} alt="DownIcon" />
                             </button>
                         </div>

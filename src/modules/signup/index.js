@@ -117,8 +117,8 @@ export default function Signup() {
                             <Link href="/reset-password" aria-label='reset-password'>Forgot password?</Link>
                         </div>
                         {errors.submit && <div className={styles.error}>{errors.submit}</div>}
-                        <div className={styles.buttonWidthFull} onClick={isSubmitting ? undefined : handleSignup} >
-                            <Button text={isSubmitting ? "Logging in..." : "Sign Up"} icon={RightIcon} disabled={isSubmitting || !!errors.name || !!errors.email || !!errors.password || !!errors.confirmPassword} />
+                        <div className={styles.buttonWidthFull}>
+                            <Button text={isSubmitting ? "Logging in..." : "Sign Up"} icon={RightIcon} disabled={isSubmitting || !!errors.name || !!errors.email || !!errors.password || !!errors.confirmPassword}  onClick={!isSubmitting && handleSignup} />
                         </div>
                         <Authentication />
                         <div className={styles.dontHaveAccount}>
