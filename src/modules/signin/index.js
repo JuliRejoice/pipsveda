@@ -23,17 +23,9 @@ export default function Signin() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-  // Check if user is already logged in
-  // useEffect(() => {
-  //   const token = getCookie("userToken");
-  //   if (token) {
-  //     router.push("/dashboard");
-  //   }
-  // }, [router]);
 
   const validateEmail = (value) => {
     if (!value) return "Email is required.";
-    // Simple email regex
     const re = /^\S+@\S+\.\S+$/;
     if (!re.test(value)) return "Enter a valid email address.";
     return "";
@@ -68,7 +60,7 @@ export default function Signin() {
         setCookie("user", data.payload);
         router.push("/dashboard");
       } else {
-        toast.error(data.message || "Login failed. Please try again.");
+        toast.error("Login failed. Please try again.");
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.");
@@ -125,9 +117,8 @@ export default function Signin() {
             {errors.submit && <span className={styles.errormsg}>{errors.submit}</span>}
             <div
               className={styles.buttonWidthFull}
-              onClick={isSubmitting ? undefined : handleLogin}
             >
-              <Button text={isSubmitting ? "Logging in..." : "Sign In"} icon={RightIcon} disabled={isSubmitting || !!errors.email || !!errors.password} />
+              <Button text={isSubmitting ? "Logging in..." : "Sign In"} icon={RightIcon} disabled={isSubmitting || !!errors.email || !!errors.password} onClick={!isSubmitting && handleLogin} />
             </div>
             <Authentication />
             <div className={styles.dontHaveAccount}>

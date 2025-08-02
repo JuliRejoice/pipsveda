@@ -8,6 +8,8 @@ import RightLgIcon from '@/icons/rightLgIcon';
 import SearchIcon from '@/icons/searchIcon';
 import TopIcon from '@/icons/topIcon';
 import { getCourses } from '@/compoents/api/dashboard';
+import { useRouter } from 'next/navigation';
+
 const CardImage = '/assets/images/crypto.png';
 const item = {
     hidden: { y: 20, opacity: 0 },
@@ -23,14 +25,28 @@ const item = {
 };
 export default function CourseBanner({searchQuery, setSearchQuery}) {
     const [courses, setCourses] = useState([]);
+    const router = useRouter();
+
     const handleSearch = (value) => {
         setSearchQuery(value); 
     }
+    const getAllCourses = async () => {
+        try {
+            const response = await getCourses();
+            if (response.success) {
+                setCourses(response.payload.data.slice(0, 3));
+            } else {
+                console.error("Failed to fetch courses:", response.message);
+            }
+        } catch (error) {
+            console.error("Error fetching courses:", error);
+        }
+    }
+
     useEffect(() => {
-        getCourses().then((res) => {
-            setCourses(res.payload.data.slice(0, 3));
-        });
+        getAllCourses();
     }, []);
+    console.log(courses);
     return (
         <div className={styles.courseBanner}>
             <div className={styles.grid}>
@@ -63,11 +79,11 @@ export default function CourseBanner({searchQuery, setSearchQuery}) {
                         </motion.div>
                         <div className={styles.footerButtonalignment}>
                             <div className={styles.iconText}>
-                                <span>Trending Course</span>
+                                <span>Trending</span>
                                 <TopIcon/>
                             </div>
                             <div className={styles.iconText}>
-                                <span>Crypto</span>
+                                <span>Popular</span>
                                 <TopIcon/>
                             </div>
                         </div>
@@ -91,7 +107,7 @@ export default function CourseBanner({searchQuery, setSearchQuery}) {
                                             <h4>
                                                 ${courses[i].price || 199}
                                             </h4>
-                                            <div className={styles.iconText}>
+                                            <div className={styles.iconText} onClick={()=>router.push(`/pre-recorded?id=${courses[i]._id}`)}>
                                                 <p>
                                                     Enroll Now
                                                 </p>

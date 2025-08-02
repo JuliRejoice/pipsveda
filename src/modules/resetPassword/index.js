@@ -63,12 +63,13 @@ export default function ResetPassword() {
                             />
                             {error && <span className={styles.error}>{error}</span>}
                         </div>
-                        <div className={styles.buttonWidthFull} onClick={handleReset}>
+                        <div className={styles.buttonWidthFull}>
                             <Button 
                                 text={isLoading ? 'Sending...' : 'Continue'} 
                                 icon={isLoading ? null : RightIcon}
                                 disabled={isLoading}
                                 showLoader={isLoading}
+                                onClick={handleReset}
                             />
                         </div>
                         <div className={styles.dontHaveAccount}>

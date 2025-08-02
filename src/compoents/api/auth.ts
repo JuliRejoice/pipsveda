@@ -1,6 +1,6 @@
 
 const BASEURL = process.env.NEXT_PUBLIC_BASE_URL;
-console.log('BASEURL:', BASEURL);
+
 export const signIn = async (email, password) => {
   try {
     const response = await fetch(`${BASEURL}/user/signin`, {

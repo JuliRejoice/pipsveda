@@ -122,12 +122,13 @@ export default function NewPassword() {
 
             {errors.submit && <span className={styles.error}>{errors.submit}</span>}
 
-            <div className={styles.buttonWidthFull} onClick={handleSetNewPassword}>
+            <div className={styles.buttonWidthFull}>
               <Button
                 text={isSubmitting ? "Updating..." : "Set new password"}
                 icon={isSubmitting ? null : RightIcon}
                 disabled={isSubmitting}
                 showLoader={isSubmitting}
+                onClick={handleSetNewPassword}
               />
             </div>
           </div>

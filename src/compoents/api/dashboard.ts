@@ -31,14 +31,13 @@ export const getCourses = async ({
       headers["x-auth-token"] = token;
     }
 
-    // Build query string (map searchQuery -> search)
     const params = new URLSearchParams({
       page: page.toString(),
       limit: limit.toString(),
     });
 
     if (searchQuery) {
-      params.append("search", searchQuery); // ✅ correctly send as "search"
+      params.append("search", searchQuery); 
     }
     if (courseType) {
       params.append("courseType", courseType);
