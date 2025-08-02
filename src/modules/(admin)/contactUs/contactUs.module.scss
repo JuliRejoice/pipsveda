@@ -8,6 +8,11 @@
     padding: 30px;
     border-radius: 16px;
 
+    @include respond-to("sm") {
+        padding: 14px;
+        border-radius: 12px;
+    }
+    
     .textstyle {
         padding: 0 0 14px 0;
         border-bottom: 1px solid var(--border-color5);
@@ -35,17 +40,29 @@
             grid-template-columns: 1fr 440px;
         }
 
+        @include respond-to("md") {
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+        @include respond-to("sm") {
+            padding: 20px 0 0 0;
+        }
         .twoColGrid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 16px;
             padding: 0 0 16px 0;
+            @include respond-to("sm") {
+                grid-template-columns: repeat(1 , 1fr);
+            }
             
             .fullwidth {
                 grid-column: span 2;
+                @include respond-to("sm") {
+                    grid-column: auto;
+                }
             }
             
-            /* Style for each form field container */
             > div {
                 display: flex;
                 flex-direction: column;
@@ -54,6 +71,9 @@
                 /* For full width fields */
                 &.fullwidth {
                     grid-column: span 2;
+                      @include respond-to("sm") {
+                    grid-column: auto;
+                }
                 }
             }
             
@@ -120,7 +140,8 @@
                 @include respond-to("sm") {
                     padding: 14px;
                     grid-template-columns: 1fr;
-                    gap: 14px;
+                    gap: 12px;
+                    border-radius: 8px;
                 }
 
                 .icon {

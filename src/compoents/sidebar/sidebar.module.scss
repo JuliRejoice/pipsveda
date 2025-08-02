@@ -46,9 +46,15 @@
 
     .logo {
         padding: 30px;
+        @include respond-to("md") {
+            padding: 10px 20px;
+        }
 
         img {
             max-width: 177px;
+            @include respond-to("md") {
+                max-width: 80px;
+            }
         }
     }
 
@@ -78,7 +84,7 @@
                 display: flex;
                 align-items: center;
                 gap: 10px;
-
+                justify-content: space-between;
                 img {
                     transition: .3s ease-in-out;
                 }
@@ -87,7 +93,7 @@
 
         .dropdown {
             position: absolute;
-            bottom: 50px;
+            bottom: 60px;
             left: 0;
             width: 100%;
             background-color: var(--bg-white);
@@ -117,6 +123,15 @@
                     align-items: center;
                     padding: 0 0 25px 0;
                     gap: 10px;
+                    transition: .3s ease-in-out;
+
+                    &:hover {
+                        transform: translateY(-3px);
+
+                        span {
+                            color: var(--primary);
+                        }
+                    }
 
                     span {
                         display: block;
@@ -134,6 +149,9 @@
         padding: 0 30px 14px 14px;
         position: relative;
         z-index: 9;
+        @include respond-to("sm") {
+            padding: 20px;
+        }
 
         button {
             width: 100%;
@@ -147,13 +165,16 @@
         overflow: auto;
         position: relative;
         z-index: 9;
-
+        @include respond-to("md") {
+            padding: 20px;
+                height: calc(100dvh - 176px);
+        }
         .menu {
             display: flex;
             align-items: center;
             gap: 10px;
             padding: 12px;
-            margin: 0 0 4px 0;
+            margin: 0 0 8px 0;
             border-radius: 8px;
             border: 1px solid var(--light-bg);
             transition: .3s ease-in-out;
@@ -165,9 +186,9 @@
             }
 
             &.active {
-               background-color: var(--bg-white);
+                background-color: var(--bg-white);
                 border-radius: 8px;
-                
+
             }
 
             svg {

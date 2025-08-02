@@ -8,6 +8,11 @@
     border: 1px solid var(--border-color5);
     padding: 30px;
 
+    @include respond-to("sm") {
+        border-radius: 12px;
+        padding: 16px
+    }
+
     .textStyle {
         h3 {
             @include heading20;
@@ -19,6 +24,9 @@
             @include font16normal;
             margin: 0 0 14px 0;
             color: var(--grey-600);
+            @include respond-to("sm") {
+                @include font14;
+            }
         }
     }
 
@@ -27,7 +35,10 @@
         align-items: center;
         gap: 30px;
         padding: 0 0 24px 0;
-
+        @include respond-to("md") {
+            gap: 16px;
+            flex-wrap: wrap;
+        }
         .iconText:first-child {
             svg {
                 path {
@@ -55,7 +66,18 @@
         gap: 15px;
         padding: 0 0 30px 0;
         flex-wrap: wrap;
-
+        @include respond-to("sm") {
+            width: 100%;
+            overflow: auto;
+            scrollbar-width: none;
+            flex-wrap: nowrap;
+        }
+        &::-webkit-scrollbar {
+            display: none;
+        }
+        *::-webkit-scrollbar {
+            display: none;
+        }
         button {
             border: none;
             padding: 16px 30px;
@@ -71,6 +93,10 @@
                 font-size: 15px;
             }
 
+            @include respond-to("sm") {
+                white-space: nowrap;
+            }
+
             &:hover, &.activeTab {
                 background: var(--button-gradient);
                 color: var(--text-white);
@@ -83,11 +109,31 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 30px;
 
+        @include respond-to("md") {
+            grid-template-columns: 1fr;
+        }
+
+        @include respond-to("sm") {
+            gap: 20px;
+        }
+
         .image {
             background: rgba(1, 11, 29, 0.20);
             height: 400px;
             border-radius: 20px;
             width: 100%;
+            @include respond-to("sm") {
+                height: 220px;
+                border-radius: 12px;
+            }
+
+            iframe {
+                border-radius: 20px;
+                display: block;
+                @include respond-to("sm") {
+                    border-radius: 12px;
+                }
+            }
         }
 
         .details {

@@ -11,7 +11,9 @@ $breakpoints: (
     @media (max-width: map.get($breakpoints, $breakpoint)) {
       @content;
     }
-  } @else {
+  }
+
+  @else {
     @error "Unknown breakpoint: #{$breakpoint}";
   }
-} 
+}
