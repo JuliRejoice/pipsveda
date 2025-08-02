@@ -1,4 +1,3 @@
-
 'use client'
 import { motion, useAnimation, useInView, AnimatePresence, useTransform } from 'framer-motion';
 import React, { useEffect, useState } from 'react'
@@ -7,8 +6,9 @@ import BathIcon from '@/icons/bathIcon';
 import RightLgIcon from '@/icons/rightLgIcon';
 import SearchIcon from '@/icons/searchIcon';
 import TopIcon from '@/icons/topIcon';
-import { getCourses } from '@/compoents/api/dashboard';
+import { getCourses, getTrendingOrPopularCourses } from '@/compoents/api/dashboard';
 import { useRouter } from 'next/navigation';
+import CourseCardSkeleton from './CourseCardSkeleton';
 
 const CardImage = '/assets/images/crypto.png';
 const item = {
@@ -23,15 +23,17 @@ const item = {
         },
     },
 };
-export default function CourseBanner({searchQuery, setSearchQuery}) {
+export default function CourseBanner({searchQuery, setSearchQuery , allCourse , setAllCourse}) {
     const [courses, setCourses] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
-
+    
     const handleSearch = (value) => {
         setSearchQuery(value); 
     }
     const getAllCourses = async () => {
         try {
+            setIsLoading(true);
             const response = await getCourses();
             if (response.success) {
                 setCourses(response.payload.data.slice(0, 3));
@@ -40,13 +42,23 @@ export default function CourseBanner({searchQuery, setSearchQuery}) {
             }
         } catch (error) {
             console.error("Error fetching courses:", error);
+        } finally {
+            setIsLoading(false);
         }
     }
 
+    const handleTypeChange = (type) => {
+        const response = getTrendingOrPopularCourses(type)
+        if (response.success) {
+            setAllCourse(response.payload.data);
+        } else {
+            console.error("Failed to fetch courses:", response.message);
+        }
+    }
     useEffect(() => {
         getAllCourses();
     }, []);
-    console.log(courses);
+
     return (
         <div className={styles.courseBanner}>
             <div className={styles.grid}>
@@ -78,50 +90,44 @@ export default function CourseBanner({searchQuery, setSearchQuery}) {
                             </motion.div>
                         </motion.div>
                         <div className={styles.footerButtonalignment}>
-                            <div className={styles.iconText}>
+                            <div className={styles.iconText} onClick={() => handleTypeChange('trending')}>
                                 <span>Trending</span>
                                 <TopIcon/>
                             </div>
-                            <div className={styles.iconText}>
-                                <span>Popular</span>
+                            <div className={styles.iconText} onClick={() => handleTypeChange('popular')}>
                                 <TopIcon/>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className={styles.griditems}>
-                    {
-                        [...Array(courses.length)].map((_, i) => {
-                            return (
-                                <div className={styles.card} key={i}>
-                                    <div className={styles.image}>
-                                        <img src={courses[i].courseVideo} alt='CardImage' />
+                    {isLoading ? (
+                        <CourseCardSkeleton count={3} />
+                    ) : (
+                        courses.map((course, i) => (
+                            <div className={styles.card} key={i}>
+                                <div className={styles.image}>
+                                    <img src={course.courseVideo} alt='CardImage' />
+                                </div>
+                                <div className={styles.details}>
+                                    <h3>{course.CourseName}</h3>
+                                    <div className={styles.iconText}>
+                                        <BathIcon />
+                                        <span>{course.instructor || 'John Doe'}</span>
                                     </div>
-                                    <div className={styles.details}>
-                                        <h3>{courses[i].CourseName}</h3>
-                                        <div className={styles.iconText}>
-                                            <BathIcon />
-                                            <span>{courses[i].instructor || 'John Doe'}</span>
-                                        </div>
-                                        <div className={styles.lastContentAlignment}>
-                                            <h4>
-                                                ${courses[i].price || 199}
-                                            </h4>
-                                            <div className={styles.iconText} onClick={()=>router.push(`/pre-recorded?id=${courses[i]._id}`)}>
-                                                <p>
-                                                    Enroll Now
-                                                </p>
-                                                <RightLgIcon />
-                                            </div>
+                                    <div className={styles.lastContentAlignment}>
+                                        <h4>${course.price || 199}</h4>
+                                        <div className={styles.iconText} onClick={() => router.push(`/pre-recorded?id=${course._id}`)}>
+                                            <p>Enroll Now</p>
+                                            <RightLgIcon />
                                         </div>
                                     </div>
                                 </div>
-                            )
-                        })
-                    }
+                            </div>
+                        ))
+                    )}
                 </div>
             </div>
         </div>
     )
 }
-

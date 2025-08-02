@@ -78,3 +78,23 @@ export const getChapters = async (id: string) => {
         throw error;
     }
 };
+
+export const getTrendingOrPopularCourses = async (type: string) => {
+    try {
+        const token = getAuthToken();
+        const headers: Record<string, string> = {};
+
+        if (token) {
+            headers['x-auth-token'] = token;
+        }
+
+        const res = await fetch(`https://259s7s89-6002.inc1.devtunnels.ms/api/v1/course/getDefineCourse?type=${type}`, { headers });
+        const data = await res.json();
+        console.log(data);
+        return data;
+    } catch (error) {
+        console.error("Error fetching trending courses", error);
+        throw error;
+    }
+};
+

@@ -194,6 +194,7 @@
             padding: 20px;
             @include first-clip-path;
             border-radius: 12px;
+            flex-shrink: 0;
 
             @media (max-width:1500px) {
                 width: 250px;
@@ -209,15 +210,30 @@
             }
 
             .image {
-                img {
-                    width: 100%;
-                    height: 165px;
-                    display: block;
-                    @include first-clip-path;
+                width: 100%;
+                height: 165px;
+                overflow: hidden;
+                @include first-clip-path;
 
-                    @media (max-width:1500px) {
-                        height: 120px;
-                    }
+                @media (max-width:1500px) {
+                    height: 120px;
+                }
+
+                img, .skeletonImage {
+                    width: 100%;
+                    height: 100%;
+                    display: block;
+                    object-fit: cover;
+                }
+            }
+
+            .skeletonImage {
+                line-height: 1;
+            }
+
+            @include respond-to("sm") {
+                &:not(:first-child) {
+                    display: none;
                 }
             }
 

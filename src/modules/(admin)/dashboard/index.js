@@ -6,13 +6,14 @@ import RecentCourse from './recentCourse';
 import AdminHeader from '@/compoents/adminHeader';
 export default function Dashboard() {
   const [searchQuery, setSearchQuery] = useState('');
+  const [allCourse , setAllCourse] = useState([]);
 
   return (
 
     <div>
       <AdminHeader />
-      <CourseBanner searchQuery={searchQuery} setSearchQuery={setSearchQuery}/>
-      <RecentCourse searchQuery={searchQuery}/>
+      <CourseBanner searchQuery={searchQuery} setSearchQuery={setSearchQuery} allCourse={allCourse} setAllCourse={setAllCourse}/>
+      <RecentCourse searchQuery={searchQuery} allCourse={allCourse}/>
     </div>
   )
 }
