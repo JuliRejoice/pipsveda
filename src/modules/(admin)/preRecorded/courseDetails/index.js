@@ -194,7 +194,7 @@ export default function CourseDetails() {
                     title={selectedChapter.chapterName}
                     frameBorder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    style={{ borderRadius: '20px' }}
+                   
                     allowFullScreen
                   ></iframe>
                 ) : (
