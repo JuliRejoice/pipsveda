@@ -37,6 +37,7 @@ export default function CourseBanner({searchQuery, setSearchQuery , allCourse , 
             const response = await getCourses();
             if (response.success) {
                 setCourses(response.payload.data.slice(0, 3));
+                setAllCourse(response.payload.data);
             } else {
                 console.error("Failed to fetch courses:", response.message);
             }
@@ -47,8 +48,9 @@ export default function CourseBanner({searchQuery, setSearchQuery , allCourse , 
         }
     }
 
-    const handleTypeChange = (type) => {
-        const response = getTrendingOrPopularCourses(type)
+    const handleTypeChange =async (type) => {
+        const response = await getTrendingOrPopularCourses(type);
+
         if (response.success) {
             setAllCourse(response.payload.data);
         } else {
@@ -95,6 +97,7 @@ export default function CourseBanner({searchQuery, setSearchQuery , allCourse , 
                                 <TopIcon/>
                             </div>
                             <div className={styles.iconText} onClick={() => handleTypeChange('popular')}>
+                                <span>Popular</span>
                                 <TopIcon/>
                             </div>
                         </div>
@@ -117,7 +120,7 @@ export default function CourseBanner({searchQuery, setSearchQuery , allCourse , 
                                     </div>
                                     <div className={styles.lastContentAlignment}>
                                         <h4>${course.price || 199}</h4>
-                                        <div className={styles.iconText} onClick={() => router.push(`/pre-recorded?id=${course._id}`)}>
+                                        <div className={styles.iconText} onClick={() => router.push(`/pre-recorded/${course._id}`)}>
                                             <p>Enroll Now</p>
                                             <RightLgIcon />
                                         </div>

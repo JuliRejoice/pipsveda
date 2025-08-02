@@ -1,285 +1,292 @@
-@use '../../scss/main.scss' as *;
-@use '../../scss/breakpoints/breakpoints.scss' as *;
-@use '../../scss/typography/typography.scss' as *;
+@use "../../scss/main.scss" as *;
+@use "../../scss/breakpoints/breakpoints.scss" as *;
+@use "../../scss/typography/typography.scss" as *;
 
 .sidebar {
-    background-color: var(--light-bg);
-    width: 100%;
-    height: 100dvh;
-    border-right: 1px solid #FF691726;
+  background-color: var(--light-bg);
+  width: 100%;
+  height: 100dvh;
+  border-right: 1px solid #ff691726;
+  position: relative;
+
+  .logo {
+    display: flex;
+    justify-content: center;
+
+    @include respond-to("md") {
+      justify-content: space-between;
+      border-bottom: 1px solid #ff691726;
+    }
+
+    svg {
+      width: 30px;
+      height: 30px;
+    }
+
+    .close {
+      display: none;
+
+      @include respond-to("md") {
+        display: flex;
+        align-items: center;
+      }
+    }
+  }
+
+  .sidebarLayer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+
+    img {
+      width: 100%;
+    }
+  }
+
+  .logo {
+    padding: 30px;
+    @include respond-to("md") {
+      padding: 10px 20px;
+    }
+
+    img {
+      max-width: 177px;
+      @include respond-to("md") {
+        max-width: 80px;
+      }
+    }
+  }
+
+  .relativeDiv {
     position: relative;
 
-    .logo {
-        display: flex;
-        justify-content: center;
-
-        @include respond-to("md") {
-            justify-content: space-between;
-            border-bottom: 1px solid #FF691726;
-
-        }
-
-        svg {
-            width: 30px;
-            height: 30px;
-        }
-
-        .close {
-            display: none;
-
-            @include respond-to("md") {
-                display: flex;
-                align-items: center;
-            }
-        }
-    }
-
-    .sidebarLayer {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-
-        img {
-            width: 100%;
-        }
-    }
-
-    .logo {
-        padding: 30px;
-        @include respond-to("md") {
-            padding: 10px 20px;
-        }
-
-        img {
-            max-width: 177px;
-            @include respond-to("md") {
-                max-width: 80px;
-            }
-        }
-    }
-
-    .relativeDiv {
-        position: relative;
-
-        .buttonDeisgn {
-            &.iconRotate {
-                button {
-                    img {
-                        transform: rotate(180deg);
-                    }
-                }
-            }
-
-            button {
-                padding: 14px 22px;
-                width: 100%;
-                border-radius: 7px;
-                background: var(--button-gradient);
-                color: var(--text-white);
-                border-radius: 7px;
-                @include font16;
-                clip-path: polygon(0 22px, 20px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px);
-                cursor: pointer;
-                border: none;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                justify-content: space-between;
-                img {
-                    transition: .3s ease-in-out;
-                }
-            }
-        }
-
-        .dropdown {
-            position: absolute;
-            bottom: 60px;
-            left: 0;
-            width: 100%;
-            background-color: var(--bg-white);
-            border-radius: 12px;
-
-            &.hide {
-                max-height: 0px;
-                overflow: hidden;
-                transition: .3s ease-in-out;
-            }
-
-            &.show {
-                max-height: 100vh;
-                overflow: hidden;
-                transition: .3s ease-in-out;
-            }
-
-            .dropdownSpacing {
-                padding: 16px;
-
-                .iconText:last-child {
-                    padding: 0;
-                }
-
-                .iconText {
-                    display: flex;
-                    align-items: center;
-                    padding: 0 0 25px 0;
-                    gap: 10px;
-                    transition: .3s ease-in-out;
-
-                    &:hover {
-                        transform: translateY(-3px);
-
-                        span {
-                            color: var(--primary);
-                        }
-                    }
-
-                    span {
-                        display: block;
-                        @include font16;
-                        color: #051600CC;
-                        cursor: pointer;
-                    }
-                }
-            }
-
-        }
-    }
-
-    .sidebarFooter {
-        padding: 0 30px 14px 14px;
-        position: relative;
-        z-index: 9;
-        @include respond-to("sm") {
-            padding: 20px;
-        }
-
+    .buttonDeisgn {
+      &.iconRotate {
         button {
-            width: 100%;
-            justify-content: center;
+          img {
+            transform: rotate(180deg);
+          }
         }
+      }
+
+      button {
+        padding: 14px 22px;
+        width: 100%;
+        border-radius: 7px;
+        background: var(--button-gradient);
+        color: var(--text-white);
+        border-radius: 7px;
+        @include font16;
+        clip-path: polygon(
+          0 22px,
+          20px 0,
+          100% 0,
+          100% calc(100% - 22px),
+          calc(100% - 22px) 100%,
+          0 100%,
+          0 22px
+        );
+        cursor: pointer;
+        border: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        justify-content: space-between;
+        img {
+          transition: 0.3s ease-in-out;
+        }
+      }
     }
 
-    .sidebarBody {
-        padding: 0 14px 30px 14px;
-        height: calc(100dvh - 191px);
-        overflow: auto;
-        position: relative;
-        z-index: 9;
-        @include respond-to("md") {
-            padding: 20px;
-                height: calc(100dvh - 176px);
-        }
-        .menu {
+    .dropdown {
+      position: absolute;
+      bottom: 60px;
+      left: 0;
+      width: 100%;
+      background-color: var(--bg-white);
+      border-radius: 12px;
+
+      &.hide {
+        max-height: 0px;
+        overflow: hidden;
+        transition: 0.3s ease-in-out;
+      }
+
+      &.show {
+        max-height: 100vh;
+        overflow: hidden;
+        transition: 0.3s ease-in-out;
+      }
+
+      .dropdownSpacing {
+        padding: 16px;
+          .iconText:last-child {
+            padding: 0;
+          }
+
+          .iconText {
             display: flex;
             align-items: center;
+            padding: 0 0 25px 0;
             gap: 10px;
-            padding: 12px;
-            margin: 0 0 8px 0;
-            border-radius: 8px;
-            border: 1px solid var(--light-bg);
-            transition: .3s ease-in-out;
-            cursor: pointer;
+            transition: 0.3s ease-in-out;
 
             &:hover {
-                background-color: var(--bg-white);
-                border: 1px solid #FF691726;
-            }
+              transform: translateY(-3px);
 
-            &.active {
-                background-color: var(--bg-white);
-                border-radius: 8px;
-
-            }
-
-            svg {
-                width: 24px;
-                height: 24px;
-                min-width: 24px;
-            }
-
-            .contentAlignment {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                width: 100%;
-
-                div {
-                    display: flex;
-                    align-items: center;
-                }
-
-                .toogle {
-                    svg {
-                        transform: rotate(180deg);
-                    }
-                }
-
-                svg {
-                    cursor: pointer;
-                    transition: .3s ease-in-out;
-                }
+              span {
+                color: var(--primary);
+              }
             }
 
             span {
-                display: block;
-                @include font16;
-                color: var(--black-100-light);
+              display: block;
+              @include font16;
+              color: #051600cc;
+              cursor: pointer;
             }
-        }
-
-        .relative {
-            position: relative;
-            z-index: 9;
-
-            .dropdown {
-                width: 100%;
-                left: 0;
-
-                &.hide {
-                    max-height: 0px;
-                    overflow: hidden;
-                    transition: .3s ease-in-out;
-                }
-
-                &.show {
-                    max-height: 100dvh;
-                    overflow: hidden;
-                    transition: .3s ease-in-out;
-                }
-
-                .dropdownAlignment {
-                    padding-left: 10px;
-
-                    span {
-                        position: relative;
-                        padding: 10px 0 10px 20px;
-                        border-left: 1px solid var(--black-500);
-                        display: block;
-                        color: var(--grey-600);
-                        cursor: pointer;
-
-                        &:hover {
-                            color: var(--black-100-light);
-                        }
-
-                        &::before {
-                            width: 10px;
-                            height: 1px;
-                            background-color: #D3C6C1;
-                            position: absolute;
-                            top: 50%;
-                            transform: translateY(-50%);
-                            left: 0;
-                            content: '';
-                        }
-                    }
-                }
-            }
-        }
+          }
+      }
     }
+  }
+
+  .sidebarFooter {
+    padding: 0 30px 14px 14px;
+    position: relative;
+    z-index: 9;
+    @include respond-to("sm") {
+      padding: 20px;
+    }
+
+    button {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+
+  .sidebarBody {
+    padding: 0 14px 30px 14px;
+    height: calc(100dvh - 191px);
+    overflow: auto;
+    position: relative;
+    z-index: 9;
+    @include respond-to("md") {
+      padding: 20px;
+      height: calc(100dvh - 176px);
+    }
+    .menu {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px;
+      margin: 0 0 8px 0;
+      border-radius: 8px;
+      border: 1px solid var(--light-bg);
+      transition: 0.3s ease-in-out;
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--bg-white);
+        border: 1px solid #ff691726;
+      }
+
+      &.active {
+        background-color: var(--bg-white);
+        border-radius: 8px;
+      }
+
+      svg {
+        width: 24px;
+        height: 24px;
+        min-width: 24px;
+      }
+
+      .contentAlignment {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+
+        div {
+          display: flex;
+          align-items: center;
+        }
+
+        .toogle {
+          svg {
+            transform: rotate(180deg);
+          }
+        }
+
+        svg {
+          cursor: pointer;
+          transition: 0.3s ease-in-out;
+        }
+      }
+
+      span {
+        display: block;
+        @include font16;
+        color: var(--black-100-light);
+      }
+    }
+
+    .relative {
+      position: relative;
+      z-index: 9;
+
+      .dropdown {
+        width: 100%;
+        left: 0;
+
+        &.hide {
+          max-height: 0px;
+          overflow: hidden;
+          transition: 0.3s ease-in-out;
+        }
+
+        &.show {
+          max-height: 100dvh;
+          overflow: hidden;
+          transition: 0.3s ease-in-out;
+        }
+
+        .dropdownAlignment {
+          padding-left: 10px;
+
+          span {
+            position: relative;
+            padding: 10px 0 10px 20px;
+            border-left: 1px solid var(--black-500);
+            display: block;
+            color: var(--grey-600);
+            cursor: pointer;
+            &.activeSubTab {
+              color: var(--primary);
+            }
+
+            &:hover {
+              color: var(--black-100-light);
+            }
+
+            &::before {
+              width: 10px;
+              height: 1px;
+              background-color: #d3c6c1;
+              position: absolute;
+              top: 50%;
+              transform: translateY(-50%);
+              left: 0;
+              content: "";
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 .stickyBar {
-    position: sticky;
-    top: 0;
+  position: sticky;
+  top: 0;
 }

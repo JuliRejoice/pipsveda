@@ -13,8 +13,7 @@ const CardImage = '/assets/images/crypto.png';
 
 const ITEMS_PER_PAGE = 8; // Adjust based on your layout
 
-export default function RecentCourse({ searchQuery , allCourse }) {
-    const [courses, setCourses] = useState([]);
+export default function RecentCourse({ searchQuery , allCourse , setAllCourses}) {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const [pagination, setPagination] = useState({
@@ -33,7 +32,7 @@ export default function RecentCourse({ searchQuery , allCourse }) {
                 limit: ITEMS_PER_PAGE
             });
             
-            setCourses(data?.payload?.data || allCourse || []);
+            setAllCourses(data?.payload?.data || allCourse || []);
             setPagination(prev => ({
                 ...prev,
                 currentPage: page,
@@ -43,7 +42,7 @@ export default function RecentCourse({ searchQuery , allCourse }) {
         } catch (error) {
             console.error('Error fetching courses:', error);
             setError('Failed to load courses. Please try again later.');
-            setCourses([]);
+            setAllCourses([]);
         } finally {
             setIsLoading(false);
         }
@@ -97,7 +96,7 @@ export default function RecentCourse({ searchQuery , allCourse }) {
       </div>
       
     );
-
+    console.log(allCourse)
     return (
         <div className={styles.recentCourse}>
             <div className={styles.title}>
@@ -111,8 +110,8 @@ export default function RecentCourse({ searchQuery , allCourse }) {
                         <p>{error}</p>
                         <button onClick={() => window.location.reload()}>Try Again</button>
                     </div>
-                ) : courses.length > 0 ? (
-                    courses.map((course) => (
+                ) : allCourse.length > 0 ? (
+                    allCourse.map((course) => (
                         <div className={styles.griditems} key={course._id}>
                             <div className={styles.image}>
                                 <img 
@@ -137,7 +136,7 @@ export default function RecentCourse({ searchQuery , allCourse }) {
                                 <OutlineButton 
                                     text="Enroll Now" 
                                     icon={RightBlackIcon} 
-                                    onClick={() => router.push(`/pre-recorded?id=${course._id}`)} 
+                                    onClick={() => router.push(`/pre-recorded/${course._id}`)} 
                                 />
                             </div>
                         </div>

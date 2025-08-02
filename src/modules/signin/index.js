@@ -11,6 +11,7 @@ import { signIn } from "@/compoents/api/auth";
 import { useRouter } from "next/navigation";
 import Logo from "@/compoents/logo";
 import { getCookie, setCookie } from "../../../cookie";
+import { errorMessages } from "@/utils/constant";
 
 const RightIcon = "/assets/icons/right-lg.svg";
 const EyeIcon = "/assets/icons/eye.svg";
@@ -53,14 +54,13 @@ export default function Signin() {
     setIsSubmitting(true);
     try {
       const data = await signIn(email, password);
-      console.log(data);
       if (data.success) {
         toast.success('Login successfully.');
         setCookie("userToken", data.payload.token);
         setCookie("user", data.payload);
-        router.push("/dashboard");
+        router.push("/pre-recorded");
       } else {
-        toast.error("Login failed. Please try again.");
+        toast.error(errorMessages[data?.message] ?? "Login failed. Please try again.");
       }
     } catch (error) {
       toast.error("An error occurred. Please try again.");
@@ -105,7 +105,6 @@ export default function Signin() {
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
-                setErrors((prev) => ({ ...prev, password: validatePassword(e.target.value) }));
               }}
             />
             {errors.password && <span className={styles.errormsg}>{errors.password}</span>}

@@ -4,16 +4,16 @@ import styles from './dashboard.module.scss';
 import CourseBanner from './courseBanner';
 import RecentCourse from './recentCourse';
 import AdminHeader from '@/compoents/adminHeader';
+import ComingSoon from '@/compoents/comingSoon';
 export default function Dashboard() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [allCourse , setAllCourse] = useState([]);
+
 
   return (
 
     <div>
       <AdminHeader />
-      <CourseBanner searchQuery={searchQuery} setSearchQuery={setSearchQuery} allCourse={allCourse} setAllCourse={setAllCourse}/>
-      <RecentCourse searchQuery={searchQuery} allCourse={allCourse}/>
+      <ComingSoon />
+
     </div>
   )
 }
