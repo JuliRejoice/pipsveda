@@ -25,7 +25,6 @@ export default function NewPassword() {
   }, []);
 
   const handleSetNewPassword = async () => {
-    // Clear previous errors
     setErrors({ newPassword: "", confirmPassword: "", submit: "" });
     
     const validationErrors = {
@@ -34,21 +33,18 @@ export default function NewPassword() {
       submit: ""
     };
   
-    // Validate new password
     if (!newPassword || newPassword.trim() === "") {
       validationErrors.newPassword = "New password is required";
     } else if (newPassword.length < 6) {
       validationErrors.newPassword = "Password must be at least 6 characters";
     }
   
-    // Validate confirm password
     if (!confirmPassword || confirmPassword.trim() === "") {
       validationErrors.confirmPassword = "Confirm password is required";
     } else if (newPassword !== confirmPassword) {
       validationErrors.confirmPassword = "Passwords do not match";
     }
   
-    // Check if there are any validation errors
     const hasError = Object.values(validationErrors).some(err => err !== "");
     if (hasError) {
       setErrors(validationErrors);
@@ -64,12 +60,9 @@ export default function NewPassword() {
       });
   
       if (res.success) {
-        // Clear sensitive data from localStorage
         localStorage.removeItem('email');
-        // Redirect to signin on success
         router.push("/signin");
       } else {
-        // Handle API error response
         setErrors({
           ...validationErrors,
           submit: res.message || "Failed to update password. Please try again."

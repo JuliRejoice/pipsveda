@@ -13,7 +13,7 @@ export default function middleware(req) {
 
   // If authenticated, block auth routes
   if (isAuthenticated && ["/signin", "/signup"].includes(pathname)) {
-    return NextResponse.redirect(new URL("/dashboard", origin));
+    return NextResponse.redirect(new URL("/pre-recorded", origin));
   }
 
   return NextResponse.next();

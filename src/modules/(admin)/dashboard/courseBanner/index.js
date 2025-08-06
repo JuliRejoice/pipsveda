@@ -34,7 +34,7 @@ export default function CourseBanner({searchQuery, setSearchQuery , allCourse , 
     const getAllCourses = async () => {
         try {
             setIsLoading(true);
-            const response = await getCourses();
+            const response = await getCourses(searchQuery);
             if (response.success) {
                 setCourses(response.payload.data.slice(0, 3));
                 setAllCourse(response.payload.data);
@@ -60,7 +60,7 @@ export default function CourseBanner({searchQuery, setSearchQuery , allCourse , 
     useEffect(() => {
         getAllCourses();
     }, []);
-
+console.log(courses);
     return (
         <div className={styles.courseBanner}>
             <div className={styles.grid}>

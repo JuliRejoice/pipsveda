@@ -4,11 +4,8 @@ import styles from "./courseDetails.module.scss";
 import ClockIcon from "@/icons/clockIcon";
 import BathIcon from "@/icons/bathIcon";
 import StarIcon from "@/icons/starIcon";
-import UserIcon from "@/icons/userIcon";
-import ProfileI from "@/icons/profileI";
 import ProfileGroupIcon from "@/icons/profileGroupIcon";
 import { getChapters } from "@/compoents/api/dashboard";
-import { useSearchParams } from "next/navigation";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
@@ -62,14 +59,12 @@ const CourseDetailsSkeleton = () => (
   </div>
 );
 
-export default function CourseDetails() {
+export default function CourseDetails({ params }) {
   const [chapters, setChapters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedChapter, setSelectedChapter] = useState(null);
   const [error, setError] = useState(null);
-
-  const searchParams = useSearchParams();
-  const id = searchParams.get("id");
+  const id = params;
 
   const fetchChapters = async () => {
     try {

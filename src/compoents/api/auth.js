@@ -1,4 +1,7 @@
 
+import { signInWithPopup } from "firebase/auth";
+import { auth, provider } from "../../../firebase";
+
 const BASEURL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const signIn = async (email, password) => {
@@ -83,5 +86,29 @@ export const updatePassword = async (data) => {
   } catch (error) {
     console.error('Error during update password:', error);
     throw error;
+  }
+};
+
+export const loginWithGoogle = async () => {
+  try {
+    const result = await signInWithPopup(auth, provider);
+    const user = {
+      email: result.user.email,
+      name: result.user.displayName,
+      accessToken: result.user.stsTokenManager.accessToken,
+    }
+    const response = await fetch(`https://259s7s89-6001.inc1.devtunnels.ms/api/v1/user/signinWithGoogle`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(user),
+    });
+    const data = await response.json();
+   
+    return data;
+  } catch (err) {
+    console.error("Login error", err);
+    throw err;
   }
 };

@@ -5,6 +5,7 @@ import '../scss/main.scss';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { ToastContainer } from "react-toastify";
+import { AuthProvider } from "@/context/AuthContext";
 const lexend = Lexend({
   variable: "--font-lexend",
   subsets: ["latin"],
@@ -28,7 +29,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${lexend.variable} ${funneldisplay.variable}`}>
+        <AuthProvider>
         {children}
+        </AuthProvider>
         <ToastContainer
         position="top-right"
         autoClose={3000}

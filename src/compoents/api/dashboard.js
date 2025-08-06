@@ -1,7 +1,7 @@
 import { getCookie } from "../../../cookie";
 
 const BASEURL = process.env.NEXT_PUBLIC_BASE_URL;
-export const getAuthToken = (): string | null => {
+export const getAuthToken = () => {
     if (typeof window !== 'undefined') {
         return getCookie('token');
     }
@@ -13,17 +13,11 @@ export const getCourses = async ({
   limit = 10,
   searchQuery = "",
   courseType = "",
-}: {
-  page?: number;
-  limit?: number;
-  searchQuery?: string;
-  courseType?: string;
-} = {}) => {
-  console.log(searchQuery);
+}) => {
   try {
     const token = getAuthToken();
 
-    const headers: Record<string, string> = {
+    const headers = {
       "Content-Type": "application/json",
     };
 
@@ -60,10 +54,10 @@ export const getCourses = async ({
 };
 
 
-export const getChapters = async (id: string) => {
+export const getChapters = async (id) => {
     try {
         const token = getAuthToken();
-        const headers: Record<string, string> = {};
+        const headers = {};
 
         if (token) {
             headers['x-auth-token'] = token;
@@ -71,7 +65,6 @@ export const getChapters = async (id: string) => {
 
         const res = await fetch(`${BASEURL}/chapter/getAllChapter?courseId=${id}&sortBy=chapterNo&sortOrder=1`, { headers });
         const data = await res.json();
-        console.log(data);
         return data;
     } catch (error) {
         console.error("Error fetching chapters", error);
@@ -79,10 +72,10 @@ export const getChapters = async (id: string) => {
     }
 };
 
-export const getTrendingOrPopularCourses = async (type: string) => {
+export const getTrendingOrPopularCourses = async (type) => {
     try {
         const token = getAuthToken();
-        const headers: Record<string, string> = {};
+        const headers = {};
 
         if (token) {
             headers['x-auth-token'] = token;
@@ -90,11 +83,12 @@ export const getTrendingOrPopularCourses = async (type: string) => {
 
         const res = await fetch(`https://259s7s89-6002.inc1.devtunnels.ms/api/v1/course/getDefineCourse?type=${type}`, { headers });
         const data = await res.json();
-        console.log(data);
         return data;
     } catch (error) {
         console.error("Error fetching trending courses", error);
         throw error;
     }
 };
+
+
 

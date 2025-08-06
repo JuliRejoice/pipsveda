@@ -96,7 +96,7 @@ export default function RecentCourse({ searchQuery , allCourse , setAllCourses})
       </div>
       
     );
-    console.log(allCourse)
+ 
     return (
         <div className={styles.recentCourse}>
             <div className={styles.title}>

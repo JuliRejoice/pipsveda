@@ -1,7 +1,7 @@
 "use client";
+import AdminHeader from "@/compoents/adminHeader";
 import CourseBanner from "@/modules/(admin)/dashboard/courseBanner";
 import RecentCourse from "@/modules/(admin)/dashboard/recentCourse";
-import PreRecorded from "@/modules/(admin)/preRecorded";
 import React, { Suspense, useState } from "react";
 
 export default function Page() {
@@ -9,7 +9,8 @@ export default function Page() {
   const [allCourse, setAllCourse] = useState([]);
   return (
     <Suspense fallback={<div>Loading...</div>}>
-
+      
+      <AdminHeader/>
       <CourseBanner
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}

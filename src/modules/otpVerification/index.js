@@ -59,7 +59,6 @@ export default function OtpVerification() {
         try {
             const data = await verifyOtp({ otp: otpString, email });
             if (data && data.success) {
-                console.log(data)
                 router.push('/new-password');
             } else {
                 setError(data?.message || 'Invalid OTP. Please try again.');
@@ -78,7 +77,6 @@ export default function OtpVerification() {
         
         forgetPassword({ email })
             .then((data) => {
-                console.log(data)
             })
             .catch((error) => {
                 console.error('Password reset error:', error);

@@ -72,7 +72,7 @@ export default function Signup() {
                 setErrors((prev) => ({ ...prev, submit: error?.message || "Signup failed. Please try again." }));
             });
     };
-
+console.log(errors)
     return (
         <div className={styles.signup}>
             <div className='container'>

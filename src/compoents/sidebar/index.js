@@ -27,10 +27,9 @@ export default function Sidebar({ setToogle, toogle }) {
   const [activeSubTab, setActiveSubTab] = useState("");
   const router = useRouter();
   const pathname = usePathname();
-  console.log(pathname);
+
 
   const handleTabClick = (tab) => {
-    console.log(tab);
     setProfileDropdown(false);
     const goTo = "/" + tab;
     router.replace(goTo);

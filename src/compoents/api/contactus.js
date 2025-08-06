@@ -1,16 +1,15 @@
 import { getCookie } from "../../../cookie";
 
 const BASEURL = process.env.NEXT_PUBLIC_BASE_URL;
-export const getAuthToken = (): string | null => {
+export const getAuthToken = () => {
     if (typeof window !== 'undefined') {
         return getCookie('userToken') || '';
     }
     return null;
 };
 
-export const sendMessage = async (data: any) => {
+export const sendMessage = async (data) => {
     const token = getAuthToken();
-    console.log(token)
     const response = await fetch(`${BASEURL}/contactUs/createContact`, {
         method: 'POST',
         headers: {
