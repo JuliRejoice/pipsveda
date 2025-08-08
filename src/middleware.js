@@ -7,18 +7,18 @@ export default function middleware(req) {
   const { pathname, origin } = req.nextUrl;
 
   // If not authenticated, block protected routes
-  if (!isAuthenticated && ["/dashboard", "/pre-recorded"].includes(pathname)) {
+  if (!isAuthenticated && ["/dashboard", "/courses/pre-recorded"].includes(pathname)) {
     return NextResponse.redirect(new URL("/signin", origin));
   }
 
   // If authenticated, block auth routes
   if (isAuthenticated && ["/signin", "/signup"].includes(pathname)) {
-    return NextResponse.redirect(new URL("/pre-recorded", origin));
+    return NextResponse.redirect(new URL("/courses/pre-recorded", origin));
   }
 
   return NextResponse.next();
 }
 
 export const config = {
-  matcher: ["/dashboard", "/pre-recorded", "/signin", "/signup"],
+  matcher: ["/dashboard", "/courses/pre-recorded", "/signin", "/signup"],
 };

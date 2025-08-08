@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./sidebar.module.scss";
 import Logo from "../logo";
 import DashboardIcon from "@/icons/dashboardIcon";
@@ -28,6 +28,10 @@ export default function Sidebar({ setToogle, toogle }) {
   const router = useRouter();
   const pathname = usePathname();
 
+  useEffect(() => {
+    const isCoursePage = pathname.startsWith('/courses/') || pathname === '/course';
+    setDropdown(isCoursePage);
+  }, [pathname]);
 
   const handleTabClick = (tab) => {
     setProfileDropdown(false);
@@ -35,6 +39,7 @@ export default function Sidebar({ setToogle, toogle }) {
     router.replace(goTo);
     setActiveSubTab("");
     setToogle(false);
+
   };
 
 
@@ -47,6 +52,8 @@ export default function Sidebar({ setToogle, toogle }) {
     const userName = user && JSON.parse(user)?.name;
     setUser(userName);
   }, []);
+
+
 
   return (
     <div className={styles.stickyBar}>
@@ -73,9 +80,10 @@ export default function Sidebar({ setToogle, toogle }) {
             <span>Dashboard</span>
           </div>
           <div className={styles.relative}>
+            <Link href="/courses/pre-recorded">
             <div
               className={`${styles.menu} ${
-                pathname === "/course" || pathname === "/pre-recorded" || pathname === "/live-online" || pathname === "/in-person"
+              pathname.includes("/courses")
                   ? styles.active
                   : ""
               }`}
@@ -95,6 +103,7 @@ export default function Sidebar({ setToogle, toogle }) {
                 </div>
               </div>
             </div>
+            </Link>
             <div
               className={classNames(
                 styles.dropdown,
@@ -104,25 +113,25 @@ export default function Sidebar({ setToogle, toogle }) {
               <div className={styles.dropdownAlignment}>
                 <span
                   className={
-                    pathname === "/pre-recorded" ? styles.activeSubTab : ""
+                    pathname === "/courses/pre-recorded" ? styles.activeSubTab : ""
                   }
-                  onClick={() => handleTabClick("pre-recorded")}
+                  onClick={() => handleTabClick("courses/pre-recorded")}
                 >
                   Pre-Recorded
                 </span>
                 <span
                   className={
-                    pathname === "/live-online" ? styles.activeSubTab : ""
+                    pathname === "/courses/live-online" ? styles.activeSubTab : ""
                   }
-                  onClick={() => handleTabClick("live-online")}
+                  onClick={() => handleTabClick("courses/live-online")}
                 >
                   Live Online
                 </span>
                 <span
                   className={
-                    pathname === "/in-person" ? styles.activeSubTab : ""
+                    pathname === "/courses/in-person" ? styles.activeSubTab : ""
                   }
-                  onClick={() => handleTabClick("in-person")}
+                  onClick={() => handleTabClick("courses/in-person")}
                 >
                   In-Person
                 </span>
