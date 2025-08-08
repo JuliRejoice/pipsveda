@@ -8,12 +8,14 @@
     gap: 10px;
     padding: 0 0 20px 0;
 
-    a , span {
+    a , span , button{
         display: block;
         cursor: pointer;
         @include heading18;
         font-size: 16px;
         color: var(--grey-600);
+        border: none;
+        background: none;
     }
 
     span {

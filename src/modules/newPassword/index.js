@@ -5,6 +5,7 @@ import Button from '@/compoents/button';
 import Input from '@/compoents/input';
 import { useRouter } from 'next/navigation';
 import { updatePassword } from '@/compoents/api/auth';
+import { toast } from 'react-toastify';
 
 const RightIcon = '/assets/icons/right-lg.svg';
 const EyeIcon = '/assets/icons/eye.svg';
@@ -61,6 +62,7 @@ export default function NewPassword() {
   
       if (res.success) {
         localStorage.removeItem('email');
+        toast.success('Password updated successfully.');
         router.push("/signin");
       } else {
         setErrors({

@@ -13,8 +13,7 @@ const CardImage = '/assets/images/crypto.png';
 
 const ITEMS_PER_PAGE = 8; // Adjust based on your layout
 
-export default function RecentCourse({ searchQuery , allCourse , setAllCourses}) {
-    const [isLoading, setIsLoading] = useState(true);
+export default function RecentCourse({ searchQuery , allCourse , setAllCourses , courseLoading , setCourseLoading }) {
     const [error, setError] = useState(null);
     const [pagination, setPagination] = useState({
         currentPage: 1,
@@ -25,7 +24,7 @@ export default function RecentCourse({ searchQuery , allCourse , setAllCourses})
 
     const fetchCourses = async (page = 1) => {
         try {
-            setIsLoading(true);
+            setCourseLoading(true);
             const data = await getCourses({
                 searchQuery,
                 page,
@@ -44,7 +43,7 @@ export default function RecentCourse({ searchQuery , allCourse , setAllCourses})
             setError('Failed to load courses. Please try again later.');
             setAllCourses([]);
         } finally {
-            setIsLoading(false);
+            setCourseLoading(false);
         }
     };
     
@@ -103,7 +102,7 @@ export default function RecentCourse({ searchQuery , allCourse , setAllCourses})
                 <h2>Recent Course</h2>
             </div>
             <div className={styles.grid}>
-                {isLoading ? (
+                {courseLoading ? (
                     renderSkeletons()
                 ) : error ? (
                     <div className={styles.errorState}>
@@ -146,7 +145,7 @@ export default function RecentCourse({ searchQuery , allCourse , setAllCourses})
                 )}
             </div>
 
-            {!isLoading && pagination.totalItems > pagination.itemsPerPage && (
+            {!courseLoading && pagination.totalItems > pagination.itemsPerPage && (
                 <div className={styles.paginationAlignment}>
                     <Pagination
                         currentPage={pagination.currentPage}

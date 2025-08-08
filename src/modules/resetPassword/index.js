@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { forgetPassword } from '@/compoents/api/auth';
 import { useRouter } from 'next/navigation';
 import Logo from '@/compoents/logo';
+import { toast } from 'react-toastify';
 
 const RightIcon = '/assets/icons/right-lg.svg';
 
@@ -28,6 +29,7 @@ export default function ResetPassword() {
         forgetPassword({ email })
             .then((data) => {
                 localStorage.setItem('email', email);
+                toast.success('OTP sent successfully.');
                 router.push('/otp-verification');
             })
             .catch((error) => {

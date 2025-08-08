@@ -22,7 +22,7 @@ export default function RecentCourse() {
     const fetchCourses = async () => {
         try {
             setIsLoading(true);
-            const data = await getCourses();
+            const data = await getCourses({});
             setCourses(data?.payload?.data || []);
             setError(null);
         } catch (error) {
@@ -68,6 +68,8 @@ export default function RecentCourse() {
     //         <p>There are no courses to display at the moment. Please check back later.</p>
     //     </div>
     // );
+
+    console.log(courses)
 
     return (
         <div className={styles.recentCourseAlignment}>

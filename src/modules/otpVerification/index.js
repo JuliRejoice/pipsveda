@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { forgetPassword, verifyOtp } from '@/compoents/api/auth';
 import { useRouter } from 'next/navigation';
 import Logo from '@/compoents/logo';
+import { toast } from 'react-toastify';
 
 const RightIcon = '/assets/icons/right-lg.svg';
 
@@ -59,6 +60,7 @@ export default function OtpVerification() {
         try {
             const data = await verifyOtp({ otp: otpString, email });
             if (data && data.success) {
+                toast.success('OTP resent successfully.');
                 router.push('/new-password');
             } else {
                 setError(data?.message || 'Invalid OTP. Please try again.');
@@ -77,6 +79,12 @@ export default function OtpVerification() {
         
         forgetPassword({ email })
             .then((data) => {
+
+                if (data && data.success) {
+                    toast.success('OTP resent successfully.');
+                } else {
+                    setError(data?.message || 'Failed to resend OTP. Please try again.');
+                }
             })
             .catch((error) => {
                 console.error('Password reset error:', error);
