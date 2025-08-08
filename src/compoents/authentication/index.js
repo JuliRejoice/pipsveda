@@ -19,7 +19,7 @@ export default function Authentication() {
         toast.success("Login successfully.");
         setCookie("userToken", data.payload.token);
         setCookie("user", data.payload);
-        router.push("/pre-recorded");
+        router.push("/courses/pre-recorded");
       } else {
         toast.error(
           errorMessages[data?.message] ?? errorMessages["default"]

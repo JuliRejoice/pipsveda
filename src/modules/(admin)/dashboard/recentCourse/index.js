@@ -136,7 +136,7 @@ export default function RecentCourse({ searchQuery , allCourse , setAllCourses})
                                 <OutlineButton 
                                     text="Enroll Now" 
                                     icon={RightBlackIcon} 
-                                    onClick={() => router.push(`/pre-recorded/${course._id}`)} 
+                                    onClick={() => router.push(`/courses/pre-recorded/${course._id}`)} 
                                 />
                             </div>
                         </div>

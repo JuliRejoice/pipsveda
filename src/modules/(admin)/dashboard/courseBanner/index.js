@@ -120,7 +120,7 @@ console.log(courses);
                                     </div>
                                     <div className={styles.lastContentAlignment}>
                                         <h4>${course.price || 199}</h4>
-                                        <div className={styles.iconText} onClick={() => router.push(`/pre-recorded/${course._id}`)}>
+                                        <div className={styles.iconText} onClick={() => router.push(`/courses/pre-recorded/${course._id}`)}>
                                             <p>Enroll Now</p>
                                             <RightLgIcon />
                                         </div>
