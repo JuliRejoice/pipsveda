@@ -125,40 +125,40 @@ export default function CourseDetails({ params , selectedCourse , setSelectedCou
     }
   }, [searchParams]);
 
-  useEffect(() => {
-    const monitorClipboard = async () => {
-      try {
-        if (navigator.clipboard && navigator.clipboard.read) {
-          const clipboardItems = await navigator.clipboard.read()
-          for (const item of clipboardItems) {
-            if (item.types.includes("image/png") || item.types.includes("image/jpeg")) {
-              setState((prev) => ({
-                violations: prev.violations + 1,
-                lastDetection: new Date(),
-                detectedTools: [...prev.detectedTools.slice(-9), "Clipboard Screenshot"],
-                highConfidenceBlocks: prev.highConfidenceBlocks + 1,
-                mediumConfidenceBlocks: prev.mediumConfidenceBlocks,
-              }))
+  // useEffect(() => {
+  //   const monitorClipboard = async () => {
+  //     try {
+  //       if (navigator.clipboard && navigator.clipboard.read) {
+  //         const clipboardItems = await navigator.clipboard.read()
+  //         for (const item of clipboardItems) {
+  //           if (item.types.includes("image/png") || item.types.includes("image/jpeg")) {
+  //             setState((prev) => ({
+  //               violations: prev.violations + 1,
+  //               lastDetection: new Date(),
+  //               detectedTools: [...prev.detectedTools.slice(-9), "Clipboard Screenshot"],
+  //               highConfidenceBlocks: prev.highConfidenceBlocks + 1,
+  //               mediumConfidenceBlocks: prev.mediumConfidenceBlocks,
+  //             }))
 
-              if (window.ultraFastBlock) {
-                window.ultraFastBlock("Clipboard Screenshot", "Image detected in clipboard")
-              }
-              break
-            }
-          }
-        }
-      } catch (error) {
-        // Clipboard access denied - normal behavior
-      }
-    }
+  //             if (window.ultraFastBlock) {
+  //               window.ultraFastBlock("Clipboard Screenshot", "Image detected in clipboard")
+  //             }
+  //             break
+  //           }
+  //         }
+  //       }
+  //     } catch (error) {
+  //       // Clipboard access denied - normal behavior
+  //     }
+  //   }
 
-    // Check clipboard every 2 seconds
-    const clipboardInterval = setInterval(monitorClipboard, 2000)
+  //   // Check clipboard every 2 seconds
+  //   const clipboardInterval = setInterval(monitorClipboard, 2000)
 
-    return () => {
-      clearInterval(clipboardInterval)
-    }
-  }, [])
+  //   return () => {
+  //     clearInterval(clipboardInterval)
+  //   }
+  // }, [])
 
  
   //   document.addEventListener('visibilitychange', function() {

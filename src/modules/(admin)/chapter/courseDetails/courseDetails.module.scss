@@ -334,22 +334,5 @@
   }
 }
 
-/* Make sure the modal is on top of other content */
-:global(.modal-overlay) {
-  z-index: 1000;
-}
 
-:global(.modal-content) {
-  max-width: 500px;
-  width: 90%;
-  border-radius: 12px;
-  padding: 0;
-  overflow: hidden;
-}
 
-@media print {
-    html,
-    body {
-       display: none;
-    }
- }
