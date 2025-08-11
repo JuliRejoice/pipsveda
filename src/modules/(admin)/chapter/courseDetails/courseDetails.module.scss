@@ -1,200 +1,213 @@
     @use '../../../../scss/main.scss' as *;
-@use '../../../../scss/breakpoints/breakpoints.scss' as *;
-@use '../../../../scss/typography/typography.scss' as *;
+    @use '../../../../scss/breakpoints/breakpoints.scss' as *;
+    @use '../../../../scss/typography/typography.scss' as *;
 
-.courseDetailsBox {
-    background-color: var(--bg-white);
-    border-radius: 18px;
-    border: 1px solid var(--border-color5);
-    padding: 30px;
-
-    @include respond-to("sm") {
-        border-radius: 12px;
-        padding: 16px
-    }
-
-    .textStyle {
-        h3 {
-            @include heading20;
-            margin: 0 0 10px 0;
-            color: var(--black-500);
-        }
-
-        p {
-            @include font16normal;
-            margin: 0 0 14px 0;
-            color: var(--grey-600);
-            @include respond-to("sm") {
-                @include font14;
-            }
-        }
-    }
-
-    .allIconTextAlignment {
-        display: flex;
-        align-items: center;
-        gap: 30px;
-        padding: 0 0 24px 0;
-        @include respond-to("md") {
-            gap: 16px;
-            flex-wrap: wrap;
-        }
-        .iconText:first-child {
-            svg {
-                path {
-                    fill: #6F756D;
-                }
-            }
-        }
-
-        .iconText {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-
-            span {
-                display: block;
-                @include font16normal;
-                color: var(--grey-600);
-            }
-        }
-    }
-
-    .mainrelative {
-        position: relative;
-
-        .locksystem {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 9;
-            backdrop-filter: blur(10px);
-            height: 100%;
-            border-radius: 16px;
-            background: #00000073;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            @include respond-to("sm") {
-                border-radius: 12px;
-            }
-
-            .iconCenter {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                padding: 0 0 12px 0;
-                img {
-                    display: block;
-                    @include respond-to("sm") {
-                        max-width: 50px;
-                    }
-                }
-            }
-
-            span {
-                color: var(--text-white);
-                @include heading24;
-                font-size: 22px;
-                display: block;
-                text-align: center;
-
-                @include respond-to("sm") {
-                    font-size: 18px;
-                }
-            }
-        }
-    }
-
-    .tabAlignment {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        padding: 0 0 30px 0;
-        flex-wrap: wrap;
-        @include respond-to("sm") {
-            width: 100%;
-            overflow: auto;
-            scrollbar-width: none;
-            flex-wrap: nowrap;
-        }
-        &::-webkit-scrollbar {
-            display: none;
-        }
-        *::-webkit-scrollbar {
-            display: none;
-        }
-        button {
-            border: none;
-            padding: 16px 30px;
-            cursor: pointer;
-            clip-path: polygon(0 22px, 20px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px);
-            @include heading18;
-            background: rgba(218, 218, 218, 0.80);
-            color: var(--black-500);
-            transition: .3s ease-in-out;
-
-            @media (max-width:1500px) {
-                padding: 12px 26px;
-                font-size: 15px;
-            }
-
-            @include respond-to("sm") {
-                white-space: nowrap;
-            }
-
-            &:hover, &.activeTab {
-                background: var(--button-gradient);
-                color: var(--text-white);
-            }
-        }
-    }
-
-    .mainGrid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 30px;
-
-        @include respond-to("md") {
-            grid-template-columns: 1fr;
-        }
+    .courseDetailsBox {
+        background-color: var(--bg-white);
+        border-radius: 18px;
+        border: 1px solid var(--border-color5);
+        padding: 30px;
 
         @include respond-to("sm") {
-            gap: 20px;
+            border-radius: 12px;
+            padding: 16px
         }
 
-        .image {
-            background: rgba(1, 11, 29, 0.20);
-            height: 400px;
-            border-radius: 20px;
-            width: 100%;
-            @include respond-to("sm") {
-                height: 220px;
-                border-radius: 12px;
-            }
-
-            iframe {
-                border-radius: 20px;
-                display: block;
-                @include respond-to("sm") {
-                    border-radius: 12px;
-                }
-            }
-        }
-
-        .details {
-            h4 {
-                @include heading18;
+        .textStyle {
+            h3 {
+                @include heading20;
+                margin: 0 0 10px 0;
                 color: var(--black-500);
-                margin: 0 0 15px 0;
             }
 
             p {
                 @include font16normal;
+                margin: 0 0 14px 0;
                 color: var(--grey-600);
-                margin: 0 0 15px 0;
+
+                @include respond-to("sm") {
+                    @include font14;
+                }
+            }
+        }
+
+        .allIconTextAlignment {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            padding: 0 0 24px 0;
+
+            @include respond-to("md") {
+                gap: 16px;
+                flex-wrap: wrap;
+            }
+
+            .iconText:first-child {
+                svg {
+                    path {
+                        fill: #6F756D;
+                    }
+                }
+            }
+
+            .iconText {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+
+                span {
+                    display: block;
+                    @include font16normal;
+                    color: var(--grey-600);
+                }
+            }
+        }
+
+        .mainrelative {
+            position: relative;
+
+            .locksystem {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                z-index: 9;
+                backdrop-filter: blur(10px);
+                height: 100%;
+                border-radius: 16px;
+                background: #00000073;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 20px;
+
+                @include respond-to("sm") {
+                    border-radius: 12px;
+                }
+
+                .iconCenter {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    padding: 0 0 12px 0;
+
+                    img {
+                        display: block;
+
+                        @include respond-to("sm") {
+                            max-width: 50px;
+                        }
+                    }
+                }
+
+                span {
+                    color: var(--text-white);
+                    @include heading24;
+                    font-size: 22px;
+                    display: block;
+                    text-align: center;
+
+                    @include respond-to("sm") {
+                        font-size: 18px;
+                    }
+                }
+            }
+        }
+
+        .tabAlignment {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 0 0 30px 0;
+            flex-wrap: wrap;
+
+            @include respond-to("sm") {
+                width: 100%;
+                overflow: auto;
+                scrollbar-width: none;
+                flex-wrap: nowrap;
+            }
+
+            &::-webkit-scrollbar {
+                display: none;
+            }
+
+            *::-webkit-scrollbar {
+                display: none;
+            }
+
+            button {
+                border: none;
+                padding: 16px 30px;
+                cursor: pointer;
+                clip-path: polygon(0 22px, 20px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px);
+                @include heading18;
+                background: rgba(218, 218, 218, 0.80);
+                color: var(--black-500);
+                transition: .3s ease-in-out;
+
+                @media (max-width:1500px) {
+                    padding: 12px 26px;
+                    font-size: 15px;
+                }
+
+                @include respond-to("sm") {
+                    white-space: nowrap;
+                }
+
+                &:hover,
+                &.activeTab {
+                    background: var(--button-gradient);
+                    color: var(--text-white);
+                }
+            }
+        }
+
+        .mainGrid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+
+            @include respond-to("md") {
+                grid-template-columns: 1fr;
+            }
+
+            @include respond-to("sm") {
+                gap: 20px;
+            }
+
+            .image {
+                background: rgba(1, 11, 29, 0.20);
+                height: 400px;
+                border-radius: 20px;
+                width: 100%;
+
+                @include respond-to("sm") {
+                    height: 220px;
+                    border-radius: 12px;
+                }
+
+                iframe {
+                    border-radius: 20px;
+                    display: block;
+
+                    @include respond-to("sm") {
+                        border-radius: 12px;
+                    }
+                }
+            }
+
+            .details {
+                h4 {
+                    @include heading18;
+                    color: var(--black-500);
+                    margin: 0 0 15px 0;
+                }
+
+                p {
+                    @include font16normal;
+                    color: var(--grey-600);
+                    margin: 0 0 15px 0;
 
                 @media (max-width:1500px) {
                     @include font14;

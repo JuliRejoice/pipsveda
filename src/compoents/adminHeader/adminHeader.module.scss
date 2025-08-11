@@ -4,16 +4,19 @@
 
 .adminHeader {
     padding: 0 0 30px 0;
+
     @include respond-to("sm") {
         padding: 0 0 20px 0;
     }
 
     h2 {
         @include heading24;
-        background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
+        background: linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%);
         background-clip: text;
         -webkit-background-clip: text;
+        display: inline;
         -webkit-text-fill-color: transparent;
+
         @include respond-to("sm") {
             @include heading20;
         }
@@ -24,6 +27,7 @@
         @include font18;
         color: var(--black-500);
         opacity: 0.9;
+
         @include respond-to("sm") {
             @include font14;
         }
