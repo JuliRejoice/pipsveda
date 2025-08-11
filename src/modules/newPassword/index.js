@@ -9,10 +9,13 @@ import { toast } from 'react-toastify';
 
 const RightIcon = '/assets/icons/right-lg.svg';
 const EyeIcon = '/assets/icons/eye.svg';
+const EyeSlashIcon = '/assets/icons/eye-slash.svg';
 
 export default function NewPassword() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [errors, setErrors] = useState({ newPassword: "", confirmPassword: "", submit: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
@@ -95,7 +98,8 @@ export default function NewPassword() {
                 type="password"
                 label="New Password"
                 placeholder="**************"
-                icon={EyeIcon}
+                onIconClick={() => setShowPassword(!showPassword)}
+                icon={showPassword ? EyeIcon : EyeSlashIcon}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
               />
@@ -108,7 +112,8 @@ export default function NewPassword() {
                 type="password"
                 label="Confirm Password"
                 placeholder="**************"
-                icon={EyeIcon}
+                onIconClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                icon={showConfirmPassword ? EyeIcon : EyeSlashIcon}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
