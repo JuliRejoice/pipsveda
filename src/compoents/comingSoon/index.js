@@ -5,7 +5,7 @@ export default function ComingSoon() {
   return (
     <div className={styles.comingSoon}>
       <div className={styles.imageCenter}>
-        <img src={CommingSoonImage} alt="CommingSoonImage"/>
+        <img src={CommingSoonImage} alt="CommingSoonImage" />
       </div>
     </div>
   )

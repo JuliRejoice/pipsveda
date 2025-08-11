@@ -8,6 +8,7 @@ import ProfileGroupIcon from "@/icons/profileGroupIcon";
 import { getChapters } from "@/compoents/api/dashboard";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+const LockIcon = '/assets/icons/lock.svg'
 
 // Skeleton Loader Component
 const CourseDetailsSkeleton = () => (
@@ -24,7 +25,7 @@ const CourseDetailsSkeleton = () => (
           </div>
         ))}
       </div>
-
+      
       <div className={styles.tabAlignment}>
         {[1, 2, 3, 4].map((item) => (
           <Skeleton 
@@ -166,6 +167,7 @@ export default function CourseDetails({ params }) {
             <span>Last-Update: {new Date(course.updatedAt || new Date()).toLocaleDateString('en-GB')} | English</span>
           </div>
         </div>
+        <div className={styles.mainrelative}>
         <div className={styles.tabAlignment}>
           {chapters.map((chapter, index) => (
             <button
@@ -214,6 +216,15 @@ export default function CourseDetails({ params }) {
             </div>
           </div>
         )}
+        <div className={styles.locksystem}>
+          <div>
+            <div className={styles.iconCenter}>
+              <img src={LockIcon} alt="LockIcon"/>
+            </div>
+            <span>Enroll Now to unlock</span>
+          </div>
+        </div>
+        </div>
       </div>
     </div>
   );
