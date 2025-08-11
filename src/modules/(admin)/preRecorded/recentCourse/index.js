@@ -1,102 +1,118 @@
-'use client'
-import React, { useEffect, useState } from 'react'
-import styles from './recentCourse.module.scss';
-import OutlineButton from '@/compoents/outlineButton';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getCourses } from '@/compoents/api/dashboard';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
-import RenderSkeleton from './RenderSkeleton';
-import EmptyState from './EmptyState';
+import styles from './recentCourse.module.scss';
+import Pagination from '@/compoents/pagination';
+import OutlineButton from '@/compoents/outlineButton';
 
-const CardImage = '/assets/images/crypto.png';
 const BathIcon = '/assets/icons/bath.svg';
 const RightBlackIcon = '/assets/icons/right-black.svg';
+const CardImage = '/assets/images/crypto.png';
 
-export default function RecentCourse() {
-    const [courses, setCourses] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+const ITEMS_PER_PAGE = 8; // Adjust based on your layout
+
+export default function RecentCourse({ searchQuery , allCourse , setAllCourses , courseLoading , setCourseLoading }) {
     const [error, setError] = useState(null);
+    const [pagination, setPagination] = useState({
+        currentPage: 1,
+        totalItems: 0,
+        itemsPerPage: ITEMS_PER_PAGE
+    });
     const router = useRouter();
 
-    const fetchCourses = async () => {
+    const fetchCourses = async (page = 1) => {
         try {
-            setIsLoading(true);
-            const data = await getCourses({});
-            setCourses(data?.payload?.data || []);
+            setCourseLoading(true);
+            const data = await getCourses({
+                searchQuery,
+                page,
+                limit: ITEMS_PER_PAGE,
+                courseType: 'recorded'
+            });
+            
+            setAllCourses(data?.payload?.data || allCourse || []);
+            setPagination(prev => ({
+                ...prev,
+                currentPage: page,
+                totalItems: data?.payload?.count || 0
+            }));
             setError(null);
         } catch (error) {
             console.error('Error fetching courses:', error);
             setError('Failed to load courses. Please try again later.');
-            setCourses([]);
+            setAllCourses([]);
         } finally {
-            setIsLoading(false);
+            setCourseLoading(false);
         }
     };
-
+    
     useEffect(() => {
-        fetchCourses();
-    }, []);
+        // Reset to first page when search query changes
+        fetchCourses(1);
+    }, [searchQuery]);
 
-
-    // const renderSkeletons = () => {
-    //     return Array(4).fill(0).map((_, index) => (
-    //         <div className={styles.griditems} key={`skeleton-${index}`}>
-    //             <Skeleton height={200} className={styles.skeletonImage} />
-    //             <div className={styles.details}>
-    //                 <Skeleton height={24} width="80%" />
-    //                 <Skeleton count={2} style={{ marginTop: '10px' }} />
-    //                 <div className={styles.twoContentAlignment} style={{ marginTop: '15px' }}>
-    //                     <Skeleton width={80} height={20} />
-    //                     <Skeleton width={100} height={20} />
-    //                 </div>
-    //                 <Skeleton height={40} style={{ marginTop: '15px' }} />
-    //             </div>
-    //         </div>
-    //     ));
-    // };
-
-    // // Empty state
-    // const renderEmptyState = () => (
-    //     <div className={styles.emptyState}>
-    //         <div className={styles.emptyImage}>
-    //             <svg width="120" height="120" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-    //                 <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-1-13h2v6h-2zm0 8h2v2h-2z" fill="#9CA3AF"/>
-    //             </svg>
-    //         </div>
-    //         <h3>No Courses Available</h3>
-    //         <p>There are no courses to display at the moment. Please check back later.</p>
-    //     </div>
-    // );
-
-    console.log(courses)
-
-    return (
-        <div className={styles.recentCourseAlignment}>
-            <div className={styles.title}>
-                <h2>Recent Course</h2>
+    const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= Math.ceil(pagination.totalItems / pagination.itemsPerPage)) {
+            fetchCourses(newPage);
+            // Optional: Scroll to top when changing pages
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
+console.log(allCourse)
+    // Skeleton loader
+    const renderSkeletons = () => {
+        return Array(pagination.itemsPerPage).fill(0).map((_, index) => (
+            <div className={styles.griditems} key={`skeleton-${index}`}>
+                <Skeleton height={220} className={styles.skeletonImage} />
+                <div className={styles.details}>
+                    <Skeleton height={24} width="80%" />
+                    <Skeleton count={2} />
+                    <div className={styles.twoContentAlignment}>
+                        <Skeleton width={60} height={24} />
+                        <Skeleton width={100} height={24} />
+                    </div>
+                    <Skeleton height={40} />
+                </div>
             </div>
-            
-            {error ? (
-                <div className={styles.errorState}>
-                    <p>{error}</p>
-                    <button 
-                        className={styles.retryButton}
-                        onClick={() => window.location.reload()}
-                    >
-                        Try Again
-                    </button>
-                </div>
-            ) : isLoading ? (
-                <div className={styles.grid}>
-                    <RenderSkeleton />
-                </div>
-            ) : courses.length === 0 ? (
-                <EmptyState />
-            ) : (
-                <div className={styles.grid}>
-                    {courses.map((course) => (
-                        <div className={styles.griditems} key={course?._id}>
+        ));
+    };
+
+    // Empty state
+    const renderEmptyState = () => (
+        <div className={styles.emptyState}>
+        <img
+          src="/assets/images/no-courses.svg"
+          alt="No courses"
+          className={styles.emptyImage}
+        />
+        <h3>No Courses Available</h3>
+        <p>
+          There are no courses to display at the moment.  
+          Please check back later.
+        </p>
+       
+      </div>
+      
+    );
+ 
+    return (
+        <div className={styles.recentCourse}>
+            <div className={styles.title}>
+                <h2>Pre Recorded Course</h2>
+            </div>
+            <div className={styles.grid}>
+                {courseLoading ? (
+                    renderSkeletons()
+                ) : error ? (
+                    <div className={styles.errorState}>
+                        <p>{error}</p>
+                        <button onClick={() => window.location.reload()}>Try Again</button>
+                    </div>
+                ) : allCourse.length > 0 ? (
+                    allCourse.map((course) => (
+                        <div className={styles.griditems} key={course._id}>
                             <div className={styles.image}>
                                 <img 
                                     src={course.courseVideo || CardImage} 
@@ -120,11 +136,24 @@ export default function RecentCourse() {
                                 <OutlineButton 
                                     text="Enroll Now" 
                                     icon={RightBlackIcon} 
-                                    onClick={() => router.push(`/courses/pre-recorded/${course?._id}`)} 
+                                    onClick={() => router.push(`/courses/pre-recorded/${course._id}`)} 
                                 />
                             </div>
                         </div>
-                    ))}
+                    ))
+                ) : (
+                    renderEmptyState()
+                )}
+            </div>
+
+            {!courseLoading && pagination.totalItems > pagination.itemsPerPage && (
+                <div className={styles.paginationAlignment}>
+                    <Pagination
+                        currentPage={pagination.currentPage}
+                        totalItems={pagination.totalItems}
+                        itemsPerPage={pagination.itemsPerPage}
+                        onPageChange={handlePageChange}
+                    />
                 </div>
             )}
         </div>

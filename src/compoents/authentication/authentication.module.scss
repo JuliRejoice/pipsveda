@@ -3,9 +3,9 @@
 @use '../../scss/breakpoints/breakpoints.scss' as *;
 
 .authentication {
-    display: grid;
-    grid-template-columns: repeat(3 , 1fr);
-    gap: 25px;  
+    // display: grid;
+    // grid-template-columns: repeat(3 , 1fr);
+    // gap: 25px;  
 
     @include respond-to("sm") {
         gap: 16px;
@@ -21,6 +21,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        gap: 10px;
         transition: .3s ease-in-out;
 
         @include respond-to("sm") {

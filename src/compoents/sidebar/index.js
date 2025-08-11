@@ -113,7 +113,7 @@ export default function Sidebar({ setToogle, toogle }) {
               <div className={styles.dropdownAlignment}>
                 <span
                   className={
-                    pathname === "/courses/pre-recorded" ? styles.activeSubTab : ""
+                    pathname.includes("/pre-recorded") ? styles.activeSubTab : ""
                   }
                   onClick={() => handleTabClick("courses/pre-recorded")}
                 >
@@ -121,7 +121,7 @@ export default function Sidebar({ setToogle, toogle }) {
                 </span>
                 <span
                   className={
-                    pathname === "/courses/live-online" ? styles.activeSubTab : ""
+                    pathname.includes("/live-online") ? styles.activeSubTab : ""
                   }
                   onClick={() => handleTabClick("courses/live-online")}
                 >
@@ -129,7 +129,7 @@ export default function Sidebar({ setToogle, toogle }) {
                 </span>
                 <span
                   className={
-                    pathname === "/courses/in-person" ? styles.activeSubTab : ""
+                    pathname.includes("/in-person") ? styles.activeSubTab : ""
                   }
                   onClick={() => handleTabClick("courses/in-person")}
                 >

@@ -204,3 +204,139 @@
         }
     }
 }
+
+/* Locked Video Styles */
+.videoLocked {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    .lockOverlay {
+      opacity: 1;
+    }
+  }
+
+  .videoThumbnail {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    filter: brightness(0.7);
+  }
+
+  .lockOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    opacity: 0.9;
+    transition: opacity 0.3s ease;
+
+    img {
+      width: 48px;
+      height: 48px;
+      margin-bottom: 12px;
+    }
+
+    p {
+      @include heading18;
+      color: white;
+      margin: 0;
+      font-weight: 500;
+    }
+  }
+}
+
+.noVideo {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--grey-100);
+  border-radius: 12px;
+  color: var(--grey-600);
+  @include font16normal;
+}
+
+/* Payment Modal Styles */
+.paymentModalContent {
+  text-align: center;
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .paymentIcon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+  }
+
+  h3 {
+    @include heading20;
+    color: var(--black-500);
+    margin-bottom: 12px;
+  }
+
+  p {
+    @include font16normal;
+    color: var(--grey-600);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  > button {
+    margin: 0 auto;
+    min-width: 180px;
+  }
+}
+
+.modalButtons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  width: 100%;
+  margin-top: 16px;
+  
+  button {
+    flex: 1;
+    max-width: 120px;
+  }
+}
+
+/* Make sure the modal is on top of other content */
+:global(.modal-overlay) {
+  z-index: 1000;
+}
+
+:global(.modal-content) {
+  max-width: 500px;
+  width: 90%;
+  border-radius: 12px;
+  padding: 0;
+  overflow: hidden;
+}
+
+@media print {
+    html,
+    body {
+       display: none;
+    }
+ }

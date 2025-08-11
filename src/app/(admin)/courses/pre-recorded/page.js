@@ -1,8 +1,8 @@
 "use client";
 import AdminHeader from "@/compoents/adminHeader";
 import Loader from "@/compoents/loader";
-import CourseBanner from "@/modules/(admin)/dashboard/courseBanner";
-import RecentCourse from "@/modules/(admin)/dashboard/recentCourse";
+import CourseBanner from "@/modules/(admin)/preRecorded/courseBanner";
+import RecentCourse from "@/modules/(admin)/preRecorded/recentCourse";
 import React, { Suspense, useState } from "react";
 
 export default function Page() {

@@ -2,17 +2,17 @@
 import { getCourses } from "@/compoents/api/dashboard";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
-import styles from "./liveCourse.module.scss";
+import styles from "./inPersonCourse.module.scss";
 import OutlineButton from "@/compoents/outlineButton";
-import RenderSkeleton from "../../chapter/recentCourse/RenderSkeleton";
-import EmptyState from "../../chapter/recentCourse/EmptyState";
+import RenderSkeleton from "../../recentCourse/RenderSkeleton";
+import EmptyState from "../../recentCourse/EmptyState";
 
 
 const CardImage = '/assets/images/crypto.png';
 const BathIcon = '/assets/icons/bath.svg';
 const RightBlackIcon = '/assets/icons/right-black.svg';
 
-function LiveCourse() {
+function InPersonCourse() {
   const [courses, setCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -21,7 +21,7 @@ function LiveCourse() {
   const fetchCourses = async () => {
     try {
       setIsLoading(true);
-      const data = await getCourses({ courseType: "live" });
+      const data = await getCourses({ courseType: "physical" });
       setCourses(data?.payload?.data || []);
       setError(null);
     } catch (error) {
@@ -40,7 +40,7 @@ function LiveCourse() {
   return (
     <div className={styles.recentCourseAlignment}>
       <div className={styles.title}>
-        <h2>Live Course</h2>
+        <h2>In Person Course</h2>
       </div>
 
       {error ? (
@@ -99,4 +99,4 @@ function LiveCourse() {
   );
 }
 
-export default LiveCourse;
+export default InPersonCourse;

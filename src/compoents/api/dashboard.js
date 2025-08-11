@@ -14,6 +14,8 @@ export const getCourses = async ({
   searchQuery = "",
   courseType = "",
 }) => {
+
+  console.log("courseType", courseType);
   try {
     const token = getAuthToken();
 
@@ -38,7 +40,7 @@ export const getCourses = async ({
     }
 
     const response = await fetch(
-      `${BASEURL}/course/getAllCourse?${params.toString()}`,
+      `https://259s7s89-6002.inc1.devtunnels.ms/api/v1/course/getAllCourse?${params.toString()}`,
       { method: "GET", headers }
     );
 
@@ -91,5 +93,34 @@ export const getTrendingOrPopularCourses = async (type) => {
     }
 };
 
+export const getPaymentUrl = async (data) => {
+    try {
+        const token = getAuthToken();
+        const headers = {
+            'Content-Type': 'application/json'
+        };
 
+        if (token) {
+            headers['x-auth-token'] = token;
+        }
 
+        const response = await fetch(
+            'https://259s7s89-6002.inc1.devtunnels.ms/api/v1/payment/createPayment',
+            {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(data)
+            }
+        );
+        
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        
+        const responseData = await response.json();
+        return responseData;
+    } catch (error) {
+        console.error("Error creating payment URL:", error);
+        throw error;
+    }
+};

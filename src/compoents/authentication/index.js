@@ -34,14 +34,14 @@ export default function Authentication() {
   return (
     <div className={styles.authentication}>
       <div className={styles.whiteButton} onClick={googleLogin}>
-        <img src={GoogleIcon} alt='GoogleIcon'/>
+        <img src={GoogleIcon} alt='GoogleIcon'/> <span>Continue with Google</span>
       </div>
-      <div className={styles.whiteButton}>
+      {/* <div className={styles.whiteButton}>
         <img src={FacebookIcon} alt='FacebookIcon'/>
       </div>
       <div className={styles.whiteButton}>
         <img src={LinkdinIcon} alt='LinkdinIcon'/>
-      </div>
+      </div> */}
     </div>
   )
 }

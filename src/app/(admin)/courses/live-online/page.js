@@ -1,5 +1,5 @@
+'use client'
 import React from 'react'
-import ComingSoon from '@/compoents/comingSoon'
 import AdminHeader from '@/compoents/adminHeader'
 import LiveOnlineCourse from '@/modules/(admin)/liveonline'
 
