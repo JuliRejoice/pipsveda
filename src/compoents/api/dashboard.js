@@ -40,7 +40,7 @@ export const getCourses = async ({
     }
 
     const response = await fetch(
-      `https://259s7s89-6002.inc1.devtunnels.ms/api/v1/course/getAllCourse?${params.toString()}`,
+      `${BASEURL}/course/getAllCourse?${params.toString()}`,
       { method: "GET", headers }
     );
 
@@ -66,7 +66,7 @@ export const getChapters = async (id) => {
         }
 
 
-        const res = await fetch(`https://259s7s89-6002.inc1.devtunnels.ms/api/v1/chapter/getChapterByCourse?courseId=${id}&sortBy=chapterNo&sortOrder=1`, { headers });
+        const res = await fetch(`${BASEURL}/chapter/getChapterByCourse?courseId=${id}&sortBy=chapterNo&sortOrder=1`, { headers });
         const data = await res.json();
         return data;
     } catch (error) {
@@ -84,7 +84,7 @@ export const getTrendingOrPopularCourses = async (type) => {
             headers['x-auth-token'] = token;
         }
 
-        const res = await fetch(`https://259s7s89-6002.inc1.devtunnels.ms/api/v1/course/getDefineCourse?type=${type}`, { headers });
+        const res = await fetch(`${BASEURL}/course/getDefineCourse?type=${type}`, { headers });
         const data = await res.json();
         return data;
     } catch (error) {
@@ -105,7 +105,7 @@ export const getPaymentUrl = async (data) => {
         }
 
         const response = await fetch(
-            'https://259s7s89-6002.inc1.devtunnels.ms/api/v1/payment/createPayment',
+            `${BASEURL}/payment/createPayment`,
             {
                 method: 'POST',
                 headers: headers,

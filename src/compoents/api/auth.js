@@ -97,7 +97,7 @@ export const loginWithGoogle = async () => {
       name: result.user.displayName,
       accessToken: result.user.stsTokenManager.accessToken,
     }
-    const response = await fetch(`https://259s7s89-6002.inc1.devtunnels.ms/api/v1/user/signinWithGoogle`, {
+    const response = await fetch(`${BASEURL}/user/signinWithGoogle`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

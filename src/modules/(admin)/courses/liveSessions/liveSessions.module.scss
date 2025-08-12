@@ -1,0 +1,159 @@
+@use '../../../../scss/main.scss' as *;
+@use '../../../../scss/breakpoints/breakpoints.scss' as *;
+@use '../../../../scss/typography/typography.scss' as *;
+
+.liveSessionsAlignment {
+    .cardgrid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+
+        .cardgridItems {
+            background-color: var(--bg-light-700);
+            padding: 30px;
+            @include first-clip-path;
+
+            button {
+                padding: 9px 24px;
+                @include font14;
+                clip-path: polygon(0 15px, 14px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+            }
+
+            .content {
+                padding: 12px 0 16px 0;
+                border-bottom: 1px solid var(--border-color7);
+
+                h3 {
+                    @include heading18;
+                    margin: 0 0 4px 0;
+                    color: var(--black-500);
+                }
+
+                .icontext {
+                    display: flex;
+                    gap: 5px;
+                    align-items: center;
+
+                    span {
+                        display: block;
+                        @include font16normal;
+                        color: var(--grey-600);
+                    }
+                }
+            }
+
+            .bottomContentAlignment {
+                display: flex;
+                align-items: flex-start;
+                justify-content: space-between;
+                padding: 12px 0 0 0;
+
+                .nextsession {
+                    p {
+                        @include font16normal;
+                        margin: 0 0 6px 0;
+                        color: var(--black-500);
+                    }
+
+                    .twoIconTextAlignment {
+                        display: flex;
+                        align-items: center;
+                        gap: 18px;
+
+                        .textIcon {
+                            display: flex;
+                            align-items: center;
+                            gap: 4px;
+
+                            span {
+                                display: block;
+                                @include font16normal;
+                                color: var(--grey-600);
+                            }
+                        }
+                    }
+                }
+            }
+
+            .mettingContent {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+
+                span {
+                    display: block;
+                    @include font16normal;
+                    background: var(--button-gradient);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+            }
+        }
+    }
+
+    .title {
+        padding: 40px 0 18px 0;
+        border-bottom: 1px solid var(--border-color7);
+
+        h2 {
+            @include heading20;
+            color: var(--black-500);
+        }
+    }
+
+    .sessionGrid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 30px;
+        padding: 25px  0 0 0;
+
+        .sessionGridItems {
+            background-color: var(--bg-light-700);
+            padding: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            @include first-clip-path;
+            .content {
+                h3 {
+                    @include font16normal;
+                    font-weight: 500;
+                    color: var(--black-500);
+                    margin: 0 0 4px 0;
+                }
+                .twoIcontext {
+                    display: flex;
+                    align-items: center;
+                    gap: 20px;
+
+                    .iconText {
+                        display: flex;
+                        align-items: center;
+                        gap: 4px;
+                        span {
+                            display: block;
+                            @include font16normal;
+                            color: var(--grey-600);
+                        }
+                    }
+                }
+            }
+
+            .watchText {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+
+                span {
+                    display: block;
+                    @include font16normal;
+                    background: var(--button-gradient);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+            }
+        }
+    }
+}

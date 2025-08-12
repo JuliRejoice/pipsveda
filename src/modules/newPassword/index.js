@@ -95,11 +95,11 @@ export default function NewPassword() {
             <div className={styles.inputAlignment}>
               <Input
                 name="newPassword"
-                type="password"
+                type={showPassword ? "text" : "password"}
                 label="New Password"
                 placeholder="**************"
                 onIconClick={() => setShowPassword(!showPassword)}
-                icon={showPassword ? EyeIcon : EyeSlashIcon}
+                icon={!showPassword ? EyeIcon : EyeSlashIcon}
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
               />
@@ -109,11 +109,11 @@ export default function NewPassword() {
             <div className={styles.inputAlignment}>
               <Input
                 name="confirmPassword"
-                type="password"
+                type={showConfirmPassword ? "text" : "password"}
                 label="Confirm Password"
                 placeholder="**************"
                 onIconClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                icon={showConfirmPassword ? EyeIcon : EyeSlashIcon}
+                icon={!showConfirmPassword ? EyeIcon : EyeSlashIcon}
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
