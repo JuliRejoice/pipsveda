@@ -59,12 +59,12 @@ export const getCourses = async ({
 export const getChapters = async (id) => {
     try {
         const token = getAuthToken();
-        console.log("token", token);
         const headers = {};
 
         if (token) {
             headers['x-auth-token'] = token;
         }
+
 
         const res = await fetch(`https://259s7s89-6002.inc1.devtunnels.ms/api/v1/chapter/getChapterByCourse?courseId=${id}&sortBy=chapterNo&sortOrder=1`, { headers });
         const data = await res.json();
