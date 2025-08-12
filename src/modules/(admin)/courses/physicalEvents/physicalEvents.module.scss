@@ -1,0 +1,87 @@
+@use '../../../../scss/main.scss' as *;
+@use '../../../../scss/breakpoints/breakpoints.scss' as *;
+@use '../../../../scss/typography/typography.scss' as *;
+
+.physicalEventsAlignment {
+    .cardgrid {
+        display: grid;
+        grid-template-columns: repeat(3 , 1fr);
+        gap: 30px;
+        padding: 30px 0 0 0;
+
+         .cardgridItems {
+            background-color: var(--bg-light-700);
+            padding: 30px;
+            @include first-clip-path;
+
+            button {
+                padding: 9px 24px;
+                @include font14;
+                clip-path: polygon(0 15px, 14px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+            }
+
+            .content {
+                padding: 12px 0 16px 0;
+                border-bottom: 1px solid var(--border-color7);
+
+                h3 {
+                    @include heading18;
+                    margin: 0 0 4px 0;
+                    color: var(--black-500);
+                }
+
+                .icontext {
+                    display: flex;
+                    gap: 5px;
+                    align-items: center;
+
+                    span {
+                        display: block;
+                        @include font16normal;
+                        color: var(--grey-600);
+                    }
+                }
+            }
+
+            .downlodIcon {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+
+                span {
+                    display: block;
+                    @include font16normal;
+                    color: var(--black-500);
+                }
+            }
+
+            .textgrid {
+                display: grid;
+                grid-template-columns: repeat(2 , 1fr);
+                gap: 30px;
+                padding: 10px 0 16px 0 ;
+
+                h4 {
+                    @include font16normal;
+                    font-weight: 500;
+                    margin: 0 0 4px 0;
+                    color: var(--black-500);
+                }
+                .clockText {
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                }
+                p {
+                    @include font16normal;
+                    font-size: 14px;
+                    line-height: 22px;
+                    color: var(--grey-600);
+                }
+            }
+
+
+         
+        }
+    }
+}

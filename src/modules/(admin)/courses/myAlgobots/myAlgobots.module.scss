@@ -1,0 +1,90 @@
+@use '../../../../scss/main.scss' as *;
+@use '../../../../scss/breakpoints/breakpoints.scss' as *;
+@use '../../../../scss/typography/typography.scss' as *;
+
+.myAlgobots {
+    padding: 30px 0 0 0;
+    .cardgrid {
+        display: grid;
+        grid-template-columns: repeat(3 , 1fr);
+        gap: 30px;
+
+        .cardgridItems {
+                 background-color: var(--bg-light-700);
+            padding: 30px;
+            @include first-clip-path;
+
+            button {
+                padding: 9px 24px;
+                @include font14;
+                clip-path: polygon(0 15px, 14px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+            }
+
+            .downloadContent {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+
+                span {
+                    display: block;
+                    @include font16normal;
+                    color: var(--black-500);
+                }
+            }
+
+            .alltextStyle {
+                padding: 15px 0;
+                display: flex;
+                justify-content: space-between;
+
+                p {
+                    @include font16normal;
+                    color: var(--black-500);
+                    font-weight: 500;
+                    line-height: 20px;
+                }
+                span {
+                    @include font16normal;
+                    display: block;
+                               background: var(--button-gradient);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                }
+            }
+
+            .twoContentAlignment {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 15px 0;
+                border-bottom: 1px solid var(--border-color7);
+
+                .dateShow {
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+                    span {
+                        display: block;
+                        @include font16normal;
+                        color: var(--grey-600);
+                    }
+                }
+                
+                p {
+                    @include font16normal;
+                    color: var(--black-500);
+                    font-weight: 500;
+                    margin: 0;
+                    line-height: 22px;
+                }
+
+                span {
+                    display: block;
+                    @include font16normal;
+                    color: var(--grey-600);
+                }
+            }
+        }
+    }
+}

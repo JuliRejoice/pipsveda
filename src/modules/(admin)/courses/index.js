@@ -1,6 +1,9 @@
 import React from 'react'
 import styles from './courses.module.scss';
 import DownloadIcon from '@/icons/downloadIcon';
+import LiveSessions from './liveSessions';
+import PhysicalEvents from './physicalEvents';
+import MyAlgobots from './myAlgobots';
 const CardImage = '/assets/images/crypto.png';
 
 export default function Courses() {
@@ -21,7 +24,7 @@ export default function Courses() {
                 <button>Physical Events</button>
                 <button>My Algobots</button>
             </div>
-            <div className={styles.grid}>
+            {/* <div className={styles.grid}>
                 {
                     [...Array(4)].map(() => {
                         return (
@@ -58,7 +61,10 @@ export default function Courses() {
                         )
                     })
                 }
-            </div>
+            </div> */}
+            {/* <LiveSessions/> */}
+            {/* <PhysicalEvents/> */}
+            <MyAlgobots/>
         </div>
     )
 }
