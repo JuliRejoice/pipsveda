@@ -1,0 +1,94 @@
+@use '../../../scss/main.scss' as *;
+@use '../../../scss/breakpoints/breakpoints.scss' as *;
+@use '../../../scss/typography/typography.scss' as *;
+
+.notificationBox {
+    background-color: var(--bg-white);
+    border: 1px solid var(--border-color5);
+    padding: 30px;
+    border-radius: 16px;
+
+    .title {
+        padding: 0 0 24px 0;
+
+        h2 {
+            margin: 0 0 2px 0;
+            color: var(--black-500);
+            @include heading20;
+        }
+
+        p {
+            @include font16normal;
+            color: var(--grey-600);
+        }
+    }
+
+    .allBoxAlignment {
+        .box:last-child {
+            margin: 0;
+        }
+        .box {
+            background-color: var(--bg-light-700);
+            padding: 30px;
+            @include first-clip-path;
+            display: grid;
+            margin: 0 0 20px 0;
+            grid-template-columns: 1fr 340px;
+            gap: 20px;
+
+            button {
+                padding: 9px 24px;
+                @include font14;
+                clip-path: polygon(0 15px, 14px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+            }
+
+            .leftContentAlignment {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .rightContentAlignment {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .clock {
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+
+                    span {
+                        display: block;
+                        @include font16normal;
+                        color: var(--grey-600);
+                    }
+                }
+
+                .downloadiconText {
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+
+                    span {
+                        display: block;
+                        @include font16normal;
+                        color: var(--black-500);
+                    }
+                }
+            }
+
+            .content {
+                h3 {
+                    @include heading18;
+                    color: var(--black-500);
+                }
+
+                p {
+                    @include font16normal;
+                    color: var(--grey-600);
+                }
+            }
+        }
+    }
+}
