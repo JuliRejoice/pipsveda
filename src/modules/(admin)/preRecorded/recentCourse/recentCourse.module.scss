@@ -2,8 +2,8 @@
 @use '../../../../scss/breakpoints/breakpoints.scss' as *;
 @use '../../../../scss/typography/typography.scss' as *;
 
-.recentCourseAlignment {
-    padding: 40px 0 0 0;
+.recentCourse {
+    padding: 35px 0 0 0;
     @include respond-to("sm") {
         padding: 20px 0 0 0;
     }
@@ -24,150 +24,149 @@
         gap: 20px;
         padding: 22px 0 50px 0;
 
-        @media (max-width: 1500px) {
-            grid-template-columns: repeat(3, 1fr);
+        @media (max-width:1500px) {
+            grid-template-columns: repeat(3 , 1fr);
         }
+
         @include respond-to("md") {
-
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(2 , 1fr);
         }
+
         @include respond-to("sm") {
-            grid-template-columns: repeat(1, 1fr);
-        }
-    
-    }
-
-    .griditems {
-        background-color: var(--bg-white);
-        @include first-clip-path;
-        padding: 20px;
-        border-radius: 12px;
-
-        .image {
-            img {
-                width: 100%;
-                height: 220px;
-                object-fit: cover;
-                display: block;
-                @include first-clip-path;
-            }
+            grid-template-columns: repeat(1 , 1fr);
+            padding: 20px 0;
         }
 
-        .details {
-            padding: 15px 0 0 0;
+        .griditems {
+            background-color: var(--bg-white);
+            @include first-clip-path;
+            border-radius: 12px;
+            padding: 20px;
 
-            button {
-                padding: 11px 26px;
+            .image {
+                img {
+                    width: 100%;
+                    height: 220px;
+                    object-fit: cover;
+                    display: block;
+                    @include first-clip-path;
+                    @include respond-to("md") {
+                        height: 180px;
+                    }
+                }
             }
 
-            .twoContentAlignment {
-                display: flex;
-                align-items: center;
-                gap: 30px;
-                padding: 0 0 20px 0;
+            .details {
+                padding: 15px 0 0 0;
 
-                .iconText {
+                button {
+                        padding: 11px 26px;
+                }
+
+                .twoContentAlignment {
                     display: flex;
                     align-items: center;
-                    gap: 4px;
+                    gap: 30px;
+                    padding: 0 0 20px 0;
 
-                    span {
-                        @include font16normal;
-                        color: var(--grey-600);
-                        display: block;
+                    .iconText {
+                        display: flex;
+                        align-items: center;
+                        gap: 4px;
+
+                        span {
+                            @include font16normal;
+                            color: var(--grey-600);
+                            display: block;
+                        }
+                    }
+
+                    h4 {
+                        background: var(--button-gradient);
+                        background-clip: text;
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        @include heading20;
+
                     }
                 }
 
-                h4 {
-                    background: var(--button-gradient);
-                    background-clip: text;
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    @include heading20;
+                p {
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    margin: 0 0 12px 0;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    @include font16normal;
+                    color: var(--grey-600);
+                }
+
+                h3 {
+                    @include heading18;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    margin: 0 0 6px 0;
+                    color: var(--black-500);
                 }
             }
-
-            p {
-                display: -webkit-box;
-                -webkit-line-clamp: 2;
-                margin: 0 0 12px 0;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-                @include font16normal;
-                color: var(--grey-600);
-            }
-
-            h3 {
-                @include heading18;
-                display: -webkit-box;
-                -webkit-line-clamp: 1;
-                -webkit-box-orient: vertical;
-                overflow: hidden;
-                margin: 0 0 6px 0;
-                color: var(--black-500);
-            }
         }
     }
 
-    // Skeleton styles
-    .skeletonImage {
-        width: 100%;
-        border-radius: 8px 8px 0 0;
-    }
-
-    // Empty state styles
-    .emptyState {
-        text-align: center;
-        padding: 60px 20px;
-        background-color: var(--bg-white);
-        border-radius: 12px;
-        margin: 20px 0;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-
-        .emptyImage {
-            margin-bottom: 20px;
-            opacity: 0.7;
-        }
-
-        h3 {
-            @include heading20;
-            color: var(--black-500);
-            margin-bottom: 10px;
-        }
-
-        p {
-            @include font16normal;
-            color: var(--grey-600);
-            max-width: 500px;
-            margin: 0 auto 20px;
-        }
-    }
-
-    // Error state
-    .errorState {
-        text-align: center;
-        padding: 30px;
-        background-color: #FFF5F5;
-        border: 1px solid #FED7D7;
-        border-radius: 8px;
-        margin: 20px 0;
-
-        p {
-            color: #E53E3E;
-            margin-bottom: 15px;
-            @include font16normal;
-        }
-
-        .retryButton {
-            background-color: var(--primary-color);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-weight: 500;
-            transition: background-color 0.2s;
-
-        }
+    .paginationAlignment {
+        display: flex;
+        justify-content: center;
     }
 }
+
+.emptyState {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 3rem 1rem;
+    background: #f9fafb; // light gray background
+    border-radius: 16px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+    margin: 2rem auto;
+    max-width: 600px;
+  
+    h3 {
+      margin-top: 1rem;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #111827;
+    }
+  
+    p {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+      color: #6b7280;
+    }
+  }
+  
+  .emptyImage {
+    width: 140px;
+    height: auto;
+    opacity: 0.9;
+  }
+  
+  .refreshButton {
+    margin-top: 1.5rem;
+    padding: 0.75rem 1.5rem;
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+  
+    &:hover {
+      background: #1e40af;
+    }
+  }
+  

@@ -1,16 +1,16 @@
 'use client'
 import AdminHeader from '@/compoents/adminHeader'
-import ComingSoon from '@/compoents/comingSoon'
-import Courses from '@/modules/(admin)/courses'
+import InPerson from '@/modules/(admin)/chapter/inPerson'
+
 import React from 'react'
 
-function InPerson() {
+function InPersonCoursePage() {
   return (
     <div>
         <AdminHeader />
-        <Courses />
+        <InPerson />
     </div>
   )
 }
 
-export default InPerson
+export default InPersonCoursePage

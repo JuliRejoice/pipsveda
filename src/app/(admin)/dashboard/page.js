@@ -1,4 +1,4 @@
-import Dashboard from '@/modules/(admin)/dashboard'
+import Dashboard from '@/modules/(admin)/preRecorded'
 import React from 'react'
 
 export default function page() {

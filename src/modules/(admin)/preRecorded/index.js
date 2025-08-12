@@ -1,15 +1,19 @@
-import React from 'react'
-import styles from './preRecorded.module.scss';
-import Breadcumbs from '../breadcumbs';
-import CourseDetails from './courseDetails';
+'use client'
+import React, { useState } from 'react'
+import styles from './dashboard.module.scss';
+import CourseBanner from './courseBanner';
 import RecentCourse from './recentCourse';
+import AdminHeader from '@/compoents/adminHeader';
+import ComingSoon from '@/compoents/comingSoon';
+export default function Dashboard() {
 
-export default function PreRecorded({ params }) {
+
   return (
+
     <div>
-      <Breadcumbs/>
-      <CourseDetails params={params} />
-      <RecentCourse/>
+      <AdminHeader />
+      <ComingSoon />
+
     </div>
   )
 }
