@@ -31,6 +31,7 @@ export default function RecentCourse({ searchQuery , allCourse , setAllCourses ,
                 limit: ITEMS_PER_PAGE,
                 courseType: 'recorded'
             });
+            console.log("🚀 ~ fetchCourses ~ data:", data)
             
             setAllCourses(data?.payload?.data || allCourse || []);
             setPagination(prev => ({

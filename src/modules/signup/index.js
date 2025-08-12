@@ -31,27 +31,42 @@ export default function Signup() {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const validateName = (value) => {
+  // Name: Only letters, spaces, apostrophes, hyphens; min 2 chars
+const validateName = (value) => {
     if (!value) return "Name is required.";
-    if (value.length < 2) return "Name must be at least 2 characters.";
+    const nameRegex = /^[A-Za-z\s'-]{2,}$/;
+    if (!nameRegex.test(value)) {
+        return "Name must be at least 2 characters and contain only letters.";
+    }
     return "";
-  };
-  const validateEmail = (value) => {
+};
+
+// Email: RFC-like but practical for web use
+const validateEmail = (value) => {
     if (!value) return "Email is required.";
-    const re = /^\S+@\S+\.\S+$/;
-    if (!re.test(value)) return "Enter a valid email address.";
+    const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+    if (!emailRegex.test(value)) return "Enter a valid email address.";
     return "";
-  };
-  const validatePassword = (value) => {
+};
+
+// Password: Min 8 chars, at least 1 uppercase, 1 lowercase, 1 number, 1 special char
+const validatePassword = (value) => {
     if (!value) return "Password is required.";
-    if (value.length < 6) return "Password must be at least 6 characters.";
+    const passwordRegex =
+        /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+    if (!passwordRegex.test(value)) {
+        return "Password must be at least 6 characters, include uppercase, lowercase, number, and special character.";
+    }
     return "";
-  };
-  const validateConfirmPassword = (value, password) => {
+};
+
+// Confirm Password: Match with password
+const validateConfirmPassword = (value, password) => {
     if (!value) return "Confirm Password is required.";
     if (value !== password) return "Passwords do not match.";
     return "";
-  };
+};
+
 
   const handleSignup = () => {
     const nameError = validateName(data.name);
@@ -76,15 +91,17 @@ export default function Signup() {
     setIsSubmitting(true);
     signUp({ name: data.name, email: data.email, password: data.password })
       .then((response) => {
-        setIsSubmitting(false);
-        setErrors({
-          name: "",
-          email: "",
-          password: "",
-          confirmPassword: "",
-          submit: "",
-        });
-        router.push("/signin");
+        if (response.success) {
+          setIsSubmitting(false);
+          setErrors({
+            name: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+            submit: "",
+          });
+          router.push("/signin");
+        }
       })
       .catch((error) => {
         setIsSubmitting(false);

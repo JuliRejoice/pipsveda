@@ -8,6 +8,7 @@ import { forgetPassword } from '@/compoents/api/auth';
 import { useRouter } from 'next/navigation';
 import Logo from '@/compoents/logo';
 import { toast } from 'react-toastify';
+import { errorMessages } from '@/utils/constant';
 
 const RightIcon = '/assets/icons/right-lg.svg';
 
@@ -18,8 +19,13 @@ export default function ResetPassword() {
     const router = useRouter();
 
     const handleReset = () => {
+        let regex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
         if (!email) {
             setError('Please enter your email address');
+            return;
+        }
+        if (!regex.test(email)) {
+            setError('Please enter a valid email address');
             return;
         }
 
@@ -28,9 +34,15 @@ export default function ResetPassword() {
 
         forgetPassword({ email })
             .then((data) => {
-                localStorage.setItem('email', email);
-                toast.success('OTP sent successfully.');
-                router.push('/otp-verification');
+                console.log(data)
+                if(data.success) {
+                    localStorage.setItem('email', email);
+                    toast.success('OTP sent successfully.');
+                    router.push('/otp-verification');
+                }
+                else{
+                    toast.error(errorMessages[data.message] || 'Failed to send reset email. Please try again.');
+                }
             })
             .catch((error) => {
                 console.error('Password reset error:', error);

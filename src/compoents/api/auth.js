@@ -6,7 +6,7 @@ const BASEURL = process.env.NEXT_PUBLIC_BASE_URL;
 
 export const signIn = async (email, password) => {
   try {
-    const response = await fetch(`${BASEURL}/user/signin`, {
+    const response = await fetch(`https://259s7s89-6002.inc1.devtunnels.ms/api/v1/user/signin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -47,7 +47,7 @@ export const forgetPassword = async (data) => {
       },
       body: JSON.stringify(data),
     });
-
+    console.log("🚀 ~ forgetPassword ~ data:", response)
     return await response.json();
   } catch (error) {
     console.error('Error during password reset request:', error);

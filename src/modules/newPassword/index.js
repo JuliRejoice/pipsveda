@@ -1,28 +1,32 @@
-'use client'
-import React, { useEffect, useState } from 'react'
-import styles from './newPassword.module.scss';
-import Button from '@/compoents/button';
-import Input from '@/compoents/input';
-import { useRouter } from 'next/navigation';
-import { updatePassword } from '@/compoents/api/auth';
-import { toast } from 'react-toastify';
+"use client";
+import React, { useEffect, useState } from "react";
+import styles from "./newPassword.module.scss";
+import Button from "@/compoents/button";
+import Input from "@/compoents/input";
+import { useRouter } from "next/navigation";
+import { updatePassword } from "@/compoents/api/auth";
+import { toast } from "react-toastify";
 
-const RightIcon = '/assets/icons/right-lg.svg';
-const EyeIcon = '/assets/icons/eye.svg';
-const EyeSlashIcon = '/assets/icons/eye-slash.svg';
+const RightIcon = "/assets/icons/right-lg.svg";
+const EyeIcon = "/assets/icons/eye.svg";
+const EyeSlashIcon = "/assets/icons/eye-slash.svg";
 
 export default function NewPassword() {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [errors, setErrors] = useState({ newPassword: "", confirmPassword: "", submit: "" });
+  const [errors, setErrors] = useState({
+    newPassword: "",
+    confirmPassword: "",
+    submit: "",
+  });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const [email, setEmail] = useState("");
 
   useEffect(() => {
-    const emailFromState = localStorage.getItem('email');
+    const emailFromState = localStorage.getItem("email");
     if (emailFromState) {
       setEmail(emailFromState);
     }
@@ -30,54 +34,51 @@ export default function NewPassword() {
 
   const handleSetNewPassword = async () => {
     setErrors({ newPassword: "", confirmPassword: "", submit: "" });
-    
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
     const validationErrors = {
       newPassword: "",
       confirmPassword: "",
-      submit: ""
+      submit: "",
     };
-  
+
     if (!newPassword || newPassword.trim() === "") {
       validationErrors.newPassword = "New password is required";
-    } else if (newPassword.length < 6) {
-      validationErrors.newPassword = "Password must be at least 6 characters";
+    } else if (!passwordRegex.test(newPassword)) {
+      validationErrors.newPassword =
+        "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
     }
-  
+
     if (!confirmPassword || confirmPassword.trim() === "") {
       validationErrors.confirmPassword = "Confirm password is required";
     } else if (newPassword !== confirmPassword) {
       validationErrors.confirmPassword = "Passwords do not match";
     }
-  
-    const hasError = Object.values(validationErrors).some(err => err !== "");
-    if (hasError) {
+
+    if (Object.values(validationErrors).some((err) => err !== "")) {
       setErrors(validationErrors);
       return;
     }
-  
+
     try {
       setIsSubmitting(true);
-      
-      const res = await updatePassword({ 
-        email,
-        password: newPassword 
-      });
-  
+      const res = await updatePassword({ email, password: newPassword });
+
       if (res.success) {
-        localStorage.removeItem('email');
-        toast.success('Password updated successfully.');
+        localStorage.removeItem("email");
+        toast.success("Password updated successfully.");
         router.push("/signin");
       } else {
         setErrors({
           ...validationErrors,
-          submit: res.message || "Failed to update password. Please try again."
+          submit: res.message || "Failed to update password. Please try again.",
         });
       }
     } catch (err) {
-      console.error('Password update error:', err);
+      console.error("Password update error:", err);
       setErrors({
         ...validationErrors,
-        submit: err.message || "An error occurred. Please try again later."
+        submit: err.message || "An error occurred. Please try again later.",
       });
     } finally {
       setIsSubmitting(false);
@@ -103,7 +104,9 @@ export default function NewPassword() {
                 value={newPassword}
                 onChange={(e) => setNewPassword(e.target.value)}
               />
-              {errors.newPassword && <span className={styles.error}>{errors.newPassword}</span>}
+              {errors.newPassword && (
+                <span className={styles.error}>{errors.newPassword}</span>
+              )}
             </div>
 
             <div className={styles.inputAlignment}>
@@ -117,10 +120,14 @@ export default function NewPassword() {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
-              {errors.confirmPassword && <span className={styles.error}>{errors.confirmPassword}</span>}
+              {errors.confirmPassword && (
+                <span className={styles.error}>{errors.confirmPassword}</span>
+              )}
             </div>
 
-            {errors.submit && <span className={styles.error}>{errors.submit}</span>}
+            {errors.submit && (
+              <span className={styles.error}>{errors.submit}</span>
+            )}
 
             <div className={styles.buttonWidthFull}>
               <Button

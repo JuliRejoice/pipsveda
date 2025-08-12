@@ -16,6 +16,7 @@ import SignoutIcon from "@/icons/signoutIcon";
 import { getCookie, removeCookie } from "../../../cookie";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
+import Algobot from "@/icons/algobot";
 const SidebarLayer = "/assets/images/sidebar-layer.png";
 const LogoutIcon = "/assets/icons/logout.svg";
 const DownIcon = "/assets/icons/down-white.svg";
@@ -138,6 +139,12 @@ export default function Sidebar({ setToogle, toogle }) {
               </div>
             </div>
           </div>
+          <div className={`${styles.menu} ${
+            pathname === "/algobot" ? styles.active : ""
+          }`}>
+            <Algobot />
+            <span>Algobot</span>
+          </div>
           <div
             className={`${styles.menu} ${
               pathname === "/contact-us" ? styles.active : ""
@@ -148,6 +155,23 @@ export default function Sidebar({ setToogle, toogle }) {
           >
             <ContactUs />
             <span>Contact Us</span>
+          </div>
+          <div className={`${styles.menu} ${
+              pathname === "/my-courses" ? styles.active : ""
+            }`}>
+            <CourseIcon />
+            <span>My Courses</span>
+          </div>
+          <div
+            className={`${styles.menu} ${
+              pathname === "/notifications" ? styles.active : ""
+            }`}
+            onClick={() => {
+              handleTabClick("notifications");
+            }}
+          >
+            <NotificationIcon />
+            <span>Notifications</span>
           </div>
         </div>
         <div className={styles.sidebarFooter}>
