@@ -1,20 +1,34 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
 import styles from './algobotDetails.module.scss';
 import Breadcumbs from '@/modules/(admin)/breadcumbs';
 import Button from '@/compoents/button';
+import { getAlgobot } from '@/compoents/api/algobot';
 const RightIcon = '/assets/icons/right.svg';
-export default function AlgobotDetails() {
+
+function AlgobotDetails({id}) {
+    const [algobotData, setAlgobotData] = useState([]);
+    const fetchAlgobotData = async () => {
+        try {
+            const response = await getAlgobot(id);
+            console.log("🚀 ~ fetchAlgobotData ~ response:", response)
+            setAlgobotData(response.payload.data[0]);
+        } catch (error) {
+            console.error('Error fetching algobot data:', error);
+        }
+    };
+    useEffect(() => {
+        fetchAlgobotData();
+    }, []);
+
+    console.log("🚀 ~ AlgobotDetails ~ algobotData:", algobotData);
     return (
         <div>
             <Breadcumbs />
             <div className={styles.algobotDetailsAlignment}>
                 <div className={styles.pageHeaderAlignment}>
                     <div className={styles.text}>
-                        <h2>Core (Manual Arbitrage)</h2>
-                        <p>
-                            The Core Plan is designed for beginners looking to dive into Spot Future Difference (CFD) trading. It offers a practical foundation with a focus on real-time trading experiences. Key Features: Beginner-Friendly: Tailored for newcomers, simplifying complex trading concepts for
-                            accessible learning.
-                        </p>
+                        <h2>{algobotData?.botName}</h2>
                     </div>
                     <div>
                         <div className={styles.twoTextAlignment}>
@@ -37,22 +51,7 @@ export default function AlgobotDetails() {
                         <div className={styles.box}></div>
                     </div>
                     <div className={styles.griditems}>
-                        <p>
-                            Real-Time Trading: Engage in live market scenarios, allowing you to practice making
-                            trades confidently.
-                        </p>
-                        <p>
-                            Zero Risk Experience: Utilize manual algorithms for a risk-free trading
-                            environment, encouraging experimentation without financial loss.
-                        </p>
-                        <p>
-                            Comprehensive Curriculum: Cover essential topics, including market fundamentals, trading strategies, and risk management. Supportive Community: Join a network of
-                            fellow beginners to share experiences and learn collaboratively.
-                        </p>
-                        <p>
-                            Conclusion: The Core Plan is the ideal starting point for anyone interested in Spot Future Difference trading. Gain the confidence and skills needed to succeed in the financial markets while enjoying a supportive and risk-free learning environment. Start your trading journey today! Comprehensive Curriculum: Cover essential topics, including market fundamentals, trading strategies, and risk management. Supportive Community: 
-                            Join a network of fellow beginners to share experiences and learn collaboratively.
-                        </p>
+                        <p>{algobotData?.description}</p>
                     </div>
                 </div>
                 <div className={styles.tutorial}>
@@ -75,3 +74,5 @@ export default function AlgobotDetails() {
         </div>
     )
 }
+
+export default AlgobotDetails;

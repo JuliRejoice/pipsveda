@@ -39,6 +39,7 @@ export default function RecentCourse({ selectedCourse }) {
     };
 
     useEffect(() => {
+        console.log('-------------')
         fetchCourses();
     }, [selectedCourse]); // Refetch when selectedCourse changes
 

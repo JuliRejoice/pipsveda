@@ -25,15 +25,16 @@ export default function RecentCourse({ searchQuery , allCourse , setAllCourses ,
     const fetchCourses = async (page = 1) => {
         try {
             setCourseLoading(true);
-            const data = await getCourses({
-                searchQuery,
+            const params = {
+                ...(searchQuery && { searchQuery }),
                 page,
                 limit: ITEMS_PER_PAGE,
-                courseType: 'recorded'
-            });
-            console.log("🚀 ~ fetchCourses ~ data:", data)
-            
-            setAllCourses(data?.payload?.data || allCourse || []);
+                ...(!searchQuery && { courseType: 'recorded' })
+            };
+            const data = await getCourses(params);
+            if (data?.success) {
+                setAllCourses(data?.payload?.data || []);
+            }
             setPagination(prev => ({
                 ...prev,
                 currentPage: page,
@@ -50,7 +51,6 @@ export default function RecentCourse({ searchQuery , allCourse , setAllCourses ,
     };
     
     useEffect(() => {
-        // Reset to first page when search query changes
         fetchCourses(1);
     }, [searchQuery]);
 
@@ -61,7 +61,7 @@ export default function RecentCourse({ searchQuery , allCourse , setAllCourses ,
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
     };
-console.log(allCourse)
+
     // Skeleton loader
     const renderSkeletons = () => {
         return Array(pagination.itemsPerPage).fill(0).map((_, index) => (
@@ -84,7 +84,7 @@ console.log(allCourse)
     const renderEmptyState = () => (
         <div className={styles.emptyState}>
         <img
-          src="/assets/images/no-courses.svg"
+          src="/assets/icons/no-course.svg"
           alt="No courses"
           className={styles.emptyImage}
         />

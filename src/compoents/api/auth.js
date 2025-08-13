@@ -1,12 +1,19 @@
 
 import { signInWithPopup } from "firebase/auth";
 import { auth, provider } from "../../../firebase";
+import { getCookie } from "../../../cookie";
 
 const BASEURL = process.env.NEXT_PUBLIC_BASE_URL;
+export const getAuthToken = () => {
+    if (typeof window !== 'undefined') {
+        return getCookie('userToken') || '';
+    }
+    return null;
+};
 
 export const signIn = async (email, password) => {
   try {
-    const response = await fetch(`https://259s7s89-6002.inc1.devtunnels.ms/api/v1/user/signin`, {
+    const response = await fetch(`${BASEURL}/user/signin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -97,7 +104,8 @@ export const loginWithGoogle = async () => {
       name: result.user.displayName,
       accessToken: result.user.stsTokenManager.accessToken,
     }
-    const response = await fetch(`${BASEURL}/user/signinWithGoogle`, {
+    // const response = await fetch(`${BASEURL}/user/signinWithGoogle`, {
+    const response = await fetch(`https://259s7s89-6002.inc1.devtunnels.ms/api/v1/user/signinWithGoogle`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -110,5 +118,26 @@ export const loginWithGoogle = async () => {
   } catch (err) {
     console.error("Login error", err);
     throw err;
+  }
+};
+
+export const editProfile = async (id, data) => {
+ 
+    const token = getAuthToken();
+   
+  try {
+    const response = await fetch(`${BASEURL}/user/update?id=${id}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-auth-token': token,
+      },
+      body: JSON.stringify(data),
+    });
+
+    return await response.json();
+  } catch (error) {
+    console.error('Error during profile update:', error);
+    throw error;
   }
 };

@@ -2,11 +2,12 @@ import React from 'react'
 import styles from './authentication.module.scss';
 import { useRouter } from 'next/navigation';
 
-import { toast } from 'react-toastify';
+
 
 import { errorMessages } from '@/utils/constant';
 import { setCookie } from '../../../cookie';
 import { loginWithGoogle } from '../api/auth';
+import toast from 'react-hot-toast';
 const GoogleIcon = '/assets/icons/google-icon.svg';
 const FacebookIcon = '/assets/icons/facebook.svg';
 const LinkdinIcon = '/assets/icons/linkdin-icon.svg';

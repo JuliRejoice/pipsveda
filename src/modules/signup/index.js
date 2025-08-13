@@ -9,6 +9,7 @@ import Link from "next/link";
 import { sign } from "crypto";
 import { signUp } from "@/compoents/api/auth";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 const RightIcon = "/assets/icons/right-lg.svg";
 const EyeIcon = "/assets/icons/eye.svg";
 const EyeSlashIcon = "/assets/icons/eye-slash.svg";
@@ -55,7 +56,7 @@ const validatePassword = (value) => {
     const passwordRegex =
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
     if (!passwordRegex.test(value)) {
-        return "Password must be at least 6 characters, include uppercase, lowercase, number, and special character.";
+        return "Password must be at least 6 characters, include uppercase, lowercase, number, and special character.Example: Hello@123";
     }
     return "";
 };
@@ -93,6 +94,7 @@ const validateConfirmPassword = (value, password) => {
       .then((response) => {
         if (response.success) {
           setIsSubmitting(false);
+          toast.success('User Signup successfully.');
           setErrors({
             name: "",
             email: "",
@@ -102,12 +104,16 @@ const validateConfirmPassword = (value, password) => {
           });
           router.push("/signin");
         }
+        else{
+          setIsSubmitting(false);
+          toast.error(errorMessages[data?.message] ?? "User Signup failed. Please try again.");
+        }
       })
       .catch((error) => {
         setIsSubmitting(false);
         setErrors((prev) => ({
           ...prev,
-          submit: error?.message || "Signup failed. Please try again.",
+          submit: error?.message || "User Signup failed. Please try again.",
         }));
       });
   };
@@ -135,7 +141,7 @@ const validateConfirmPassword = (value, password) => {
                 placeholder="Enter your name"
                 value={data.name}
                 onChange={(e) => {
-                  setData({ ...data, name: e.target.value });
+                  setData({ ...data, name: e.target.value.trim() });
                   setErrors((prev) => ({
                     ...prev,
                     name: validateName(e.target.value),
@@ -151,6 +157,11 @@ const validateConfirmPassword = (value, password) => {
                 label="Email Address"
                 placeholder="Enter your email"
                 value={data.email}
+                onKeyDown={(e) => {
+                  if (e.key === ' ') {
+                    e.preventDefault();
+                  }
+                }}
                 onChange={(e) => {
                   setData({ ...data, email: e.target.value });
                   setErrors((prev) => ({
@@ -172,16 +183,18 @@ const validateConfirmPassword = (value, password) => {
                 icon={!showPassword ? EyeIcon : EyeSlashIcon}
                 placeholder="Enter your password"
                 value={data.password}
+                onKeyDown={(e) => {
+                  if (e.key === ' ') {
+                    e.preventDefault();
+                  }
+                }}
                 onChange={(e) => {
                   setData({ ...data, password: e.target.value });
-                //   setErrors((prev) => ({
-                //     ...prev,
-                //     password: validatePassword(e.target.value),
-                //     confirmPassword: validateConfirmPassword(
-                //       data.confirmPassword,
-                //       e.target.value
-                //     ),
-                //   }));
+                  setErrors((prev) => ({
+                    ...prev,
+                    password:"",
+                    confirmPassword: "",
+                  }));
                 }}
               />
               {errors.password && (
@@ -196,15 +209,17 @@ const validateConfirmPassword = (value, password) => {
               icon={!showConfirmPassword ? EyeIcon : EyeSlashIcon}
               placeholder="Enter your confirm password"
               value={data.confirmPassword}
+              onKeyDown={(e) => {
+                if (e.key === ' ') {
+                  e.preventDefault();
+                }
+              }}
               onChange={(e) => {
                 setData({ ...data, confirmPassword: e.target.value });
-                // setErrors((prev) => ({
-                //   ...prev,
-                //   confirmPassword: validateConfirmPassword(
-                //     e.target.value,
-                //     data.password
-                //   ),
-                // }));
+                setErrors((prev) => ({
+                  ...prev,
+                  confirmPassword: "",  
+                }));
               }}
             />
             {errors.confirmPassword && (
@@ -220,7 +235,7 @@ const validateConfirmPassword = (value, password) => {
             )}
             <div className={styles.buttonWidthFull}>
               <Button
-                text={isSubmitting ? "Logging in..." : "Sign Up"}
+                text={isSubmitting ? "Signing up..." : "Sign Up"}
                 icon={RightIcon}
                 disabled={
                   isSubmitting ||

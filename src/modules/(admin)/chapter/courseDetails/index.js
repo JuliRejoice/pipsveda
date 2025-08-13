@@ -262,6 +262,11 @@ export default function CourseDetails({ params , selectedCourse , setSelectedCou
       <div className={styles.courseDetailsBox}>
         <div className={styles.textStyle}>
           <div style={{ textAlign: 'center', padding: '40px 20px' }}>
+            <img
+              src="/assets/icons/no-course.svg"
+              alt="No courses"
+              className={styles.emptyImage}
+            />
             <h3>No Course Content Available</h3>
             <p>This course doesn't have any chapters yet. Please check back later.</p>
           </div>
@@ -301,13 +306,13 @@ export default function CourseDetails({ params , selectedCourse , setSelectedCou
               <span>Last-Update: {new Date(course.updatedAt || new Date()).toLocaleDateString('en-GB')} | English</span>
             </div>
           </div>
-          <div>
+          {!isPaid && <div>
             <Button
               text="Enroll Now"
               icon={RightBlackIcon}
               onClick={() => handlePayment()}
             />
-          </div>
+          </div>}
         </div>
         <div className={styles.mainrelative}>
           <div className={styles.tabAlignment}>

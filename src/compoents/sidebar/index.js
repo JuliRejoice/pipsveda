@@ -17,6 +17,7 @@ import { getCookie, removeCookie } from "../../../cookie";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Algobot from "@/icons/algobot";
+import toast from "react-hot-toast";
 const SidebarLayer = "/assets/images/sidebar-layer.png";
 const LogoutIcon = "/assets/icons/logout.svg";
 const DownIcon = "/assets/icons/down-white.svg";
@@ -35,6 +36,7 @@ export default function Sidebar({ setToogle, toogle }) {
   }, [pathname]);
 
   const handleTabClick = (tab) => {
+    console.log(tab);
     setProfileDropdown(false);
     const goTo = "/" + tab;
     router.replace(goTo);
@@ -46,6 +48,7 @@ export default function Sidebar({ setToogle, toogle }) {
 
   const handleLogout = () => {
     removeCookie("userToken");
+    toast.success("Logout successfully.");
     router.push("/signin");
   };
   useEffect(() => {
@@ -141,7 +144,9 @@ export default function Sidebar({ setToogle, toogle }) {
           </div>
           <div className={`${styles.menu} ${
             pathname === "/algobot" ? styles.active : ""
-          }`}>
+          }`}
+          onClick={() => handleTabClick("algobot")}
+          >
             <Algobot />
             <span>Algobot</span>
           </div>
@@ -158,16 +163,20 @@ export default function Sidebar({ setToogle, toogle }) {
           </div>
           <div className={`${styles.menu} ${
               pathname === "/my-courses" ? styles.active : ""
-            }`}>
+            }`}
+            onClick={() => {
+              handleTabClick("my-courses");
+            }}
+          >
             <CourseIcon />
             <span>My Courses</span>
           </div>
           <div
             className={`${styles.menu} ${
-              pathname === "/notifications" ? styles.active : ""
+              pathname === "/notification" ? styles.active : ""
             }`}
             onClick={() => {
-              handleTabClick("notifications");
+              handleTabClick("notification");
             }}
           >
             <NotificationIcon />

@@ -5,7 +5,8 @@ import Button from "@/compoents/button";
 import Input from "@/compoents/input";
 import { useRouter } from "next/navigation";
 import { updatePassword } from "@/compoents/api/auth";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
+
 
 const RightIcon = "/assets/icons/right-lg.svg";
 const EyeIcon = "/assets/icons/eye.svg";
@@ -35,7 +36,7 @@ export default function NewPassword() {
   const handleSetNewPassword = async () => {
     setErrors({ newPassword: "", confirmPassword: "", submit: "" });
     const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
     const validationErrors = {
       newPassword: "",
       confirmPassword: "",
@@ -46,7 +47,7 @@ export default function NewPassword() {
       validationErrors.newPassword = "New password is required";
     } else if (!passwordRegex.test(newPassword)) {
       validationErrors.newPassword =
-        "Password must be at least 8 characters and include uppercase, lowercase, number, and special character.";
+        "Password must be at least 6 characters and include uppercase, lowercase, number, and special character.Example: Hello@123";
     }
 
     if (!confirmPassword || confirmPassword.trim() === "") {
@@ -66,7 +67,7 @@ export default function NewPassword() {
 
       if (res.success) {
         localStorage.removeItem("email");
-        toast.success("Password updated successfully.");
+        toast.success("Password reset successfully.");
         router.push("/signin");
       } else {
         setErrors({
@@ -102,6 +103,11 @@ export default function NewPassword() {
                 onIconClick={() => setShowPassword(!showPassword)}
                 icon={!showPassword ? EyeIcon : EyeSlashIcon}
                 value={newPassword}
+                onKeyDown={(e) => {
+                    if (e.key === ' ') {
+                      e.preventDefault();
+                    }
+                  }}
                 onChange={(e) => setNewPassword(e.target.value)}
               />
               {errors.newPassword && (
@@ -115,6 +121,11 @@ export default function NewPassword() {
                 type={showConfirmPassword ? "text" : "password"}
                 label="Confirm Password"
                 placeholder="**************"
+                onKeyDown={(e) => {
+                    if (e.key === ' ') {
+                      e.preventDefault();
+                    }
+                  }}
                 onIconClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 icon={!showConfirmPassword ? EyeIcon : EyeSlashIcon}
                 value={confirmPassword}

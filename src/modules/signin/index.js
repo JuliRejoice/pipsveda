@@ -1,7 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 import styles from "./signin.module.scss";
 import Input from "@/compoents/input";
 import Button from "@/compoents/button";
@@ -12,6 +10,7 @@ import { useRouter } from "next/navigation";
 import Logo from "@/compoents/logo";
 import { getCookie, setCookie } from "../../../cookie";
 import { errorMessages } from "@/utils/constant";
+import toast from "react-hot-toast";
 
 const RightIcon = "/assets/icons/right-lg.svg";
 const EyeIcon = "/assets/icons/eye.svg";
@@ -26,14 +25,17 @@ export default function Signin() {
 
 
   const validateEmail = (value) => {
-    if (!value) return "Email is required.";
+    const trimmedValue = value.trim();
+    if (!trimmedValue) return "Email is required.";
+    if (trimmedValue.includes(' ')) return "Email cannot contain spaces.";
     const re = /^\S+@\S+\.\S+$/;
-    if (!re.test(value)) return "Enter a valid email address.";
+    if (!re.test(trimmedValue)) return "Enter a valid email address.";
     return "";
   };
 
   const validatePassword = (value) => {
-    if (!value) return "Password is required.";
+    if (!value || !value.trim()) return "Password is required.";
+    if (value.includes(' ')) return "Password cannot contain spaces.";
     if (value.length < 6) return "Password must be at least 6 characters.";
     return "";
   };
@@ -88,6 +90,11 @@ export default function Signin() {
                 label="Email Address"
                 placeholder="Enter your email"
                 value={email}
+                onKeyDown={(e) => {
+                  if (e.key === ' ') {
+                    e.preventDefault();
+                  }
+                }}
                 onChange={(e) => {
                   setEmail(e.target.value);
                   setErrors((prev) => ({ ...prev, email: validateEmail(e.target.value) }));
@@ -102,9 +109,15 @@ export default function Signin() {
               icon={showPassword ? EyeSlashIcon : EyeIcon}
               onIconClick={() => setShowPassword(!showPassword)}
               placeholder="Enter your password"
+              onKeyDown={(e) => {
+                if (e.key === ' ') {
+                  e.preventDefault();
+                }
+              }}
               value={password}
               onChange={(e) => {
                 setPassword(e.target.value);
+                setErrors((prev) => ({ ...prev, password: "" }));
               }}
             />
             {errors.password && <span className={styles.errormsg}>{errors.password}</span>}
@@ -117,7 +130,12 @@ export default function Signin() {
             <div
               className={styles.buttonWidthFull}
             >
-              <Button text={isSubmitting ? "Logging in..." : "Sign In"} icon={RightIcon} disabled={isSubmitting || !!errors.email || !!errors.password} onClick={!isSubmitting && handleLogin} />
+              <Button 
+                text={isSubmitting ? "Logging in..." : "Sign In"} 
+                icon={RightIcon} 
+                disabled={isSubmitting} 
+                onClick={!isSubmitting ? handleLogin : undefined} 
+              />
             </div>
             <Authentication />
             <div className={styles.dontHaveAccount}>

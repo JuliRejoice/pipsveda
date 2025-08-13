@@ -7,8 +7,9 @@ import Link from 'next/link';
 import { forgetPassword } from '@/compoents/api/auth';
 import { useRouter } from 'next/navigation';
 import Logo from '@/compoents/logo';
-import { toast } from 'react-toastify';
+
 import { errorMessages } from '@/utils/constant';
+import toast from 'react-hot-toast';
 
 const RightIcon = '/assets/icons/right-lg.svg';
 
@@ -72,6 +73,11 @@ export default function ResetPassword() {
                                 label='Email Address'
                                 placeholder='Enter your email'
                                 value={email}
+                                onKeyDown={(e) => {
+                                    if (e.key === ' ') {
+                                      e.preventDefault();
+                                    }
+                                  }}
                                 onChange={(e) => setEmail(e.target.value)}
                                 disabled={isLoading}
                             />

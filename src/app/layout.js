@@ -4,20 +4,20 @@ import "./theme.css";
 import '../scss/main.scss';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { ToastContainer } from "react-toastify";
 import { AuthProvider } from "@/context/AuthContext";
+import { Toaster } from "react-hot-toast";
 const lexend = Lexend({
   variable: "--font-lexend",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600"],
-  display:'swap',
+  display: 'swap',
 });
 
 const funneldisplay = Funnel_Display({
   variable: "--font-funneldisplay",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700", "800"],
-  display:'swap',
+  display: 'swap',
 });
 
 export const metadata = {
@@ -30,22 +30,12 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${lexend.variable} ${funneldisplay.variable}`}>
         <AuthProvider>
-        {children}
+          {children}
         </AuthProvider>
-        <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="light"
-        toastClassName="custom-toast"
-        bodyClassName="custom-body"
-      />
+        <Toaster
+          position="top-center"
+          reverseOrder={false}
+        />
       </body>
     </html>
   );

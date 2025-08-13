@@ -52,7 +52,6 @@ export default function CourseBanner({
       const response = await getCourses(searchQuery);
       if (response.success) {
         setCourses(response.payload.data.slice(0, 3));
-        setAllCourse(response.payload.data);
       } else {
         console.error("Failed to fetch courses:", response.message);
       }
@@ -82,7 +81,7 @@ export default function CourseBanner({
   useEffect(() => {
     getAllCourses();
   }, []);
-  console.log(courses);
+
   return (
     <div className={styles.courseBanner}>
       <div className={styles.grid}>
@@ -107,7 +106,7 @@ export default function CourseBanner({
                 <input
                   type="text"
                   placeholder="Search for Course..."
-                  onChange={(e) => handleSearch(e.target.value)}
+                  onChange={(e) => handleSearch(e.target.value.trimStart())}
                   value={searchQuery}
                 />
                 <motion.div

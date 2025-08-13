@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from './input.module.scss';
 
-export default function Input({ name, type , label, placeholder, value, icon, onChange, onIconClick }) {  
+export default function Input({ name, type , label, placeholder, value, icon, onChange, onIconClick, onKeyDown}) {  
   return (
     <div className={styles.input}>
       <label>{label}</label>
@@ -12,6 +12,7 @@ export default function Input({ name, type , label, placeholder, value, icon, on
           placeholder={placeholder} 
           value={value}
           onChange={onChange} 
+          onKeyDown={onKeyDown}
         />
         {icon && (
           <div className={styles.iconAlignment} onClick={onIconClick}>

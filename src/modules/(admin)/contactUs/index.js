@@ -6,8 +6,9 @@ import Input from '@/compoents/input';
 import Textarea from '@/compoents/textarea';
 import Button from '@/compoents/button';
 import { sendMessage } from '@/compoents/api/contactus';
-import { toast } from 'react-toastify';
+
 import 'react-toastify/dist/ReactToastify.css';
+import toast from 'react-hot-toast';
 
 const ChatIcon = '/assets/icons/chat.svg';
 const EmailIcon = '/assets/icons/email-icon.svg';

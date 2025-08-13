@@ -15,7 +15,7 @@ export const getCourses = async ({
   courseType = "",
 }) => {
 
-  console.log("courseType", courseType);
+  console.log("courseType", searchQuery);
   try {
     const token = getAuthToken();
 
