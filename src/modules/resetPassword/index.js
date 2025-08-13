@@ -20,7 +20,7 @@ export default function ResetPassword() {
     const router = useRouter();
 
     const handleReset = () => {
-        let regex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+        let regex =/^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
         if (!email) {
             setError('Please enter your email address');
             return;

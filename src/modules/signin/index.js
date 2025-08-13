@@ -28,7 +28,7 @@ export default function Signin() {
     const trimmedValue = value.trim();
     if (!trimmedValue) return "Email is required.";
     if (trimmedValue.includes(' ')) return "Email cannot contain spaces.";
-    const re = /^\S+@\S+\.\S+$/;
+    const re = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
     if (!re.test(trimmedValue)) return "Enter a valid email address.";
     return "";
   };

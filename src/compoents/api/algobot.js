@@ -11,7 +11,7 @@ export const getAuthToken = () => {
 export const prchasedCourses = async () => {
     const token = getAuthToken()
     try {
-        const response = await fetch(`${BASEURL}/api/v1/payment/getMyCourseHistory`, {
+        const response = await fetch(`${BASEURL}/payment/getMyCourseHistory`, {
             headers: {
                 'Content-Type': 'application/json',
                 ['x-auth-token']: token,
@@ -27,7 +27,7 @@ export const prchasedCourses = async () => {
 export const getAlgobot = async (id = '') => {
     const token = getAuthToken()
     try {
-        const url = `${BASEURL}/api/v1/algoBot/getAllBot${id ? `?id=${id}` : ''}`;
+        const url = `${BASEURL}/algoBot/getAllBot${id ? `?id=${id}` : ''}`;
         const response = await fetch(url, {
             headers: {
                 'Content-Type': 'application/json',

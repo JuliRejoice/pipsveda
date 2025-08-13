@@ -76,6 +76,7 @@ export default function CourseDetails({ params , selectedCourse , setSelectedCou
   const [ isPaid, setIsPaid] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState(null);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const id = params;
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -173,9 +174,21 @@ export default function CourseDetails({ params , selectedCourse , setSelectedCou
 
 
   const handlePayment = async () => {
-    console.log("Payment handler called");
-    const response = await getPaymentUrl({ success_url:window.location.href,cancel_url:window.location.href, courseId: id });
-    router.push(response?.payload?.data?.checkout_url);
+    try {
+      setIsProcessingPayment(true);
+      console.log("Payment handler called");
+      const response = await getPaymentUrl({ 
+        success_url: window.location.href,
+        cancel_url: window.location.href, 
+        courseId: id 
+      });
+      router.push(response?.payload?.data?.checkout_url);
+    } catch (error) {
+      console.error("Payment error:", error);
+      // Handle error appropriately
+    } finally {
+      setIsProcessingPayment(false);
+    }
   };
 
   const renderPaymentModal = () => {
@@ -308,9 +321,10 @@ export default function CourseDetails({ params , selectedCourse , setSelectedCou
           </div>
           {!isPaid && <div>
             <Button
-              text="Enroll Now"
-              icon={RightBlackIcon}
-              onClick={() => handlePayment()}
+              text={isProcessingPayment ? 'Enrolling...' : 'Enroll Now'}
+              icon={isProcessingPayment ? null : RightBlackIcon}
+              onClick={handlePayment}
+              disabled={isProcessingPayment}
             />
           </div>}
         </div>
