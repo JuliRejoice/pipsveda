@@ -108,7 +108,11 @@ export default function NewPassword() {
                       e.preventDefault();
                     }
                   }}
-                onChange={(e) => setNewPassword(e.target.value)}
+                onChange={(e) =>{ setNewPassword(e.target.value);
+                  setErrors({
+                    newPassword: ""
+                  });
+                }}
               />
               {errors.newPassword && (
                 <span className={styles.error}>{errors.newPassword}</span>
@@ -129,7 +133,11 @@ export default function NewPassword() {
                 onIconClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 icon={!showConfirmPassword ? EyeIcon : EyeSlashIcon}
                 value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
+                onChange={(e) => { setConfirmPassword(e.target.value);
+                  setErrors({
+                    confirmPassword: ""
+                  });
+                }}
               />
               {errors.confirmPassword && (
                 <span className={styles.error}>{errors.confirmPassword}</span>

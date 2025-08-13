@@ -8,7 +8,7 @@ export const getAuthToken = () => {
     return null;
 };
 
-export const prchasedCourses = async () => {
+export const purchasedCourses = async () => {
     const token = getAuthToken()
     try {
         const response = await fetch(`${BASEURL}/payment/getMyCourseHistory`, {

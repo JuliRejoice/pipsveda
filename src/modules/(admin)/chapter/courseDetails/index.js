@@ -68,12 +68,12 @@ const CourseDetailsSkeleton = () => (
   </div>
 );
 
-export default function CourseDetails({ params , selectedCourse , setSelectedCourse }) {
+export default function CourseDetails({ params, selectedCourse, setSelectedCourse }) {
   const [chapters, setChapters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedChapter, setSelectedChapter] = useState(null);
   const [error, setError] = useState(null);
-  const [ isPaid, setIsPaid] = useState(false);
+  const [isPaid, setIsPaid] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
@@ -94,7 +94,8 @@ export default function CourseDetails({ params , selectedCourse , setSelectedCou
       setLoading(true);
       const data = await getChapters(id);
       setChapters(data?.payload?.data || []);
-      setSelectedCourse(data?.payload?.data?.[0].courseId._id || null);
+      console.log(data?.payload?.data?.[0].courseId)
+      setSelectedCourse(data?.payload?.data?.[0].courseId || null);
       setIsPaid(data?.payload.isPayment);
 
       if (data?.payload?.data?.length > 0) {
@@ -161,7 +162,7 @@ export default function CourseDetails({ params , selectedCourse , setSelectedCou
   //   }
   // }, [])
 
- 
+
   //   document.addEventListener('visibilitychange', function() {
   //     if (document.hidden) {
   //         alert('Screen recording detected! Please stop recording.');
@@ -177,10 +178,10 @@ export default function CourseDetails({ params , selectedCourse , setSelectedCou
     try {
       setIsProcessingPayment(true);
       console.log("Payment handler called");
-      const response = await getPaymentUrl({ 
+      const response = await getPaymentUrl({
         success_url: window.location.href,
-        cancel_url: window.location.href, 
-        courseId: id 
+        cancel_url: window.location.href,
+        courseId: id
       });
       router.push(response?.payload?.data?.checkout_url);
     } catch (error) {
@@ -199,12 +200,12 @@ export default function CourseDetails({ params , selectedCourse , setSelectedCou
         <img src={SuccessIcon} alt="Success" className={styles.paymentIcon} />
         <h3>Payment Successful!</h3>
         <p>Thank you for your purchase. You now have full access to this course.</p>
-        <Button 
-          text="Start Learning" 
+        <Button
+          text="Start Learning"
           onClick={() => {
             setShowPaymentModal(false);
-            setIsPaid(false); 
-          }} 
+            setIsPaid(false);
+          }}
         />
       </div>
     ) : (
@@ -213,16 +214,16 @@ export default function CourseDetails({ params , selectedCourse , setSelectedCou
         <h3>Payment Cancelled</h3>
         <p>Your payment was not completed. Please try again to access the course.</p>
         <div className={styles.modalButtons}>
-          <OutlineButton 
-            text="Try Again" 
+          <OutlineButton
+            text="Try Again"
             onClick={() => {
               setShowPaymentModal(false);
               handlePayment();
-            }} 
+            }}
           />
-          <Button 
-            text="Close" 
-            onClick={() => setShowPaymentModal(false)} 
+          <Button
+            text="Close"
+            onClick={() => setShowPaymentModal(false)}
             style={{ marginLeft: '10px' }}
           />
         </div>
@@ -297,7 +298,7 @@ export default function CourseDetails({ params , selectedCourse , setSelectedCou
       <div className={styles.textStyle}>
         <h3>{course.CourseName || 'Course Name Not Available'}</h3>
         <p>{course.description || 'No description available'}</p>
-        <div style={{ display: 'flex', justifyContent: 'space-between' , marginBottom: '20px' }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
           <div className={styles.allIconTextAlignment}>
             <div className={styles.iconText}>
               <ClockIcon />
@@ -351,8 +352,8 @@ export default function CourseDetails({ params , selectedCourse , setSelectedCou
                           <img src={LockIcon} alt="Locked" />
                           <p>Enroll to unlock this video</p>
                         </div>
-                        <img 
-                          src={`https://img.youtube.com/vi/${selectedChapter.chapterVideo.split('v=')[1]}/hqdefault.jpg` } 
+                        <img
+                          src={`https://img.youtube.com/vi/${selectedChapter.chapterVideo.split('v=')[1]}/hqdefault.jpg`}
                           alt="Video thumbnail"
                           className={styles.videoThumbnail}
                         />

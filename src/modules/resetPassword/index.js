@@ -78,7 +78,9 @@ export default function ResetPassword() {
                                       e.preventDefault();
                                     }
                                   }}
-                                onChange={(e) => setEmail(e.target.value)}
+                                onChange={(e) =>{ setEmail(e.target.value);
+                                    setError(null);
+                                }}
                                 disabled={isLoading}
                             />
                             {error && <span className={styles.error}>{error}</span>}

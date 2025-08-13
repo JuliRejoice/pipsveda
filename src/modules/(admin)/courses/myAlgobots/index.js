@@ -3,24 +3,26 @@ import styles from './myAlgobots.module.scss';
 import Button from '@/compoents/button';
 import DateIcon from '@/icons/dateIcon';
 import DownloadIcon from '@/icons/downloadIcon';
-export default function MyAlgobots() {
+export default function MyAlgobots({ algobotCourses }) {
   return (
     <div className={styles.myAlgobots}>
       <div className={styles.cardgrid}>
         {
-            [...Array(3)].map(()=> {
+            algobotCourses?.map((algobotCourse, index)=> {
                 return(
                      <div className={styles.cardgridItems}>
             <Button text="Pending Setup"/>
             <div className={styles.twoContentAlignment}>
                 <div>
-                    <p>Scalping Master Pro</p>
-                    <span>High-Frequency Scalping</span>
+                    <p>{algobotCourse?.botId?.botName}</p>
+                    <span>{algobotCourse?.botId?.botType || "High-Frequency Scalping"}</span>
                 </div>
                 <div className={styles.dateShow}>
                     <DateIcon/>
                     <span>
-                        08/08/2025
+                        {algobotCourse?.botId?.createdAt 
+                            ? new Date(algobotCourse.botId.createdAt).toLocaleDateString('en-GB') 
+                            : "08/08/2025"}
                     </span>
                 </div>
             </div>

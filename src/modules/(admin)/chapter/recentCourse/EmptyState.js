@@ -2,7 +2,7 @@
 import React from "react";
 import styles from './recentCourse.module.scss';
 
-function EmptyState() {
+function EmptyState({ title, description }) {
   return (
     <div className={styles.emptyState}>
       <div className={styles.emptyImage}>
@@ -19,9 +19,9 @@ function EmptyState() {
           />
         </svg>
       </div>
-      <h3>No Courses Available</h3>
+      <h3>{title || 'No Courses Available'}</h3>
       <p>
-        There are no courses to display at the moment. Please check back later.
+        {description || 'There are no courses to display at the moment. Please check back later.'}
       </p>
     </div>
   );
