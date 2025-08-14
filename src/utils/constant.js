@@ -7,7 +7,7 @@ export const errorMessages = {
     "auth/network-request-failed": "Network error. Please try again.",
     "invalid-credential": "Your credentials are invalid.",
     "default": "Login failed. Please try again.",
-
+    "Email already exists." : "Email already exists."
 };
 
 

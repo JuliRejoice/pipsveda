@@ -10,6 +10,7 @@ import { sign } from "crypto";
 import { signUp } from "@/compoents/api/auth";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
+import { errorMessages } from "@/utils/constant";
 const RightIcon = "/assets/icons/right-lg.svg";
 const EyeIcon = "/assets/icons/eye.svg";
 const EyeSlashIcon = "/assets/icons/eye-slash.svg";
@@ -106,14 +107,14 @@ const validateConfirmPassword = (value, password) => {
         }
         else{
           setIsSubmitting(false);
-          toast.error(errorMessages[data?.message] ?? "User Signup failed. Please try again.");
+          toast.error(errorMessages[response?.message] ?? "User Signup failed. Please try again.");
         }
       })
       .catch((error) => {
         setIsSubmitting(false);
         setErrors((prev) => ({
           ...prev,
-          submit: error?.message || "User Signup failed. Please try again.",
+          submit: errorMessages[response?.message]|| "User Signup failed. Please try again.",
         }));
       });
   };
