@@ -4,13 +4,29 @@
 
 .myAlgobots {
     padding: 30px 0 0 0;
+
+    .emptyState{
+        grid-column: 1 / span 4;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 3rem 1rem;
+        background: #f9fafb; // light gray background
+        border-radius: 16px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+        margin: 2rem auto;
+        max-width: 600px;
+    }
+
     .cardgrid {
         display: grid;
-        grid-template-columns: repeat(3 , 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 30px;
 
         .cardgridItems {
-                 background-color: var(--bg-light-700);
+            background-color: var(--bg-light-700);
             padding: 30px;
             @include first-clip-path;
 
@@ -26,6 +42,12 @@
                 gap: 6px;
 
                 span {
+                    display: block;
+                    @include font16normal;
+                    color: var(--black-500);
+                    line-height: 4px;
+                }
+                .spanStyle{
                     display: block;
                     @include font16normal;
                     color: var(--black-500);
@@ -46,7 +68,7 @@
                 span {
                     @include font16normal;
                     display: block;
-                               background: var(--button-gradient);
+                    background: var(--button-gradient);
                     background-clip: text;
                     -webkit-background-clip: text;
                     -webkit-text-fill-color: transparent;
@@ -68,6 +90,12 @@
                         display: block;
                         @include font16normal;
                         color: var(--grey-600);
+                        line-height: 4px;
+                    }
+                    .spanStyle{
+                        display: block;
+                        @include font16normal;
+                        color: var(--grey-600);
                     }
                 }
                 
@@ -80,6 +108,12 @@
                 }
 
                 span {
+                    display: block;
+                    @include font16normal;
+                    color: var(--grey-600);
+                    line-height: 4px;
+                }
+                .spanStyle{
                     display: block;
                     @include font16normal;
                     color: var(--grey-600);

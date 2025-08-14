@@ -7,7 +7,14 @@ export const errorMessages = {
     "auth/network-request-failed": "Network error. Please try again.",
     "invalid-credential": "Your credentials are invalid.",
     "default": "Login failed. Please try again.",
-    "Email already exists." : "Email already exists."
+    "Email already exists." : "Email already exists.",
+    "Name already exists." : "Name already exists.",
+    "Invalid role." : "Invalid role.",
+    "Internal server error." : "Something Wrong in Server.",
+   "Token required." : "Login Failed. Please try again.",
+   "Invalid token." : "Login Failed. Please try again.",
+   "Unauthorized." : "You Don't have permission to access this page.",
+   "OTP expired." : "OTP expired. Please try again.",
 };
 
 

@@ -16,7 +16,6 @@ export default function ArbitrageAlgo() {
         const fetchAlgobotData = async () => {
             try {
                 const response = await getAlgobot();
-                console.log("🚀 ~ fetchAlgobotData ~ response:", response)
                 setAlgobotData(response.payload.data);
             } catch (error) {
                 console.error('Error fetching algobot data:', error);
@@ -25,7 +24,6 @@ export default function ArbitrageAlgo() {
         fetchAlgobotData();
     }, []);
 
-    console.log("🚀 ~ ArbitrageAlgo ~ algobotData:", algobotData)
     return (
         <div className={styles.arbitrageAlgoAlignment}>
             <div className={styles.title}>
@@ -43,14 +41,34 @@ export default function ArbitrageAlgo() {
                                 <div className={styles.details}>
                                     <h3>{item.botName}</h3>
                                     <p>{item.description}</p>
-                                    <div className={styles.twoContent}>
-                                        <div className={styles.text}>
-                                            <span>6 months</span>
-                                            <h5>$200</h5>
+                                    <div className={styles.twoColgrid}>
+                                        <div className={styles.items}>
+                                            <div className={styles.contentAlignment}>
+                                                <span>6 months</span>
+                                                <h4>$200</h4>
+                                            </div>
+                                            <div className={styles.contentAlignment}>
+                                                <span>M.R.P :</span>
+                                                <h5>$200</h5>
+                                            </div>
+                                            <div className={styles.contentAlignment}>
+                                                <span>Discount :</span>
+                                                <h5 className={styles.dangerText}>-0%</h5>
+                                            </div>
                                         </div>
-                                        <div className={styles.text}>
-                                            <span>1 months</span>
-                                            <h5>$50</h5>
+                                        <div className={styles.items}>
+                                            <div className={styles.contentAlignment}>
+                                                <span>6 months</span>
+                                                <h4>$200</h4>
+                                            </div>
+                                            <div className={styles.contentAlignment}>
+                                                <span>M.R.P :</span>
+                                                <h5>$200</h5>
+                                            </div>
+                                            <div className={styles.contentAlignment}>
+                                                <span>Discount :</span>
+                                                <h5 className={styles.dangerText}>-0%</h5>
+                                            </div>
                                         </div>
                                     </div>
                                     <OutlineButton

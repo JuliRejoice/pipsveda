@@ -13,9 +13,9 @@ export const getCourses = async ({
   limit = 10,
   searchQuery = "",
   courseType = "",
+  id = ""
 }) => {
 
-  console.log("courseType", searchQuery);
   try {
     const token = getAuthToken();
 
@@ -37,6 +37,9 @@ export const getCourses = async ({
     }
     if (courseType) {
       params.append("courseType", courseType);
+    }
+    if (id) {
+      params.append("id", id);
     }
 
     const response = await fetch(

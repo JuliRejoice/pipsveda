@@ -35,7 +35,6 @@ export default function ResetPassword() {
 
         forgetPassword({ email })
             .then((data) => {
-                console.log(data)
                 if(data.success) {
                     localStorage.setItem('email', email);
                     toast.success('OTP sent successfully.');

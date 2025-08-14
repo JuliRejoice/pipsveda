@@ -36,7 +36,6 @@ export default function Sidebar({ setToogle, toogle }) {
   }, [pathname]);
 
   const handleTabClick = (tab) => {
-    console.log(tab);
     setProfileDropdown(false);
     const goTo = "/" + tab;
     router.replace(goTo);
@@ -84,7 +83,7 @@ export default function Sidebar({ setToogle, toogle }) {
             <span>Dashboard</span>
           </div>
           <div className={styles.relative}>
-            <Link href="/courses/pre-recorded">
+            <Link href="#">
             <div
               className={`${styles.menu} ${
               pathname.includes("/courses")

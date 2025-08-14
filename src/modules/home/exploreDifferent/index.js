@@ -36,58 +36,31 @@ function SamplePrevArrow(props) {
 const cardData = [
     {
         id: 1,
-        title: "Forex Trading",
+        title: "Recorded Courses",
         description:
-            "Lorem Ipsum simply dummy text of the printing typesetting industry Lorem Ipsum is simply dummy text of the printing.",
+            "Learn at your own pace with our extensive library of pre-recorded courses. Access high-quality content anytime, anywhere, and master trading at your convenience.",
         image: CardImage1,
-        courses: "112 Courses",
+        courses: "85+ Recorded Courses",
         icon: BookIcon,
     },
     {
         id: 2,
-        title: "Crypto Trading",
+        title: "In-Person Training",
         description:
-            "Learn the fundamentals of cryptocurrency and blockchain technology with our expert-designed beginner courses.",
+            "Experience hands-on learning with our expert instructors in a classroom setting. Get personalized guidance and real-time feedback to accelerate your trading journey.",
         image: CardImage2,
-        courses: "87 Courses",
+        courses: "30+ In-Person Programs",
         icon: BookIcon,
     },
     {
         id: 3,
-        title: "SIP Compounding",
+        title: "Live Webinars",
         description:
-            "Understand stock market trading strategies and analytics used by professionals to maximize profit.",
+            "Join interactive live sessions with market experts. Ask questions, participate in discussions, and get your trading queries resolved in real-time.",
         image: CardImage3,
-        courses: "135 Courses",
+        courses: "Weekly Live Sessions",
         icon: BookIcon,
-    },
-    {
-        id: 4,
-        title: "Forex Trading",
-        description:
-            "Lorem Ipsum simply dummy text of the printing typesetting industry Lorem Ipsum is simply dummy text of the printing.",
-        image: CardImage1,
-        courses: "112 Courses",
-        icon: BookIcon,
-    },
-    {
-        id: 5,
-        title: "Crypto Trading",
-        description:
-            "Learn the fundamentals of cryptocurrency and blockchain technology with our expert-designed beginner courses.",
-        image: CardImage2,
-        courses: "87 Courses",
-        icon: BookIcon,
-    },
-    {
-        id: 6,
-        title: "SIP Compounding",
-        description:
-            "Understand stock market trading strategies and analytics used by professionals to maximize profit.",
-        image: CardImage3,
-        courses: "135 Courses",
-        icon: BookIcon,
-    },
+    }
 ];
 const containerVariants = {
     hidden: { opacity: 0 },

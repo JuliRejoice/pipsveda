@@ -22,12 +22,10 @@ export default function Profile() {
         }
         return true;
     }
-console.log(user)
     const handleEditProfile = async () => {
         if (validateUser()) {
           const res = await editProfile(user._id,user);
           if(res.success){
-            console.log(res.payload)
             setCookie("user", JSON.stringify(res.payload));
             toast.success("Profile updated successfully");
           }

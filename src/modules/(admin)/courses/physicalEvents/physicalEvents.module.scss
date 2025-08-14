@@ -4,43 +4,19 @@
 
 .physicalEventsAlignment {
 
-    .emptyState {
-        grid-column: 1 / span 3;
+    .emptyState{
+        grid-column: 1 / span 4;
         display: flex;
         flex-direction: column;
-        align-items: center;
         justify-content: center;
+        align-items: center;
         text-align: center;
-        padding: 60px 20px;
-        background: transparent;
-        border: 1px solid #E5E7EB;
-        border-radius: 12px;
-        margin: 20px 0;
-
-        .emptyImage {
-            margin-bottom: 24px;
-
-            svg {
-                width: 80px;
-                height: 80px;
-                opacity: 0.8;
-            }
-        }
-
-        h3 {
-            font-size: 18px;
-            font-weight: 600;
-            color: #111827;
-            margin-bottom: 8px;
-        }
-
-        p {
-            color: #6B7280;
-            font-size: 14px;
-            line-height: 1.5;
-            max-width: 400px;
-            margin: 0 auto;
-        }
+        padding: 3rem 1rem;
+        background: #f9fafb; // light gray background
+        border-radius: 16px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+        margin: 2rem auto;
+        max-width: 600px;
     }
 
     .cardgrid {

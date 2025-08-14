@@ -74,10 +74,6 @@ export default function Courses() {
         fetchCourses();
     }, []);
 
-    console.log("🚀 ~ Courses ~ recordedCourses:", recordedCourses)
-    console.log("🚀 ~ Courses ~ liveCourses:", liveCourses)
-    console.log("🚀 ~ Courses ~ physicalCourses:", physicalCourses)
-    console.log("🚀 ~ Courses ~ algobotCourses:", algobotCourses)
 
     const renderTabContent = () => {
         switch(activeTab) {

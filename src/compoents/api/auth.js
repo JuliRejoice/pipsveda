@@ -54,7 +54,6 @@ export const forgetPassword = async (data) => {
       },
       body: JSON.stringify(data),
     });
-    console.log("🚀 ~ forgetPassword ~ data:", response)
     return await response.json();
   } catch (error) {
     console.error('Error during password reset request:', error);

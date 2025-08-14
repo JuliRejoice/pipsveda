@@ -118,7 +118,6 @@ const validateConfirmPassword = (value, password) => {
         }));
       });
   };
-  console.log(errors);
   return (
     <div className={styles.signup}>
       <div className="container">

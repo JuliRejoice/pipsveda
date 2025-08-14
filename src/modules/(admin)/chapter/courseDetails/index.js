@@ -5,7 +5,7 @@ import ClockIcon from "@/icons/clockIcon";
 import BathIcon from "@/icons/bathIcon";
 import StarIcon from "@/icons/starIcon";
 import ProfileGroupIcon from "@/icons/profileGroupIcon";
-import { getChapters, getPaymentUrl } from "@/compoents/api/dashboard";
+import { getChapters, getCourses, getPaymentUrl } from "@/compoents/api/dashboard";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import OutlineButton from "@/compoents/outlineButton";
@@ -92,10 +92,10 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
   const fetchChapters = async () => {
     try {
       setLoading(true);
+      const res = await getCourses({id: params});
+      setSelectedCourse(res?.payload?.data?.[0] || {});
       const data = await getChapters(id);
       setChapters(data?.payload?.data || []);
-      console.log(data?.payload?.data?.[0].courseId)
-      setSelectedCourse(data?.payload?.data?.[0].courseId || null);
       setIsPaid(data?.payload.isPayment);
 
       if (data?.payload?.data?.length > 0) {
@@ -177,7 +177,6 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
   const handlePayment = async () => {
     try {
       setIsProcessingPayment(true);
-      console.log("Payment handler called");
       const response = await getPaymentUrl({
         success_url: window.location.href,
         cancel_url: window.location.href,
@@ -289,15 +288,12 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     );
   }
 
-  const course = chapters[0]?.courseId || {};
-  console.log(isPaid)
-  console.log(selectedChapter)
   return (
     <div className={styles.courseDetailsBox}>
       {renderPaymentModal()}
       <div className={styles.textStyle}>
-        <h3>{course.CourseName || 'Course Name Not Available'}</h3>
-        <p>{course.description || 'No description available'}</p>
+        <h3>{selectedCourse?.CourseName || 'Course Name Not Available'}</h3>
+        <p>{selectedCourse?.description || 'No description available'}</p>
         <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '20px' }}>
           <div className={styles.allIconTextAlignment}>
             <div className={styles.iconText}>
@@ -306,7 +302,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
             </div>
             <div className={styles.iconText}>
               <BathIcon />
-              <span>{course.instructor || 'Instructor'}</span>
+              <span>{selectedCourse?.instructor || 'Instructor'}</span>
             </div>
             <div className={styles.iconText}>
               <StarIcon />
@@ -317,7 +313,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
               <span>1234</span>
             </div>
             <div className={styles.iconText}>
-              <span>Last-Update: {new Date(course.updatedAt || new Date()).toLocaleDateString('en-GB')} | English</span>
+              <span>Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString('en-GB')} | English</span>
             </div>
           </div>
           {!isPaid && <div>
