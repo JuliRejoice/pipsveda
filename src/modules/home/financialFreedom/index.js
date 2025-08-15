@@ -1,7 +1,7 @@
 'use client'
 import Slider from "react-slick";
 import { motion, useInView, useAnimation, AnimatePresence } from 'framer-motion';
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from './financialFreedom.module.scss';
 import StarIcon from "@/icons/starIcon";
 import ProfileIcon from "@/icons/profileIcon";
@@ -9,8 +9,10 @@ import ClockIcon from "@/icons/clockIcon";
 import Button from "@/compoents/button";
 import Arrowicon from "@/icons/arrowicon";
 import classNames from "classnames";
+import { getCourseByType } from "@/compoents/api/dashboard";
 const Card4 = '/assets/images/card4.png';
 const VecImage = '/assets/images/vec.png';
+
 function SampleNextArrow(props) {
     const { className, style, onClick } = props;
     return (
@@ -34,7 +36,34 @@ function SamplePrevArrow(props) {
         </div>
     );
 }
+
 export default function FinancialFreedom() {
+    const [courses, setCourses] = useState({
+        recorded: [],
+        live: [],
+        physical: []
+    });
+    const [activeType, setActiveType] = useState('recorded');
+
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const response = await getCourseByType();
+                console.log('API Response:', response);
+                if (response && response.payload && response.payload.courses) {
+                    setCourses({
+                        recorded: response.payload.courses.recorded.slice(0, 5) || [],
+                        live: response.payload.courses.live.slice(0, 5) || [],
+                        physical: response.payload.courses.physical.slice(0, 5) || []
+                    });
+                }
+            } catch (error) {
+                console.error('Error fetching courses:', error);
+            }
+        };
+        fetchCourses();
+    }, []);
+
     const settings = {
         dots: false,
         infinite: false,
@@ -53,10 +82,21 @@ export default function FinancialFreedom() {
                     dots: true
                 }
             },
-
         ]
-
     };
+
+    const courseTypes = [
+        { id: 'recorded', label: 'On demand courses' },
+        { id: 'live', label: 'Live Online Courses' },
+        { id: 'physical', label: 'In-Person Courses' }
+    ];
+
+    const currentCourses = courses[activeType] || [];
+
+    const handleEnroll = (courseId) => {
+        console.log('Enroll button clicked for course:', courseId);
+    };
+
     return (
         <div className={styles.financialFreedom}>
             <div className={styles.vecImage}>
@@ -97,10 +137,9 @@ export default function FinancialFreedom() {
                             hidden: { opacity: 0 }
                         }}
                     >
-                       
-                        {['On demand courses', 'Live Online Courses', 'In-Person Courses'].map((text, index) => (
+                        {courseTypes.map((type) => (
                             <motion.div
-                                key={index}
+                                key={type.id}
                                 className={styles.btnwrapper}
                                 variants={{
                                     visible: {
@@ -114,8 +153,12 @@ export default function FinancialFreedom() {
                                     }
                                 }}
                             >
-                                <button>
-                                    {text}
+                                <button 
+                                    className={`${styles.button} ${activeType === type.id ? styles.active : ''}`}
+                                    onClick={() => setActiveType(type.id)}
+                                    aria-pressed={activeType === type.id}
+                                >
+                                    {type.label}
                                 </button>
                             </motion.div>
                         ))}
@@ -128,57 +171,58 @@ export default function FinancialFreedom() {
                         transition={{ duration: 0.7, delay: 0.3 }}
                     >
                         <Slider {...settings}>
-                            {
-                                [...Array(5)].map(() => {
-                                    return (
-                                        <div>
-                                            <div className={styles.mainCard}>
-                                                <div className={styles.card}>
-                                                    <div className={styles.grid}>
-                                                        <div className={styles.griditems}>
-                                                            <div className={styles.img}>
-                                                                <img src={Card4} alt="Card4" />
+                            {currentCourses.map((course, index) => (
+                                <div key={index}>
+                                    <div className={styles.mainCard}>
+                                        <div className={styles.card}>
+                                            <div className={styles.grid}>
+                                                <div className={styles.griditems}>
+                                                    <div className={styles.img}>
+                                                        <img 
+                                                            src={course.courseVideo || Card4} 
+                                                            alt={course.CourseName || 'Course Image'}
+                                                            onError={(e) => {
+                                                                e.target.onerror = null;
+                                                                e.target.src = Card4;
+                                                            }}
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <div className={styles.griditems}>
+                                                    <div>
+                                                        <h3>{course.CourseName || 'Course Title'}</h3>
+                                                        <div className={styles.allIconText}>
+                                                            <div className={styles.icontext}>
+                                                                <StarIcon />
+                                                                <span>{course.rating || '4.8'}</span>
+                                                            </div>
+                                                            <div className={styles.icontext}>
+                                                                <ProfileIcon />
+                                                                <span>{course.students || '0'}</span>
+                                                            </div>
+                                                            <div className={styles.icontext}>
+                                                                <ClockIcon />
+                                                                <span>{course.duration || '12 hours'}</span>
                                                             </div>
                                                         </div>
-                                                        <div className={styles.griditems}>
-                                                            <div>
-                                                                <h3>
-                                                                    Crypto Currency for Beginners
-                                                                </h3>
-                                                                <div className={styles.allIconText}>
-                                                                    <div className={styles.icontext}>
-                                                                        <StarIcon />
-                                                                        <span>4.8</span>
-                                                                    </div>
-                                                                    <div className={styles.icontext}>
-                                                                        <ProfileIcon />
-                                                                        <span>1234</span>
-                                                                    </div>
-                                                                    <div className={styles.icontext}>
-                                                                        <ClockIcon />
-                                                                        <span>12 hours</span>
-                                                                    </div>
-                                                                </div>
-                                                                <div className={styles.textAlignment}>
-                                                                    <h4>₹785</h4>
-                                                                    <button>Beginner Level</button>
-                                                                </div>
-                                                            </div>
-                                                            <div className={styles.btnWidthfull}>
-                                                                <Button text="Enroll Now" />
-                                                            </div>
+                                                        <div className={styles.textAlignment}>
+                                                            <h4>${course.price || '0'}</h4>
+                                                            <button>{course.level || 'Beginner Level'}</button>
                                                         </div>
+                                                    </div>
+                                                    <div className={styles.btnWidthfull}>
+                                                        <Button text="Enroll Now" onClick={() => handleEnroll(course.id)} />
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    )
-                                })
-                            }
+                                    </div>
+                                </div>
+                            ))}
                         </Slider>
                     </motion.div>
                 </div>
             </div>
         </div>
-    )
+    );
 }

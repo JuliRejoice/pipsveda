@@ -132,6 +132,12 @@
                 img {
                     transition: .3s ease-in-out;
                 }
+
+                &.active {
+                    background: var(--button-gradient);
+                    color: var(--text-white);
+                    // Add any other active state styles
+                  }
             }
         }
 
@@ -287,6 +293,8 @@
                     }
                 }
             }
+
+           
 
             .mainCard {
                 padding: 1px;

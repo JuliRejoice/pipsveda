@@ -1,5 +1,5 @@
 'use client'
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useInView, useAnimation, stagger, animate } from 'framer-motion';
 import styles from './exploreDifferent.module.scss';
 const CardImage1 = '/assets/images/card1.png';
@@ -8,6 +8,7 @@ const CardImage3 = '/assets/images/card3.png';
 import Slider from "react-slick";
 import Arrowicon from '@/icons/arrowicon';
 import classNames from 'classnames';
+import { getCourseByType, getCourses } from '@/compoents/api/dashboard';
 const BookIcon = '/assets/icons/book.svg'
 const RightIcon = '/assets/icons/right-black.svg'
 function SampleNextArrow(props) {
@@ -33,35 +34,7 @@ function SamplePrevArrow(props) {
         </div>
     );
 }
-const cardData = [
-    {
-        id: 1,
-        title: "Recorded Courses",
-        description:
-            "Learn at your own pace with our extensive library of pre-recorded courses. Access high-quality content anytime, anywhere, and master trading at your convenience.",
-        image: CardImage1,
-        courses: "85+ Recorded Courses",
-        icon: BookIcon,
-    },
-    {
-        id: 2,
-        title: "In-Person Training",
-        description:
-            "Experience hands-on learning with our expert instructors in a classroom setting. Get personalized guidance and real-time feedback to accelerate your trading journey.",
-        image: CardImage2,
-        courses: "30+ In-Person Programs",
-        icon: BookIcon,
-    },
-    {
-        id: 3,
-        title: "Live Webinars",
-        description:
-            "Join interactive live sessions with market experts. Ask questions, participate in discussions, and get your trading queries resolved in real-time.",
-        image: CardImage3,
-        courses: "Weekly Live Sessions",
-        icon: BookIcon,
-    }
-];
+
 const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -85,7 +58,10 @@ const itemVariants = {
     }
 };
 
+
+
 export default function ExploreDifferent() {
+    const [courses, setCourses] = useState([]);
     const controls = useAnimation();
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, amount: 0.1 });
@@ -96,6 +72,49 @@ export default function ExploreDifferent() {
         }
     }, [isInView, controls]);
 
+
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                const response = await getCourseByType();
+                console.log(response);
+                setCourses(response.payload.courses);
+            } catch (error) {
+                console.error('Error fetching courses:', error);
+            }
+        };
+        fetchCourses();
+    }, []);
+
+    const cardData = [
+        {
+            id: 1,
+            title: "Recorded Courses",
+            description:
+                "Learn at your own pace with our extensive library of pre-recorded courses. Access high-quality content anytime, anywhere, and master trading at your convenience.",
+            image: CardImage1,
+            courses: `${courses?.recorded?.length} Recorded Courses`,
+            icon: BookIcon,
+        },
+        {
+            id: 2,
+            title: "In-Person Training",
+            description:
+                "Experience hands-on learning with our expert instructors in a classroom setting. Get personalized guidance and real-time feedback to accelerate your trading journey.",
+            image: CardImage2,
+            courses: `${courses?.physical?.length} In-Person Programs`,
+            icon: BookIcon,
+        },
+        {
+            id: 3,
+            title: "Live Webinars",
+            description:
+                "Join interactive live sessions with market experts. Ask questions, participate in discussions, and get your trading queries resolved in real-time.",
+            image: CardImage3,
+            courses: `${courses?.live?.length} Live Sessions`,
+            icon: BookIcon,
+        }
+    ];
     const settings = {
         dots: false,
         infinite: true,

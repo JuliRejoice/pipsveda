@@ -27,8 +27,40 @@ export const purchasedCourses = async () => {
 export const getAlgobot = async (id = '') => {
     const token = getAuthToken()
     try {
-        const url = `${BASEURL}/algoBot/getAllBot${id ? `?id=${id}` : ''}`;
+        const url = `${BASEURL}/strategies${id ? `?id=${id}` : ''}`;
         const response = await fetch(url, {
+            headers: {
+                'Content-Type': 'application/json',
+                ['x-auth-token']: token,
+            }
+        })
+        return await response.json();
+    } catch (error) {
+        console.log("error", error)
+        throw error;
+    }
+}
+
+export const getOneBot = async (id) => {
+    const token = getAuthToken()
+    try {
+        const response = await fetch(`${BASEURL}/strategies/${id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                ['x-auth-token']: token,
+            }
+        })
+        return await response.json();
+    } catch (error) {
+        console.log("error", error)
+        throw error;
+    }
+}
+
+export const getPlan = async (id) => {
+    const token = getAuthToken()
+    try {
+        const response = await fetch(`${BASEURL}/strategyPlan/all/${id}`, {
             headers: {
                 'Content-Type': 'application/json',
                 ['x-auth-token']: token,

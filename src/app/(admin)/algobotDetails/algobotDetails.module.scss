@@ -77,7 +77,10 @@
     .box {
       height: 440px;
       background-color: #f7f8fa;
-      border-radius: 12px;
+      img{
+        border-radius: 12px;
+
+      }
     }
 
     p {
@@ -133,113 +136,226 @@
     }
   }
 
-  .coursePlan {
-    .sbutitle {
-      padding: 50px 0 18px 0;
-      border-bottom: 1px solid var(--border-color5);
-      h2 {
-        @include heading20;
-        color: var(--black-500);
+
+}
+
+.coursePlan {
+  .sbutitle {
+    padding: 50px 0 18px 0;
+    border-bottom: 1px solid var(--border-color5);
+
+    h2 {
+      @include heading20;
+      color: var(--black-500);
+    }
+  }
+
+}
+
+.planGrid {
+  display: grid;
+  padding: 20px 0 0 0;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 20px;
+
+  @media (max-width:1500px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .planGridItems {
+    background-color: #f7f8fa;
+    @include first-clip-path;
+    border-radius: 12px;
+    padding: 35px 30px;
+
+    .childBox {
+      background-color: var(--bg-white);
+      padding: 14px;
+      border-radius: 10px;
+
+      .contentAlignment {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        span {
+          display: block;
+          @include font16normal;
+          color: var(--grey-600);
+
+          &.redText {
+            color: #CE4553;
+          }
+        }
       }
     }
 
-    .planGrid {
-      display: grid;
-      padding: 20px 0 0 0;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 20px;
+    button {
+      padding: 12px 24px;
+      font-size: 14px;
+    }
 
-      @media (max-width:1500px) {
-        grid-template-columns: repeat(3 , 1fr);
+    .counterAlignment {
+      padding: 14px 0 20px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .icons {
+        border: 1px solid #6F756D;
+        width: 20px;
+        height: 20px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
       }
 
-      .planGridItems {
-        background-color: #f7f8fa;
-        @include first-clip-path;
-        border-radius: 12px;
-        padding: 35px 30px;
+      .textDesign {
+        width: 30px;
+        height: 24px;
+        border: 1px solid #DFE0E0;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fff;
 
-        .childBox {
-            background-color: var(--bg-white);
-            padding: 14px;
-            border-radius: 10px;
-
-            .contentAlignment {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-
-                span {
-                    display: block;
-                    @include font16normal;
-                    color: var(--grey-600);
-
-                    &.redText {
-                        color: #CE4553;
-                    }
-                }
-            }
+        span {
+          display: block;
+          @include font16normal;
+          color: var(--black-500);
         }
-        button {
-            padding: 12px 24px;
-            font-size: 14px;
-        }
-        .counterAlignment {
-            padding: 14px 0 20px 0;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            
-            .icons {
-                border: 1px solid #6F756D;
-                width: 20px;
-                height: 20px;
-                border-radius: 4px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-            }
+      }
+    }
 
-            .textDesign {
-                width: 30px;
-                height: 24px;
-                border: 1px solid #DFE0E0;
-                border-radius: 4px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                background-color: #fff;
+    .cardHeaderAlignment {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 0 10px 0;
 
-                span {
-                    display: block;
-                    @include font16normal;
-                    color: var(--black-500);
-                }
-            }
-        }
+      h3 {
+        @include font16;
+        font-weight: 500;
+        color: var(--black-500);
+      }
 
-        .cardHeaderAlignment {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          padding: 0 0 10px 0;
-
-          h3 {
-            @include font16;
-            font-weight: 500;
-            color: var(--black-500);
-          }
-
-          h4 {
-            @include heading24;
-            background: var(--button-gradient);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-          }
-        }
+      h4 {
+        @include heading24;
+        background: var(--button-gradient);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
     }
   }
+
+
+
 }
+
+.modalContent {
+  padding: 24px;
+  max-width: 500px;
+  margin: 0 auto;
+
+  .planInfo {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+
+    h3 {
+      @include heading18;
+      color: var(--black-500);
+      margin: 0 0 16px 0;
+      padding-bottom: 12px;
+      border-bottom: 1px solid var(--border-color5);
+    }
+
+    p {
+      @include font16normal;
+      color: var(--grey-600);
+      margin: 0 0 8px 0;
+      display: flex;
+      justify-content: space-between;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    .discountText {
+      color: #CE4553;
+      font-weight: 500;
+    }
+
+    h4 {
+      @include heading20;
+      color: var(--black-500);
+      margin: 16px 0 0 0;
+      padding-top: 12px;
+      border-top: 1px solid var(--border-color5);
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  
+
+  .errorText {
+    color: #CE4553;
+    @include font16normal;
+    margin: -10px 0 16px 0;
+  }
+
+}
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color5);
+
+  button {
+    min-width: 140px;
+    justify-content: center;
+  }
+}
+.couponSection {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 20px;
+      align-items: center;
+      width: 100%;
+      
+
+      input {
+        flex: 1;
+        padding: 12px 16px;
+        border: 1px solid var(--border-color5);
+        border-radius: 8px;
+        @include font16normal;
+
+        &:focus {
+          outline: none;
+          border-color: var(--primary-color);
+        }
+
+        &:disabled {
+          background-color: #f8f9fa;
+          cursor: not-allowed;
+        }
+      }
+
+      button {
+        flex-shrink: 0; 
+        height: 100%; 
+        flex: 0 0 auto;
+        white-space: nowrap;
+        padding: 0 24px;
+      }
+    }

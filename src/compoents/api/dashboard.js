@@ -58,6 +58,23 @@ export const getCourses = async ({
   }
 };
 
+export const getCourseByType = async () => {
+    try {
+        const token = getAuthToken();
+        const headers = {};
+
+        if (token) {
+            headers['x-auth-token'] = token;
+        }
+
+        const res = await fetch(`${BASEURL}/course/getCoueseByType`, { headers });
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.error("Error fetching courses by type", error);
+        throw error;
+    }
+};
 
 export const getChapters = async (id) => {
     try {
