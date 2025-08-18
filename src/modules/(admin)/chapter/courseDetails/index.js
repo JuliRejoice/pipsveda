@@ -184,7 +184,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
         courseId: id
       });
       console.log("response", response)
-      if(response?.payload?.code){
+      if(response?.payload?.code !== "00000"){
         toast.error("A payment session is already active and will expire in 10 minutes. Please complete the current payment or try again after it expires.");
       }else{
         router.push(response?.payload?.data?.checkout_url);
