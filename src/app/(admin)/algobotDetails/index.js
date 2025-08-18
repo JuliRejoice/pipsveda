@@ -6,6 +6,7 @@ import Button from "@/compoents/button";
 import Input from "@/compoents/input";
 import Modal from "@/compoents/modal/Modal";
 import { getOneBot, getPlan } from "@/compoents/api/algobot";
+import OutlineButton from "@/compoents/outlineButton";
 const RightIcon = "/assets/icons/right.svg";
 const MinusIcon = "/assets/icons/minus.svg";
 const PlusIcon = "/assets/icons/plus.svg";
@@ -180,125 +181,125 @@ function AlgobotDetails({ id }) {
           </div>
         </div>
         <div className={styles.coursePlan}>
-        <div className={styles.sbutitle}>
-          <h2>Course Plans</h2>
-        </div>
-        <div className={styles.planGrid}>
-          {plans.map((plan, index) => (
-            <div className={styles.planGridItems} key={plan._id || index}>
-              <div className={styles.cardHeaderAlignment}>
-                <h3>{plan.planType}</h3>
-                <h4>${plan.price}</h4>
+          <div className={styles.sbutitle}>
+            <h2>Course Plans</h2>
+          </div>
+          <div className={styles.planGrid}>
+            {plans.map((plan, index) => (
+              <div className={styles.planGridItems} key={plan._id || index}>
+                <div className={styles.cardHeaderAlignment}>
+                  <h3>{plan.planType}</h3>
+                  <h4>${plan.price}</h4>
+                </div>
+                <div className={styles.childBox}>
+                  <div className={styles.contentAlignment}>
+                    <span>M.R.P :</span>
+                    <span>${plan.initialPrice}</span>
+                  </div>
+                  <div className={styles.contentAlignment}>
+                    <span>Discount :</span>
+                    <span className={styles.redText}>
+                      {plan.discount > 0 ? `-${plan.discount}%` : '0%'}
+                    </span>
+                  </div>
+                </div>
+                <div className={styles.counterAlignment}>
+                  <div
+                    className={`${styles.icons} ${quantity === 1 ? styles.disabled : ''}`}
+                    onClick={handleDecrement}
+                  >
+                    <img src={MinusIcon} alt="Decrease quantity" />
+                  </div>
+                  <div className={styles.textDesign}>
+                    <span>{quantity}</span>
+                  </div>
+                  <div
+                    className={styles.icons}
+                    onClick={handleIncrement}
+                  >
+                    <img src={PlusIcon} alt="Increase quantity" />
+                  </div>
+                </div>
+                <Button
+                  text="Buy Now"
+                  icon={RightIcon}
+                  onClick={() => handleBuyNow(plan)}
+                />
               </div>
-              <div className={styles.childBox}>
-                <div className={styles.contentAlignment}>
-                  <span>M.R.P :</span>
-                  <span>${plan.initialPrice}</span>
-                </div>
-                <div className={styles.contentAlignment}>
-                  <span>Discount :</span>
-                  <span className={styles.redText}>
-                    {plan.discount > 0 ? `-${plan.discount}%` : '0%'}
-                  </span>
-                </div>
-              </div>
-              <div className={styles.counterAlignment}>
-                <div
-                  className={`${styles.icons} ${quantity === 1 ? styles.disabled : ''}`}
-                  onClick={handleDecrement}
-                >
-                  <img src={MinusIcon} alt="Decrease quantity" />
-                </div>
-                <div className={styles.textDesign}>
-                  <span>{quantity}</span>
-                </div>
-                <div
-                  className={styles.icons}
-                  onClick={handleIncrement}
-                >
-                  <img src={PlusIcon} alt="Increase quantity" />
-                </div>
-              </div>
-              <Button
-                text="Buy Now"
-                icon={RightIcon}
-                onClick={() => handleBuyNow(plan)}
-              />
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       </div>
-      </div>
-     
+
 
 
       {/* Purchase Modal */}
       <Modal
-  isOpen={isModalOpen}
-  onClose={() => setIsModalOpen(false)}
-  title="Complete Your Purchase"
-  className={styles.modal}
->
-  {selectedPlan && (
-    <div className={styles.modalContent}>
-      <div className={styles.planInfo}>
-        <h3>{selectedPlan.planType} Plan</h3>
-        <p>
-          <span>Quantity:</span>
-          <span>{quantity}</span>
-        </p>
-        <p>
-          <span>Price per unit:</span>
-          <span>${selectedPlan.price}</span>
-        </p>
-        {discount > 0 && (
-          <p className={styles.discountText}>
-            <span>Discount:</span>
-            <span>-${discount}</span>
-          </p>
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Complete Your Purchase"
+        className={styles.modal}
+      >
+        {selectedPlan && (
+          <div className={styles.modalContent}>
+            <div className={styles.planInfo}>
+              <h3>{selectedPlan.planType} Plan</h3>
+              <p>
+                <span>Quantity:</span>
+                <span>{quantity}</span>
+              </p>
+              <p>
+                <span>Price per unit:</span>
+                <span>${selectedPlan.price}</span>
+              </p>
+              {discount > 0 && (
+                <p className={styles.discountText}>
+                  <span>Discount:</span>
+                  <span>-${discount}</span>
+                </p>
+              )}
+              <h4>
+                <span>Total:</span>
+                <span>${calculateTotal()}</span>
+              </h4>
+            </div>
+
+            <div className={styles.couponSection}>
+              <Input
+                type="text"
+                placeholder="Enter coupon code"
+                value={coupon}
+                onChange={(e) => setCoupon(e.target.value)}
+                disabled={discount > 0}
+                className={styles.couponInput}
+              />
+              <OutlineButton
+                text={discount > 0 ? 'Applied' : 'Apply'}
+                onClick={handleApplyCoupon}
+                disabled={isValidating || discount > 0}
+                isLoading={isValidating}
+                variant={discount > 0 ? 'secondary' : 'primary'}
+              />
+            </div>
+
+            {error && <p className={styles.errorText}>{error}</p>}
+
+            <div className={styles.modalActions}>
+              <Button
+                text="Cancel"
+                variant="outline"
+                onClick={() => setIsModalOpen(false)}
+              />
+              <Button
+                text="Confirm Purchase"
+                onClick={handlePurchase}
+                isLoading={isValidating}
+                variant="primary"
+              />
+            </div>
+          </div>
         )}
-        <h4>
-          <span>Total:</span>
-          <span>${calculateTotal()}</span>
-        </h4>
-      </div>
-
-      <div className={styles.couponSection}>
-        <Input
-          type="text"
-          placeholder="Enter coupon code"
-          value={coupon}
-          onChange={(e) => setCoupon(e.target.value)}
-          disabled={discount > 0}
-          className={styles.couponInput}
-        />
-        <Button
-          text={discount > 0 ? 'Applied' : 'Apply'}
-          onClick={handleApplyCoupon}
-          disabled={isValidating || discount > 0}
-          isLoading={isValidating}
-          variant={discount > 0 ? 'secondary' : 'primary'}
-        />
-      </div>
-
-      {error && <p className={styles.errorText}>{error}</p>}
-
-      <div className={styles.modalActions}>
-        <Button
-          text="Cancel"
-          variant="outline"
-          onClick={() => setIsModalOpen(false)}
-        />
-        <Button
-          text="Confirm Purchase"
-          onClick={handlePurchase}
-          isLoading={isValidating}
-          variant="primary"
-        />
-      </div>
-    </div>
-  )}
-</Modal>
+      </Modal>
     </div>
   );
 }

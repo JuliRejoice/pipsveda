@@ -48,7 +48,7 @@ export default function Sidebar({ setToogle, toogle }) {
   const handleLogout = () => {
     removeCookie("userToken");
     toast.success("Logout successfully.");
-    router.push("/signin");
+    router.push("/");
   };
   useEffect(() => {
     const user = getCookie("user");

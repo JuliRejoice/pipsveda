@@ -12,6 +12,7 @@ import OutlineButton from "@/compoents/outlineButton";
 import Button from "@/compoents/button";
 import { useRouter, useSearchParams } from "next/navigation";
 import Modal from "@/compoents/modal/Modal";
+import toast from "react-hot-toast";
 
 
 const LockIcon = '/assets/icons/lock.svg';
@@ -182,7 +183,13 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
         cancel_url: window.location.href,
         courseId: id
       });
-      router.push(response?.payload?.data?.checkout_url);
+      console.log("response", response)
+      if(response?.payload?.code){
+        toast.error("A payment session is already active and will expire in 10 minutes. Please complete the current payment or try again after it expires.");
+      }else{
+        router.push(response?.payload?.data?.checkout_url);
+      }
+      
     } catch (error) {
       console.error("Payment error:", error);
       // Handle error appropriately
