@@ -5,51 +5,81 @@ import Breadcumbs from "@/modules/(admin)/breadcumbs";
 import Button from "@/compoents/button";
 import Input from "@/compoents/input";
 import Modal from "@/compoents/modal/Modal";
-import { getOneBot, getPlan } from "@/compoents/api/algobot";
+import { getCoupon, getOneBot, getPlan } from "@/compoents/api/algobot";
 import OutlineButton from "@/compoents/outlineButton";
+import toast from "react-hot-toast";
+import { getPaymentUrl } from "@/compoents/api/dashboard";
+import { useRouter, useSearchParams } from "next/navigation";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 const RightIcon = "/assets/icons/right.svg";
 const MinusIcon = "/assets/icons/minus.svg";
 const PlusIcon = "/assets/icons/plus.svg";
+const SuccessIcon = "/assets/icons/success.svg";
+const ErrorIcon = "/assets/icons/error.svg";
 
 function AlgobotDetails({ id }) {
   const [algobotData, setAlgobotData] = useState({});
   const [plans, setPlans] = useState([]);
-  const [quantity, setQuantity] = useState(1);
+  const [planQuantities, setPlanQuantities] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPlan, setSelectedPlan] = useState(null);
   const [coupon, setCoupon] = useState('');
   const [discount, setDiscount] = useState(0);
   const [isValidating, setIsValidating] = useState(false);
+  const [couponId, setCouponId] = useState('');
   const [error, setError] = useState('');
-
+  const [isLoading, setIsLoading] = useState(true);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+  const [showPaymentModal, setShowPaymentModal] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState('');
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const fetchAlgobotData = async () => {
     try {
-      // Fetch algobot details
+      setIsLoading(true);
       const response = await getOneBot(id);
       setAlgobotData(response.payload);
 
-      // Fetch plans for this algobot
       const plansResponse = await getPlan(id);
-      console.log("plansResponse", plansResponse)
+      const initialQuantities = {};
+      plansResponse.payload?.forEach(plan => {
+        initialQuantities[plan._id] = 1; // Initialize quantity as 1 for each plan
+      });
+      setPlanQuantities(initialQuantities);
       setPlans(plansResponse.payload || []);
     } catch (error) {
       console.error("Error fetching data:", error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
-  const handleIncrement = () => {
-    setQuantity(prev => prev + 1);
+  const handleIncrement = (planId) => {
+    setPlanQuantities(prev => ({
+      ...prev,
+      [planId]: (prev[planId] || 1) + 1
+    }));
   };
 
-  const handleDecrement = () => {
-    if (quantity > 1) {
-      setQuantity(prev => prev - 1);
-    }
+  const handleDecrement = (planId) => {
+    setPlanQuantities(prev => {
+      if (prev[planId] > 1) {
+        return {
+          ...prev,
+          [planId]: prev[planId] - 1
+        };
+      }
+      return prev;
+    });
   };
 
   const handleBuyNow = (plan) => {
-    setSelectedPlan(plan);
+    setSelectedPlan({
+      ...plan,
+      totalPrice: plan.price * (planQuantities[plan._id] || 1)
+    });
     setCoupon('');
     setDiscount(0);
     setError('');
@@ -64,23 +94,34 @@ function AlgobotDetails({ id }) {
 
     try {
       setIsValidating(true);
+      setIsLoading(true);
       setError('');
-      // const response = await validateCoupon({
-      //   couponCode: coupon,
-      //   planId: selectedPlan.id,
-      //   amount: selectedPlan.price * quantity
-      // });
+      const response = await getCoupon(coupon);
 
-      // if (response.success) {
-      //   setDiscount(response.discountAmount || 0);
-      // } else {
-      //   setError(response.message || 'Invalid coupon code');
-      // }
+      if (response.success && response.payload) {
+        const discountPercentage = response.payload.discount || 0;
+        const originalTotal = selectedPlan.price * (planQuantities[selectedPlan._id] || 1);
+        const discountAmount = (originalTotal * discountPercentage) / 100;
+        
+        setDiscount(discountAmount);
+        setCouponId(response.payload._id);
+        toast.success('Coupon applied successfully!');
+        
+        setSelectedPlan(prev => ({
+          ...prev,
+          totalPrice: Math.max(0, originalTotal - discountAmount),
+          originalPrice: originalTotal,
+          discountPercentage: discountPercentage
+        }));
+      } else {
+        setError(response.messages || 'Invalid coupon code');
+      }
     } catch (error) {
       console.error('Error validating coupon:', error);
       setError('Failed to validate coupon. Please try again.');
     } finally {
       setIsValidating(false);
+      setIsLoading(false);
     }
   };
 
@@ -88,40 +129,139 @@ function AlgobotDetails({ id }) {
     if (!selectedPlan) return;
 
     try {
+      setIsProcessingPayment(true);
+      setError('');
+      
       const orderData = {
-        planId: selectedPlan._id, // Using _id from the API
-        quantity,
-        couponCode: coupon || undefined,
-        totalAmount: (selectedPlan.price * quantity) - discount
+        strategyPlanId: selectedPlan._id,
+        botId: algobotData?._id,
+        couponId: couponId || undefined,
+        noOfBots: planQuantities[selectedPlan._id] || 1,
+        success_url: window.location.href,
+        cancel_url: window.location.href
       };
 
-      // Uncomment and update when ready to implement
-      // const response = await createOrder(orderData);
-      // if (response.success) {
-      //   alert('Order placed successfully!');
-      //   setIsModalOpen(false);
-      // } else {
-      //   setError(response.message || 'Failed to place order');
-      // }
+      const response = await getPaymentUrl(orderData);
+      if (response.success) {
+        router.push(response?.payload?.data?.checkout_url);
+        setIsModalOpen(false);
+      } else {
+        setError(response.message || 'Failed to process payment');
+      }
     } catch (error) {
-      console.error('Error placing order:', error);
-      setError('Failed to place order. Please try again.');
+      console.error('Error processing payment:', error);
+      setError('Failed to process payment. Please try again.');
+    } finally {
+      setIsProcessingPayment(false);
     }
   };
 
   const calculateTotal = () => {
     if (!selectedPlan) return 0;
-    return (selectedPlan.price * quantity) - discount;
+    return (selectedPlan.price * (planQuantities[selectedPlan._id] || 1)) - discount;
   };
 
   useEffect(() => {
     fetchAlgobotData();
   }, []);
 
+  const getYouTubeEmbedUrl = (url) => {
+    try {
+      let videoId = "";
+  
+      // Case 1: Standard YouTube watch link
+      if (url.includes("watch?v=")) {
+        const urlObj = new URL(url);
+        videoId = urlObj.searchParams.get("v");
+      } 
+      
+      // Case 2: Short youtu.be link
+      else if (url.includes("youtu.be")) {
+        const urlObj = new URL(url);
+        videoId = urlObj.pathname.slice(1); // remove leading "/"
+      }
+  
+      return `https://www.youtube.com/embed/${videoId}`;
+    } catch (e) {
+      return null;
+    }
+  };
 
+  const renderSkeletonCards = (count = 3) => {
+    return Array(count).fill(0).map((_, index) => (
+      <div className={styles.planGridItems} key={`skeleton-${index}`}>
+        <div className={styles.cardHeaderAlignment}>
+          <h3><Skeleton width={120} height={24} /></h3>
+          <h4><Skeleton width={80} height={28} /></h4>
+        </div>
+        <div className={styles.childBox}>
+          {[1, 2, 3, 4, 5].map((item) => (
+            <div className={styles.contentAlignment} key={`skeleton-content-${item}`}>
+              <span><Skeleton width={80} /></span>
+              <span><Skeleton width={60} /></span>
+            </div>
+          ))}
+          <div className={styles.buttonAlignment}>
+            <Skeleton height={40} width={120} />
+          </div>
+        </div>
+      </div>
+    ));
+  };
+
+  useEffect(() => {
+    const isPayment = searchParams.get('isPayment');
+    if (isPayment) {
+      setPaymentStatus(isPayment === 'true' ? 'success' : 'cancelled');
+      setShowPaymentModal(true);
+      // Clean up URL without refreshing the page
+      const newUrl = new URL(window.location.href);
+      newUrl.searchParams.delete('isPayment');
+      window.history.replaceState({}, '', newUrl);
+    }
+  }, [searchParams]);
+
+  const renderPaymentModal = () => {
+    if (!showPaymentModal) return null;
+
+    const modalContent = paymentStatus === 'success' ? (
+      <div className={styles.paymentModalContent}>
+        <img src={SuccessIcon} alt="Success" className={styles.paymentIcon} />
+        <h3>Payment Successful!</h3>
+        <p>Thank you for your purchase. Please check your email for the download link.</p>
+      </div>
+    ) : (
+      <div className={styles.paymentModalContent}>
+        <img src={ErrorIcon} alt="Cancelled" className={styles.paymentIcon} />
+        <h3>Payment Cancelled</h3>
+        <p>Your payment was not completed. Please try again to purchase.</p>
+        <div className={styles.modalButtons}>
+          <OutlineButton
+            text="Try Again"
+            onClick={() => {
+              setShowPaymentModal(false);
+              handlePurchase();
+            }}
+          />
+          <Button
+            text="Close"
+            onClick={() => setShowPaymentModal(false)}
+            style={{ marginLeft: '10px' }}
+          />
+        </div>
+      </div>
+    );
+
+    return (
+      <Modal isOpen={showPaymentModal} onClose={() => setShowPaymentModal(false)}>
+        {modalContent}
+      </Modal>
+    );
+  };
 
   return (
     <div>
+      {renderPaymentModal()}
       <Breadcumbs />
       <div className={styles.algobotDetailsAlignment}>
         <div className={styles.pageHeaderAlignment}>
@@ -171,7 +311,7 @@ function AlgobotDetails({ id }) {
               <iframe
                 width="100%"
                 height="100%"
-                src={algobotData.link[0].url.replace('watch?v=', 'embed/')}
+                src={getYouTubeEmbedUrl(algobotData.link[0].url)}
                 title="Tutorial Video"
                 frameBorder="0"
                 allowFullScreen
@@ -185,53 +325,57 @@ function AlgobotDetails({ id }) {
             <h2>Course Plans</h2>
           </div>
           <div className={styles.planGrid}>
-            {plans.map((plan, index) => (
-              <div className={styles.planGridItems} key={plan._id || index}>
-                <div className={styles.cardHeaderAlignment}>
-                  <h3>{plan.planType}</h3>
-                  <h4>${plan.price}</h4>
+            {isLoading ? (
+              renderSkeletonCards()
+            ) : plans?.length > 0 ? (
+              plans.map((plan, index) => (
+                <div className={styles.planGridItems} key={plan._id || index}>
+                  <div className={styles.cardHeaderAlignment}>
+                    <h3>{plan.planType}</h3>
+                    <h4>${(plan.price * (planQuantities[plan._id] || 1)).toFixed(2)}</h4>
+                  </div>
+                  <div className={styles.childBox}>
+                    <div className={styles.contentAlignment}>
+                      <span>M.R.P :</span>
+                      <span>${plan.initialPrice}</span>
+                    </div>
+                    <div className={styles.contentAlignment}>
+                      <span>Discount :</span>
+                      <span className={styles.redText}>
+                        {plan.discount > 0 ? `-${plan.discount}%` : '0%'}
+                      </span>
+                    </div>
+                  </div>
+                  <div className={styles.counterAlignment}>
+                    <div
+                      className={`${styles.icons} ${(planQuantities[plan._id] || 1) <= 1 ? styles.disabled : ''}`}
+                      onClick={() => handleDecrement(plan._id)}
+                    >
+                      <img src={MinusIcon} alt="Decrease quantity" />
+                    </div>
+                    <div className={styles.textDesign}>
+                      <span>{planQuantities[plan._id] || 1}</span>
+                    </div>
+                    <div
+                      className={styles.icons}
+                      onClick={() => handleIncrement(plan._id)}
+                    >
+                      <img src={PlusIcon} alt="Increase quantity" />
+                    </div>
+                  </div>
+                  <Button
+                    text="Buy Now"
+                    icon={RightIcon}
+                    onClick={() => handleBuyNow(plan)}
+                  />
                 </div>
-                <div className={styles.childBox}>
-                  <div className={styles.contentAlignment}>
-                    <span>M.R.P :</span>
-                    <span>${plan.initialPrice}</span>
-                  </div>
-                  <div className={styles.contentAlignment}>
-                    <span>Discount :</span>
-                    <span className={styles.redText}>
-                      {plan.discount > 0 ? `-${plan.discount}%` : '0%'}
-                    </span>
-                  </div>
-                </div>
-                <div className={styles.counterAlignment}>
-                  <div
-                    className={`${styles.icons} ${quantity === 1 ? styles.disabled : ''}`}
-                    onClick={handleDecrement}
-                  >
-                    <img src={MinusIcon} alt="Decrease quantity" />
-                  </div>
-                  <div className={styles.textDesign}>
-                    <span>{quantity}</span>
-                  </div>
-                  <div
-                    className={styles.icons}
-                    onClick={handleIncrement}
-                  >
-                    <img src={PlusIcon} alt="Increase quantity" />
-                  </div>
-                </div>
-                <Button
-                  text="Buy Now"
-                  icon={RightIcon}
-                  onClick={() => handleBuyNow(plan)}
-                />
-              </div>
-            ))}
+              ))
+            ) : (
+              <p>No plans available</p>
+            )}
           </div>
         </div>
       </div>
-
-
 
       {/* Purchase Modal */}
       <Modal
@@ -246,7 +390,7 @@ function AlgobotDetails({ id }) {
               <h3>{selectedPlan.planType} Plan</h3>
               <p>
                 <span>Quantity:</span>
-                <span>{quantity}</span>
+                <span>{planQuantities[selectedPlan._id] || 1}</span>
               </p>
               <p>
                 <span>Price per unit:</span>
@@ -276,7 +420,7 @@ function AlgobotDetails({ id }) {
               <OutlineButton
                 text={discount > 0 ? 'Applied' : 'Apply'}
                 onClick={handleApplyCoupon}
-                disabled={isValidating || discount > 0}
+                disabled={isValidating || discount > 0 || isLoading}
                 isLoading={isValidating}
                 variant={discount > 0 ? 'secondary' : 'primary'}
               />
@@ -290,11 +434,14 @@ function AlgobotDetails({ id }) {
                 variant="outline"
                 onClick={() => setIsModalOpen(false)}
               />
-              <Button
-                text="Confirm Purchase"
+              <Button 
                 onClick={handlePurchase}
-                isLoading={isValidating}
-                variant="primary"
+                disabled={isProcessingPayment || isLoading}
+                text={
+                  isProcessingPayment 
+                    ? 'Processing...' 
+                    : `Pay $${selectedPlan?.totalPrice?.toFixed(2) || '0.00'}`
+                }
               />
             </div>
           </div>

@@ -6,9 +6,10 @@ import {
   AnimatePresence,
   useTransform,
 } from "framer-motion";
-import React from 'react'
+import React, { useState, useEffect, useCallback } from 'react'
 import styles from './marketplace.module.scss';
 import SearchIcon from '@/icons/searchIcon';
+
 const item = {
   hidden: { y: 20, opacity: 0 },
   show: {
@@ -21,7 +22,40 @@ const item = {
     },
   },
 };
-export default function Marketplace() {
+
+export default function Marketplace({searchQuery,setSearchQuery}) {
+
+  const [inputValue, setInputValue] = useState(searchQuery);
+
+  // Debounce function
+  const debounce = (func, delay) => {
+    let timer;
+    return function (...args) {
+      clearTimeout(timer);
+      timer = setTimeout(() => func.apply(this, args), delay);
+    };
+  };
+
+  // Memoize the debounced search to prevent recreation on each render
+  const debouncedSearch = useCallback(
+    debounce((value) => {
+      setSearchQuery(value);
+    }, 300),
+    []
+  );
+
+  // Update local state and trigger debounced search
+  const handleSearchChange = (e) => {
+    const value = e.target.value.trimStart();
+    setInputValue(value);
+    debouncedSearch(value);
+  };
+
+  // Sync local state with prop
+  useEffect(() => {
+    setInputValue(searchQuery);
+  }, [searchQuery]);
+
   return (
     <div className={styles.marketplace}>
       <div className={styles.centerAlignmentBox}>
@@ -43,6 +77,8 @@ export default function Marketplace() {
                 <input
                   type="text"
                   placeholder="Search for Course..."
+                  value={inputValue}
+                  onChange={handleSearchChange}
                 />
                 <motion.div
                   className={styles.searchIcon}

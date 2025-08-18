@@ -76,8 +76,8 @@
 
     .box {
       height: 440px;
-      background-color: #f7f8fa;
-      img{
+
+      img {
         border-radius: 12px;
 
       }
@@ -299,7 +299,7 @@
     }
   }
 
-  
+
 
   .errorText {
     color: #CE4553;
@@ -308,6 +308,46 @@
   }
 
 }
+
+.paymentModalContent {
+  text-align: center;
+  padding: 20px;
+  max-width: 400px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .paymentIcon {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+  }
+
+  h3 {
+    @include heading20;
+    color: var(--black-500);
+    margin-bottom: 12px;
+  }
+
+  p {
+    @include font16normal;
+    color: var(--grey-600);
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  > button {
+    margin: 0 auto;
+    min-width: 180px;
+  }
+  .modalButtons {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+  }
+}
+
 .modalActions {
   display: flex;
   justify-content: flex-end;
@@ -320,38 +360,39 @@
     justify-content: center;
   }
 }
+
 .couponSection {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 20px;
-      align-items: center;
-      width: 100%;
-      
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 20px;
+  align-items: center;
+  width: 100%;
 
-      input {
-        flex: 1;
-        padding: 12px 16px;
-        border: 1px solid var(--border-color5);
-        border-radius: 8px;
-        @include font16normal;
 
-        &:focus {
-          outline: none;
-          border-color: var(--primary-color);
-        }
+  input {
+    flex: 1;
+    padding: 12px 16px;
+    border: 1px solid var(--border-color5);
+    border-radius: 8px;
+    @include font16normal;
 
-        &:disabled {
-          background-color: #f8f9fa;
-          cursor: not-allowed;
-        }
-      }
-
-      button {
-        flex-shrink: 0; 
-        height: 100%; 
-        flex: 0 0 auto;
-        white-space: nowrap;
-        padding: 0 24px;
-      }
+    &:focus {
+      outline: none;
+      border-color: var(--primary-color);
     }
+
+    &:disabled {
+      background-color: #f8f9fa;
+      cursor: not-allowed;
+    }
+  }
+
+  button {
+    flex-shrink: 0;
+    height: 100%;
+    flex: 0 0 auto;
+    white-space: nowrap;
+    padding: 0 24px;
+  }
+}

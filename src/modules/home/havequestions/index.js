@@ -13,8 +13,8 @@ const CallIcon = '/assets/icons/call.svg';
 const LocationIcon = '/assets/icons/location.svg';
 
 const validateEmail = (email) => {
-    const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return re.test(String(email).toLowerCase());
+    const re = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+    return re.test(String(email));
 };
 
 const validatePhone = (phone) => {
@@ -31,34 +31,53 @@ export default function Havequestions() {
         subject: '',
         description: ''
     });
-    
+
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
     const validateForm = () => {
         const newErrors = {};
-        
-        if (!form.firstName.trim()) newErrors.firstName = 'First name is required';
-        if (!form.lastName.trim()) newErrors.lastName = 'Last name is required';
-        
+        let isValid = true;
+
+        if (!form.firstName.trim()) {
+            newErrors.firstName = 'First name is required';
+            isValid = false;
+        }
+        if (!form.lastName.trim()) {
+            newErrors.lastName = 'Last name is required';
+            isValid = false;
+        }
+
         if (!form.email) {
             newErrors.email = 'Email is required';
+            isValid = false;
         } else if (!validateEmail(form.email)) {
             newErrors.email = 'Please enter a valid email';
+            isValid = false;
         }
-        
+
         if (!form.phone) {
             newErrors.phone = 'Phone number is required';
+            isValid = false;
         } else if (!validatePhone(form.phone)) {
             newErrors.phone = 'Please enter a valid 10-digit phone number';
+            isValid = false;
         }
-        
-        if (!form.subject.trim()) newErrors.subject = 'Subject is required';
-        if (!form.description.trim()) newErrors.description = 'Message is required';
-        
+
+        if (!form.subject.trim()) {
+            newErrors.subject = 'Subject is required';
+            isValid = false;
+        }
+        if (!form.description.trim()) {
+            newErrors.description = 'Message is required';
+            isValid = false;
+        }
+        console.log("newErrors", newErrors)
         setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
+        return isValid;
     };
+
+    console.log("errors", errors)
 
     const resetForm = () => {
         setForm({
@@ -77,7 +96,7 @@ export default function Havequestions() {
             ...prev,
             [field]: value
         }));
-        
+
         // Clear error when user starts typing
         if (errors[field]) {
             setErrors(prev => ({
@@ -89,16 +108,18 @@ export default function Havequestions() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        if (!validateForm()) {
-            toast.error('Please fill in all required fields correctly');
+
+        // Validate the form
+        const isValid = validateForm();
+
+        if (!isValid) {
             return;
         }
-        
+
         if (isSubmitting) return;
-        
+
         setIsSubmitting(true);
-        
+
         try {
             const response = await contactUs(form);
             toast.success('Message sent successfully! We will get back to you soon.');
@@ -107,7 +128,6 @@ export default function Havequestions() {
         } catch (error) {
             console.error('Error during contact:', error);
             toast.error('Failed to send message. Please try again later.');
-            throw error;
         } finally {
             setIsSubmitting(false);
         }
@@ -191,66 +211,77 @@ export default function Havequestions() {
                     </div>
                     <div className={styles.griditems}>
                         <div className={styles.colGrid}>
-                            <Input 
-                                type='text' 
-                                name='firstName'
-                                label='First Name' 
-                                placeholder='Enter your first name' 
-                                value={form.firstName}
-                                onChange={(e)=>handleChange('firstName', e.target.value)}
-                                error={errors.firstName}
-                            />
-                            <Input 
-                                type='text' 
-                                name='lastName'
-                                label='Last Name' 
-                                placeholder='Enter your last name' 
-                                value={form.lastName}
-                                onChange={(e)=>handleChange('lastName', e.target.value)}
-                                error={errors.lastName}
-                            />
-                            <Input 
-                                type='email' 
-                                name='email'
-                                label='Email' 
-                                placeholder='your.email@example.com' 
-                                value={form.email}
-                                onChange={(e)=>handleChange('email', e.target.value)}
-                                error={errors.email}
-                            />
-                            <Input 
-                                type='tel' 
-                                name='phone'
-                                label='Phone Number' 
-                                placeholder='9876543210' 
-                                value={form.phone}
-                                onChange={(e)=>handleChange('phone', e.target.value)}
-                                error={errors.phone}
-                            />
-                            <div className={styles.lastCol}>
-                                <Input 
-                                    type='text' 
-                                    name='subject'
-                                    label='Subject' 
-                                    placeholder='Subject' 
-                                    value={form.subject}
-                                    onChange={(e)=>handleChange('subject', e.target.value)}
-                                    error={errors.subject}
+                            <div className={styles.inputAlignment}>
+                                <Input
+                                    type='text'
+                                    name='firstName'
+                                    label='First Name'
+                                    placeholder='Enter your first name'
+                                    value={form.firstName}
+                                    onChange={(e) => handleChange('firstName', e.target.value)}
+
                                 />
+                                {errors.firstName && <p className={styles.error}>{errors.firstName}</p>}
+                            </div>
+                            <div className={styles.inputAlignment}>
+                                <Input
+                                    type='text'
+                                    name='lastName'
+                                    label='Last Name'
+                                    placeholder='Enter your last name'
+                                    value={form.lastName}
+                                    onChange={(e) => handleChange('lastName', e.target.value)}
+                                />
+                                {errors.lastName && <p className={styles.error}>{errors.lastName}</p>}
+                            </div>
+                            <div className={styles.inputAlignment}>
+                                <Input
+                                    type='email'
+                                    name='email'
+                                    label='Email'
+                                    placeholder='your.email@example.com'
+                                    value={form.email}
+                                    onChange={(e) => handleChange('email', e.target.value)}
+                                />
+                                {errors.email && <p className={styles.error}>{errors.email}</p>}
+                            </div>
+                            <div className={styles.inputAlignment}>
+                                <Input
+                                    type='tel'
+                                    name='phone'
+                                    label='Phone Number'
+                                    placeholder='9876543210'
+                                    value={form.phone}
+                                    onChange={(e) => handleChange('phone', e.target.value)}
+                                />
+                                {errors.phone && <p className={styles.error}>{errors.phone}</p>}
+                            </div>
+                            <div className={styles.lastCol}>
+                                <Input
+                                    type='text'
+                                    name='subject'
+                                    label='Subject'
+                                    placeholder='Subject'
+                                    value={form.subject}
+                                    onChange={(e) => handleChange('subject', e.target.value)}
+                                />
+                                {errors.subject && <p className={styles.error}>{errors.subject}</p>}
                             </div>
                         </div>
-                        <Textarea 
+                        <Textarea
                             name='description'
-                            label='Message' 
-                            placeholder='Tell us more about your trading goals or questions...' 
+                            label='Message'
+                            placeholder='Tell us more about your trading goals or questions...'
                             value={form.description}
-                            onChange={(e)=>handleChange('description', e.target.value)}
-                            // error={errors.description}
+                            onChange={(e) => handleChange('description', e.target.value)}
                         />
+                        {errors.description && <p className={styles.error}>{errors.description}</p>}
                         <div className={styles.buttonAlignment}>
-                            <Button 
+                            <Button
                                 type='submit'
-                                text={isSubmitting ? 'Sending...' : 'Send Message'} 
+                                text={isSubmitting ? (
+                                    " Sending..."
+                                ) : 'Send Message'}
                                 disabled={isSubmitting}
                             />
                         </div>

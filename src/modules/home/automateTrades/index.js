@@ -1,10 +1,11 @@
 'use client'
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import styles from './automateTrades.module.scss';
 import FlashIcon from '@/icons/flashIcon';
 import Button from '@/compoents/button';
 import OutlineButton from '@/compoents/outlineButton';
+import { getAlgobot } from '@/compoents/api/algobot';
 
 const containerVariants = {
   hidden: {},
@@ -34,8 +35,22 @@ const cardVariants = {
 };
 
 export default function AutomateTrades() {
+  const [algobotData, setAlgobotData] = useState([]);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    const fetchAlgobotData = async () => {
+      try {
+        const response = await getAlgobot();
+        console.log("response", response)
+        setAlgobotData(response.payload.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchAlgobotData();
+  }, []);
 
   return (
     <div className={styles.automateTrades}>
@@ -58,7 +73,7 @@ export default function AutomateTrades() {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {[...Array(3)].map((_, i) => (
+          {algobotData.map((algobot, i) => (
             <motion.div
               className={styles.mainCard}
               key={i}
@@ -70,24 +85,22 @@ export default function AutomateTrades() {
                   <FlashIcon />
                 </div>
                 <div className={styles.textstyle}>
-                  <h3>Bank Nifty Scalper</h3>
-                  <p>Intraday Scalping</p>
+                  <h3>{algobot.title}</h3>
+                  <p>{algobot.shortDescription}</p>
                   <h4>
-                    ₹1499<sub>/Per Month</sub>
+                    ${algobot.strategyPlan[0]?.price}<sub>/{algobot.strategyPlan[0]?.planType}</sub>
                   </h4>
                 </div>
                 <div className={styles.details}>
-                  <ul>
-                    <li>Accuracy 89%</li>
-                    <li>Risk Level Medium</li>
-                    <li>Platform Used Zerodha</li>
-                  </ul>
+                  <div className={styles.listAlignment}>
+                    <span className={styles.listText}>{algobot.description}</span>
+                  </div>
                 </div>
                 <div className={styles.buttonGrid}>
-                  <Button text="Connect & Start" />
-                  <div className={styles.btndesign}>
+                  <Button text="Buy Now" />
+                  {/* <div className={styles.btndesign}>
                     <OutlineButton text="Subscribe Now" />
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </motion.div>

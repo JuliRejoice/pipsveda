@@ -6,7 +6,7 @@ import {
   AnimatePresence,
   useTransform,
 } from "framer-motion";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import styles from "./courseBanner.module.scss";
 import BathIcon from "@/icons/bathIcon";
 import RightLgIcon from "@/icons/rightLgIcon";
@@ -43,9 +43,37 @@ export default function CourseBanner({
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
-  const handleSearch = (value) => {
-    setSearchQuery(value);
+  const [inputValue, setInputValue] = useState(searchQuery);
+
+  // Debounce function
+  const debounce = (func, delay) => {
+    let timer;
+    return function (...args) {
+      clearTimeout(timer);
+      timer = setTimeout(() => func.apply(this, args), delay);
+    };
   };
+
+  // Memoize the debounced search to prevent recreation on each render
+  const debouncedSearch = useCallback(
+    debounce((value) => {
+      setSearchQuery(value);
+    }, 300),
+    [setSearchQuery] // Add handleSearch to dependencies
+  );
+
+  // Update local state and trigger debounced search
+  const handleSearchChange = (e) => {
+    const value = e.target.value.trimStart();
+    setInputValue(value);
+    debouncedSearch(value);
+  };
+
+  // Sync local state with prop
+  useEffect(() => {
+    setInputValue(searchQuery);
+  }, [searchQuery]);
+
   const getAllCourses = async () => {
     try {
       setIsLoading(true);
@@ -78,6 +106,7 @@ export default function CourseBanner({
       setCourseLoading(false);
     }
   };
+
   useEffect(() => {
     getAllCourses();
   }, []);
@@ -106,8 +135,8 @@ export default function CourseBanner({
                 <input
                   type="text"
                   placeholder="Search for Course..."
-                  onChange={(e) => handleSearch(e.target.value.trimStart())}
-                  value={searchQuery}
+                  value={inputValue}
+                  onChange={handleSearchChange}
                 />
                 <motion.div
                   className={styles.searchIcon}

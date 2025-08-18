@@ -139,29 +139,21 @@
                     padding: 20px 0;
                 }
 
-                ul {
+                .listAlignment {
                     padding: 0 0 0 15px;
                     margin: 0;
-                    list-style-type: none;
+                    
 
-                    li {
+                    .listText {
                         @include font16;
                         font-weight: 400;
                         color: var(--text-white);
-                        position: relative;
                         margin: 0 0 20px 0;
-
-                        &::before {
-                            content: "";
-                            position: absolute;
-                            top: 50%;
-                            left: -14px;
-                            transform: translateY(-50%);
-                            width: 6px;
-                            background: var(--button-gradient);
-                            height: 6px;
-                            border-radius: 50%;
-                        }
+                        display: -webkit-box;
+                        -webkit-line-clamp: 3;
+                        -webkit-box-orient: vertical;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
                     }
                 }
             }

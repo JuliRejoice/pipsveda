@@ -77,9 +77,9 @@
           border: 1px solid #dadadacc;
           padding: 6px;
           border-radius: 8px;
-.contentAlignment:last-child {
-    padding: 0;
-}
+          .contentAlignment:last-child {
+            padding: 0;
+          }
           .contentAlignment {
             display: flex;
             align-items: center;
@@ -92,14 +92,13 @@
             }
 
             h5 {
-                @include font16;
-                color: var(--grey-600);
-                font-weight: 400;
-                &.dangerText {
-                    color: #CE4553;
-                }
+              @include font16;
+              color: var(--grey-600);
+              font-weight: 400;
+              &.dangerText {
+                color: #CE4553;
+              }
             }
-
 
             h4 {
               @include font18;
@@ -149,6 +148,41 @@
         overflow: hidden;
         color: var(--black-500);
       }
+    }
+  }
+
+  .emptyState {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 40px 20px;
+    background-color: var(--bg-gray-50);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    margin: 20px 0;
+
+    .emptyImage {
+      width: 120px;
+      height: 120px;
+      margin-bottom: 20px;
+      opacity: 0.7;
+    }
+
+    h3 {
+      @include heading18;
+      color: var(--black-500);
+      margin-bottom: 8px;
+    }
+
+    p {
+      @include font16normal;
+      color: var(--grey-600);
+      max-width: 500px;
+      margin: 0 auto 20px;
+      line-height: 1.5;
     }
   }
 }
