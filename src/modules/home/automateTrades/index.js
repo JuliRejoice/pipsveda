@@ -6,6 +6,8 @@ import FlashIcon from '@/icons/flashIcon';
 import Button from '@/compoents/button';
 import OutlineButton from '@/compoents/outlineButton';
 import { getAlgobot } from '@/compoents/api/algobot';
+import { getCookie } from '../../../../cookie';
+import { useRouter } from 'next/navigation';
 
 const containerVariants = {
   hidden: {},
@@ -38,19 +40,21 @@ export default function AutomateTrades() {
   const [algobotData, setAlgobotData] = useState([]);
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const router = useRouter();
 
   useEffect(() => {
     const fetchAlgobotData = async () => {
       try {
         const response = await getAlgobot();
         console.log("response", response)
-        setAlgobotData(response.payload.data);
+        setAlgobotData(response.payload.data.slice(0, 3));
       } catch (error) {
         console.error("Error fetching data:", error);
       }
     };
     fetchAlgobotData();
   }, []);
+
 
   return (
     <div className={styles.automateTrades}>
@@ -97,7 +101,7 @@ export default function AutomateTrades() {
                   </div>
                 </div>
                 <div className={styles.buttonGrid}>
-                  <Button text="Buy Now" />
+                  <Button text="Buy Now" onClick={() =>{getCookie('userToken') ? router.push(`/algobot/${algobot._id}`) : router.push(`/signin`)}} />
                   {/* <div className={styles.btndesign}>
                     <OutlineButton text="Subscribe Now" />
                   </div> */}

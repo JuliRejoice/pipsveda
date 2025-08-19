@@ -13,7 +13,7 @@ export default function AnimationLine() {
                             return (
                                 <div className={styles.iconText}>
                                     <img src={WhiteStarIcon} alt='WhiteStarIcon' />
-                                    <span>Master Forex Trading</span>
+                                    <span>Pips Veda Forex Trading</span>
                                 </div>
                             )
                         })
@@ -27,7 +27,7 @@ export default function AnimationLine() {
                             return (
                                 <div className={styles.iconText}>
                                     <img src={StarIcon} alt='StarIcon' />
-                                    <span>Master Forex Trading</span>
+                                    <span>Pips Veda Forex Trading</span>
                                 </div>
                             )
                         })

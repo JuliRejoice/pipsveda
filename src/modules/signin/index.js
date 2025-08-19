@@ -80,7 +80,7 @@ export default function Signin() {
           </div>
           <div className={styles.text}>
             <h2>Welcome Back</h2>
-            <p>Continue your journey into the world of financial mastery.</p>
+            <p>Continue your journey into the world of financial Pips Veday.</p>
           </div>
           <div className={styles.leftRightAlignment}>
             <div className={styles.inputAlignment}>

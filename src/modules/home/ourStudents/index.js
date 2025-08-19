@@ -123,7 +123,7 @@ export default function OurStudents() {
                   <div className={styles.profile}>RK</div>
                   <div>
                     <h4>Rajesh Kumar</h4>
-                    <span>Forex Trading Mastery</span>
+                    <span>Forex Trading Pips Veday</span>
                   </div>
                 </div>
               </div>

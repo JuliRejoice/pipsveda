@@ -6,6 +6,7 @@ import SearchIcon from '@/icons/searchIcon';
 import Button from '@/compoents/button';
 import OutlineButton from '@/compoents/outlineButton';
 import CircleAnimation from '@/icons/circleAnimation';
+import { useRouter } from 'next/navigation';
 
 const RightIcon = '/assets/icons/right.svg';
 const RightBlackIcon = '/assets/icons/right-black.svg';
@@ -103,6 +104,8 @@ export default function Herobanner() {
   const controls = useAnimation();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const router = useRouter(); 
+  const [searchParams, setSearchParams] = useState();
 
   useEffect(() => {
     if (isInView) {
@@ -130,7 +133,7 @@ export default function Herobanner() {
                 className={styles.pipsvedaRound}
                 variants={item}
               >
-                <span>Master Forex Trading Pips Veda</span>
+                <span>Pips Veda Forex Trading Pips Veda</span>
                 <motion.img
                   src={LineImage}
                   alt='LineImage'
@@ -141,7 +144,7 @@ export default function Herobanner() {
               </motion.div>
 
               <h1>
-                Master the Markets Build  <br /> a Financial Future That Lasts
+                Pips Veda the Markets Build  <br /> a Financial Future That Lasts
               </h1>
 
               <motion.p
@@ -163,7 +166,7 @@ export default function Herobanner() {
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <input type='text' placeholder='Search for Course...' />
+                  <input type='text' placeholder='Search for Course...' onChange={(e) => setSearchParams(e.target.value)} />
                   <motion.div
                     className={styles.searchIcon}
                     whileHover={{ scale: 1.1 }}
@@ -178,8 +181,8 @@ export default function Herobanner() {
                 className={styles.buttonAlignment}
                 variants={item}
               >
-                <Button text="Explore Courses" icon={RightIcon} />
-                <OutlineButton text="Explore Courses" icon={RightBlackIcon} />
+                <Button text="Explore Courses" icon={RightIcon} onClick={() => router.push(`/courses/pre-recorded?search=${searchParams}`)}/>
+               
               </motion.div>
             </div>
           </div>

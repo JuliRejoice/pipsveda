@@ -1,11 +1,12 @@
 'use client';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './havequestions.module.scss';
 import Input from '@/compoents/input';
 import Textarea from '@/compoents/textarea';
 import Button from '@/compoents/button';
 import { contactUs } from '@/compoents/api/contact';
 import toast from 'react-hot-toast';
+import { getUtilityData } from '@/compoents/api/dashboard';
 
 const ChatIcon = '/assets/icons/chat.svg';
 const EmailIcon = '/assets/icons/email-icon.svg';
@@ -31,7 +32,7 @@ export default function Havequestions() {
         subject: '',
         description: ''
     });
-
+    const [utilityData, setUtilityData] = useState({});
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -133,6 +134,20 @@ export default function Havequestions() {
         }
     };
 
+    useEffect(() => {
+        const fetchutilityData = async () => {
+            try {
+                const response = await getUtilityData();
+                setUtilityData(response.payload);
+            } catch (error) {
+                console.error('Error fetching footer data:', error);
+            }
+        };
+        fetchutilityData();
+    }, []);
+
+    console.log("utilityData", utilityData)
+
     return (
         <div className={styles.havequestions}>
             <div className='container'>
@@ -154,8 +169,8 @@ export default function Havequestions() {
                                     <p>
                                         Available 24/7 for instant support
                                     </p>
-                                    <a href='callto:+91 98765 43210' aria-label='+91 98765 43210'>
-                                        +91 98765 43210
+                                    <a href={`callto:${utilityData?.chatNumber}`} aria-label={utilityData?.chatNumber}>
+                                        {utilityData?.chatNumber}
                                     </a>
                                 </div>
                             </div>
@@ -170,8 +185,8 @@ export default function Havequestions() {
                                     <p>
                                         For detailed inquiries
                                     </p>
-                                    <a href='callto:support@PipsVedatrading.com' aria-label='support@PipsVedatrading.com'>
-                                        support@PipsVedatrading.com
+                                    <a href={`mailto:${utilityData?.email}`} aria-label={utilityData?.email}>
+                                        {utilityData?.email}
                                     </a>
                                 </div>
                             </div>
@@ -186,8 +201,8 @@ export default function Havequestions() {
                                     <p>
                                         Call us during business hours
                                     </p>
-                                    <a href='callto:+91 98765 43210' aria-label='+91 98765 43210'>
-                                        +91 98765 43210
+                                    <a href={`callto:${utilityData?.phoneNo}`} aria-label={utilityData?.phoneNo}>
+                                        {utilityData?.phoneNo}
                                     </a>
                                 </div>
                             </div>
@@ -202,8 +217,8 @@ export default function Havequestions() {
                                     <p>
                                         For offline programs
                                     </p>
-                                    <a aria-label='Mumbai, Maharashtra'>
-                                        Mumbai, Maharashtra
+                                    <a aria-label={utilityData?.location}>
+                                        {utilityData?.location}
                                     </a>
                                 </div>
                             </div>

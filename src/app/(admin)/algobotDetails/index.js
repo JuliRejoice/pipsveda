@@ -33,6 +33,8 @@ function AlgobotDetails({ id }) {
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState('');
+  const [commonDiscount, setCommonDiscount] = useState(10); // 10% common discount
+  const [appliedCoupon, setAppliedCoupon] = useState(null);
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -76,13 +78,22 @@ function AlgobotDetails({ id }) {
   };
 
   const handleBuyNow = (plan) => {
+    const quantity = planQuantities[plan._id] || 1;
+    const originalPrice = plan.initialPrice * quantity;
+    const commonDiscountAmount = (originalPrice * commonDiscount) / 100;
+    console.log(originalPrice)
     setSelectedPlan({
       ...plan,
-      totalPrice: plan.price * (planQuantities[plan._id] || 1)
+      originalPrice: originalPrice,
+      totalPrice: originalPrice - commonDiscountAmount, // Apply common discount by default
+      quantity: quantity,
+      commonDiscount: commonDiscountAmount,
+      discountType: 'common'
     });
     setCoupon('');
-    setDiscount(0);
+    setDiscount(commonDiscountAmount);
     setError('');
+    setAppliedCoupon(null);
     setIsModalOpen(true);
   };
 
@@ -94,24 +105,28 @@ function AlgobotDetails({ id }) {
 
     try {
       setIsValidating(true);
-      setIsLoading(true);
       setError('');
       const response = await getCoupon(coupon);
 
       if (response.success && response.payload) {
         const discountPercentage = response.payload.discount || 0;
-        const originalTotal = selectedPlan.price * (planQuantities[selectedPlan._id] || 1);
+        const originalTotal = selectedPlan.originalPrice;
         const discountAmount = (originalTotal * discountPercentage) / 100;
         
         setDiscount(discountAmount);
         setCouponId(response.payload._id);
+        setAppliedCoupon({
+          code: coupon,
+          discount: discountPercentage
+        });
+        
         toast.success('Coupon applied successfully!');
         
         setSelectedPlan(prev => ({
           ...prev,
           totalPrice: Math.max(0, originalTotal - discountAmount),
-          originalPrice: originalTotal,
-          discountPercentage: discountPercentage
+          discountType: 'coupon',
+          couponDiscount: discountAmount
         }));
       } else {
         setError(response.messages || 'Invalid coupon code');
@@ -121,7 +136,6 @@ function AlgobotDetails({ id }) {
       setError('Failed to validate coupon. Please try again.');
     } finally {
       setIsValidating(false);
-      setIsLoading(false);
     }
   };
 
@@ -143,7 +157,7 @@ function AlgobotDetails({ id }) {
 
       const response = await getPaymentUrl(orderData);
       if (response.success) {
-        router.push(response?.payload?.data?.checkout_url);
+        router.replace(response?.payload?.data?.checkout_url);
         setIsModalOpen(false);
       } else {
         setError(response.message || 'Failed to process payment');
@@ -390,21 +404,33 @@ function AlgobotDetails({ id }) {
               <h3>{selectedPlan.planType} Plan</h3>
               <p>
                 <span>Quantity:</span>
-                <span>{planQuantities[selectedPlan._id] || 1}</span>
+                <span>{selectedPlan.quantity || 1}</span>
               </p>
               <p>
                 <span>Price per unit:</span>
-                <span>${selectedPlan.price}</span>
+                <span>${(selectedPlan.initialPrice)}</span>
               </p>
-              {discount > 0 && (
+              <p>
+                <span>Subtotal:</span>
+                <span>${selectedPlan.originalPrice.toFixed(2)}</span>
+              </p>
+              
+              {/* Show discount details */}
+              {selectedPlan.discountType === 'coupon' ? (
                 <p className={styles.discountText}>
-                  <span>Discount:</span>
-                  <span>-${discount}</span>
+                  <span>Coupon Discount ({appliedCoupon?.discount}%):</span>
+                  <span>-${selectedPlan.couponDiscount?.toFixed(2) || '0.00'}</span>
+                </p>
+              ) : (
+                <p className={styles.discountText}>
+                  <span>Common Discount ({commonDiscount}%):</span>
+                  <span>-${selectedPlan.commonDiscount?.toFixed(2) || '0.00'}</span>
                 </p>
               )}
-              <h4>
-                <span>Total:</span>
-                <span>${calculateTotal()}</span>
+              
+              <h4 className={styles.totalPrice}>
+                <span>Total Amount:</span>
+                <span>${selectedPlan.totalPrice.toFixed(2)}</span>
               </h4>
             </div>
 
@@ -414,18 +440,23 @@ function AlgobotDetails({ id }) {
                 placeholder="Enter coupon code"
                 value={coupon}
                 onChange={(e) => setCoupon(e.target.value)}
-                disabled={discount > 0}
+                disabled={appliedCoupon !== null}
                 className={styles.couponInput}
               />
               <OutlineButton
-                text={discount > 0 ? 'Applied' : 'Apply'}
+                text={appliedCoupon ? 'Applied' : 'Apply'}
                 onClick={handleApplyCoupon}
-                disabled={isValidating || discount > 0 || isLoading}
+                disabled={isValidating || appliedCoupon !== null || isLoading}
                 isLoading={isValidating}
-                variant={discount > 0 ? 'secondary' : 'primary'}
+                variant={appliedCoupon ? 'secondary' : 'primary'}
               />
             </div>
 
+            {appliedCoupon && (
+              <p className={styles.successText}>
+                Coupon {appliedCoupon.code} applied successfully! ({appliedCoupon.discount}% off)
+              </p>
+            )}
             {error && <p className={styles.errorText}>{error}</p>}
 
             <div className={styles.modalActions}>
@@ -440,7 +471,7 @@ function AlgobotDetails({ id }) {
                 text={
                   isProcessingPayment 
                     ? 'Processing...' 
-                    : `Pay $${selectedPlan?.totalPrice?.toFixed(2) || '0.00'}`
+                    : `Pay $${selectedPlan.totalPrice.toFixed(2)}`
                 }
               />
             </div>

@@ -144,3 +144,14 @@ export const getPaymentUrl = async (data) => {
         throw error;
     }
 };
+
+export const getUtilityData = async () => {
+    try {
+        const res = await fetch(`${BASEURL}/utilitySetting/`);
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.error("Error fetching utility data", error);
+        throw error;
+    }
+};

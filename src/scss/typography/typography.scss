@@ -125,3 +125,11 @@
     font-family: var(--font-lexend);
     line-height: normal;
 }
+
+@mixin font20 {
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 600;
+    font-family: var(--font-funneldisplay);
+    line-height: 25px;
+}

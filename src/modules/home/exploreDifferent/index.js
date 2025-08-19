@@ -9,6 +9,7 @@ import Slider from "react-slick";
 import Arrowicon from '@/icons/arrowicon';
 import classNames from 'classnames';
 import { getCourseByType, getCourses } from '@/compoents/api/dashboard';
+import Link from 'next/link';
 const BookIcon = '/assets/icons/book.svg'
 const RightIcon = '/assets/icons/right-black.svg'
 function SampleNextArrow(props) {
@@ -91,10 +92,11 @@ export default function ExploreDifferent() {
             id: 1,
             title: "Recorded Courses",
             description:
-                "Learn at your own pace with our extensive library of pre-recorded courses. Access high-quality content anytime, anywhere, and master trading at your convenience.",
+                "Learn at your own pace with our extensive library of pre-recorded courses. Access high-quality content anytime, anywhere, and Pips Veda trading at your convenience.",
             image: CardImage1,
             courses: `${courses?.recorded?.length} Recorded Courses`,
             icon: BookIcon,
+            link:"/courses/pre-recorded"
         },
         {
             id: 2,
@@ -104,6 +106,7 @@ export default function ExploreDifferent() {
             image: CardImage2,
             courses: `${courses?.physical?.length} In-Person Programs`,
             icon: BookIcon,
+            link:"/courses/in-person"
         },
         {
             id: 3,
@@ -113,6 +116,7 @@ export default function ExploreDifferent() {
             image: CardImage3,
             courses: `${courses?.live?.length} Live Sessions`,
             icon: BookIcon,
+            link:"/courses/live-webinars"
         }
     ];
     const settings = {
@@ -172,7 +176,7 @@ export default function ExploreDifferent() {
                     </motion.p>
                 </motion.div>
                 <motion.div variants={itemVariants}>
-                    <Slider {...settings}>
+                    <div className={styles.cardDiv}>
                         {cardData.map((card, index) => (
                             <motion.div
                                 key={card.id}
@@ -183,6 +187,7 @@ export default function ExploreDifferent() {
                                     delay: 0.4 + (index * 0.1)
                                 }}
                             >
+                                <Link href={card.link}>
                                 <div className={styles.card}>
                                     <motion.div
                                         className={styles.image}
@@ -205,9 +210,10 @@ export default function ExploreDifferent() {
                                         </div>
                                     </div>
                                 </div>
+                                </Link>
                             </motion.div>
                         ))}
-                    </Slider>
+                   </div>
                 </motion.div>
             </div>
         </motion.div>

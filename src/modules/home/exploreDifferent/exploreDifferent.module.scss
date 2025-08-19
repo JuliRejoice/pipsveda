@@ -5,6 +5,8 @@
 .exploreDifferent {
     padding: 95px 0 110px 0;
 
+   
+
     @include respond-to("md") {
         padding: 80px 0;
     }
@@ -26,6 +28,7 @@
             text-transform: capitalize;
             margin: 0 0 16px 0;
             text-align: center;
+
             @include respond-to("md") {
                 @include heading40;
             }
@@ -62,6 +65,7 @@
         background-color: var(--bg-white);
         transition: .3s ease-in-out;
         cursor: pointer;
+
         @include respond-to("sm") {
             width: 40px;
             height: 40px;
@@ -77,6 +81,7 @@
             @media (max-width:1600px) {
                 left: 0;
             }
+
             @include respond-to("sm") {
                 left: -10px;
             }
@@ -88,6 +93,7 @@
             @media (max-width:1600px) {
                 right: 0;
             }
+
             @include respond-to("sm") {
                 right: -10px;
             }
@@ -123,9 +129,10 @@
             clip-path: polygon(0 45px, 40px 0, 100% 0, 100% calc(100% - 45px), calc(100% - 45px) 100%, 0 100%, 0 45px);
             padding: 20px;
         }
+
         @include respond-to("sm") {
             @include sm-sec-clip-path;
-            padding: 20px 16px; 
+            padding: 20px 16px;
 
         }
 
@@ -140,18 +147,21 @@
                 height: 239px;
                 display: block;
                 clip-path: polygon(0 50px, 45px 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%, 0 100%, 0 50px);
+
                 @include respond-to("md") {
-                clip-path: polygon(0 40px, 35px 0, 100% 0, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
+                    clip-path: polygon(0 40px, 35px 0, 100% 0, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
                 }
+
                 @include respond-to("sm") {
                     height: 200px;
-            @include sm-sec-clip-path;
+                    @include sm-sec-clip-path;
                 }
             }
         }
 
         .details {
             padding: 40px 0 0 0;
+
             @include respond-to("md") {
                 padding: 20px 0 0 0;
             }
@@ -162,9 +172,11 @@
                 text-align: center;
                 margin: 0 0 20px 0;
                 text-transform: uppercase;
+
                 @include respond-to("md") {
                     margin: 0 0 10px 0;
                 }
+
                 @include respond-to("sm") {
                     @include heading24;
                 }
@@ -174,6 +186,7 @@
                 padding: 40px 0 0 0;
                 display: flex;
                 justify-content: center;
+
                 @include respond-to("sm") {
                     padding: 20px 0 0 0;
                 }
@@ -206,10 +219,19 @@
                 max-width: 367px;
                 margin: 0 auto;
                 display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;  
-  overflow: hidden;
+                -webkit-line-clamp: 3;
+                -webkit-box-orient: vertical;
+                overflow: hidden;
             }
         }
     }
+   
+}
+
+.cardDiv{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;
 }

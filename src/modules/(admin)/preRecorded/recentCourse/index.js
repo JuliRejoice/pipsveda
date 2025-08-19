@@ -6,6 +6,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './recentCourse.module.scss';
 import Pagination from '@/compoents/pagination';
 import OutlineButton from '@/compoents/outlineButton';
+import { getCookie } from '../../../../../cookie';
 
 const BathIcon = '/assets/icons/bath.svg';
 const RightBlackIcon = '/assets/icons/right-black.svg';
@@ -137,7 +138,9 @@ export default function RecentCourse({ searchQuery , allCourse , setAllCourses ,
                                 <OutlineButton 
                                     text="Enroll Now" 
                                     icon={RightBlackIcon} 
-                                    onClick={() => router.push(`/courses/pre-recorded/${course._id}`)} 
+                                    onClick={() =>{
+                                      getCookie('userToken') ? router.push(`/courses/pre-recorded/${course._id}`) : router.push('/signin');
+                                    }} 
                                 />
                             </div>
                         </div>

@@ -16,7 +16,7 @@ import {
   getCourses,
   getTrendingOrPopularCourses,
 } from "@/compoents/api/dashboard";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import CourseCardSkeleton from "./CourseCardSkeleton";
 
 const CardImage = "/assets/images/crypto.png";
@@ -42,6 +42,7 @@ export default function CourseBanner({
   const [courses, setCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
+  const params = useSearchParams();
 
   const [inputValue, setInputValue] = useState(searchQuery);
 
@@ -69,7 +70,17 @@ export default function CourseBanner({
     debouncedSearch(value);
   };
 
-  // Sync local state with prop
+  useEffect(() => {
+    const searchValue = params.get("search");
+    if (searchValue) {
+      setInputValue(searchValue);
+      setSearchQuery(searchValue);
+      getAllCourses(searchValue);
+    }
+    getAllCourses();
+  }, [params]);
+console.log(searchQuery);
+ 
   useEffect(() => {
     setInputValue(searchQuery);
   }, [searchQuery]);
@@ -79,6 +90,7 @@ export default function CourseBanner({
       setIsLoading(true);
       const response = await getCourses(searchQuery);
       if (response.success) {
+        console.log(response.payload.data.slice(0, 3));
         setCourses(response.payload.data.slice(0, 3));
       } else {
         console.error("Failed to fetch courses:", response.message);
@@ -107,9 +119,7 @@ export default function CourseBanner({
     }
   };
 
-  useEffect(() => {
-    getAllCourses();
-  }, []);
+
 
   return (
     <div className={styles.courseBanner}>

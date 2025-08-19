@@ -6,6 +6,7 @@ import styles from "./inPersonCourse.module.scss";
 import OutlineButton from "@/compoents/outlineButton";
 import RenderSkeleton from "../../recentCourse/RenderSkeleton";
 import EmptyState from "../../recentCourse/EmptyState";
+import { getCookie } from "../../../../../../cookie";
 
 
 const CardImage = '/assets/images/crypto.png';
@@ -86,9 +87,9 @@ function InPersonCourse() {
                 <OutlineButton
                   text="Enroll Now"
                   icon={RightBlackIcon}
-                  onClick={() =>
-                    router.push(`/courses/in-person/${course?._id}`)
-                  }
+                  onClick={() =>{
+                    getCookie('userToken') ? router.push(`/courses/in-person/${course?._id}`) : router.push('/signin');
+                  }}
                 />
               </div>
             </div>

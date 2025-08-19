@@ -1,4 +1,5 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
 import styles from './footer.module.scss';
 import Logo from '../logo';
 import FacebookIcon from '@/icons/facebookIcon';
@@ -7,8 +8,25 @@ import IinstagramIcon from '@/icons/instagramIcon';
 import LinkdinIcon from '@/icons/linkdinIcon';
 import InstagramIcon from '@/icons/instagramIcon';
 import Button from '../button';
+import { getUtilityData } from '../api/dashboard';
+import Link from 'next/link';
 const FooterImage = '/assets/images/footer-bg.png';
 export default function Footer() {
+    const [footerData, setFooterData] = useState([]);
+    useEffect(() => {
+        const fetchFooterData = async () => {
+            try {
+                const response = await getUtilityData();
+                setFooterData(response.payload);
+            } catch (error) {
+                console.error('Error fetching footer data:', error);
+            }
+        };
+        fetchFooterData();
+    }, []);
+
+    console.log(footerData);
+
     return (
         <div>
             <footer className={styles.footer}>
@@ -24,16 +42,16 @@ export default function Footer() {
                             </div>
                             <div className={styles.socialIcon}>
                                 <div>
-                                    <FacebookIcon />
+                                    <Link target='_blank' href={footerData?.facebookLink || ''}><FacebookIcon /></Link>
                                 </div>
                                 <div>
-                                    <TwitterIcon />
+                                    <Link target='_blank' href={footerData?.twitter || ''}><TwitterIcon /></Link>
                                 </div>
                                 <div>
-                                    <InstagramIcon />
+                                    <Link target='_blank' href={footerData?.instagramLink || ''}><InstagramIcon /></Link>
                                 </div>
                                 <div>
-                                    <LinkdinIcon />
+                                    <Link target='_blank' href={footerData?.linkedin || ''}><LinkdinIcon /></Link>
                                 </div>
                             </div>
                         </div>

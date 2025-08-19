@@ -10,6 +10,8 @@ import Button from "@/compoents/button";
 import Arrowicon from "@/icons/arrowicon";
 import classNames from "classnames";
 import { getCourseByType } from "@/compoents/api/dashboard";
+import { useRouter } from 'next/navigation';
+import { getCookie } from "../../../../cookie";
 const Card4 = '/assets/images/card4.png';
 const VecImage = '/assets/images/vec.png';
 
@@ -44,6 +46,7 @@ export default function FinancialFreedom() {
         physical: []
     });
     const [activeType, setActiveType] = useState('recorded');
+    const router = useRouter();
 
     useEffect(() => {
         const fetchCourses = async () => {
@@ -86,17 +89,12 @@ export default function FinancialFreedom() {
     };
 
     const courseTypes = [
-        { id: 'recorded', label: 'On demand courses' },
-        { id: 'live', label: 'Live Online Courses' },
-        { id: 'physical', label: 'In-Person Courses' }
+        { id: 'recorded', label: 'On demand courses' , course : 'pre-recorded'},
+        { id: 'live', label: 'Live Online Courses' , course : 'live-online'},
+        { id: 'physical', label: 'In-Person Courses' , course : 'in-person'}
     ];
 
     const currentCourses = courses[activeType] || [];
-
-    const handleEnroll = (courseId) => {
-        console.log('Enroll button clicked for course:', courseId);
-    };
-
     return (
         <div className={styles.financialFreedom}>
             <div className={styles.vecImage}>
@@ -211,7 +209,13 @@ export default function FinancialFreedom() {
                                                         </div>
                                                     </div>
                                                     <div className={styles.btnWidthfull}>
-                                                        <Button text="Enroll Now" onClick={() => handleEnroll(course.id)} />
+                                                        <Button 
+                                                            text="Enroll Now" 
+                                                            onClick={() => {
+                                                                const courseType = courseTypes.find(t => t.id === activeType)?.course || 'pre-recorded';
+                                                                getCookie('userToken') ? router.push(`/courses/${courseType}/${course._id}`) : router.push('/signin');
+                                                            }} 
+                                                        />
                                                     </div>
                                                 </div>
                                             </div>
