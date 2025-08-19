@@ -33,7 +33,7 @@ function AlgobotDetails({ id }) {
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState('');
-  const [commonDiscount, setCommonDiscount] = useState(10); // 10% common discount
+  const [commonDiscount, setCommonDiscount] = useState(0); // 10% common discount
   const [appliedCoupon, setAppliedCoupon] = useState(null);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -423,8 +423,8 @@ function AlgobotDetails({ id }) {
                 </p>
               ) : (
                 <p className={styles.discountText}>
-                  <span>Common Discount ({commonDiscount}%):</span>
-                  <span>-${selectedPlan.commonDiscount?.toFixed(2) || '0.00'}</span>
+                  <span>Common Discount ({selectedPlan.discount}%):</span>
+                  <span>-${selectedPlan.totalPrice * selectedPlan.discount / 100 || '0.00'}</span>
                 </p>
               )}
               
