@@ -14,13 +14,14 @@ const CardImage = '/assets/images/crypto.png';
 
 const ITEMS_PER_PAGE = 8; // Adjust based on your layout
 
-export default function RecentCourse({ searchQuery , allCourse , setAllCourses , courseLoading , setCourseLoading }) {
+export default function RecentCourse({courseType ,setCourseType , searchQuery , allCourse , setAllCourses , courseLoading , setCourseLoading }) {
     const [error, setError] = useState(null);
     const [pagination, setPagination] = useState({
         currentPage: 1,
         totalItems: 0,
         itemsPerPage: ITEMS_PER_PAGE
     });
+    
     const router = useRouter();
 
     const fetchCourses = async (page = 1) => {
@@ -102,7 +103,7 @@ export default function RecentCourse({ searchQuery , allCourse , setAllCourses ,
     return (
         <div className={styles.recentCourse}>
             <div className={styles.title}>
-                <h2>Pre Recorded Course</h2>
+                <h2>{courseType.slice(0, 1).toUpperCase() + courseType.slice(1)} Course</h2>
             </div>
             <div className={styles.grid}>
                 {courseLoading ? (

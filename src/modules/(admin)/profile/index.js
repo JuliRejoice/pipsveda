@@ -42,14 +42,14 @@ export default function Profile() {
                         Edit Profile
                     </h2>
                     <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                    Update your personal information, contact details, and preferences to keep your profile up to date.
                     </p>
                 </div>
                 <div className={styles.subbox}>
                     <div className={styles.grid}>
                         <Input type="text" name="name" label='First Name' placeholder='Enter your first name' value={user?.name} onChange={(e)=>setUser({...user, name: e.target.value})} />
                         <Input type="text" name="phone" label='Phone' placeholder='Enter your number' value={user?.phone} onChange={(e)=>setUser({...user, phone: e.target.value})} />
-                        <Input type="text" name="address" label='Address' placeholder='Enter your address' value={user?.address} onChange={(e)=>setUser({...user, address: e.target.value})} />
+                        {/* <Input type="text" name="address" label='Address' placeholder='Enter your address' value={user?.address} onChange={(e)=>setUser({...user, address: e.target.value})} /> */}
                         <Input type="text" name="location" label='Location' placeholder='Enter your location' value={user?.location} onChange={(e)=>setUser({...user, location: e.target.value})} />
                     </div>
                     <Button text="Save" icon={RightIcon} onClick={()=>handleEditProfile()}/>

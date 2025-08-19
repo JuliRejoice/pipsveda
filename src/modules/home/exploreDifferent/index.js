@@ -187,7 +187,7 @@ export default function ExploreDifferent() {
                                     delay: 0.4 + (index * 0.1)
                                 }}
                             >
-                                <Link href={card.link}>
+                               
                                 <div className={styles.card}>
                                     <motion.div
                                         className={styles.image}
@@ -210,7 +210,7 @@ export default function ExploreDifferent() {
                                         </div>
                                     </div>
                                 </div>
-                                </Link>
+                               
                             </motion.div>
                         ))}
                    </div>

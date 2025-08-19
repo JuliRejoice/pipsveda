@@ -148,19 +148,9 @@ export default function Sidebar({ setToogle, toogle }) {
           onClick={() => handleTabClick("algobot")}
           >
             <Algobot />
-            <span>Algobot</span>
+            <span>AlgoBot</span>
           </div>
-          <div
-            className={`${styles.menu} ${
-              pathname === "/contact-us" ? styles.active : ""
-            }`}
-            onClick={() => {
-              handleTabClick("contact-us");
-            }}
-          >
-            <ContactUs />
-            <span>Contact Us</span>
-          </div>
+          
           <div className={`${styles.menu} ${
               pathname === "/my-courses" ? styles.active : ""
             }`}
@@ -171,17 +161,17 @@ export default function Sidebar({ setToogle, toogle }) {
             <CourseIcon />
             <span>My Courses</span>
           </div>
-          <div
-            className={`${styles.menu} ${
-              pathname === "/notification" ? styles.active : ""
-            }`}
-            onClick={() => {
-              handleTabClick("notification");
-            }}
-          >
-            <NotificationIcon />
-            <span>Notifications</span>
-          </div>
+            {/* <div
+              className={`${styles.menu} ${
+                pathname === "/notification" ? styles.active : ""
+              }`}
+              onClick={() => {
+                handleTabClick("notification");
+              }}
+            >
+              <NotificationIcon />
+              <span>Notifications</span>
+            </div> */}
 
           <div
             className={`${styles.menu} ${
@@ -194,7 +184,17 @@ export default function Sidebar({ setToogle, toogle }) {
             <PaymentIcon />
             <span>Payment History</span>
           </div>
-
+          <div
+            className={`${styles.menu} ${
+              pathname === "/contact-us" ? styles.active : ""
+            }`}
+            onClick={() => {
+              handleTabClick("contact-us");
+            }}
+          >
+            <ContactUs />
+            <span>Contact Us</span>
+          </div>
         </div>
         <div className={styles.sidebarFooter}>
           <div className={styles.relativeDiv}>
@@ -221,10 +221,10 @@ export default function Sidebar({ setToogle, toogle }) {
                     <ProfileI />
                     <span>Profile</span>
                   </div>
-                  <div className={styles.iconText} onClick={()=>handleTabClick("settings")}>
+                  {/* <div className={styles.iconText} onClick={()=>handleTabClick("settings")}>
                     <SettingsIcon />
                     <span>Settings</span>
-                  </div>
+                  </div> */}
                 <div className={styles.iconText} onClick={handleLogout}>
                   <SignoutIcon />
                   <span>Logout</span>

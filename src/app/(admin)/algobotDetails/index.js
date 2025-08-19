@@ -112,6 +112,10 @@ function AlgobotDetails({ id }) {
         const discountPercentage = response.payload.discount || 0;
         const originalTotal = selectedPlan.originalPrice;
         const discountAmount = (originalTotal * discountPercentage) / 100;
+
+        console.log(discountAmount)
+        console.log(originalTotal)
+        console.log(discountPercentage)
         
         setDiscount(discountAmount);
         setCouponId(response.payload._id);
