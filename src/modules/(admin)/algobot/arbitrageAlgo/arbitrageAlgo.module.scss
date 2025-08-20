@@ -40,6 +40,12 @@
     padding: 20px;
     border-radius: 12px;
 
+    transition: .3s ease-in-out;
+
+    &:hover {
+      background: linear-gradient(90deg, rgba(110, 48, 249, .18) 0%, rgba(254, 105, 23, .18) 85.71%);
+    }
+
     .image {
       img {
         width: 100%;
@@ -77,14 +83,17 @@
           border: 1px solid #dadadacc;
           padding: 6px;
           border-radius: 8px;
+
           .contentAlignment:last-child {
             padding: 0;
           }
+
           .contentAlignment {
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 0 0 0;
+
             span {
               display: block;
               @include font14;
@@ -95,6 +104,7 @@
               @include font16;
               color: var(--grey-600);
               font-weight: 400;
+
               &.dangerText {
                 color: #CE4553;
               }

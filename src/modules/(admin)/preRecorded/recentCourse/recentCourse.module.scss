@@ -4,6 +4,7 @@
 
 .recentCourse {
     padding: 35px 0 0 0;
+
     @include respond-to("sm") {
         padding: 20px 0 0 0;
     }
@@ -25,15 +26,15 @@
         padding: 22px 0 50px 0;
 
         @media (max-width:1500px) {
-            grid-template-columns: repeat(3 , 1fr);
+            grid-template-columns: repeat(3, 1fr);
         }
 
         @include respond-to("md") {
-            grid-template-columns: repeat(2 , 1fr);
+            grid-template-columns: repeat(2, 1fr);
         }
 
         @include respond-to("sm") {
-            grid-template-columns: repeat(1 , 1fr);
+            grid-template-columns: repeat(1, 1fr);
             padding: 20px 0;
         }
 
@@ -42,6 +43,11 @@
             @include first-clip-path;
             border-radius: 12px;
             padding: 20px;
+            transition: .3s ease-in-out;
+
+            &:hover {
+                background: linear-gradient(90deg, rgba(110, 48, 249, .18) 0%, rgba(254, 105, 23, .18) 85.71%);
+            }
 
             .image {
                 img {
@@ -50,6 +56,7 @@
                     object-fit: cover;
                     display: block;
                     @include first-clip-path;
+
                     @include respond-to("md") {
                         height: 180px;
                     }
@@ -60,7 +67,7 @@
                 padding: 15px 0 0 0;
 
                 button {
-                        padding: 11px 26px;
+                    padding: 11px 26px;
                 }
 
                 .twoContentAlignment {
@@ -133,28 +140,28 @@
     box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
     margin: 2rem auto;
     max-width: 600px;
-  
+
     h3 {
-      margin-top: 1rem;
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: #111827;
+        margin-top: 1rem;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #111827;
     }
-  
+
     p {
-      margin-top: 0.5rem;
-      font-size: 1rem;
-      color: #6b7280;
+        margin-top: 0.5rem;
+        font-size: 1rem;
+        color: #6b7280;
     }
-  }
-  
-  .emptyImage {
+}
+
+.emptyImage {
     width: 80px;
     height: auto;
     opacity: 0.9;
-  }
-  
-  .refreshButton {
+}
+
+.refreshButton {
     margin-top: 1.5rem;
     padding: 0.75rem 1.5rem;
     background: #2563eb;
@@ -165,9 +172,8 @@
     font-weight: 500;
     cursor: pointer;
     transition: background 0.2s;
-  
+
     &:hover {
-      background: #1e40af;
+        background: #1e40af;
     }
-  }
-  
+}
