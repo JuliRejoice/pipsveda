@@ -11,10 +11,10 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
 const TABS = {
-  VIDEO_COURSES: 'Video Courses',
-  LIVE_SESSIONS: 'Live Sessions',
-  PHYSICAL_EVENTS: 'Physical Events',
-  MY_ALGOBOTS: 'My Algobots'
+  VIDEO_COURSES: 'Pre Recorded Courses',
+  LIVE_SESSIONS: 'Live Online courses',
+  PHYSICAL_EVENTS: 'In Person Courses',
+  MY_ALGOBOTS: 'My AlgoBots'
 };
 
 const CourseSkeleton = () => {

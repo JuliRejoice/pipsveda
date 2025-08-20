@@ -37,6 +37,8 @@ export default function CourseBanner({
   setSearchQuery,
   allCourse,
   setAllCourse,
+  courseType,
+  setCourseType,
   setCourseLoading,
 }) {
   const [courses, setCourses] = useState([]);
@@ -105,6 +107,7 @@ console.log(searchQuery);
   const handleTypeChange = async (type) => {
     setCourseLoading(true);
     try {
+      setCourseType(type);
       const response = await getTrendingOrPopularCourses(type);
 
       if (response.success) {
