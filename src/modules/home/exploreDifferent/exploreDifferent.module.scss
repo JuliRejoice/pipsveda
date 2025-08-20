@@ -5,7 +5,7 @@
 .exploreDifferent {
     padding: 95px 0 110px 0;
 
-   
+
 
     @include respond-to("md") {
         padding: 80px 0;
@@ -225,13 +225,11 @@
             }
         }
     }
-   
+
 }
 
-.cardDiv{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
+.cardDiv {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
 }

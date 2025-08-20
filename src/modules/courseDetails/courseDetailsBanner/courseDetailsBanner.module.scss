@@ -1,0 +1,25 @@
+@use '../../../scss/main.scss' as *;
+@use '../../../scss/breakpoints/breakpoints.scss' as *;
+@use '../../../scss/typography/typography.scss' as *;
+
+.courseDetailsBanner {
+    background-image: url('/assets/images/herobanner.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding: 266px 0 135px 0;
+    width: 100%;
+
+    h1 {
+        @include heading2;
+        color: var(--black-500);
+        text-align: center;
+        margin: 0 0 20px 0;
+    }
+
+    p {
+        @include font18;
+        color: var(--black-500);
+        opacity: .9;
+        text-align: center;
+    }
+}

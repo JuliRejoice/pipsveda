@@ -12,13 +12,14 @@
   --grey-600: #6f756d;
   --grey-650: #6b7385;
   --grey-500: #6b7280;
+  --grey-555: #555;
   --green: #16a249;
   --input-bg: rgba(0, 0, 0, 0.2);
   --grey: #a1a1a1;
   --border-light: #d7d7d7;
   --border-200: #2a303c;
   --text-white: #fff;
-  --bg-light-700:#F7F8FA;
+  --bg-light-700: #f7f8fa;
   --text-white-80: rgba(255, 255, 255, 0.8);
   --bg-white-80: rgba(255, 255, 255, 0.08);
   --border-color: #00000021;
@@ -27,7 +28,7 @@
   --border-color4: #dbdde1;
   --border-color5: #e9e9e9;
   --border-color6: #dfe0e0;
-  --border-color7: #DFE0E0;
+  --border-color7: #dfe0e0;
   --orange: #fe6917;
   --button-gradient: linear-gradient(90deg, #6e30f9 0%, #fe6917 85.71%);
   --button-gradient-hover: linear-gradient(90deg, #fe6917 0%, #6e30f9 85.71%);

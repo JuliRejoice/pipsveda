@@ -2,15 +2,15 @@ import React from 'react';
 import styles from './pagination.module.scss';
 import LeftIcon from '@/icons/leftIcon';
 
-export default function Pagination({ 
-  currentPage = 1, 
-  totalItems = 0, 
-  itemsPerPage = 10, 
-  onPageChange = () => {},
+export default function Pagination({
+  currentPage = 1,
+  totalItems = 0,
+  itemsPerPage = 10,
+  onPageChange = () => { },
   maxVisiblePages = 5
 }) {
   const totalPages = Math.ceil(totalItems / itemsPerPage);
-  
+
   if (totalPages <= 1) return null;
 
   const handlePageChange = (page) => {
@@ -46,8 +46,8 @@ export default function Pagination({
 
     for (let i = startPage; i <= endPage; i++) {
       pages.push(
-        <div 
-          key={i} 
+        <div
+          key={i}
           className={`${styles.pageNumber} ${i === currentPage ? styles.active : ''}`}
           onClick={() => handlePageChange(i)}
         >
@@ -65,9 +65,9 @@ export default function Pagination({
         );
       }
       pages.push(
-        <div 
-          key={totalPages} 
-          className={styles.pageNumber} 
+        <div
+          key={totalPages}
+          className={styles.pageNumber}
           onClick={() => handlePageChange(totalPages)}
         >
           {totalPages}
@@ -80,7 +80,7 @@ export default function Pagination({
 
   return (
     <div className={styles.paginationAlignment}>
-      <div 
+      <div
         className={`${styles.arrow} ${currentPage === 1 ? styles.disabled : ''}`}
         onClick={() => handlePageChange(currentPage - 1)}
       >
@@ -89,7 +89,7 @@ export default function Pagination({
       <div className={styles.counterAlignment}>
         {renderPageNumbers()}
       </div>
-      <div 
+      <div
         className={`${styles.arrow} ${styles.right} ${currentPage === totalPages ? styles.disabled : ''}`}
         onClick={() => handlePageChange(currentPage + 1)}
       >
