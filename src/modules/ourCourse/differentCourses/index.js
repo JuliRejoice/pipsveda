@@ -1,41 +1,14 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useInView, useAnimation, stagger, animate } from 'framer-motion';
-import styles from './exploreDifferent.module.scss';
 const CardImage1 = '/assets/images/card1.png';
 const CardImage2 = '/assets/images/crypto.png';
 const CardImage3 = '/assets/images/card3.png';
-import Slider from "react-slick";
-import Arrowicon from '@/icons/arrowicon';
-import classNames from 'classnames';
 import { getCourseByType, getCourses } from '@/compoents/api/dashboard';
 import Link from 'next/link';
-const BookIcon = '/assets/icons/book.svg'
+const BookIcon = '/assets/icons/book-icon.svg'
 const RightIcon = '/assets/icons/right-black.svg'
-function SampleNextArrow(props) {
-    const { className, style, onClick } = props;
-    return (
-        <div
-            className={classNames(styles.arrow, styles.rightIcon)}
-            onClick={onClick}
-        >
-            <Arrowicon />
-        </div>
-    );
-}
-
-function SamplePrevArrow(props) {
-    const { className, style, onClick } = props;
-    return (
-        <div
-            className={classNames(styles.arrow, styles.leftIcon)}
-            onClick={onClick}
-        >
-            <Arrowicon />
-        </div>
-    );
-}
-
+import styles from './differentCourses.module.scss';
 const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -58,10 +31,7 @@ const itemVariants = {
         }
     }
 };
-
-
-
-export default function ExploreDifferent() {
+export default function DifferentCourses() {
     const [courses, setCourses] = useState([]);
     const controls = useAnimation();
     const ref = useRef(null);
@@ -96,7 +66,7 @@ export default function ExploreDifferent() {
             image: CardImage1,
             courses: `${courses?.recorded?.length} Recorded Courses`,
             icon: BookIcon,
-            link:"/courses/pre-recorded"
+            link: "/courses/pre-recorded"
         },
         {
             id: 2,
@@ -106,7 +76,7 @@ export default function ExploreDifferent() {
             image: CardImage2,
             courses: `${courses?.physical?.length} In-Person Programs`,
             icon: BookIcon,
-            link:"/courses/in-person"
+            link: "/courses/in-person"
         },
         {
             id: 3,
@@ -116,37 +86,24 @@ export default function ExploreDifferent() {
             image: CardImage3,
             courses: `${courses?.live?.length} Live Sessions`,
             icon: BookIcon,
-            link:"/courses/live-webinars"
+            link: "/courses/live-webinars"
         }
     ];
-   
-
     return (
-        <motion.div
-            className={styles.exploreDifferent}
-            initial="hidden"
-            animate={controls}
-            variants={containerVariants}
-            ref={ref}
-        >
+        <div className={styles.differentCourses}>
             <div className='container'>
-                <motion.div className={styles.title} variants={itemVariants}>
-                    <motion.h2
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.2 }}
-                    >
-                        Explore Different type of courses
-                    </motion.h2>
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.3 }}
-                    >
+                <div className={styles.text}>
+                    <h2>Explore Different type of courses</h2>
+                    <p>
                         AI technology services aim to provide intelligent solutions that help businesses
                         improve efficiency,
-                    </motion.p>
-                </motion.div>
+                    </p>
+                </div>
+                <div className={styles.tabAlignment}>
+                    <button className={styles.activeTab}>Our Course1</button>
+                    <button>Our Course2</button>
+                    <button>Our Course3</button>
+                </div>
                 <motion.div variants={itemVariants}>
                     <div className={styles.cardDiv}>
                         {cardData.map((card, index) => (
@@ -160,34 +117,34 @@ export default function ExploreDifferent() {
                                 }}
                             >
                                 <Link href={card.link}>
-                                <div className={styles.card}>
-                                    <motion.div
-                                        className={styles.image}
-                                        whileHover={{ scale: 1.03 }}
-                                        transition={{ type: "spring", stiffness: 300 }}
-                                    >
-                                        <img src={card.image} alt={card.title} />
-                                    </motion.div>
-                                    <div className={styles.details}>
-                                        <h2>{card.title}</h2>
-                                        <p>{card.description}</p>
-                                        <div className={styles.buttonAlignment}>
-                                            <motion.button
-                                                whileHover={{ scale: 1.05 }}
-                                                whileTap={{ scale: 0.95 }}
-                                            >
-                                                <img src={card.icon} alt="icon" />
-                                                <span>{card.courses}</span>
-                                            </motion.button>
+                                    <div className={styles.card}>
+                                        <motion.div
+                                            className={styles.image}
+                                            whileHover={{ scale: 1.03 }}
+                                            transition={{ type: "spring", stiffness: 300 }}
+                                        >
+                                            <img src={card.image} alt={card.title} />
+                                        </motion.div>
+                                        <div className={styles.details}>
+                                            <h2>{card.title}</h2>
+                                            <p>{card.description}</p>
+                                            <div className={styles.buttonAlignment}>
+                                                <motion.button
+                                                    whileHover={{ scale: 1.05 }}
+                                                    whileTap={{ scale: 0.95 }}
+                                                >
+                                                    <img src={card.icon} alt="icon" />
+                                                    <span>{card.courses}</span>
+                                                </motion.button>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
                                 </Link>
                             </motion.div>
                         ))}
-                   </div>
+                    </div>
                 </motion.div>
             </div>
-        </motion.div>
+        </div>
     )
 }
