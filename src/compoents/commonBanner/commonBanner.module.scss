@@ -1,0 +1,25 @@
+@use '../../scss/main.scss' as *;
+@use '../../scss/breakpoints/breakpoints.scss' as *;
+@use '../../scss/typography/typography.scss' as *;
+
+.commonBanner {
+    background-image: url('/assets/images/herobanner.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    width: 100%;
+    padding: 266px 0 130px 0;
+
+    h1 {
+        @include heading2;
+        color: var(--black-500);
+        text-align: center;
+        margin: 0 0 16px 0;
+    }
+
+    p {
+        @include font18;
+        color: var(--black-500);
+        opacity: 0.9;
+        text-align: center;
+    }
+}

@@ -70,6 +70,7 @@
             border-radius: 12px;
             transition: .3s ease-in-out;
             position: relative;
+            height: 100%;
 
             @include respond-to("sm") {
                 clip-path: polygon(0 30px, 25px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);
@@ -89,6 +90,8 @@
                 @include sec-clip-path;
                 background-color: var(--black-100);
                 gap: 9px;
+                height: 100%;
+
 
                 @media (max-width:1600px) {
                     padding: 50px 25px;
@@ -142,7 +145,7 @@
                 .listAlignment {
                     padding: 0 0 0 15px;
                     margin: 0;
-                    
+
 
                     .listText {
                         @include font16;

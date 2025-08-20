@@ -78,10 +78,10 @@ export default function Footer() {
                                 <div className={styles.line}></div>
                             </div>
                             <div className={styles.menu}>
-                                <a aria-label='Terms of Service'>Terms of Service</a>
-                                <a aria-label='Privacy Policy'>Privacy Policy</a>
+                                <Link aria-label='Terms of Service' href="/terms-conditions">Terms of Service</Link>
+                                <Link aria-label='Privacy Policy' href="/privacy-policy">Privacy Policy</Link>
                                 <a aria-label='Telegram Group'>Telegram Group</a>
-                                <a aria-label='Refund Policy'>Refund Policy</a>
+                                <Link aria-label='Refund Policy' href="/refund-policy">Refund Policy</Link>
                             </div>
                         </div>
                         <div className={styles.gridItems}>
@@ -101,14 +101,14 @@ export default function Footer() {
                                 </div>
                             </div>
                             <div className={styles.checkboxText}>
-                                <input type='checkbox'/>
+                                <input type='checkbox' />
                                 <label>I agree to the Privacy Policy</label>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className={styles.footerBg}>
-                    <img src={FooterImage} alt='FooterImage'/>
+                    <img src={FooterImage} alt='FooterImage' />
                 </div>
             </footer>
             <div className={styles.copright}>
