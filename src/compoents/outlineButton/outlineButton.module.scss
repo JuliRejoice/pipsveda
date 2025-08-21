@@ -2,7 +2,8 @@
 @use '../../scss/typography/typography.scss' as *;
 
 .button {
-        display: inline-block;
+    display: inline-block;
+
     .btnwrapper {
         padding: 1px; // border thickness
         background: var(--button-gradient-border);
@@ -18,9 +19,10 @@
             button {
                 background: var(--button-gradient-border-hover);
                 color: var(--text-white);
+
                 img {
                     transform: translateX(2px);
-                        filter: invert(1);
+                    filter: invert(1);
                 }
             }
         }
@@ -43,6 +45,10 @@
             @include font16;
             background-color: var(--bg-white);
             gap: 9px;
+
+            @media (max-width:576px) {
+                padding: 12px 24px;
+            }
 
             img {
                 transition: .3s ease-in-out;

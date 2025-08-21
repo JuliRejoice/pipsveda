@@ -5,13 +5,33 @@
 .courseInformation {
     padding: 120px 0 70px 0;
 
+    @include respond-to("md") {
+        padding: 80px 0;
+    }
+
+    @include respond-to("sm") {
+        padding: 60px 0;
+    }
+
     .courseHeaderAlignment {
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 0 0 30px 0;
 
+        @include respond-to("md") {
+            grid-template-columns: 1fr;
+            display: grid;
+            gap: 20px;
+        }
+
         .rightContentAlignment {
+            @include respond-to("md") {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+            }
+
             h4 {
                 @include heading24;
                 background: var(--button-gradient);
@@ -20,11 +40,20 @@
                 -webkit-text-fill-color: transparent;
                 text-align: right;
                 margin: 0 0 15px 0;
+
+                @include respond-to("md") {
+                    margin: 0;
+                }
             }
         }
 
         .textAlignment {
             max-width: 85%;
+
+            @include respond-to("md") {
+                max-width: 100%;
+            }
+
             h2 {
                 @include heading20;
                 color: var(--black-500);
@@ -43,6 +72,11 @@
                 display: flex;
                 align-items: center;
                 gap: 30px;
+                flex-wrap: wrap;
+
+                @include respond-to("md") {
+                    gap: 20px;
+                }
 
                 .iconText {
                     display: flex;
@@ -114,11 +148,19 @@
         grid-template-columns: repeat(2, 1fr);
         gap: 30px;
 
+        @include respond-to("md") {
+            grid-template-columns: 1fr;
+        }
+
         .griditems {
             .videoPlayer {
                 border-radius: 20px;
                 background: rgba(1, 11, 29, 0.20);
                 height: 400px;
+
+                @include respond-to("sm") {
+                    height: 280px;
+                }
             }
 
             h3 {
