@@ -88,7 +88,7 @@ export default function Footer() {
                             <div className={styles.menu}>
                                 <a href="/terms-conditions"aria-label='Terms of Service'>Terms of Service</a>
                                 <a href="/privacy-policy" aria-label='Privacy Policy'>Privacy Policy</a>
-                                <a href="/telegram-group" aria-label='Telegram Group'>Telegram Group</a>
+                                {/* <a href="/telegram-group" aria-label='Telegram Group'>Telegram Group</a> */}
                                 <a href="/refund-policy" aria-label='Refund Policy'>Refund Policy</a>
                             </div>
                         </div>

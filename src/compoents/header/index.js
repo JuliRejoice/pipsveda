@@ -77,10 +77,10 @@ export default function Header() {
                 Offline Sessions
               </a>
 
-              {/* <a aria-label='Community'>AlgoBots</a> */}
+              <a aria-label='Community'>AlgoBots</a>
               {/* <a aria-label='Resources'>Resources</a>
               <a aria-label='Blog'>Blog</a> */}
-              {/* <a aria-label='About Us'>About Us</a> */}
+              <a aria-label='About Us'>About Us</a>
             </div>
             <div className={styles.buttonDesign}>
               <Link href="/signin">
