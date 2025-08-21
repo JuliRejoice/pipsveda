@@ -153,7 +153,7 @@ export default function Sidebar({ setToogle, toogle }) {
           onClick={() => handleTabClick("algobot")}
           >
             <Algobot />
-            <span>AlgoBot</span>
+            <span>AlgoBots</span>
           </div>
           
           <div className={`${styles.menu} ${

@@ -84,13 +84,18 @@ export default function AutomateTrades() {
               variants={cardVariants}
             >
               <div className={styles.card}>
-                <div className={styles.headerAlignment}>
+                {/* <div className={styles.headerAlignment}>
                   <button aria-label='Free'>Free</button>
                   <FlashIcon />
-                </div>
+                </div> */}
                 <div className={styles.textstyle}>
-                  <h3>{algobot.title}</h3>
-                  <p>{algobot.shortDescription}</p>
+                  <div style={{display: "flex", justifyContent: "space-between"}}>
+                    <div className={styles.titleText}>
+                      <h3>{algobot.title}</h3>
+                      <p>{algobot.shortDescription}</p>
+                    </div>
+                    <FlashIcon />
+                  </div>
                   <div className={styles.planplangrdmain}>
                     <div className={styles.planplangrd}>
                       <div className={styles.planitem}>
@@ -117,7 +122,7 @@ export default function AutomateTrades() {
                   </div>
                 </div>
                 <div className={styles.buttonGrid}>
-                  <Button text="Buy Now" onClick={() => {getCookie('userToken') ? router.push(`/algobot/${algobot._id}`) : router.push('/signin');}} />
+                  <Button text="Buy Now" onClick={() => { getCookie('userToken') ? router.push(`/algobot/${algobot._id}`) : router.push('/signin'); }} />
                   {/* <div className={styles.btndesign}>
                     <OutlineButton text="Subscribe Now" />
                   </div> */}

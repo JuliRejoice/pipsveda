@@ -162,10 +162,22 @@
                 padding: 0 0 22px 0;
                 border-bottom: 1px solid var(--black-300);
 
+                .titleText{
+                    max-width: 80%;
+                }
+                svg{
+                    height: 48px;
+                    width: 48px;
+                }
                 h3 {
                     @include heading20;
                     color: var(--text-white);
                     margin: 0 0 8px 0;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
                 }
 
                 p {

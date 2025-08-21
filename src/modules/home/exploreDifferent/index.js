@@ -100,6 +100,16 @@ export default function ExploreDifferent() {
         },
         {
             id: 2,
+            title: "Live Webinars",
+            description:
+                "Join interactive live sessions with market experts. Ask questions, participate in discussions, and get your trading queries resolved in real-time.",
+            image: CardImage3,
+            courses: `${courses?.live?.length} Live Sessions`,
+            icon: BookIcon,
+            link:"/our-course?course=live"
+        },
+        {
+            id: 3,
             title: "In-Person Training",
             description:
                 "Experience hands-on learning with our expert instructors in a classroom setting. Get personalized guidance and real-time feedback to accelerate your trading journey.",
@@ -108,16 +118,7 @@ export default function ExploreDifferent() {
             icon: BookIcon,
             link:"/our-course?course=physical"
         },
-        {
-            id: 3,
-            title: "Live Webinars",
-            description:
-                "Join interactive live sessions with market experts. Ask questions, participate in discussions, and get your trading queries resolved in real-time.",
-            image: CardImage3,
-            courses: `${courses?.live?.length} Live Sessions`,
-            icon: BookIcon,
-            link:"/our-course?course=live"
-        }
+        
     ];
    
 

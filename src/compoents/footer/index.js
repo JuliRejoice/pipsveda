@@ -71,11 +71,11 @@ export default function Footer() {
                                 <div className={styles.line}></div>
                             </div>
                             <div className={styles.menu}>
-                                <a aria-label='About'>About</a>
-                                <a aria-label='Courses'>Courses</a>
-                                <a aria-label='Blog'>Blog</a>
-                                <a aria-label='Contact'>Contact</a>
-                                <a aria-label='FAQ'>FAQ</a>
+                                <a href="/about" aria-label='About'>About</a>
+                                <a href="/our-course" aria-label='Courses'>Courses</a>
+                                <a href="/blog" aria-label='Blog'>Blog</a>
+                                <a href="/contact" aria-label='Contact'>Contact</a>
+                                <a href="/faq" aria-label='FAQ'>FAQ</a>
                             </div>
                         </div>
                         <div className={styles.gridItems}>

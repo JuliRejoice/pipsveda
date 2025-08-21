@@ -78,8 +78,8 @@ export default function Header() {
               </a>
 
               <a aria-label='Community'>AlgoBots</a>
-              <a aria-label='Resources'>Resources</a>
-              <a aria-label='Blog'>Blog</a>
+              {/* <a aria-label='Resources'>Resources</a>
+              <a aria-label='Blog'>Blog</a> */}
               <a aria-label='About Us'>About Us</a>
             </div>
             <div className={styles.buttonDesign}>
@@ -107,8 +107,8 @@ export default function Header() {
           <a href="/our-course" aria-label='Live Online Classes'>Live Online Classes</a>
           <a href="/our-course" aria-label='Offline Sessions'>Offline Sessions</a>
           <a href="/algotbots" aria-label='Community'>AlgoBots</a>
-          <a href="/resources" aria-label='Resources'>Resources</a>
-          <a href="/blog" aria-label='Blog'>Blog</a>
+          {/* <a href="/resources" aria-label='Resources'>Resources</a>
+          <a href="/blog" aria-label='Blog'>Blog</a> */}
           <a aria-label='About Us'>About Us</a>
         </div>
         <div className={styles.mobileFooter}>

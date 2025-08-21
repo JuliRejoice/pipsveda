@@ -9,6 +9,41 @@ import classNames from 'classnames';
 
 const SqureIcon = '/assets/icons/squre.svg';
 
+const testimonials = [
+  {
+    id: 1,
+    quote: "The strategies taught here transformed my trading completely. I guidance helped me refine my trading went from losing money to consistent profits in just 3 months.",
+    name: "Rajesh Kumar",
+    role: "Forex Trading Pips Veda",
+    profit: "+₹2.8L in 6 months",
+    rating: 5
+  },
+  {
+    id: 2,
+    quote: "The mentorship program was a game-changer for me. The personalized guidance helped me refine my trading strategy and improve my risk management.",
+    name: "Priya Sharma",
+    role: "Swing Trading Student",
+    profit: "+₹1.5L in 4 months",
+    rating: 5
+  },
+  {
+    id: 3,
+    quote: "The community support and daily market analysis have been invaluable. I've gained confidence in my trading decisions and seen consistent growth in my portfolio.",
+    name: "Amit Patel",
+    role: "Intraday Trading Enthusiast",
+    profit: "+₹3.2L in 8 months",
+    rating: 4
+  },
+  {
+    id: 4,
+    quote: "The structured learning path made complex concepts easy to understand. I went from a complete beginner to making my first profitable trade in just 6 weeks.",
+    name: "Neha Gupta",
+    role: "Beginner Trader",
+    profit: "+₹95K in 3 months",
+    rating: 5
+  }
+];
+
 function SampleNextArrow(props) {
   const { onClick } = props;
   return (
@@ -95,9 +130,9 @@ export default function OurStudents() {
         </motion.div>
 
         <Slider {...settings}>
-          {[...Array(4)].map((_, i) => (
+          {testimonials.map((testimonial, i) => (
             <motion.div
-              key={i}
+              key={testimonial.id}
               custom={i}
               variants={cardVariants}
               initial="hidden"
@@ -105,25 +140,22 @@ export default function OurStudents() {
             >
               <div className={styles.whiteBox}>
                 <img src={SqureIcon} alt="SqureIcon" />
-                <p>
-                  "The strategies taught here transformed my trading completely. I went from losing
-                  money to consistent profits in just 3 months."
-                </p>
+                <p>"{testimonial.quote}"</p>
                 <div className={styles.contentAlignment}>
                   <div className={styles.ratingAlignment}>
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
-                    <StarIcon />
+                    {[...Array(testimonial.rating)].map((_, i) => (
+                      <StarIcon key={i} />
+                    ))}
                   </div>
-                  <span>💰 +₹2.8L in 6 months</span>
+                  <span>💰 {testimonial.profit}</span>
                 </div>
                 <div className={styles.profilealignment}>
-                  <div className={styles.profile}>RK</div>
+                  <div className={styles.profile}>
+                    {testimonial.name.split(' ').map(n => n[0]).join('')}
+                  </div>
                   <div>
-                    <h4>Rajesh Kumar</h4>
-                    <span>Forex Trading Pips Veday</span>
+                    <h4>{testimonial.name}</h4>
+                    <span>{testimonial.role}</span>
                   </div>
                 </div>
               </div>
