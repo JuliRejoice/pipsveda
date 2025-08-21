@@ -1,11 +1,35 @@
-import React from 'react'
+'use client'
+import React, { useEffect, useState } from 'react'
 import styles from './recentCourse.module.scss';
 import Button from '@/compoents/button';
 import OutlineButton from '@/compoents/outlineButton';
+import { getCourseByType, getCourses } from '@/compoents/api/dashboard';
+import RenderSkeleton from '@/modules/(admin)/chapter/recentCourse/RenderSkeleton';
 const CardImage = '/assets/images/course-details-card.png';
+import 'react-loading-skeleton/dist/skeleton.css';
 const BathIcon = '/assets/icons/bath-primary.svg';
 const RightIcon = '/assets/icons/right-black.svg';
-export default function RecentCourse() {
+export default function RecentCourse({id}) {
+    const [courses, setCourses] = useState([]);
+    const [loading, setLoading] = useState(true);
+    useEffect(() => {
+        const fetchCourses = async () => {
+            try {
+                setLoading(true);
+                const response = await getCourses({ id });
+                const res = await getCourses({courseType: response.payload.data[0].courseType});
+                setCourses(res.payload.data);
+            } catch (error) {
+                console.error('Error fetching course:', error);
+            }
+            finally {
+                setLoading(false);
+            }
+        };
+        fetchCourses();
+    }, [id]);
+
+    console.log(courses);   
     return (
         <div className={styles.recentCourse}>
             <div className='container'>
@@ -15,36 +39,37 @@ export default function RecentCourse() {
                     </h2>
                 </div>
                 <div className={styles.grid}>
-                    {
-                        [...Array(3)].map(() => {
+                    {loading ? (
+                        <RenderSkeleton count={3} />
+                    ) : (
+                        courses?.map((course, index) => {
                             return (
-                                <div className={styles.griditems}>
+                                <div className={styles.griditems} key={index}>
                                     <div className={styles.image}>
-                                        <img src={CardImage} alt="CardImage" />
+                                        <img src={course?.courseVideo} alt="CardImage" />
                                     </div>
                                     <div className={styles.details}>
                                         <h3>
-                                            Crypto Currency for Beginners
+                                            {course?.CourseName}
                                         </h3>
                                         <p>
-                                            Lorem Ipsum has been the industry's standard dummy text
-                                            ever...
+                                            {course?.description}
                                         </p>
                                         <div className={styles.twoContentAlignment}>
                                             <h4>
-                                                $789
+                                                ${course?.price}
                                             </h4>
                                             <div className={styles.iconText}>
                                                 <img src={BathIcon} alt="BathIcon" />
-                                                <span>John  Doe</span>
+                                                <span>{course?.instructor}</span>
                                             </div>
                                         </div>
-                                        <OutlineButton text="Enroll Now" icon={RightIcon} />
+                                        <OutlineButton text="Enroll Now" icon={RightIcon} href={`/course-details?id=${course?.id}`}/>
                                     </div>
                                 </div>
                             )
                         })
-                    }
+                    )}
                 </div>
             </div>
         </div>

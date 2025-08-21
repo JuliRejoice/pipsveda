@@ -66,7 +66,7 @@ export default function ArbitrageAlgo({ bot, setBot, searchQuery, setSearchQuery
             } finally {
                 setLoading(false);
             }
-        };  
+        };
         fetchAlgobotData();
     }, [searchQuery]);
 
@@ -100,8 +100,18 @@ export default function ArbitrageAlgo({ bot, setBot, searchQuery, setSearchQuery
 
     return (
         <div className={styles.arbitrageAlgoAlignment}>
-            <div className={styles.title}>
-                <h2>Arbitrage Algo</h2>
+            <div className={styles.algotabsmain}>
+                <div className={styles.algotabs}>
+                    <button type='button' className={`${styles.algotabs} ${styles.active}`}>
+                        <span>Arbitrage Algo</span>
+                    </button>
+                    {/* <button type='button' className={styles.algotabs}>
+                        <span>Arbitrage Algo</span>
+                    </button>
+                    <button type='button' className={styles.algotabs}>
+                        <span>Arbitrage Algo</span>
+                    </button> */}
+                </div>
             </div>
             <div className={styles.grid}>
                 {bot?.map((item) => (
@@ -140,7 +150,7 @@ export default function ArbitrageAlgo({ bot, setBot, searchQuery, setSearchQuery
                                 ))}
                             </div>
                             <OutlineButton
-                                text="Enroll Now"
+                                text="Buy Now"
                                 icon={RightBlackIcon}
                                 onClick={() => router.push(`/algobot/${item._id}`)}
                             />

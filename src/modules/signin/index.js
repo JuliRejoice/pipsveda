@@ -8,7 +8,7 @@ import Link from "next/link";
 import { signIn } from "@/compoents/api/auth";
 import { useRouter } from "next/navigation";
 import Logo from "@/compoents/logo";
-import { getCookie, setCookie } from "../../../cookie";
+import { setCookie } from "../../../cookie";
 import { errorMessages } from "@/utils/constant";
 import toast from "react-hot-toast";
 
@@ -43,7 +43,7 @@ export default function Signin() {
   const handleLogin = async () => {
     const emailError = validateEmail(email);
     const passwordError = validatePassword(password);
-    
+
     if (emailError || passwordError) {
       setErrors({
         email: emailError,
@@ -76,67 +76,72 @@ export default function Signin() {
       <div className="container">
         <div className={styles.signinBox}>
           <div className={styles.logoCenter}>
-            <Logo/>
+            <Logo />
           </div>
           <div className={styles.text}>
             <h2>Welcome Back</h2>
             <p>Continue your journey into the world of financial Pips Veday.</p>
           </div>
           <div className={styles.leftRightAlignment}>
-            <div className={styles.inputAlignment}>
-              <Input
-                name="email"
-                type="email"
-                label="Email Address"
-                placeholder="Enter your email"
-                value={email}
-                onKeyDown={(e) => {
-                  if (e.key === ' ') {
-                    e.preventDefault();
-                  }
-                }}
-                onChange={(e) => {
-                  setEmail(e.target.value);
-                  setErrors((prev) => ({ ...prev, email: validateEmail(e.target.value) }));
-                }}
-              />
-              {errors.email && <span className={styles.errormsg}>{errors.email}</span>}
-            </div>
-            <Input
-              name="password"
-              type={showPassword ? "text" : "password"}
-              label="Password"
-              icon={showPassword ? EyeSlashIcon : EyeIcon}
-              onIconClick={() => setShowPassword(!showPassword)}
-              placeholder="Enter your password"
-              onKeyDown={(e) => {
-                if (e.key === ' ') {
-                  e.preventDefault();
-                }
+            <form
+              onSubmit={(e) => {
+                e.preventDefault(); 
+                if (!isSubmitting) handleLogin();
               }}
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                setErrors((prev) => ({ ...prev, password: "" }));
-              }}
-            />
-            {errors.password && <span className={styles.errormsg}>{errors.password}</span>}
-            <div className={styles.forgotPassword}>
-              <Link href="/reset-password" aria-label="reset-password">
-                Forgot password?
-              </Link>
-            </div>
-            {errors.submit && <span className={styles.errormsg}>{errors.submit}</span>}
-            <div
-              className={styles.buttonWidthFull}
             >
-              <Button 
-                text={isSubmitting ? "Logging in..." : "Sign In"} 
-                icon={RightIcon} 
-                disabled={isSubmitting} 
-                onClick={!isSubmitting ? handleLogin : undefined} 
+              <div className={styles.inputAlignment}>
+                <Input
+                  name="email"
+                  type="email"
+                  label="Email Address"
+                  placeholder="Enter your email"
+                  value={email}
+                  onKeyDown={(e) => {
+                    if (e.key === " ") e.preventDefault();
+                  }}
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    setErrors((prev) => ({ ...prev, email: validateEmail(e.target.value) }));
+                  }}
+                />
+                {errors.email && <span className={styles.errormsg}>{errors.email}</span>}
+              </div>
+
+              <Input
+                name="password"
+                type={showPassword ? "text" : "password"}
+                label="Password"
+                icon={showPassword ? EyeSlashIcon : EyeIcon}
+                onIconClick={() => setShowPassword(!showPassword)}
+                placeholder="Enter your password"
+                onKeyDown={(e) => {
+                  if (e.key === " ") e.preventDefault();
+                }}
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  setErrors((prev) => ({ ...prev, password: "" }));
+                }}
               />
-            </div>
+              {errors.password && <span className={styles.errormsg}>{errors.password}</span>}
+
+              <div className={styles.forgotPassword}>
+                <Link href="/reset-password" aria-label="reset-password">
+                  Forgot password?
+                </Link>
+              </div>
+              {errors.submit && <span className={styles.errormsg}>{errors.submit}</span>}
+
+              <div className={styles.buttonWidthFull}>
+                <Button
+                  type="submit" // important for Enter key
+                  text={isSubmitting ? "Logging in..." : "Sign In"}
+                  icon={RightIcon}
+                  disabled={isSubmitting}
+                />
+              </div>
+            </form>
+
             <Authentication />
             <div className={styles.dontHaveAccount}>
               <p>

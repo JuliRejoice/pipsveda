@@ -1,14 +1,18 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react';
-import { motion, useInView, useAnimation, stagger, animate } from 'framer-motion';
-const CardImage1 = '/assets/images/card1.png';
-const CardImage2 = '/assets/images/crypto.png';
-const CardImage3 = '/assets/images/card3.png';
-import { getCourseByType, getCourses } from '@/compoents/api/dashboard';
+import { motion, useInView, useAnimation } from 'framer-motion';
+import { getCourseByType } from '@/compoents/api/dashboard';
 import Link from 'next/link';
-const BookIcon = '/assets/icons/book-icon.svg'
-const RightIcon = '/assets/icons/right-black.svg'
 import styles from './differentCourses.module.scss';
+import OutlineButton from '@/compoents/outlineButton';
+import { useRouter } from 'next/navigation';
+import RenderSkeleton from '@/modules/(admin)/chapter/recentCourse/RenderSkeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
+
+const CardImage = '/assets/images/crypto.png';
+const BathIcon = '/assets/icons/bath.svg';
+const RightBlackIcon = '/assets/icons/right-black.svg';
+
 const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -27,15 +31,22 @@ const itemVariants = {
         opacity: 1,
         transition: {
             duration: 0.5,
-            ease: "easeOut"
+            ease: "eastOut"
         }
     }
 };
-export default function DifferentCourses() {
-    const [courses, setCourses] = useState([]);
+
+export default function DifferentCourses({course}) {
+    const [courses, setCourses] = useState({ recorded: [], live: [], physical: [] });
+    const [activeTab, setActiveTab] = useState(course ?? 'recorded');
+    const [activeCourse,setActiveCourse] = useState([]);
+    const [loading, setLoading] = useState(true);
     const controls = useAnimation();
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, amount: 0.1 });
+    const router = useRouter();
+
+    console.log(course);
 
     useEffect(() => {
         if (isInView) {
@@ -43,108 +54,123 @@ export default function DifferentCourses() {
         }
     }, [isInView, controls]);
 
-
     useEffect(() => {
         const fetchCourses = async () => {
             try {
+                setLoading(true);
                 const response = await getCourseByType();
-                console.log(response);
-                setCourses(response.payload.courses);
+                if (response?.payload?.courses) {
+                    setCourses(response.payload.courses);
+                    // Set initial active courses
+                    setActiveCourse(response.payload.courses[activeTab || course]  ||[]);
+                }
             } catch (error) {
                 console.error('Error fetching courses:', error);
+            } finally {
+                setLoading(false);
             }
         };
         fetchCourses();
     }, []);
 
-    const cardData = [
-        {
-            id: 1,
-            title: "Recorded Courses",
-            description:
-                "Learn at your own pace with our extensive library of pre-recorded courses. Access high-quality content anytime, anywhere, and Pips Veda trading at your convenience.",
-            image: CardImage1,
-            courses: `${courses?.recorded?.length} Recorded Courses`,
-            icon: BookIcon,
-            link: "/courses/pre-recorded"
-        },
-        {
-            id: 2,
-            title: "In-Person Training",
-            description:
-                "Experience hands-on learning with our expert instructors in a classroom setting. Get personalized guidance and real-time feedback to accelerate your trading journey.",
-            image: CardImage2,
-            courses: `${courses?.physical?.length} In-Person Programs`,
-            icon: BookIcon,
-            link: "/courses/in-person"
-        },
-        {
-            id: 3,
-            title: "Live Webinars",
-            description:
-                "Join interactive live sessions with market experts. Ask questions, participate in discussions, and get your trading queries resolved in real-time.",
-            image: CardImage3,
-            courses: `${courses?.live?.length} Live Sessions`,
-            icon: BookIcon,
-            link: "/courses/live-webinars"
+    // Update activeCourse when activeTab changes
+    useEffect(() => {
+        if (courses[activeTab]) {
+            setActiveCourse(courses[activeTab] || []);
         }
-    ];
+    }, [activeTab, courses]);
+
+    const formatPrice = (price) => {
+        return price === '0' || price === '0.00' ? 'Free' : `$${parseFloat(price).toFixed(2)}`;
+    };
+
+    
+
     return (
-        <div className={styles.differentCourses}>
+        <div className={styles.differentCourses} ref={ref}>
             <div className='container'>
                 <div className={styles.text}>
-                    <h2>Explore Different type of courses</h2>
+                    <h2>Explore Different Types of Courses</h2>
                     <p>
-                        AI technology services aim to provide intelligent solutions that help businesses
-                        improve efficiency,
+                        Browse through our collection of courses designed to enhance your trading and investment skills
+                        across various markets and instruments.
                     </p>
                 </div>
                 <div className={styles.tabAlignment}>
-                    <button className={styles.activeTab}>Our Course1</button>
-                    <button>Our Course2</button>
-                    <button>Our Course3</button>
+                    <button 
+                        className={activeTab === 'recorded' ? styles.activeTab : ''}
+                        onClick={() => setActiveTab('recorded')}
+                    >
+                        Recorded Courses
+                    </button>
+                    <button 
+                        className={activeTab === 'live' ? styles.activeTab : ''}
+                        onClick={() => setActiveTab('live')}
+                    >
+                        Live Courses
+                    </button>
+                    <button 
+                        className={activeTab === 'physical' ? styles.activeTab : ''}
+                        onClick={() => setActiveTab('physical')}
+                    >
+                        In-Person Courses
+                    </button>
                 </div>
-                <motion.div variants={itemVariants}>
-                    <div className={styles.cardDiv}>
-                        {cardData.map((card, index) => (
-                            <motion.div
-                                key={card.id}
-                                initial={{ opacity: 0, y: 20 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{
-                                    duration: 0.5,
-                                    delay: 0.4 + (index * 0.1)
-                                }}
+                
+                {loading ? (
+                    <div className={styles.courseGrid}>
+                    <RenderSkeleton count={4}/>
+                    </div>
+                ) : activeCourse?.length > 0 ? (
+                    <div 
+                        className={styles.courseGrid}
+                        variants={containerVariants}
+                        initial="hidden"
+                        animate={controls}
+                    >
+                        {activeCourse?.map((course, index) => (
+                            <motion.div 
+                                className={styles.griditems} 
+                                key={course?._id || index}
+                                variants={itemVariants}
                             >
-                                <Link href={card.link}>
-                                    <div className={styles.card}>
-                                        <motion.div
-                                            className={styles.image}
-                                            whileHover={{ scale: 1.03 }}
-                                            transition={{ type: "spring", stiffness: 300 }}
-                                        >
-                                            <img src={card.image} alt={card.title} />
-                                        </motion.div>
-                                        <div className={styles.details}>
-                                            <h2>{card.title}</h2>
-                                            <p>{card.description}</p>
-                                            <div className={styles.buttonAlignment}>
-                                                <motion.button
-                                                    whileHover={{ scale: 1.05 }}
-                                                    whileTap={{ scale: 0.95 }}
-                                                >
-                                                    <img src={card.icon} alt="icon" />
-                                                    <span>{card.courses}</span>
-                                                </motion.button>
-                                            </div>
+                                <div className={styles.image}>
+                                    <img 
+                                        src={course.courseVideo || CardImage} 
+                                        alt={course.CourseName || 'Course'} 
+                                        onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src = CardImage;
+                                        }}
+                                    />
+                                </div>
+                                <div className={styles.details}>
+                                    <h3>{course?.CourseName || 'Untitled Course'}</h3>
+                                    <p className={styles.description}>
+                                        {course?.description || 'No description available.'}
+                                    </p>
+                                    <div className={styles.twoContentAlignment}>
+                                        <h4>${course?.price || '299'}</h4>
+                                        <div className={styles.iconText}>
+                                            <img src={BathIcon} alt='Instructor' />
+                                            <span>{course?.instructor || 'John Doe'}</span>
                                         </div>
                                     </div>
-                                </Link>
+                                    <OutlineButton  
+                                        text="Enroll Now" 
+                                        icon={RightBlackIcon} 
+                                        onClick={() => router.push(`/course-details?id=${course?._id}`)}
+                                    />
+                                </div>
                             </motion.div>
                         ))}
                     </div>
-                </motion.div>
+                ) : (
+                    <div className={styles.noCourses}>
+                        No courses available in this category.
+                    </div>
+                )}
             </div>
         </div>
-    )
+    );
 }

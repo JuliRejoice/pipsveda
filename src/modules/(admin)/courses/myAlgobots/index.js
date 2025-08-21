@@ -108,10 +108,10 @@ export default function MyAlgobots({ algobotCourses, isLoading = false }) {
                 <span>145</span>
               </div>
             </div>
-            <div className={styles.downloadContent}>
+            {/* <div className={styles.downloadContent}>
               <DownloadIcon />
               <span>Download Now</span>
-            </div>
+            </div> */}
           </div>
         )))}
       </div>

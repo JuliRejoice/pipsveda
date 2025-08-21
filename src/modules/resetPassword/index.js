@@ -65,6 +65,12 @@ export default function ResetPassword() {
                         <p>We'll send you an email to reset your password.</p>
                     </div>
                     <div className={styles.leftRightAlignment}>
+                        <form
+                          onSubmit={(e) => {
+                            e.preventDefault(); 
+                            if (!isSubmitting) handleReset();
+                          }}
+                        >
                         <div className={styles.inputAlignment}>
                             <Input
                                 name="email"
@@ -96,6 +102,7 @@ export default function ResetPassword() {
                         <div className={styles.dontHaveAccount}>
                             <p>Back to <Link href="/signin">Sign in</Link></p>
                         </div>
+                        </form>
                     </div>
                 </div>
             </div>

@@ -196,11 +196,11 @@ export default function FinancialFreedom() {
                                                             </div>
                                                             <div className={styles.icontext}>
                                                                 <ProfileIcon />
-                                                                <span>{course.students || '0'}</span>
+                                                                <span>{course.students || '123'}</span>
                                                             </div>
                                                             <div className={styles.icontext}>
                                                                 <ClockIcon />
-                                                                <span>{course.duration || '12 hours'}</span>
+                                                                <span>{`${course?.hours} hours`  || '12 hours'}</span>
                                                             </div>
                                                         </div>
                                                         <div className={styles.textAlignment}>
@@ -213,7 +213,7 @@ export default function FinancialFreedom() {
                                                             text="Enroll Now" 
                                                             onClick={() => {
                                                                 const courseType = courseTypes.find(t => t.id === activeType)?.course || 'pre-recorded';
-                                                                getCookie('userToken') ? router.push(`/courses/${courseType}/${course._id}`) : router.push('/signin');
+                                                              {getCookie('userToken') ? router.push(`/courses/${courseType}/${course._id}`) : router.push('/signin');}
                                                             }} 
                                                         />
                                                     </div>

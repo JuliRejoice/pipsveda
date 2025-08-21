@@ -6,6 +6,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "react-hot-toast";
+import { Suspense } from "react";
+import Loader from "@/compoents/loader";
 const lexend = Lexend({
   variable: "--font-lexend",
   subsets: ["latin"],
@@ -29,9 +31,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${lexend.variable} ${funneldisplay.variable}`}>
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}><Loader/></div>}>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </Suspense>
         <Toaster
           position="top-center"
           reverseOrder={false}

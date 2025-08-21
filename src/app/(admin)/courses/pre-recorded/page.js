@@ -9,7 +9,7 @@ export default function Page() {
   const [searchQuery, setSearchQuery] = useState("");
   const [allCourse, setAllCourse] = useState([]);
   const [courseType , setCourseType] = useState("preRecorded");
-  const [courseLoading, setCourseLoading] = useState(false);
+  const [courseLoading, setCourseLoading] = useState(true);
   return (
     <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}><Loader/></div>}>
       <AdminHeader/>

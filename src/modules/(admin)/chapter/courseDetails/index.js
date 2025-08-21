@@ -305,7 +305,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
           <div className={styles.allIconTextAlignment}>
             <div className={styles.iconText}>
               <ClockIcon />
-              <span>12 hours</span>
+              <span>{selectedCourse?.hours || '12'} hours</span>
             </div>
             <div className={styles.iconText}>
               <BathIcon />

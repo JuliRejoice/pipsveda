@@ -3,7 +3,6 @@
 @use '../../../../../scss/typography/typography.scss' as *;
 
 .recentCourseAlignment {
-
     // padding: 40px 0 0 0;
     @include respond-to("sm") {
         padding: 20px 0 0 0;
@@ -28,16 +27,14 @@
         @media (max-width: 1500px) {
             grid-template-columns: repeat(3, 1fr);
         }
-
         @include respond-to("md") {
 
             grid-template-columns: repeat(2, 1fr);
         }
-
         @include respond-to("sm") {
             grid-template-columns: repeat(1, 1fr);
         }
-
+    
     }
 
     .griditems {
@@ -45,12 +42,6 @@
         @include first-clip-path;
         padding: 20px;
         border-radius: 12px;
-
-        transition: .3s ease-in-out;
-
-        &:hover {
-            background: linear-gradient(90deg, rgba(110, 48, 249, .18) 0%, rgba(254, 105, 23, .18) 85.71%);
-        }
 
         .image {
             img {

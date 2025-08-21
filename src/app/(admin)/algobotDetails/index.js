@@ -38,6 +38,13 @@ function AlgobotDetails({ id }) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const [selectedLanguageIndex, setSelectedLanguageIndex] = useState(0);
+  const [availableLanguages, setAvailableLanguages] = useState([]);
+
+  const handleLanguageChange = (e) => {
+    setSelectedLanguageIndex(Number(e.target.value));
+  };
+
   const fetchAlgobotData = async () => {
     try {
       setIsLoading(true);
@@ -164,6 +171,8 @@ function AlgobotDetails({ id }) {
         router.replace(response?.payload?.data?.checkout_url);
         setIsModalOpen(false);
       } else {
+
+
         setError(response.message || 'Failed to process payment');
       }
     } catch (error) {
@@ -183,25 +192,21 @@ function AlgobotDetails({ id }) {
     fetchAlgobotData();
   }, []);
 
+  useEffect(() => {
+    if (algobotData?.link?.length > 0) {
+      setAvailableLanguages(algobotData.link);
+      setSelectedLanguageIndex(0); // Reset to first language when data changes
+    }
+  }, [algobotData]);
+
   const getYouTubeEmbedUrl = (url) => {
     try {
-      let videoId = "";
-  
-      // Case 1: Standard YouTube watch link
-      if (url.includes("watch?v=")) {
-        const urlObj = new URL(url);
-        videoId = urlObj.searchParams.get("v");
-      } 
-      
-      // Case 2: Short youtu.be link
-      else if (url.includes("youtu.be")) {
-        const urlObj = new URL(url);
-        videoId = urlObj.pathname.slice(1); // remove leading "/"
-      }
-  
-      return `https://www.youtube.com/embed/${videoId}`;
+      const urlObj = new URL(url);
+      const videoId = urlObj.searchParams.get('v') || urlObj.pathname.split('/').pop();
+      return `https://www.youtube.com/embed/${videoId}?rel=0&modestbranding=1`;
     } catch (e) {
-      return null;
+      console.error('Invalid YouTube URL:', url);
+      return '';
     }
   };
 
@@ -227,6 +232,7 @@ function AlgobotDetails({ id }) {
     ));
   };
 
+  console.log(selectedLanguageIndex)
   useEffect(() => {
     const isPayment = searchParams.get('isPayment');
     if (isPayment) {
@@ -311,13 +317,19 @@ function AlgobotDetails({ id }) {
           <h3>Tutorial</h3>
           <div className={styles.textdropdown}>
             <p>Select your preferred language :</p>
-            <select>
-              {algobotData?.link?.length > 0 ? (
-                algobotData.link.map((link, index) => (
-                  <option key={index}>{link.language}</option>
+            <select 
+              onChange={handleLanguageChange} 
+              value={selectedLanguageIndex}
+              disabled={!availableLanguages.length}
+            >
+              {availableLanguages.length > 0 ? (
+                availableLanguages.map((lang, index) => (
+                  <option key={lang._id} value={index}>
+                    {lang.language}
+                  </option>
                 ))
               ) : (
-                <option>English</option>
+                <option>No languages available</option>
               )}
             </select>
           </div>
@@ -325,13 +337,14 @@ function AlgobotDetails({ id }) {
 
         <div className={styles.tutorialVideo}>
           <div className={styles.subBox}>
-            {algobotData?.link?.[0]?.url && (
+            {availableLanguages[selectedLanguageIndex]?.url && (
               <iframe
                 width="100%"
                 height="100%"
-                src={getYouTubeEmbedUrl(algobotData.link[0].url)}
-                title="Tutorial Video"
+                src={getYouTubeEmbedUrl(availableLanguages[selectedLanguageIndex].url)}
+                title={`Tutorial Video - ${availableLanguages[selectedLanguageIndex]?.language || ''}`}
                 frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
                 style={{ borderRadius: '16px' }}
               ></iframe>
@@ -340,7 +353,7 @@ function AlgobotDetails({ id }) {
         </div>
         <div className={styles.coursePlan}>
           <div className={styles.sbutitle}>
-            <h2>Course Plans</h2>
+            <h2>Bot Plans</h2>
           </div>
           <div className={styles.planGrid}>
             {isLoading ? (

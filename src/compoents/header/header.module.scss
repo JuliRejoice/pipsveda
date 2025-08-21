@@ -32,29 +32,25 @@
 
     .headerDesign {
         background-color: var(--bg-white);
-        padding: 14px 40px;
+        padding: 20px 40px;
         border-radius: 8px;
         display: flex;
         align-items: center;
         justify-content: space-between;
         clip-path: polygon(0 35px, 30px 0, 100% 0, 100% calc(100% - 35px), calc(100% - 35px) 100%, 0 100%, 0 35px);
-
         @include respond-to("sm") {
             padding: 14px 20px;
-            clip-path: polygon(0 25px, 20px 0, 100% 0, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%, 0 25px);
+        clip-path: polygon(0 25px, 20px 0, 100% 0, 100% calc(100% - 25px), calc(100% - 25px) 100%, 0 100%, 0 25px);
         }
-
         .menuIcon {
             display: none;
 
             @include respond-to("md") {
                 display: block;
             }
-
             svg {
                 width: 40px;
                 height: 40px;
-
                 @include respond-to("sm") {
                     width: 30px;
                     height: 30px;
@@ -87,6 +83,9 @@
                 color: var(--grey-650);
 
                 &:hover {
+                    color: var(--black-500);
+                }
+                &.active {
                     color: var(--black-500);
                 }
             }
@@ -137,7 +136,7 @@
     }
 
     .mobileSmHeader {
-        padding: 14px 20px;
+            padding: 14px 20px;
         display: flex;
         align-items: center;
         justify-content: space-between;

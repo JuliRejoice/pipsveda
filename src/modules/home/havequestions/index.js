@@ -163,16 +163,18 @@ export default function Havequestions() {
                                     <img src={ChatIcon} alt='ChatIcon' />
                                 </div>
                                 <div>
-                                    <h3>
-                                        Live Chat / WhatsApp
-                                    </h3>
-                                    <p>
-                                        Available 24/7 for instant support
-                                    </p>
-                                    <a href={`callto:${utilityData?.chatNumber}`} aria-label={utilityData?.chatNumber}>
+                                    <h3>Live Chat / WhatsApp</h3>
+                                    <p>Available 24/7 for instant support</p>
+                                    <a
+                                        href={`https://wa.me/${utilityData?.chatNumber?.replace(/[^0-9]/g, "")}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={utilityData?.chatNumber}
+                                    >
                                         {utilityData?.chatNumber}
                                     </a>
                                 </div>
+
                             </div>
                             <div className={styles.box}>
                                 <div className={styles.icon}>

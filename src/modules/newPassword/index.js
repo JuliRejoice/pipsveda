@@ -94,6 +94,12 @@ export default function NewPassword() {
             <h2>Set new password</h2>
           </div>
           <div className={styles.leftRightAlignment}>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault(); 
+                if (!isSubmitting) handleSetNewPassword();
+              }}
+            >
             <div className={styles.inputAlignment}>
               <Input
                 name="newPassword"
@@ -157,6 +163,7 @@ export default function NewPassword() {
                 onClick={handleSetNewPassword}
               />
             </div>
+          </form>
           </div>
         </div>
       </div>

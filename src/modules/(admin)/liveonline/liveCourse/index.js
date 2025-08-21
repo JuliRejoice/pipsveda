@@ -6,7 +6,7 @@ import styles from "./liveCourse.module.scss";
 import OutlineButton from "@/compoents/outlineButton";
 import RenderSkeleton from "../../chapter/recentCourse/RenderSkeleton";
 import EmptyState from "../../chapter/recentCourse/EmptyState";
-import { getCookie } from "../../../../../cookie";
+
 
 
 const CardImage = '/assets/images/crypto.png';
@@ -56,7 +56,7 @@ function LiveCourse() {
         </div>
       ) : isLoading ? (
         <div className={styles.grid}>
-          <RenderSkeleton />
+          <RenderSkeleton count={4}/>
         </div>
       ) : courses.length === 0 ? (
         <EmptyState />
@@ -88,7 +88,7 @@ function LiveCourse() {
                   text="Enroll Now"
                   icon={RightBlackIcon}
                   onClick={() =>{
-                    getCookie('userToken') ? router.push(`/courses/live-online/${course?._id}`) : router.push('/signin');
+                router.push(`/courses/live-online/${course?._id}`);
                   }}
                 />
               </div>

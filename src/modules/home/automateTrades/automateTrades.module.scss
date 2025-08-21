@@ -70,7 +70,6 @@
             border-radius: 12px;
             transition: .3s ease-in-out;
             position: relative;
-            height: 100%;
 
             @include respond-to("sm") {
                 clip-path: polygon(0 30px, 25px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);
@@ -90,8 +89,6 @@
                 @include sec-clip-path;
                 background-color: var(--black-100);
                 gap: 9px;
-                height: 100%;
-
 
                 @media (max-width:1600px) {
                     padding: 50px 25px;
@@ -143,7 +140,7 @@
                 }
 
                 .listAlignment {
-                    padding: 0 0 0 15px;
+                    // padding: 0 0 0 15px;
                     margin: 0;
 
 
@@ -175,22 +172,68 @@
                     @include font16normal;
                     color: var(--text-white);
                     margin: 0 0 22px 0;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                .planplangrdmain {
+                    // overflow-x: auto;
+                    // max-width: 370px;
+
+                    &::-webkit-scrollbar {
+                        display: none;
+                    }
+
+                    .planplangrd {
+                        // display: flex;
+                        // align-items: center;
+                        display: grid;
+                        grid-template-columns: repeat(2, 1fr);
+                        gap: 15px;
+
+
+                        .planitem {
+                            position: relative;
+                            padding-left: 15px;
+
+                            // &:first-child {
+                            //     padding-left: 0;
+
+                            //     &::before {
+                            //         display: none;
+                            //     }
+                            // }
+
+                            &:nth-child(2n + 1) {
+                                padding-left: 0;
+
+                                &::before {
+                                    display: none;
+                                }
+                            }
+
+                            &::before {
+                                position: absolute;
+                                top: 0;
+                                left: 0;
+                                content: "";
+                                width: 1px;
+                                height: 100%;
+                                background: var(--button-gradient);
+                            }
+                        }
+                    }
                 }
 
                 h4 {
-                    font-family: var(--font-funneldisplay);
-                    font-size: 38px;
-
-                    font-style: normal;
-                    font-weight: 600;
-                    line-height: normal;
-
                     font-family: "Funnel Display";
-                    font-size: 38px;
+                    font-size: 28px;
                     font-style: normal;
                     font-weight: 600;
-                    line-height: normal;
-
+                    line-height: 33px;
                     background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
                     background-clip: text;
                     -webkit-background-clip: text;

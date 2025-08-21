@@ -41,18 +41,26 @@ export default function Footer() {
                                 </p>
                             </div>
                             <div className={styles.socialIcon}>
-                                <div>
-                                    <Link target='_blank' href={footerData?.facebookLink || ''}><FacebookIcon /></Link>
-                                </div>
-                                <div>
-                                    <Link target='_blank' href={footerData?.twitter || ''}><TwitterIcon /></Link>
-                                </div>
-                                <div>
-                                    <Link target='_blank' href={footerData?.instagramLink || ''}><InstagramIcon /></Link>
-                                </div>
-                                <div>
-                                    <Link target='_blank' href={footerData?.linkedin || ''}><LinkdinIcon /></Link>
-                                </div>
+                                <Link target='_blank' href={footerData?.facebookLink || ''}>
+                                    <div>
+                                        <FacebookIcon />
+                                    </div>
+                                </Link>
+                                <Link target='_blank' href={footerData?.twitter || ''}>
+                                    <div>
+                                        <TwitterIcon /> 
+                                    </div>
+                                </Link>
+                                <Link target='_blank' href={footerData?.instagramLink || ''}>
+                                    <div>
+                                        <InstagramIcon />
+                                    </div>
+                                </Link>
+                                <Link target='_blank' href={footerData?.linkedin || ''}>
+                                    <div>
+                                        <LinkdinIcon />
+                                    </div>
+                                </Link>
                             </div>
                         </div>
                         <div className={styles.gridItems}>
@@ -78,10 +86,10 @@ export default function Footer() {
                                 <div className={styles.line}></div>
                             </div>
                             <div className={styles.menu}>
-                                <Link aria-label='Terms of Service' href="/terms-conditions">Terms of Service</Link>
-                                <Link aria-label='Privacy Policy' href="/privacy-policy">Privacy Policy</Link>
+                                <a aria-label='Terms of Service'>Terms of Service</a>
+                                <a aria-label='Privacy Policy'>Privacy Policy</a>
                                 <a aria-label='Telegram Group'>Telegram Group</a>
-                                <Link aria-label='Refund Policy' href="/refund-policy">Refund Policy</Link>
+                                <a aria-label='Refund Policy'>Refund Policy</a>
                             </div>
                         </div>
                         <div className={styles.gridItems}>

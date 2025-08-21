@@ -7,6 +7,7 @@ import Button from '@/compoents/button';
 import OutlineButton from '@/compoents/outlineButton';
 import CircleAnimation from '@/icons/circleAnimation';
 import { useRouter } from 'next/navigation';
+import { getCookie } from '../../../../cookie';
 
 const RightIcon = '/assets/icons/right.svg';
 const RightBlackIcon = '/assets/icons/right-black.svg';
@@ -181,7 +182,7 @@ export default function Herobanner() {
                 className={styles.buttonAlignment}
                 variants={item}
               >
-                <Button text="Explore Courses" icon={RightIcon} onClick={() => router.push(`/courses/pre-recorded?search=${searchParams}`)}/>
+                <Button text="Explore Courses" icon={RightIcon} onClick={() =>{getCookie("userToken") ? router.push(`/courses/pre-recorded?search=${searchParams}`) : router.push('/signin')}}/>
                
               </motion.div>
             </div>

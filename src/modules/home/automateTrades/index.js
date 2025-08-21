@@ -6,8 +6,8 @@ import FlashIcon from '@/icons/flashIcon';
 import Button from '@/compoents/button';
 import OutlineButton from '@/compoents/outlineButton';
 import { getAlgobot } from '@/compoents/api/algobot';
-import { getCookie } from '../../../../cookie';
 import { useRouter } from 'next/navigation';
+import { getCookie } from '../../../../cookie';
 
 const containerVariants = {
   hidden: {},
@@ -91,9 +91,25 @@ export default function AutomateTrades() {
                 <div className={styles.textstyle}>
                   <h3>{algobot.title}</h3>
                   <p>{algobot.shortDescription}</p>
-                  <h4>
-                    ${algobot.strategyPlan[0]?.price}<sub>/{algobot.strategyPlan[0]?.planType}</sub>
-                  </h4>
+                  <div className={styles.planplangrdmain}>
+                    <div className={styles.planplangrd}>
+                      <div className={styles.planitem}>
+                        <h4>
+                          ${algobot.strategyPlan[0]?.price}<sub>/{algobot.strategyPlan[0]?.planType}</sub>
+                        </h4>
+                      </div>
+                      <div className={styles.planitem}>
+                        <h4>
+                          ${algobot.strategyPlan[1]?.price}<sub>/{algobot.strategyPlan[1]?.planType}</sub>
+                        </h4>
+                      </div>
+                      {/* <div className={styles.planitem}>
+                        <h4>
+                          ${algobot.strategyPlan[2]?.price}<sub>/{algobot.strategyPlan[2]?.planType}</sub>
+                        </h4>
+                      </div> */}
+                    </div>
+                  </div>
                 </div>
                 <div className={styles.details}>
                   <div className={styles.listAlignment}>
@@ -101,7 +117,7 @@ export default function AutomateTrades() {
                   </div>
                 </div>
                 <div className={styles.buttonGrid}>
-                  <Button text="Buy Now" onClick={() =>{getCookie('userToken') ? router.push(`/algobot/${algobot._id}`) : router.push(`/signin`)}} />
+                  <Button text="Buy Now" onClick={() => {getCookie('userToken') ? router.push(`/algobot/${algobot._id}`) : router.push('/signin');}} />
                   {/* <div className={styles.btndesign}>
                     <OutlineButton text="Subscribe Now" />
                   </div> */}

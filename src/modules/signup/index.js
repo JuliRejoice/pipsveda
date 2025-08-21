@@ -133,6 +133,12 @@ const validateConfirmPassword = (value, password) => {
             </p>
           </div>
           <div className={styles.leftRightAlignment}>
+            <form
+              onSubmit={(e) => {
+                e.preventDefault(); 
+                if (!isSubmitting) handleSignup();
+              }}
+            >
             <div className={styles.inputAlignment}>
               <Input
                 name="name"
@@ -247,6 +253,7 @@ const validateConfirmPassword = (value, password) => {
                 onClick={!isSubmitting && handleSignup}
               />
             </div>
+            </form>
             <Authentication />
             <div className={styles.dontHaveAccount}>
               <p>

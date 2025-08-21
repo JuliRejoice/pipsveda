@@ -96,7 +96,7 @@ export default function ExploreDifferent() {
             image: CardImage1,
             courses: `${courses?.recorded?.length} Recorded Courses`,
             icon: BookIcon,
-            link:"/courses/pre-recorded"
+            link:"/our-course?course=recorded"
         },
         {
             id: 2,
@@ -106,7 +106,7 @@ export default function ExploreDifferent() {
             image: CardImage2,
             courses: `${courses?.physical?.length} In-Person Programs`,
             icon: BookIcon,
-            link:"/courses/in-person"
+            link:"/our-course?course=physical"
         },
         {
             id: 3,
@@ -116,7 +116,7 @@ export default function ExploreDifferent() {
             image: CardImage3,
             courses: `${courses?.live?.length} Live Sessions`,
             icon: BookIcon,
-            link:"/courses/live-webinars"
+            link:"/our-course?course=live"
         }
     ];
    
@@ -159,7 +159,7 @@ export default function ExploreDifferent() {
                                     delay: 0.4 + (index * 0.1)
                                 }}
                             >
-                               
+                               <Link href={card.link}>
                                 <div className={styles.card}>
                                     <motion.div
                                         className={styles.image}
@@ -182,7 +182,7 @@ export default function ExploreDifferent() {
                                         </div>
                                     </div>
                                 </div>
-                               
+                                </Link>
                             </motion.div>
                         ))}
                    </div>

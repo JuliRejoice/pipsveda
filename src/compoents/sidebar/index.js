@@ -28,6 +28,8 @@ export default function Sidebar({ setToogle, toogle }) {
   const [dropdown, setDropdown] = useState(false);
   const [profileDropdown, setProfileDropdown] = useState(false);
   const [activeSubTab, setActiveSubTab] = useState("");
+  const [isLoggingOut, setIsLoggingOut] = useState(false);
+  
   const router = useRouter();
   const pathname = usePathname();
 
@@ -47,6 +49,9 @@ export default function Sidebar({ setToogle, toogle }) {
 
 
   const handleLogout = () => {
+    if (isLoggingOut) return; // Prevent multiple clicks
+    
+    setIsLoggingOut(true);
     removeCookie("userToken");
     toast.success("Logout successfully.");
     router.push("/");
@@ -226,7 +231,11 @@ export default function Sidebar({ setToogle, toogle }) {
                     <span>Settings</span>
                   </div> */}
                 <div className={styles.iconText} onClick={handleLogout}>
-                  <SignoutIcon />
+                  <SignoutIcon text="Logout"
+                    onClick={handleLogout}
+                    disabled={isLoggingOut}
+                    icon={LogoutIcon}
+                    className={styles.logoutButton} />
                   <span>Logout</span>
                 </div>
               </div>

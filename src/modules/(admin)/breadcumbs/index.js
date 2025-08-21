@@ -40,7 +40,7 @@ export default function Breadcumbs() {
 
   return (
     <div className={styles.breadcumbsAlignment}>
-      <Link href="/" className={styles.breadcrumbLink}>
+      <Link href="/dashboard" className={styles.breadcrumbLink}>
         Home
       </Link>
       {breadcrumbs}

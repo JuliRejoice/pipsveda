@@ -135,6 +135,12 @@ export default function OtpVerification() {
             <h2>OTP Verification</h2>
             <p>Enter OTP Code sent to {maskedEmail}.</p>
           </div>
+          <form
+            onSubmit={(e) => {
+              e.preventDefault(); 
+              if (!isVerifying) handleVerifyOtp();
+            }}
+          >
           <div className={styles.inputBoxAlignment}>
             {otp.map((digit, index) => (
               <input
@@ -170,6 +176,7 @@ export default function OtpVerification() {
               />
             </div>
           </div>
+          </form>
         </div>
       </div>
     </div>

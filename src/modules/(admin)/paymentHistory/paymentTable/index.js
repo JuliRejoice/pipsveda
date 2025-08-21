@@ -48,6 +48,7 @@ const PaymenyHistory = () => {
                         <tr>
                             <th>No</th>
                             <th>Purchased Date</th>
+                            <th>Course Name</th>
                             <th>Strategy Name</th>
                             <th>Plan</th>
                             <th>Amount</th>
@@ -60,6 +61,7 @@ const PaymenyHistory = () => {
                         {[...Array(5)].map((_, index) => (
                             <tr key={index}>
                                 <td><Skeleton height={24} width={48}/></td>
+                                <td><Skeleton height={24} width={120}/></td>
                                 <td><Skeleton height={24} width={120}/></td>
                                 <td><Skeleton height={24} width={120}/></td>
                                 <td><Skeleton height={24} width={120}/></td>
@@ -166,6 +168,7 @@ const PaymenyHistory = () => {
                         <tr>
                             <th>No</th>
                             <th>Purchased Date</th>
+                            <th>Course Name</th>
                             <th>Strategy Name</th>
                             <th>Plan</th>
                             <th>Amount</th>
@@ -179,7 +182,8 @@ const PaymenyHistory = () => {
                             <tr key={payment._id}>
                                 <td>{index + 1}</td>
                                 <td>{new Date(payment.createdAt).toLocaleString('en-GB')}</td>
-                                <td>{payment.botId?.strategyId?.title || 'N/A'}</td>
+                                <td>{payment.courseId?.CourseName || '-'}</td>
+                                <td>{payment.botId?.strategyId?.title || '-'}</td>
                                 <td>{payment.planType}</td>
                                 <td>${payment.price}</td>
                                 <td>{payment.orderId}</td>
