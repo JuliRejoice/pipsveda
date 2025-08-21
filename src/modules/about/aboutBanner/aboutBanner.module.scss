@@ -1,0 +1,38 @@
+@use '../../../scss/main.scss' as *;
+@use '../../../scss/breakpoints/breakpoints.scss' as *;
+@use '../../../scss/typography/typography.scss' as *;
+
+.aboutBanner {
+    background-image: url('/assets/images/herobanner.png');
+    background-size: cover;
+    width: 100%;
+    padding: 180px 0 0 0;
+    background-repeat: no-repeat;
+
+    .grid {
+        display: grid;
+        grid-template-columns: 1fr 617px;
+        gap: 40px;
+        align-items: center;
+
+        h2 {
+            @include heading2;
+            color: var(--black-500);
+            margin: 0 0 14px 0;
+        }
+
+        p {
+            @include font18;
+            color: var(--black-500);
+            opacity: 0.9;
+            max-width: 617px;
+            line-height: 28px;
+        }
+
+        .image {
+            img {
+                display: block;
+            }
+        }
+    }
+}

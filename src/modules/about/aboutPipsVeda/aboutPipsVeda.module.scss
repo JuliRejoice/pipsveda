@@ -1,0 +1,51 @@
+@use '../../../scss/main.scss' as *;
+@use '../../../scss/breakpoints/breakpoints.scss' as *;
+@use '../../../scss/typography/typography.scss' as *;
+
+.aboutPipsVeda {
+    background-color: var(--black);
+    padding: 120px 0;
+
+    .grid {
+        display: grid;
+        align-items: center;
+        grid-template-columns: 660px 1fr;
+        gap: 70px;
+
+        .image {
+            img {
+                display: block;
+                width: 100%;
+                border-radius: 12px;
+                clip-path: polygon(0 70px, 65px 0, 100% 0, 100% calc(100% - 70px), calc(100% - 70px) 100%, 0 100%, 0 70px);
+            }
+        }
+
+        h2 {
+            @include heading2;
+            margin: 0 0 12px 0;
+            color: var(--text-white);
+        }
+
+        .iconText {
+            display: flex;
+            align-items: center;
+            padding: 0 0 16px 0;
+            gap: 14px;
+
+            span {
+                display: block;
+                @include font18;
+                color: var(--grey);
+                opacity: 0.9;
+            }
+        }
+
+        p {
+            @include font18;
+            margin: 0 0 20px 0;
+            color: var(--grey);
+            line-height: 28px;
+        }
+    }
+}
