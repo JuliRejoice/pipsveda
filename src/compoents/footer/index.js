@@ -71,10 +71,10 @@ export default function Footer() {
                                 <div className={styles.line}></div>
                             </div>
                             <div className={styles.menu}>
-                                <a href="/about" aria-label='About'>About</a>
+                                {/* <a href="/about" aria-label='About'>About</a> */}
                                 <a href="/our-course" aria-label='Courses'>Courses</a>
                                 <a href="/blog" aria-label='Blog'>Blog</a>
-                                <a href="/contact" aria-label='Contact'>Contact</a>
+                                {/* <a href="/contact" aria-label='Contact'>Contact</a> */}
                                 <a href="/faq" aria-label='FAQ'>FAQ</a>
                             </div>
                         </div>
@@ -86,10 +86,10 @@ export default function Footer() {
                                 <div className={styles.line}></div>
                             </div>
                             <div className={styles.menu}>
-                                <a aria-label='Terms of Service'>Terms of Service</a>
-                                <a aria-label='Privacy Policy'>Privacy Policy</a>
-                                <a aria-label='Telegram Group'>Telegram Group</a>
-                                <a aria-label='Refund Policy'>Refund Policy</a>
+                                <a href="/terms-conditions"aria-label='Terms of Service'>Terms of Service</a>
+                                <a href="/privacy-policy" aria-label='Privacy Policy'>Privacy Policy</a>
+                                <a href="/telegram-group" aria-label='Telegram Group'>Telegram Group</a>
+                                <a href="/refund-policy" aria-label='Refund Policy'>Refund Policy</a>
                             </div>
                         </div>
                         <div className={styles.gridItems}>
@@ -108,10 +108,10 @@ export default function Footer() {
                                     <Button text="Subscribe" />
                                 </div>
                             </div>
-                            <div className={styles.checkboxText}>
+                            {/* <div className={styles.checkboxText}>
                                 <input type='checkbox' />
                                 <label>I agree to the Privacy Policy</label>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
