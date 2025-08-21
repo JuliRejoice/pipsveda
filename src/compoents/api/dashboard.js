@@ -155,3 +155,31 @@ export const getUtilityData = async () => {
         throw error;
     }
 };
+
+export const createNewsLetter = async (formData) => {
+    try {
+        const token = getAuthToken();
+        const headers = {
+            'Content-Type': 'application/json'
+        };
+        if (token) {
+            headers['x-auth-token'] = token;
+        }
+        const response = await fetch(
+            `${BASEURL}/newsletter/createNewsLetter`,
+            {
+                method: 'POST',
+                headers: headers,
+                body: JSON.stringify(formData)
+            }
+        );
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const responseData = await response.json();
+        return responseData;
+    } catch (error) {
+        console.error("Error creating newsletter:", error);
+        throw error;
+    }
+}

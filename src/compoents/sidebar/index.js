@@ -29,7 +29,7 @@ export default function Sidebar({ setToogle, toogle }) {
   const [profileDropdown, setProfileDropdown] = useState(false);
   const [activeSubTab, setActiveSubTab] = useState("");
   const [isLoggingOut, setIsLoggingOut] = useState(false);
-  
+
   const router = useRouter();
   const pathname = usePathname();
 
@@ -50,7 +50,7 @@ export default function Sidebar({ setToogle, toogle }) {
 
   const handleLogout = () => {
     if (isLoggingOut) return; // Prevent multiple clicks
-    
+
     setIsLoggingOut(true);
     removeCookie("userToken");
     toast.success("Logout successfully.");
@@ -78,9 +78,8 @@ export default function Sidebar({ setToogle, toogle }) {
         </div>
         <div className={styles.sidebarBody}>
           <div
-            className={`${styles.menu} ${
-              pathname === "/dashboard" ? styles.active : ""
-            }`}
+            className={`${styles.menu} ${pathname === "/dashboard" ? styles.active : ""
+              }`}
             onClick={() => {
               handleTabClick("dashboard");
             }}
@@ -90,28 +89,27 @@ export default function Sidebar({ setToogle, toogle }) {
           </div>
           <div className={styles.relative}>
             <Link href="#">
-            <div
-              className={`${styles.menu} ${
-              pathname.includes("/courses")
-                  ? styles.active
-                  : ""
-              }`}
-              onClick={() => setDropdown(!dropdown)}
-            >
-              <CourseIcon />
-              <div className={styles.contentAlignment}>
-                <span>Course</span>
-                <div
-                  className={dropdown ? styles.toogle : ""}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setDropdown(!dropdown);
-                  }}
-                >
-                  <DownArrow />
+              <div
+                className={`${styles.menu} ${pathname.includes("/courses")
+                    ? styles.active
+                    : ""
+                  }`}
+                onClick={() => setDropdown(!dropdown)}
+              >
+                <CourseIcon />
+                <div className={styles.contentAlignment}>
+                  <span>Course</span>
+                  <div
+                    className={dropdown ? styles.toogle : ""}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setDropdown(!dropdown);
+                    }}
+                  >
+                    <DownArrow />
+                  </div>
                 </div>
               </div>
-            </div>
             </Link>
             <div
               className={classNames(
@@ -147,17 +145,15 @@ export default function Sidebar({ setToogle, toogle }) {
               </div>
             </div>
           </div>
-          <div className={`${styles.menu} ${
-            pathname === "/algobot" ? styles.active : ""
-          }`}
-          onClick={() => handleTabClick("algobot")}
+          <div className={`${styles.menu} ${pathname === "/algobot" ? styles.active : ""
+            }`}
+            onClick={() => handleTabClick("algobot")}
           >
             <Algobot />
             <span>AlgoBots</span>
           </div>
-          
-          <div className={`${styles.menu} ${
-              pathname === "/my-courses" ? styles.active : ""
+
+          <div className={`${styles.menu} ${pathname === "/my-courses" ? styles.active : ""
             }`}
             onClick={() => {
               handleTabClick("my-courses");
@@ -166,7 +162,7 @@ export default function Sidebar({ setToogle, toogle }) {
             <CourseIcon />
             <span>My Courses</span>
           </div>
-            {/* <div
+          {/* <div
               className={`${styles.menu} ${
                 pathname === "/notification" ? styles.active : ""
               }`}
@@ -179,9 +175,8 @@ export default function Sidebar({ setToogle, toogle }) {
             </div> */}
 
           <div
-            className={`${styles.menu} ${
-              pathname === "/paymentHistory" ? styles.active : ""
-            }`}
+            className={`${styles.menu} ${pathname === "/paymentHistory" ? styles.active : ""
+              }`}
             onClick={() => {
               handleTabClick("paymentHistory");
             }}
@@ -190,9 +185,8 @@ export default function Sidebar({ setToogle, toogle }) {
             <span>Payment History</span>
           </div>
           <div
-            className={`${styles.menu} ${
-              pathname === "/contact-us" ? styles.active : ""
-            }`}
+            className={`${styles.menu} ${pathname === "/contact-us" ? styles.active : ""
+              }`}
             onClick={() => {
               handleTabClick("contact-us");
             }}
@@ -222,11 +216,11 @@ export default function Sidebar({ setToogle, toogle }) {
               )}
             >
               <div className={styles.dropdownSpacing}>
-                  <div className={styles.iconText} onClick={()=>handleTabClick("profile")}>
-                    <ProfileI />
-                    <span>Profile</span>
-                  </div>
-                  {/* <div className={styles.iconText} onClick={()=>handleTabClick("settings")}>
+                <div className={styles.iconText} onClick={() => handleTabClick("profile")}>
+                  <ProfileI />
+                  <span>Profile</span>
+                </div>
+                {/* <div className={styles.iconText} onClick={()=>handleTabClick("settings")}>
                     <SettingsIcon />
                     <span>Settings</span>
                   </div> */}

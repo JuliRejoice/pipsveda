@@ -8,11 +8,36 @@ import IinstagramIcon from '@/icons/instagramIcon';
 import LinkdinIcon from '@/icons/linkdinIcon';
 import InstagramIcon from '@/icons/instagramIcon';
 import Button from '../button';
-import { getUtilityData } from '../api/dashboard';
+import { createNewsLetter, getUtilityData } from '../api/dashboard';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 const FooterImage = '/assets/images/footer-bg.png';
 export default function Footer() {
     const [footerData, setFooterData] = useState([]);
+    const [email, setEmail] = useState('');
+
+    const validateEmail = (email) => {
+        const re = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+        return re.test(email);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            if (!validateEmail(email)) {
+                toast.error('Please enter a valid email address');
+                return;
+            }
+            const response = await createNewsLetter({ email });
+            if (response.success) {
+                toast.success('Newsletter Subscribed Successfully.');
+                setEmail('');
+            }
+        } catch (error) {
+            console.error('Error creating newsletter:', error);
+            toast.error('Failed to create newsletter');
+        }
+    };
     useEffect(() => {
         const fetchFooterData = async () => {
             try {
@@ -103,9 +128,9 @@ export default function Footer() {
                                 </p>
                             </div>
                             <div className={styles.inputRelative}>
-                                <input type='text' placeholder='Enter your Email' />
+                                <input type='text' placeholder='Enter your Email' value={email} onChange={(e) => setEmail(e.target.value)}/>
                                 <div className={styles.buttonRight}>
-                                    <Button text="Subscribe" />
+                                    <Button text="Subscribe" onClick={handleSubmit} />
                                 </div>
                             </div>
                             {/* <div className={styles.checkboxText}>
