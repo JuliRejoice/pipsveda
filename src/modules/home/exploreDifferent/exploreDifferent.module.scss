@@ -178,7 +178,7 @@
                 }
 
                 @include respond-to("sm") {
-                    @include heading24;
+                    @include heading20;
                 }
             }
 
@@ -232,4 +232,12 @@
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
+
+    @include respond-to("md") {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include respond-to("sm") {
+        grid-template-columns: repeat(1, 1fr);
+    }
 }
