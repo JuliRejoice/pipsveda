@@ -17,7 +17,7 @@ export default function Profile() {
     }, []);
 
     const validateUser = () => {
-        if (!user.name || !user.phone || !user.address || !user.location) {
+        if (!user.name || !user.phone || !user.location || !user.gender || !user.birthday) {
             return false;
         }
         return true;
@@ -51,6 +51,21 @@ export default function Profile() {
                         <Input type="text" name="phone" label='Phone' placeholder='Enter your number' value={user?.phone} onChange={(e)=>setUser({...user, phone: e.target.value})} />
                         {/* <Input type="text" name="address" label='Address' placeholder='Enter your address' value={user?.address} onChange={(e)=>setUser({...user, address: e.target.value})} /> */}
                         <Input type="text" name="location" label='Address' placeholder='Enter your location' value={user?.location} onChange={(e)=>setUser({...user, location: e.target.value})} />
+                        <div className={styles.formGroup}>
+                            <label>Gender</label>
+                            <select
+                                className={styles.selectInput}
+                                value={user?.gender || ''}
+                                onChange={(e) => setUser({...user, gender: e.target.value})}
+                            >
+                                <option value="">Select Gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="other">Other</option>
+                               
+                            </select>
+                        </div>
+                        <Input type="date" name="birthday" label='Date of Birth' placeholder='Enter your date of birth' value={user?.birthday} onChange={(e)=>setUser({...user, birthday: e.target.value})} />
                     </div>
                     <Button text="Save" icon={RightIcon} onClick={()=>handleEditProfile()}/>
                 </div>
