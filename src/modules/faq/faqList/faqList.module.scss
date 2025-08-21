@@ -5,6 +5,14 @@
 .faqList {
     padding: 80px 0 120px 0;
 
+    @include respond-to("md") {
+        padding: 80px 0;
+    }
+
+    @include respond-to("sm") {
+        padding: 60px 0;
+    }
+
     .listbox {
         max-width: 1260px;
         margin: 0 auto;
@@ -29,12 +37,22 @@
                     @include font18;
                     font-weight: 500;
                     color: var(--black-500);
+
+                    @include respond-to("sm") {
+                        @include font16normal;
+                        font-weight: 500;
+                    }
                 }
 
                 img {
                     display: block;
                     cursor: pointer;
                     transition: .3s ease-in-out;
+
+                    @include respond-to("sm") {
+                        width: 26px;
+                        height: 26px;
+                    }
                 }
             }
 
@@ -57,6 +75,10 @@
                     p {
                         @include font16normal;
                         color: var(--grey-600);
+
+                        @include respond-to("sm") {
+                            @include font14;
+                        }
                     }
                 }
             }

@@ -5,6 +5,14 @@
 .blogListingCard {
     padding: 80px 0 120px 0;
 
+    @include respond-to("md") {
+        padding: 80px 0;
+    }
+
+    @include respond-to("sm") {
+        padding: 60px 0;
+    }
+
     .tabAlignment {
         display: flex;
         align-items: center;
@@ -19,6 +27,7 @@
             overflow: auto;
             scrollbar-width: none;
             flex-wrap: nowrap;
+            padding: 0 0 30px 0;
         }
 
         &::-webkit-scrollbar {
@@ -61,6 +70,15 @@
         grid-template-columns: repeat(3, 1fr);
         gap: 37px;
 
+        @include respond-to("md") {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        @include respond-to("sm") {
+            grid-template-columns: 1fr;
+            gap: 20px;
+        }
+
         .griditems {
             .image {
                 img {
@@ -68,6 +86,11 @@
                     clip-path: polygon(0px 50px, 45px 0px, 100% 0px, 100% calc(100% - 50px), calc(100% - 50px) 100%, 0px 100%, 0px 50px);
                     width: 100%;
                     display: block;
+
+                    @include respond-to("md") {
+                        height: 220px;
+                        @include first-clip-path;
+                    }
                 }
             }
 
@@ -78,12 +101,22 @@
                     @include heading20;
                     margin: 0 0 3px 0;
                     color: var(--black-500);
+
+                    @include respond-to("sm") {
+                        @include font18;
+                        font-weight: 500;
+                    }
                 }
 
                 p {
                     @include font16normal;
                     color: var(--grey-650);
                     margin: 0 0 18px 0;
+
+                    @include respond-to("sm") {
+                        @include font14;
+                        margin: 0 0 10px 0;
+                    }
                 }
 
                 .allIconTextAlignment {
