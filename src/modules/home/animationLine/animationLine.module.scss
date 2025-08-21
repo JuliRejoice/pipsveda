@@ -30,6 +30,10 @@
                 gap: 10px;
             }
 
+            img {
+                max-width: 36px;
+            }
+
             span {
                 display: block;
                 @include heading26;
