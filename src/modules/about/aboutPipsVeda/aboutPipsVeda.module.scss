@@ -6,11 +6,24 @@
     background-color: var(--black);
     padding: 120px 0;
 
+    @include respond-to("md") {
+        padding: 80px 0;
+    }
+
+    @include respond-to("sm") {
+        padding: 60px 0;
+    }
+
     .grid {
         display: grid;
         align-items: center;
         grid-template-columns: 660px 1fr;
         gap: 70px;
+
+        @include respond-to("md") {
+            grid-template-columns: 1fr;
+            gap: 40px;
+        }
 
         .image {
             img {
@@ -18,6 +31,10 @@
                 width: 100%;
                 border-radius: 12px;
                 clip-path: polygon(0 70px, 65px 0, 100% 0, 100% calc(100% - 70px), calc(100% - 70px) 100%, 0 100%, 0 70px);
+
+                @include respond-to("sm") {
+                    @include first-clip-path;
+                }
             }
         }
 
@@ -25,6 +42,10 @@
             @include heading2;
             margin: 0 0 12px 0;
             color: var(--text-white);
+
+            @include respond-to("sm") {
+                @include heading32;
+            }
         }
 
         .iconText {
@@ -38,6 +59,10 @@
                 @include font18;
                 color: var(--grey);
                 opacity: 0.9;
+
+                @include respond-to("sm") {
+                    @include font16normal;
+                }
             }
         }
 
@@ -46,6 +71,10 @@
             margin: 0 0 20px 0;
             color: var(--grey);
             line-height: 28px;
+
+            @include respond-to("sm") {
+                @include font16normal;
+            }
         }
     }
 }
