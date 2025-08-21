@@ -8,6 +8,14 @@
     padding: 266px 0 130px 0;
     width: 100%;
 
+    @include respond-to("md") {
+        padding: 180px 0 80px 0;
+    }
+
+    @include respond-to("sm") {
+        padding: 160px 0 60px 0;
+    }
+
     .text {
 
         h1 {
@@ -15,6 +23,10 @@
             color: var(--black-500);
             text-align: center;
             margin: 0 0 16px 0;
+
+            @include respond-to("md") {
+                @include heading32;
+            }
         }
 
         p {
@@ -22,6 +34,10 @@
             color: var(--black-500);
             opacity: 0.9;
             text-align: center;
+
+            @include respond-to("sm") {
+                @include font16normal;
+            }
         }
     }
 }
