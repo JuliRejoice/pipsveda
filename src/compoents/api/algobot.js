@@ -28,7 +28,7 @@ export const getAlgobot = async (id = '',searchQuery = '') => {
     console.log("searchQuery",searchQuery,'------------',id)
     const token = getAuthToken()
     try {
-        const url = `${BASEURL}/strategies${id ? `?id=${id}` : searchQuery ? `?search=${searchQuery}` : ''}`;
+        const url = `${BASEURL}/strategyPlan/getStrategiesByCategory${id ? `?id=${id}` : searchQuery ? `?search=${searchQuery}` : ''}`;
         const response = await fetch(url, {
             headers: {
                 'Content-Type': 'application/json',

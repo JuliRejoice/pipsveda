@@ -1,0 +1,77 @@
+@use '../../../../scss/main.scss' as *;
+@use '../../../../scss/breakpoints/breakpoints.scss' as *;
+@use '../../../../scss/typography/typography.scss' as *;
+
+
+.dashboardCardgrd {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-bottom: 20px;
+
+    .dashboardcard {
+        background-color: var(--bg-white);
+        border: 1px solid #e9e9e9;
+        border-radius: 16px;
+        padding: 20px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        transition: .4s ease-in-out;
+
+        &:hover {
+            transform: translateY(-5px);
+        }
+
+        .dashboardcardtitle {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+
+            h1 {
+                @include heading20;
+                color: var(--black-500);
+                margin-bottom: 10px;
+            }
+
+            span {
+                @include font18;
+                background: linear-gradient(90deg, #6e30f9 0%, #fe6917 85.71%);
+                color: transparent;
+                background-clip: text;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+
+            }
+        }
+
+        .cardDetails {
+            display: flex;
+            justify-content: end;
+            align-items: center;
+            gap: 10px;
+
+            .usericon {
+                width: 28px;
+                height: 28px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 50%;
+                background-color: var(--bg-white);
+                border: 1px solid #e9e9e9;
+
+                svg {
+                    width: 16px;
+                    height: 16px;
+                }
+            }
+
+            p {
+                @include font16normal;
+                color: var(--grey-600);
+                
+            }
+        }
+    }
+}

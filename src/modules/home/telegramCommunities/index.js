@@ -1,9 +1,12 @@
 'use client'
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useInView, useAnimation } from 'framer-motion';
 import styles from './telegramCommunities.module.scss';
 import ArrowVec from '@/icons/arrowVec';
 import Button from '@/compoents/button';
+import { getTelegramChannels } from '@/compoents/api/dashboard';
+import { useRouter } from 'next/navigation';
+import { getCookie } from '../../../../cookie';
 
 const ProfileImage = '/assets/images/profile-img.png';
 
@@ -29,6 +32,22 @@ const textVariants = {
 export default function TelegramCommunities() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const [telegramChannels,setTelegramChannels] = useState([]);
+  const router = useRouter()
+
+  useEffect(()=>{
+    const fetchTelegramChannels = async () => {
+      try {
+        const response = await getTelegramChannels();
+        setTelegramChannels(response.payload.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchTelegramChannels();
+  }, []);
+  
+
 
   return (
     <div className={styles.telegramCommunities}>
@@ -54,41 +73,47 @@ export default function TelegramCommunities() {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {[...Array(3)].map((_, i) => (
+          {telegramChannels.slice(0, 3).map((channel) => (
             <motion.div
               className={styles.griditems}
-              key={i}
+              key={channel._id}
               variants={cardVariants}
             >
               <div className={styles.cardHeader}>
-                <button aria-label='Free'>
-                  <span>Free</span>
-                </button>
+                <div className={styles.textStyle}>
+                  <h3>{channel.channelName}</h3>
+                  {/* <div className={styles.textImagealignment}>
+                    <div className={styles.imageAlignment}>
+                      <img src={channel.imageUrl || ProfileImage} alt={channel.title} />
+                    </div>
+                    <span>{channel.members || '0'} members</span>
+                  </div> */}
+                </div>
                 <ArrowVec />
               </div>
-              <div className={styles.textStyle}>
-                <h3>Intraday Calls</h3>
-                <div className={styles.textImagealignment}>
-                  <div className={styles.imageAlignment}>
-                    <img src={ProfileImage} alt="ProfileImage" />
-                    <img src={ProfileImage} alt="ProfileImage" />
-                    <div className={styles.plus}>+</div>
-                  </div>
-                  <span>12.5k members</span>
-                </div>
-              </div>
+
               <div className={styles.listAlignment}>
-                <ul>
-                  <li>Daily market insights</li>
-                  <li>Live trade calls</li>
-                  <li>Community support</li>
-                </ul>
+                <p>{channel.description || 'Join our community for updates and insights'}</p>
               </div>
-              <div className={styles.freeaccess}>
-                <span>Free Access</span>
+
+              <div className={styles.priceSection}>
+                {channel.telegramPlan.length > 0 &&
+                channel?.telegramPlan?.map((plan)=>{
+                  return(
+                    <div className={styles.priceContainer}>
+                    <span className={styles.price}>${plan.initialPrice}</span>
+                    <span className={styles.priceLabel}>/{plan.planType}</span>
+                  </div>
+                  )
+                })}
+
               </div>
+             
               <div className={styles.btn}>
-                <Button text="Join Now" />
+                <Button 
+                  text={'Join Now'}
+                  onClick={() => getCookie('userToken') ? router.push(`/telegram/${channel._id}`) : router.push('/signin')}
+                />
               </div>
             </motion.div>
           ))}

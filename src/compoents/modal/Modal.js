@@ -2,6 +2,7 @@
 import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom';
 import styles from './Modal.module.scss';
+import CloseIcon from '@/icons/closeIcon';
 
 
 const Modal = ({ isOpen, onClose, children, title, showCloseButton = true }) => {
@@ -35,7 +36,7 @@ const Modal = ({ isOpen, onClose, children, title, showCloseButton = true }) => 
 
   return ReactDOM.createPortal(
     <div className={styles.modalOverlay} onClick={handleOverlayClick}>
-      <div 
+      <div
         className={styles.modalContent}
         role="dialog"
         aria-modal="true"
@@ -43,7 +44,9 @@ const Modal = ({ isOpen, onClose, children, title, showCloseButton = true }) => 
       >
         {(title || showCloseButton) && (
           <div className={styles.modalHeader}>
-            {title && <h2 id="modal-title" className={styles.modalTitle}>{title}</h2>}
+            <div>
+              {title && <h2 id="modal-title" className={styles.modalTitle}>{title}</h2>}
+            </div>
             {/* {showCloseButton && (
               <button 
                 onClick={onClose} 
@@ -54,6 +57,7 @@ const Modal = ({ isOpen, onClose, children, title, showCloseButton = true }) => 
                 X
               </button>
             )} */}
+            <div onClick={onClose}><CloseIcon /></div>
           </div>
         )}
         <div className={styles.modalBody}>

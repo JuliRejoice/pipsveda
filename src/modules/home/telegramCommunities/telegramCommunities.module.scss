@@ -95,9 +95,18 @@
             }
 
             .listAlignment {
-                padding: 0 0 28px 0;
                 @include respond-to("sm") {
                     padding: 0 0 20px 0;
+                }
+
+                p{
+                    @include font16;
+                    color: var(--black-500);
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    margin: 0 0 12px 0;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
                 }
 
                 ul {
@@ -198,6 +207,38 @@
                         -webkit-text-fill-color: transparent;
                         display: block;
                     }
+                }
+            }
+
+            .priceSection {
+                padding: 15px 0;
+                text-align: center;
+                display: flex;
+                gap: 20px;
+
+                .priceContainer {
+                    display: flex;
+                    align-items: baseline;
+                    gap: 4px;
+                    .price {
+                        @include heading20;
+                        color: var(--button-gradient);
+                        line-height: 1;
+                    }
+
+                    .priceLabel {
+                        @include font16;
+                        color: var(--black-500);
+                    }
+                }
+
+                .freeBadge {
+                    @include font16;
+                    color: var(--success-color);
+                    background: rgba(34, 197, 94, 0.1);
+                    padding: 6px 16px;
+                    border-radius: 20px;
+                    display: inline-block;
                 }
             }
         }

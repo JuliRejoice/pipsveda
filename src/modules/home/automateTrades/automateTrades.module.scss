@@ -133,6 +133,7 @@
             }
 
             .details {
+                height: 132px;
                 padding: 22px 0 30px 0;
 
                 @include respond-to("md") {
@@ -162,13 +163,15 @@
                 padding: 0 0 22px 0;
                 border-bottom: 1px solid var(--black-300);
 
-                .titleText{
+                .titleText {
                     max-width: 80%;
                 }
-                svg{
+
+                svg {
                     height: 48px;
                     width: 48px;
                 }
+
                 h3 {
                     @include heading20;
                     color: var(--text-white);

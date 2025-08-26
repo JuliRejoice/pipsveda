@@ -2,7 +2,7 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import styles from './recentCourse.module.scss';
 import OutlineButton from '@/compoents/outlineButton';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { getCourses } from '@/compoents/api/dashboard';
 import 'react-loading-skeleton/dist/skeleton.css';
 import RenderSkeleton from './RenderSkeleton';
@@ -18,6 +18,17 @@ export default function RecentCourse({ selectedCourse }) {
     const [hasFetched, setHasFetched] = useState(false);
     const [error, setError] = useState(null);
     const router = useRouter();
+    const pathname = usePathname();
+
+    const courseType = () =>{
+        if(pathname.includes('pre-recorded')){
+            return 'pre-recorded'
+        }else if(pathname.includes('live-online')){
+            return 'live-online'
+        }else if(pathname.includes('in-person')){
+            return 'in-person'
+        }
+    }
 
     const fetchCourses = useCallback(async () => {
         if (!selectedCourse?._id) return;
@@ -94,7 +105,7 @@ export default function RecentCourse({ selectedCourse }) {
                                 <OutlineButton 
                                     text="Enroll Now" 
                                     icon={RightBlackIcon} 
-                                    onClick={() => router.push(`/courses/pre-recorded/${course?._id}`)} 
+                                    onClick={() => router.push(`/courses/${courseType(course?.courseType)}/${course?._id}`)} 
                                 />
                             </div>
                         </div>

@@ -91,6 +91,7 @@
               @include respond-to("sm") {
                 @include font16normal;
             }
+          
         }
     }
 
@@ -137,6 +138,11 @@
                     @include respond-to("md") {
                         @include font16normal;
                     }
+                    display: -webkit-box;
+                    -webkit-line-clamp: 3;
+                    margin: 0 0 12px 0;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
                 }
 
                 .allIconText {

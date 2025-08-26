@@ -20,10 +20,10 @@ const ErrorIcon = "/assets/icons/error.svg";
 
 function AlgobotInformation({ id }) {
   const [algobotData, setAlgobotData] = useState({});
+  const [selectedPlan, setSelectedPlan] = useState(null);
   const [plans, setPlans] = useState([]);
   const [planQuantities, setPlanQuantities] = useState({});
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState(null);
   const [coupon, setCoupon] = useState('');
   const [discount, setDiscount] = useState(0);
   const [isValidating, setIsValidating] = useState(false);
@@ -237,7 +237,6 @@ function AlgobotInformation({ id }) {
     ));
   };
 
-  console.log(selectedLanguageIndex)
   useEffect(() => {
     const isPayment = searchParams.get('isPayment');
     if (isPayment) {
@@ -287,6 +286,7 @@ function AlgobotInformation({ id }) {
       </Modal>
     );
   };
+
 
   return (
     <div className="container">
@@ -437,7 +437,7 @@ function AlgobotInformation({ id }) {
                 <span>${selectedPlan.originalPrice.toFixed(2)}</span>
               </p>
               
-              {/* Show discount details */}
+ 
               {selectedPlan.discountType === 'coupon' ? (
                 <p className={styles.discountText}>
                   <span>Coupon Discount ({appliedCoupon?.discount}%):</span>

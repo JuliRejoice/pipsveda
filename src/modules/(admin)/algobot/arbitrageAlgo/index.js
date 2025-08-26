@@ -4,33 +4,32 @@ import styles from './arbitrageAlgo.module.scss';
 import OutlineButton from '@/compoents/outlineButton';
 import Pagination from '@/compoents/pagination';
 import { getAlgobot } from '@/compoents/api/algobot';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import Slider from 'react-slick/lib/slider';
 
 const RightBlackIcon = '/assets/icons/right-black.svg';
 const CardImage = '/assets/images/crypto.png';
 
 // Skeleton component to match the card layout
 const CardSkeleton = () => (
-    <div className={styles.griditems}>
+    <div className={styles.griditemsloader}>
         <div className={styles.image}>
             <Skeleton height={200} style={{ borderRadius: '12px' }} />
         </div>
         <div className={styles.details}>
             <Skeleton width={200} height={24} />
-            <Skeleton />
+            <Skeleton count={2} />
             <div className={styles.twoColgrid}>
-                {[...Array(2)].map((_, i) => (
-                    <div key={i} className={styles.items}>
-                        <Skeleton width={100} height={20} />
-                        <Skeleton width={80} height={24} />
-                        <Skeleton width={100} height={20} />
-                        <Skeleton width={80} height={24} />
-                    </div>
-                ))}
+                <div className={styles.items}>
+                    <Skeleton width="100%" height="95px" />
+                </div>
+                <div className={styles.items}>
+                    <Skeleton width="100%" height="95px" />
+                </div>
             </div>
-            <Skeleton height={40} width={100} />
+            <Skeleton height={46} width={155} />
         </div>
     </div>
 );
@@ -52,15 +51,20 @@ const EmptyState = () => (
 );
 
 export default function ArbitrageAlgo({ bot, setBot, searchQuery, setSearchQuery, loading, setLoading, error, setError, selectedBot, setSelectedBot }) {
-
+    const [selectedCategory, setSelectedCategory] = useState('');
     const router = useRouter();
+    const pathname = usePathname();
     console.log("bot", searchQuery)
+    useEffect(() => {
+        setSelectedCategory(bot?.[0]?.categoryName);
+    }, [bot]);
+
     useEffect(() => {
         const fetchAlgobotData = async () => {
             try {
                 setLoading(true);
                 const response = await getAlgobot('', searchQuery);
-                setBot(response.payload.data);
+                setBot(response.payload);
             } catch (error) {
                 console.error('Error fetching algobot data:', error);
             } finally {
@@ -98,65 +102,127 @@ export default function ArbitrageAlgo({ bot, setBot, searchQuery, setSearchQuery
         );
     }
 
+    const settings = {
+        dots: false,
+        infinite: false,
+        speed: 500,
+        slidesToShow: 2,
+        slidesToScroll: 1
+    };
+
     return (
         <div className={styles.arbitrageAlgoAlignment}>
             <div className={styles.algotabsmain}>
                 <div className={styles.algotabs}>
-                    <button type='button' className={`${styles.algotabs} ${styles.active}`}>
-                        <span>Arbitrage Algo</span>
-                    </button>
-                    {/* <button type='button' className={styles.algotabs}>
-                        <span>Arbitrage Algo</span>
-                    </button>
-                    <button type='button' className={styles.algotabs}>
-                        <span>Arbitrage Algo</span>
-                    </button> */}
+                    {bot.map((bots, i) => (
+                        <button
+                            key={i}
+                            type="button"
+                            className={`${styles.algotabs} ${selectedCategory === bots.categoryName ? styles.active : ''}`}
+                            onClick={() => setSelectedCategory(bots.categoryName)}
+                        >
+                            <span>{bots.categoryName}</span>
+                        </button>
+                    ))}
                 </div>
             </div>
             <div className={styles.grid}>
-                {bot?.map((item) => (
-                    <div className={styles.griditems} key={item._id}>
-                        <div className={styles.image}>
-                            <img
-                                src={item.imageUrl || CardImage}
-                                alt={item.title}
-                                onError={(e) => {
-                                    e.target.onerror = null;
-                                    e.target.src = CardImage;
-                                }}
-                            />
-                        </div>
-                        <div className={styles.details}>
-                            <h3>{item.title}</h3>
-                            <p>{item.shortDescription}</p>
-                            <div className={styles.twoColgrid}>
-                                {item.strategyPlan?.map((plan, index) => (
-                                    <div className={styles.items} key={index}>
-                                        <div className={styles.contentAlignment}>
-                                            <span>{plan.planType}:</span>
-                                            <h4>${plan.price}</h4>
-                                        </div>
-                                        <div className={styles.contentAlignment}>
-                                            <span>M.R.P:</span>
-                                            <h5>${plan.initialPrice}</h5>
-                                        </div>
-                                        <div className={styles.contentAlignment}>
-                                            <span>Discount:</span>
-                                            <h5 className={styles.dangerText}>
-                                                {plan.discount > 0 ? `-${plan.discount}%` : '0%'}
-                                            </h5>
-                                        </div>
+                {bot
+                    ?.filter(item => selectedCategory === item.categoryName)
+                    ?.map((item) => {
+                        console.log("item", item);
+                        return item.strategies?.map((strategy) => (
+                            <div className={styles.griditems} key={strategy._id || strategy.id}>
+                                <div className={styles.image}>
+                                    <img
+                                        src={strategy.imageUrl || CardImage}
+                                        alt={strategy.title}
+                                        onError={(e) => {
+                                            e.target.onerror = null;
+                                            e.target.src = CardImage;
+                                        }}
+                                    />
+                                </div>
+                                <div className={styles.details}>
+                                    <h3>{strategy.title}</h3>
+                                    <p>{strategy.shortDescription}</p>
+                                    {/* <div className={styles.planslidermain}>
+                                <div className={styles.planslider}>
+                                    <div className={styles.twoColgrid}>
+                                        {item.strategyPlan?.map((plan, index) => (
+                                            <div className={styles.items} key={index}>
+                                                <div className={styles.contentAlignment}>
+                                                    <span>{plan.planType}:</span>
+                                                    <h4>${plan.price}</h4>
+                                                </div>
+                                                <div className={styles.contentAlignment}>
+                                                    <span>M.R.P:</span>
+                                                    <h5>${plan.initialPrice}</h5>
+                                                </div>
+                                                <div className={styles.contentAlignment}>
+                                                    <span>Discount:</span>
+                                                    <h5 className={styles.dangerText}>
+                                                        {plan.discount > 0 ? `-${plan.discount}%` : '0%'}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        ))}
                                     </div>
-                                ))}
+                                </div>
+                            </div> */}
+                                    {strategy.strategyPlan?.length > 1 && (
+                                        <Slider {...settings}>
+                                            {strategy.strategyPlan?.map((plan, index) => (
+                                                <div key={index}>
+                                                    <div className={styles.items}>
+                                                        <div className={styles.contentAlignment}>
+                                                            <span>{plan.planType}:</span>
+                                                            <h4>${plan.price}</h4>
+                                                        </div>
+                                                        <div className={styles.contentAlignment}>
+                                                            <span>M.R.P:</span>
+                                                            <h5>${plan.initialPrice}</h5>
+                                                        </div>
+                                                        <div className={styles.contentAlignment}>
+                                                            <span>Discount:</span>
+                                                            <h5 className={styles.dangerText}>
+                                                                {plan.discount > 0 ? `-${plan.discount}%` : '0%'}
+                                                            </h5>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </Slider>
+                                    )}
+                                    {strategy.strategyPlan?.length === 1 && (
+                                        <div className={styles.twoColgrid}>
+                                            <div className={styles.items}>
+                                                <div className={styles.contentAlignment}>
+                                                    <span>{strategy.strategyPlan[0].planType}:</span>
+                                                    <h4>${strategy.strategyPlan[0].price}</h4>
+                                                </div>
+                                                <div className={styles.contentAlignment}>
+                                                    <span>M.R.P:</span>
+                                                    <h5>${item.strategyPlan[0].initialPrice}</h5>
+                                                </div>
+                                                <div className={styles.contentAlignment}>
+                                                    <span>Discount:</span>
+                                                    <h5 className={styles.dangerText}>
+                                                        {item.strategyPlan[0].discount > 0 ? `-${item.strategyPlan[0].discount}%` : '0%'}
+                                                    </h5>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                    <OutlineButton
+                                        text="Buy Now"
+                                        icon={RightBlackIcon}
+                                        onClick={() => router.push(`/algobot/${strategy._id}`)}
+                                    />
+                                </div>
                             </div>
-                            <OutlineButton
-                                text="Buy Now"
-                                icon={RightBlackIcon}
-                                onClick={() => router.push(`/algobot/${item._id}`)}
-                            />
-                        </div>
-                    </div>
-                ))}
+                        ));
+                    })}
             </div>
 
         </div>

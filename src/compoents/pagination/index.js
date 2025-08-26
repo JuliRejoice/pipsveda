@@ -78,6 +78,7 @@ export default function Pagination({
     return pages;
   };
 
+  console.log(totalPages, "totalPages");
   return (
     <div className={styles.paginationAlignment}>
       <div

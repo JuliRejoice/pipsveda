@@ -183,3 +183,54 @@ export const createNewsLetter = async (formData) => {
         throw error;
     }
 }
+
+export const getDashboardData = async () => {
+    const token = getAuthToken();   
+    const headers = {};
+
+    if (token) {
+        headers['x-auth-token'] = token;
+    }
+    try {
+        const res = await fetch(`${BASEURL}/payment/getUserDashHistory`, { headers });
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.error("Error fetching dashboard data", error);
+        throw error;
+    }
+}
+
+export const getSessionData = async (id) => {
+    const token = getAuthToken();   
+    const headers = {};
+
+    if (token) {
+        headers['x-auth-token'] = token;
+    }
+    try {
+        const res = await fetch(`${BASEURL}/sesstion/getSessionByCourse?courseId=${id}`, { headers });
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.error("Error fetching dashboard data", error);
+        throw error;
+    }
+}
+
+export const getTelegramChannels = async (id) => {
+    const token = getAuthToken();   
+    const headers = {};
+
+    if (token) {
+        headers['x-auth-token'] = token;
+    }
+    try {
+        const res = await fetch(`${BASEURL}/telegram/getAllTelegram${id ? `?id=${id}` : ''}`, { headers });
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.error("Error fetching dashboard data", error);
+        throw error;
+    }
+}

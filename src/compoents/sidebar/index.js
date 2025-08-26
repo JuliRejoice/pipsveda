@@ -19,6 +19,7 @@ import Link from "next/link";
 import Algobot from "@/icons/algobot";
 import toast from "react-hot-toast";
 import PaymentIcon from "@/icons/paymentIcon";
+import TelegramIcon from "@/icons/telegramIcon";
 const SidebarLayer = "/assets/images/sidebar-layer.png";
 const LogoutIcon = "/assets/icons/logout.svg";
 const DownIcon = "/assets/icons/down-white.svg";
@@ -53,6 +54,7 @@ export default function Sidebar({ setToogle, toogle }) {
 
     setIsLoggingOut(true);
     removeCookie("userToken");
+    removeCookie("user");
     toast.success("Logout successfully.");
     router.push("/");
   };
@@ -173,7 +175,15 @@ export default function Sidebar({ setToogle, toogle }) {
               <NotificationIcon />
               <span>Notifications</span>
             </div> */}
-
+          <div
+           className={`${styles.menu} ${pathname === "/paymentHistory" ? styles.active : ""
+           }`}
+         onClick={() => {
+           handleTabClick("telegram");
+         }}>
+           <TelegramIcon />
+            Telegram
+          </div>
           <div
             className={`${styles.menu} ${pathname === "/paymentHistory" ? styles.active : ""
               }`}

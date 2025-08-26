@@ -15,6 +15,10 @@
     gap: 20px;
     padding: 0 0 22px 0;
 
+    @media (max-width:768px) {
+      grid-template-columns: repeat(1, 1fr);
+    }
+
     .text {
       p {
         @include font16normal;
@@ -67,32 +71,60 @@
     }
   }
 
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 40px;
-    padding: 0 0 30px 0;
-    align-items: center;
+  .algobanner {
+    .grid {
+      // display: grid;
+      // grid-template-columns: repeat(2, 1fr);
+      // gap: 40px;
+      padding: 0 0 30px 0;
 
-    .box {
-      height: 440px;
+      .griditems {
+        &:first-child {
+          float: left;
+          width: 50%;
+          margin: 0 40px 30px 0;
 
-      img {
-        border-radius: 12px;
-
+          @media (max-width:768px) {
+            float: none;
+            width: 100%;
+            margin: 0 0 40px 0;
+          }
+        }
       }
-    }
 
-    p {
-      @include font16normal;
-      color: var(--grey-600);
-      margin: 0 0 8px 0;
+      .box {
+        height: 440px;
+
+        @media (max-width:1200px) {
+          height: 340px;
+        }
+
+        @media (max-width:768px) {
+          height: 440px;
+        }
+
+        @media (max-width:576px) {
+          height: 320px;
+        }
+
+        img {
+          border-radius: 12px;
+          height: 100%;
+          width: 100%;
+        }
+      }
+
+      p {
+        @include font16normal;
+        color: var(--grey-600);
+        margin: 0 0 8px 0;
+      }
     }
   }
 
   .tutorialVideo {
     max-width: 1000px;
-    margin: 0 auto;
+    margin: 100px auto;
     width: 100%;
 
     .subBox {
@@ -104,12 +136,15 @@
   }
 
   .tutorial {
+    float: left;
+    width: 100%;
     padding: 0 0 40px 0;
 
     h3 {
       @include heading20;
       color: var(--black-500);
       margin: 0 0 6px 0;
+      text-align: left !important;
     }
 
     .textdropdown {
@@ -132,7 +167,7 @@
         &:focus {
           outline: none;
 
-          
+
         }
       }
     }
@@ -153,6 +188,17 @@
   }
 
 }
+
+.sbutitle {
+  padding: 50px 0 18px 0;
+  border-bottom: 1px solid var(--border-color5);
+
+  h2 {
+    @include heading20;
+    color: var(--black-500);
+  }
+}
+
 
 .planGrid {
   display: grid;
@@ -339,10 +385,11 @@
     line-height: 1.5;
   }
 
-  > button {
+  >button {
     margin: 0 auto;
     min-width: 180px;
   }
+
   .modalButtons {
     display: flex;
     justify-content: center;

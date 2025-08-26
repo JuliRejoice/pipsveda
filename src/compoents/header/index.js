@@ -46,7 +46,8 @@ export default function Header() {
   const [header, setHeader] = useState(false);
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
-  const user = getCookie("user");
+  const [user, setUser] = useState(null);
+  
 
 
 
@@ -80,6 +81,11 @@ export default function Header() {
 
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const user = getCookie("userToken");
+    setUser(user);
   }, []);
 
   return (
@@ -119,7 +125,7 @@ export default function Header() {
               </a>
               <a href="/algobots" className={pathname === ('/algobots' || '/algobot-details') ? styles.active : ''} aria-label='Community'>AlgoBots</a>
               <a href="/blog" className={pathname === '/blog' ? styles.active : ''} aria-label='Blog'>Blog</a>
-              <a aria-label='About Us'>About Us</a>
+              <a href="/about"aria-label='About Us'>About Us</a>
             </div>
 
             <div className={styles.buttonDesign}>

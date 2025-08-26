@@ -111,14 +111,16 @@ export default function Whypips() {
           {cardItems.map((card) => (
             <motion.div
               key={card.id}
-              className={styles.griditems}
+              className={styles.griditemsmain}
               variants={cardVariants}
             >
-              <div className={styles.iconCenter}>
-                <img src={card.icon} alt={card.title} />
+              <div className={styles.griditems}>
+                <div className={styles.iconCenter}>
+                  <img src={card.icon} alt={card.title} />
+                </div>
+                <h3>{card.title}</h3>
+                <p>{card.description}</p>
               </div>
-              <h3>{card.title}</h3>
-              <p>{card.description}</p>
             </motion.div>
           ))}
         </motion.div>

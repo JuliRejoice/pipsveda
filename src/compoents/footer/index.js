@@ -96,7 +96,7 @@ export default function Footer() {
                                 <div className={styles.line}></div>
                             </div>
                             <div className={styles.menu}>
-                                {/* <a href="/about" aria-label='About'>About</a> */}
+                                <a href="/about" aria-label='About'>About</a>
                                 <a href="/our-course" aria-label='Courses'>Courses</a>
                                 <a href="/blog" aria-label='Blog'>Blog</a>
                                 {/* <a href="/contact" aria-label='Contact'>Contact</a> */}

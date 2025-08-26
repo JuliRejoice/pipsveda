@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import styles from './refundPolicy.module.scss';
 import CommonBanner from '@/compoents/commonBanner';
 const VecIcon = '/assets/icons/vec-icon.svg';
@@ -6,161 +6,94 @@ const VecIcon = '/assets/icons/vec-icon.svg';
 export default function RefundPolicy() {
     return (
         <div>
-            <CommonBanner title='Refund Policy' description='Lorem Ipsum is simply dummy text of the printing and typesetting industry.' />
+            <CommonBanner 
+                title='Refund Policy' 
+                description='This Refund Policy outlines the terms for requesting refunds on digital services including AlgoBot, trading courses, and Telegram signal subscriptions provided by PipsVeda.' 
+            />
             <div className={styles.refundPolicy}>
                 <div className='container'>
                     <div className={styles.content}>
-                        <h2>
-                            Refund Policy Introduction
-                        </h2>
+                        <h2>Introduction</h2>
                         <p>
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum. Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions
-                            of Lorem Ipsum.
+                            At PipsVeda, we provide digital products and services such as algorithmic trading tools (AlgoBot), educational courses, and Telegram-based community access. Due to the digital and consumable nature of these products, our refund policies are tailored to ensure fairness to both our users and platform. Please read the terms below carefully before purchasing any plan or service.
                         </p>
                     </div>
+
                     <div className={styles.content}>
-                        <h2>
-                            Refund Policy Summary
-                        </h2>
+                        <h2>Refund Eligibility</h2>
+
+                        <h3>1. AlgoBot Subscriptions</h3>
                         <p>
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and
-                            scrambled it to make a type specimen book.
+                            Refunds for AlgoBot subscriptions are only issued if requested within 3 days of the initial purchase and only if the service has not been actively used. Usage includes setting up trades, connecting APIs, or accessing trade performance data. After this period, no refunds will be processed.
                         </p>
-                        <h3>
-                            1. Personally-Identifiable Information:
-                        </h3>
+
+                        <h3>2. Trading Courses</h3>
                         <p>
-                            At Olysim, we take your privacy seriously and only collect personally identifiable information when you voluntarily provide it to us. This information may include your first name, last name, email address, and billing details such as credit card number
-                            and billing address.
+                            Courses provided through PipsVeda are non-refundable once access has been granted. This is due to the instant access to downloadable materials, video lessons, and proprietary strategies. We encourage users to review course previews or outlines before purchasing.
                         </p>
-                        <h3>
-                            2. Sensitive Personal Data:
-                        </h3>
+
+                        <h3>3. Telegram Signal Groups</h3>
                         <p>
-                            At Olysim, we take your privacy seriously and only collect personally identifiable information when you voluntarily provide it to us. This information may include your first name, last name, email address, and billing details such as credit card number and
-                            billing address.
+                            Access to Telegram signal channels is delivered immediately after payment. Since this is a consumable subscription, no refunds are provided after access is granted. Please evaluate your readiness before subscribing to any plan.
                         </p>
-                        <h3>
-                            3. Non-Personally-Identifiable Information:
-                        </h3>
+
+                        <h3>4. Bundle Offers</h3>
                         <p>
-                            At Olysim, we take your privacy seriously and only collect personally identifiable information when you voluntarily provide it to us. This information may include your first name, last name, email address, and billing details such as credit card number and
-                            billing address.
-                        </p>
-                        <h3>
-                            4. Limited Accessibility:
-                        </h3>
-                        <p>
-                            At Olysim, we take your privacy seriously and only collect personally identifiable information when you voluntarily provide it to us. This information may include your first name, last name, email address, and billing details such as credit card number and
-                            billing address.
-                        </p>
-                        <h3>
-                            5. Inconsistent Quality:
-                        </h3>
-                        <p>
-                            At Olysim, we take your privacy seriously and only collect personally identifiable information when you voluntarily provide it to us. This information may include your first name, last name, email address, and billing details such as credit card number
-                            and billing address.
-                        </p>
-                        <h3>
-                            6. Market Competition::
-                        </h3>
-                        <p>
-                            At Olysim, we take your privacy seriously and only collect personally identifiable information when you voluntarily provide it to us. This information may include your first name, last name, email address, and billing details such as credit card number
-                            and billing address.
-                        </p>
-                        <h3>
-                            7. Customization Limitations:
-                        </h3>
-                        <p>
-                            At Olysim, we take your privacy seriously and only collect personally identifiable information when you voluntarily provide it to us. This information may include your first name, last name, email address, and billing details such as credi
-                            t card number and billing address.
-                        </p>
-                        <h3>
-                            8. Scalability Issues:
-                        </h3>
-                        <p>
-                            At Olysim, we take your privacy seriously and only collect personally identifiable information when you voluntarily provide it to us. This information may include your first
-                            name, last name, email address, and billing details such as credit card number and billing address.
+                            Packages that include a combination of services (e.g. AlgoBot + Course + Telegram) are non-refundable if any component of the bundle has been used or accessed.
                         </p>
                     </div>
+
                     <div className={styles.content}>
-                        <h2>
-                            How We Use Your Information:
-                        </h2>
+                        <h2>Payment Disputes</h2>
                         <p>
-                            With your explicit consent, sending you marketing emails informing you about upcoming promotions, product launches, and relevant news about our services and affiliated partners. Rest assured, we respect your privacy preferences and retain information about your marketing preferences for a reasonable period of time. You can opt out of receiving marketing emails at any time by following the instructions provided in the emails. However, please note that even if you opt out of marketing communications, you may still receive non-marketing emails
-                            pertaining to your account or essential business dealings with us.
+                            If you believe your account was charged incorrectly or you were billed without authorization, please contact our support team immediately at <strong>support@pipsveda.com</strong>. Filing a chargeback without contacting us first may result in permanent suspension of your PipsVeda account and denial of future service access.
                         </p>
                     </div>
+
                     <div className={styles.content}>
-                        <h2>
-                            What is a privacy policy?
-                        </h2>
-                        <h3>
-                            1. Types of Policy
-                        </h3>
-                        <div className={styles.iconText}>
-                            <img src={VecIcon} alt='VecIcon' />
-                            <h4>
-                                Types of Policy
-                            </h4>
-                        </div>
+                        <h2>Refund Process</h2>
                         <p>
-                            Essential Cookies: These cookies are vital for providing you with services available through our platform. They enable you to access secure areas, such as logging in, and ensure the speedy loading of requested content. Without these cookies, essential services cannot
-                            be provided.
+                            If your request qualifies for a refund:
+                            <ul>
+                                <li>Send an email with your registered account details and reason for the refund</li>
+                                <li>Allow up to 7 business days for processing</li>
+                                <li>Refunds will be issued to the original payment method only</li>
+                            </ul>
                         </p>
+                    </div>
+
+                    <div className={styles.content}>
+                        <h2>Exceptions & Non-Refundable Situations</h2>
+
                         <div className={styles.iconText}>
                             <img src={VecIcon} alt='VecIcon' />
-                            <h4>
-                                Disabling Policy
-                            </h4>
+                            <h4>Change of Mind</h4>
                         </div>
                         <p>
-                            Essential Cookies: These cookies are vital for providing you with services available through our platform. They enable you to access secure areas, such as logging in, and ensure the speedy loading of requested content. Without these cookies, essential services cannot
-                            be provided.
+                            Refunds will not be issued simply for a change of mind or dissatisfaction with performance that results from user misuse or unrealistic expectations.
                         </p>
+
                         <div className={styles.iconText}>
                             <img src={VecIcon} alt='VecIcon' />
-                            <h4>
-                                Facebook Custom Audiences
-                            </h4>
+                            <h4>Partial Use of Services</h4>
                         </div>
                         <p>
-                            Essential Cookies: These cookies are vital for providing you with services available through our platform. They enable you to access secure areas, such as logging in, and ensure the speedy loading of requested content. Without these cookies, essential services cannot
-                            be provided.
+                            If a user has partially used any service — for example, accessing a portion of a course or enabling AlgoBot — a refund will not be processed.
                         </p>
+
                         <div className={styles.iconText}>
                             <img src={VecIcon} alt='VecIcon' />
-                            <h4>
-                                Pixel Tags
-                            </h4>
+                            <h4>Promotional or Discounted Plans</h4>
                         </div>
                         <p>
-                            Essential Cookies: These cookies are vital for providing you with services available through our platform. They enable you to access secure areas, such as logging in, and ensure the speedy loading of requested content. Without these cookies, essential services cannot
-                            be provided.
+                            Services purchased using discount codes, promo offers, or seasonal deals are non-refundable unless stated otherwise during the promotion.
                         </p>
-                        <h3>
-                            2. Disclosure of Information
-                        </h3>
-                        <div className={styles.iconText}>
-                            <img src={VecIcon} alt='VecIcon' />
-                            <h4>
-                                Do Not Track Signals
-                            </h4>
-                        </div>
+                    </div>
+
+                    <div className={styles.content}>
+                        <h2>Contact Us</h2>
                         <p>
-                            Essential Cookies: These cookies are vital for providing you with services available through our platform. They enable you to access secure areas, such as logging in, and ensure the speedy loading of requested content. Without these cookies, essential services cannot
-                            be provided.
-                        </p>
-                        <div className={styles.iconText}>
-                            <img src={VecIcon} alt='VecIcon' />
-                            <h4>
-                                Use Sticker Tokens to Pay AI Service:
-                            </h4>
-                        </div>
-                        <p>
-                            Essential Cookies: These cookies are vital for providing you with services available through our platform. They enable you to access secure areas, such as logging in, and ensure the speedy loading of requested content. Without these cookies, essential services cannot
-                            be provided.
+                            For any refund-related queries or disputes, please contact us at <strong>support@pipsveda.com</strong>. Our team is available Monday to Friday and aims to respond within 2 working days.
                         </p>
                     </div>
                 </div>

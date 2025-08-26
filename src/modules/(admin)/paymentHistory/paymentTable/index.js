@@ -25,7 +25,7 @@ const PaymenyHistory = () => {
             try {
                 setIsLoading(true);
                 const response = await getpaymentHistory();
-                setPaymentHistory(response.payload || []);
+                setPaymentHistory(response.payload.data || []);
             } catch (error) {
                 console.error('Error fetching payment history:', error);
                 toast.error('Failed to load payment history');
@@ -50,6 +50,7 @@ const PaymenyHistory = () => {
                             <th>Purchased Date</th>
                             <th>Course Name</th>
                             <th>Strategy Name</th>
+                            <th>Telegram Channel</th>
                             <th>Plan</th>
                             <th>Amount</th>
                             <th>Transaction ID</th>
@@ -61,6 +62,7 @@ const PaymenyHistory = () => {
                         {[...Array(5)].map((_, index) => (
                             <tr key={index}>
                                 <td><Skeleton height={24} width={48}/></td>
+                                <td><Skeleton height={24} width={120}/></td>
                                 <td><Skeleton height={24} width={120}/></td>
                                 <td><Skeleton height={24} width={120}/></td>
                                 <td><Skeleton height={24} width={120}/></td>
@@ -170,6 +172,7 @@ const PaymenyHistory = () => {
                             <th>Purchased Date</th>
                             <th>Course Name</th>
                             <th>Strategy Name</th>
+                            <th>Telegram Channel</th>
                             <th>Plan</th>
                             <th>Amount</th>
                             <th>Transaction ID</th>
@@ -184,6 +187,7 @@ const PaymenyHistory = () => {
                                 <td>{new Date(payment.createdAt).toLocaleString('en-GB')}</td>
                                 <td>{payment.courseId?.CourseName || '-'}</td>
                                 <td>{payment.botId?.strategyId?.title || '-'}</td>
+                                <td>{payment?.telegramId?.telegramId?.channelName || '-'}</td>
                                 <td>{payment.planType}</td>
                                 <td>${payment.price}</td>
                                 <td>{payment.orderId}</td>

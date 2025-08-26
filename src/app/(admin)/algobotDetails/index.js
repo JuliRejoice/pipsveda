@@ -12,6 +12,8 @@ import { getPaymentUrl } from "@/compoents/api/dashboard";
 import { useRouter, useSearchParams } from "next/navigation";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import RecentBots from "./recentBots";
+import { marked } from "marked";
 const RightIcon = "/assets/icons/right.svg";
 const MinusIcon = "/assets/icons/minus.svg";
 const PlusIcon = "/assets/icons/plus.svg";
@@ -41,10 +43,12 @@ function AlgobotDetails({ id }) {
   const [selectedLanguageIndex, setSelectedLanguageIndex] = useState(0);
   const [availableLanguages, setAvailableLanguages] = useState([]);
 
+  console.log(selectedPlan,'----------------===========')
+
   const handleLanguageChange = (e) => {
     setSelectedLanguageIndex(Number(e.target.value));
   };
-
+console.log(algobotData)
   const fetchAlgobotData = async () => {
     try {
       setIsLoading(true);
@@ -87,22 +91,28 @@ function AlgobotDetails({ id }) {
   const handleBuyNow = (plan) => {
     const quantity = planQuantities[plan._id] || 1;
     const originalPrice = plan.initialPrice * quantity;
-    const commonDiscountAmount = (originalPrice * commonDiscount) / 100;
-    console.log(originalPrice)
+    const commonDiscountAmount = (originalPrice * (plan.discount || 0)) / 100;
+    const priceAfterCommonDiscount = originalPrice - commonDiscountAmount;
+    
+ 
     setSelectedPlan({
       ...plan,
       originalPrice: originalPrice,
-      totalPrice: originalPrice - commonDiscountAmount, // Apply common discount by default
+      totalPrice: priceAfterCommonDiscount,
       quantity: quantity,
-      commonDiscount: commonDiscountAmount,
-      discountType: 'common'
+      commonDiscount: plan.commonDiscount || 0,
+      discountType: 'common',
+      priceAfterCommonDiscount: priceAfterCommonDiscount
     });
+    
     setCoupon('');
     setDiscount(commonDiscountAmount);
     setError('');
     setAppliedCoupon(null);
     setIsModalOpen(true);
   };
+
+console.log(selectedPlan)
 
   const handleApplyCoupon = async () => {
     if (!coupon.trim()) {
@@ -116,29 +126,42 @@ function AlgobotDetails({ id }) {
       const response = await getCoupon(coupon);
 
       if (response.success && response.payload) {
-        const discountPercentage = response.payload.discount || 0;
-        const originalTotal = selectedPlan.originalPrice;
-        const discountAmount = (originalTotal * discountPercentage) / 100;
-
-        console.log(discountAmount)
-        console.log(originalTotal)
-        console.log(discountPercentage)
+        const couponDiscountPercentage = response.payload.discount || 0;
+        const originalPrice = selectedPlan.originalPrice;
+       
+        const totaldiscount = selectedPlan.discount + couponDiscountPercentage; 
+        const discountAmount = (originalPrice * totaldiscount) / 100;
+        const finalPrice = originalPrice - discountAmount;
         
-        setDiscount(discountAmount);
+
+        // console.log(originalPrice) // true  
+        // console.log(commonDiscountAmount) // false
+        // console.log(selectedPlan.discount) 
+        
+        // // Apply coupon discount on the price after common discount
+        // const couponDiscountAmount = (priceAfterCommonDiscount * couponDiscountPercentage) / 100;
+        // const discount = commonDiscountAmount + couponDiscountAmount;
+        // const finalPrice = originalPrice - discount;
+        
+        // console.log(couponDiscountAmount)
+        // console.log(finalPrice)
+        
         setCouponId(response.payload._id);
         setAppliedCoupon({
           code: coupon,
-          discount: discountPercentage
+          discount: couponDiscountPercentage
         });
-        
-        toast.success('Coupon applied successfully!');
-        
+
         setSelectedPlan(prev => ({
           ...prev,
-          totalPrice: Math.max(0, originalTotal - discountAmount),
-          discountType: 'coupon',
-          couponDiscount: discountAmount
+          totalPrice: finalPrice,
+          discountType: 'combined',
+          couponDiscount: couponDiscountPercentage,
+          commonDiscount: selectedPlan.discount,
+          couponDiscountPercentage: couponDiscountPercentage
         }));
+
+        toast.success('Coupon applied successfully!');
       } else {
         setError(response.messages || 'Invalid coupon code');
       }
@@ -156,12 +179,11 @@ function AlgobotDetails({ id }) {
     try {
       setIsProcessingPayment(true);
       setError('');
-      
+
       const orderData = {
         strategyPlanId: selectedPlan._id,
         botId: algobotData?._id,
         couponId: couponId || undefined,
-        noOfBots: planQuantities[selectedPlan._id] || 1,
         success_url: window.location.href,
         cancel_url: window.location.href
       };
@@ -181,11 +203,6 @@ function AlgobotDetails({ id }) {
     } finally {
       setIsProcessingPayment(false);
     }
-  };
-
-  const calculateTotal = () => {
-    if (!selectedPlan) return 0;
-    return (selectedPlan.price * (planQuantities[selectedPlan._id] || 1)) - discount;
   };
 
   useEffect(() => {
@@ -213,26 +230,23 @@ function AlgobotDetails({ id }) {
   const renderSkeletonCards = (count = 3) => {
     return Array(count).fill(0).map((_, index) => (
       <div className={styles.planGridItems} key={`skeleton-${index}`}>
+        <Skeleton width="100%" height={24} />
         <div className={styles.cardHeaderAlignment}>
-          <h3><Skeleton width={120} height={24} /></h3>
-          <h4><Skeleton width={80} height={28} /></h4>
         </div>
         <div className={styles.childBox}>
-          {[1, 2, 3, 4, 5].map((item) => (
-            <div className={styles.contentAlignment} key={`skeleton-content-${item}`}>
-              <span><Skeleton width={80} /></span>
-              <span><Skeleton width={60} /></span>
-            </div>
-          ))}
-          <div className={styles.buttonAlignment}>
-            <Skeleton height={40} width={120} />
-          </div>
+          <Skeleton width="100%" height="56px" />
         </div>
+        <div className={styles.counterAlignment}>
+          <Skeleton width="30px" height="30px" />
+          <Skeleton width="30px" height="30px" />
+          <Skeleton width="30px" height="30px" />
+        </div>
+        <Skeleton width="143px" height="52px" />
       </div>
     ));
   };
 
-  console.log(selectedLanguageIndex)
+
   useEffect(() => {
     const isPayment = searchParams.get('isPayment');
     if (isPayment) {
@@ -283,6 +297,8 @@ function AlgobotDetails({ id }) {
     );
   };
 
+  console.log(selectedPlan)
+
   return (
     <div>
       {renderPaymentModal()}
@@ -293,32 +309,37 @@ function AlgobotDetails({ id }) {
             <h2>{algobotData?.title}</h2>
           </div>
         </div>
-        <div className={styles.grid}>
-          <div className={styles.griditems}>
-            <div className={styles.box}>
-              {algobotData?.imageUrl && (
-                <img
-                  src={algobotData.imageUrl}
-                  alt={algobotData.title}
-                  className={styles.algobotImage}
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = '/path/to/placeholder-image.jpg';
-                  }}
-                />
-              )}
+        <div className={styles.algobanner}>
+          <div className={styles.grid}>
+            <div className={styles.griditems}>
+              <div className={styles.box}>
+                {algobotData?.imageUrl && (
+                  <img
+                    src={algobotData.imageUrl}
+                    alt={algobotData.title}
+                    className={styles.algobotImage}
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = '/path/to/placeholder-image.jpg';
+                    }}
+                  />
+                )}
+              </div>
             </div>
-          </div>
-          <div className={styles.griditems}>
-            <p>{algobotData?.description}</p>
+            <div className={styles.griditems}>
+            <p
+                className="prose prose-sm max-w-none"
+                dangerouslySetInnerHTML={{ __html: marked(algobotData.description || "") }}
+              />
+            </div>
           </div>
         </div>
         <div className={styles.tutorial}>
           <h3>Tutorial</h3>
           <div className={styles.textdropdown}>
             <p>Select your preferred language :</p>
-            <select 
-              onChange={handleLanguageChange} 
+            <select
+              onChange={handleLanguageChange}
               value={selectedLanguageIndex}
               disabled={!availableLanguages.length}
             >
@@ -406,6 +427,10 @@ function AlgobotDetails({ id }) {
             )}
           </div>
         </div>
+
+        <div>
+          <RecentBots category={algobotData?.categoryId?.title}/>
+        </div>
       </div>
 
       {/* Purchase Modal */}
@@ -431,20 +456,30 @@ function AlgobotDetails({ id }) {
                 <span>Subtotal:</span>
                 <span>${selectedPlan.originalPrice.toFixed(2)}</span>
               </p>
-              
-              {/* Show discount details */}
-              {selectedPlan.discountType === 'coupon' ? (
+
+              {selectedPlan.discountType === 'combined' ? (
+                <>
+                  <p className={styles.discountText}>
+                    <span>Common Discount ({selectedPlan.commonDiscount}%):</span>
+                    <span>-${((selectedPlan.originalPrice * selectedPlan.commonDiscount) / 100).toFixed(2)}</span>
+                  </p>
+                  <p className={styles.discountText}>
+                    <span>Coupon Discount ({appliedCoupon?.discount}%):</span>
+                    <span>-${((selectedPlan.originalPrice - (selectedPlan.originalPrice * selectedPlan.commonDiscount / 100)) * (appliedCoupon?.discount / 100)).toFixed(2)}</span>
+                  </p>
+                </>
+              ) : selectedPlan.discountType === 'coupon' ? (
                 <p className={styles.discountText}>
                   <span>Coupon Discount ({appliedCoupon?.discount}%):</span>
-                  <span>-${selectedPlan.couponDiscount?.toFixed(2) || '0.00'}</span>
+                  <span>-${(selectedPlan.originalPrice * (appliedCoupon?.discount / 100)).toFixed(2)}</span>
                 </p>
               ) : (
                 <p className={styles.discountText}>
                   <span>Common Discount ({selectedPlan.discount}%):</span>
-                  <span>-${selectedPlan.totalPrice * selectedPlan.discount / 100 || '0.00'}</span>
+                  <span>-${((selectedPlan.originalPrice * selectedPlan.discount) / 100).toFixed(2)}</span>
                 </p>
               )}
-              
+
               <h4 className={styles.totalPrice}>
                 <span>Total Amount:</span>
                 <span>${selectedPlan.totalPrice.toFixed(2)}</span>
@@ -482,12 +517,12 @@ function AlgobotDetails({ id }) {
                 variant="outline"
                 onClick={() => setIsModalOpen(false)}
               />
-              <Button 
+              <Button
                 onClick={handlePurchase}
                 disabled={isProcessingPayment || isLoading}
                 text={
-                  isProcessingPayment 
-                    ? 'Processing...' 
+                  isProcessingPayment
+                    ? 'Processing...'
                     : `Pay $${selectedPlan.totalPrice.toFixed(2)}`
                 }
               />

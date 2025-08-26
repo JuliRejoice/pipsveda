@@ -107,6 +107,7 @@
     @include first-clip-path;
     padding: 20px;
     border-radius: 12px;
+    min-width: 0;
 
     .image {
       img {
@@ -134,53 +135,73 @@
         color: var(--grey-600);
       }
 
+      .planslidermain {
+        width: 100%;
+
+        .planslider {
+          overflow-x: auto;
+          width: 100%;
+          padding: 16px 0;
+          scrollbar-width: thin;
+
+        }
+      }
+
       .twoColgrid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
+        width: 100%;
         gap: 17px;
-        padding: 16px 0;
+        margin: 17px 0 23px 0;
 
         .items {
-          background-color: #f7f8fa;
-          border: 1px solid #dadadacc;
-          padding: 6px;
-          border-radius: 8px;
+          width: 100% !important;
+          margin: 0 !important;
+        }
+      }
 
-          .contentAlignment:last-child {
-            padding: 0;
+      .items {
+        background-color: #f7f8fa;
+        border: 1px solid rgba(218, 218, 218, .8);
+        border-radius: 8px;
+        width: calc(100% - 17px);
+        padding: 6px;
+        margin: 17px 17px 23px 0;
+
+        .contentAlignment:last-child {
+          padding: 0;
+        }
+
+        .contentAlignment {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 0 0 0 0;
+
+          span {
+            display: block;
+            @include font14;
+            color: var(--grey-500);
           }
 
-          .contentAlignment {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 0 0 0;
+          h5 {
+            @include font16;
+            color: var(--grey-600);
+            font-weight: 400;
 
-            span {
-              display: block;
-              @include font14;
-              color: var(--grey-500);
+            &.dangerText {
+              color: #CE4553;
             }
+          }
 
-            h5 {
-              @include font16;
-              color: var(--grey-600);
-              font-weight: 400;
-
-              &.dangerText {
-                color: #CE4553;
-              }
-            }
-
-            h4 {
-              @include font18;
-              font-weight: 600;
-              background: var(--button-gradient);
-              background-clip: text;
-              -webkit-background-clip: text;
-              display: inline;
-              -webkit-text-fill-color: transparent;
-            }
+          h4 {
+            @include font18;
+            font-weight: 600;
+            background: var(--button-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            display: inline;
+            -webkit-text-fill-color: transparent;
           }
         }
       }
@@ -255,6 +276,20 @@
       max-width: 500px;
       margin: 0 auto 20px;
       line-height: 1.5;
+    }
+  }
+
+  .griditemsloader {
+    .image {
+      margin-bottom: 15px;
+    }
+
+    .twoColgrid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      width: 100%;
+      gap: 17px;
+      margin: 17px 0;
     }
   }
 }
