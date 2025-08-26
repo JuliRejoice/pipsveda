@@ -73,7 +73,7 @@ export default function Sidebar({ setToogle, toogle }) {
           <img src={SidebarLayer} alt="SidebarLayer" />
         </div>
         <div className={styles.logo}>
-          <Logo />
+          <Link href="/"><Logo /></Link>
           <div className={styles.close} onClick={() => setToogle(false)}>
             <CloseIcon />
           </div>

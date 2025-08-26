@@ -465,7 +465,8 @@ console.log(selectedPlan)
                   </p>
                   <p className={styles.discountText}>
                     <span>Coupon Discount ({appliedCoupon?.discount}%):</span>
-                    <span>-${((selectedPlan.originalPrice - (selectedPlan.originalPrice * selectedPlan.commonDiscount / 100)) * (appliedCoupon?.discount / 100)).toFixed(2)}</span>
+                    {/* <span>-${((selectedPlan.originalPrice - (selectedPlan.originalPrice * selectedPlan.commonDiscount / 100)) * (appliedCoupon?.discount / 100)).toFixed(2)}</span> */}
+                    <span>-${((appliedCoupon?.discount * selectedPlan.originalPrice / 100)).toFixed(2)}</span>
                   </p>
                 </>
               ) : selectedPlan.discountType === 'coupon' ? (

@@ -5,11 +5,11 @@ export default function CourseDetailsBanner() {
         <div className={styles.courseDetailsBanner}>
             <div className='container'>
                 <h1>
-                    Crypto Currency for Beginners
+                    Forex Trading for Beginners
                 </h1>
-                <p>
+                {/* <p>
                     Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                </p>
+                </p> */}
             </div>
         </div>
     )

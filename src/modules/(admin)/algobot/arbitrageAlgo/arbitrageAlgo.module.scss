@@ -20,9 +20,9 @@
     overflow-x: auto;
     // padding-bottom: 10px;
 
-    &::-webkit-scrollbar {
-      display: none;
-    }
+    // &::-webkit-scrollbar {
+    //   display: none;
+    // }
 
     .algotabs {
       width: fit-content;
@@ -39,7 +39,7 @@
         @include font16;
         position: relative;
         outline: none;
-        overflow: hidden;
+        // overflow: hidden;
         transition: .4s ease-in-out;
 
         &::before {
@@ -292,4 +292,8 @@
       margin: 17px 0;
     }
   }
+}
+
+.slick-list{
+  overflow: auto !important ;
 }
