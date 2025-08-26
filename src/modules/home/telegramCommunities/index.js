@@ -73,7 +73,7 @@ export default function TelegramCommunities() {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {telegramChannels.slice(0, 3).map((channel) => (
+          {telegramChannels?.length > 0 && telegramChannels?.slice(0, 3).map((channel) => (
             <motion.div
               className={styles.griditems}
               key={channel._id}
