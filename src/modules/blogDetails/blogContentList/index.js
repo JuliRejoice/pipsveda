@@ -6,7 +6,6 @@ import { marked } from "marked";
 const ProfileIcon = '/assets/icons/profile-primary.svg';
 
 export default function BlogContentList({ blog }) {
-    console.log(blog)
     return (
         <div className={styles.blogContentList}>
             <div className='container'>

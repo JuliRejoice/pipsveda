@@ -12,7 +12,10 @@ export default function AlgobotDetails() {
         <div>
             <CourseDetailsBanner />
             <AlgobotInformation id={botId}/>
+            <div className="container">
+                
             <RecentBots id={botId}/>
+            </div>
         </div>
     )   
 }

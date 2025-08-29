@@ -3,7 +3,7 @@
 .logo {
     img {
         display: block;
-        max-width: 176px;
+        max-width: 100px;
         cursor: pointer;
         @include respond-to("md") {
             max-width: 80px;

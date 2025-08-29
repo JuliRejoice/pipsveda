@@ -7,9 +7,9 @@ export default function CourseDetailsBanner() {
                 <h1>
                     Forex Trading for Beginners
                 </h1>
-                {/* <p>
-                    Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                </p> */}
+                <p>
+                    A simple guide to understanding and starting currency trading in the global forex market.
+                </p>
             </div>
         </div>
     )

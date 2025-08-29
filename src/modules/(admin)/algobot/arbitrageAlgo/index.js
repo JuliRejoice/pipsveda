@@ -83,7 +83,6 @@ export default function ArbitrageAlgo({ bot, setBot, searchQuery, setSearchQuery
     const [selectedCategory, setSelectedCategory] = useState('');
     const router = useRouter();
     const pathname = usePathname();
-    console.log("bot", searchQuery)
     useEffect(() => {
         setSelectedCategory(bot?.[0]?.categoryName);
     }, [bot]);
@@ -184,7 +183,6 @@ export default function ArbitrageAlgo({ bot, setBot, searchQuery, setSearchQuery
                 {bot
                     ?.filter(item => selectedCategory === item.categoryName)
                     ?.map((item) => {
-                        console.log("item", item);
                         return item.strategies?.map((strategy) => (
                             <div className={styles.griditems} key={strategy._id || strategy.id}>
                                 <div className={styles.image}>

@@ -13,6 +13,10 @@
         padding: 60px 0;
     }
 
+    .emptyState {
+        align-items: center;   
+    }
+
     .tabAlignment {
         display: flex;
         align-items: center;
@@ -130,6 +134,7 @@
                     padding: 0 0 10px 0;
                     gap: 24px;
 
+                   
                     .iconText {
                         display: flex;
                         align-items: center;
@@ -143,6 +148,25 @@
                         }
                     }
                 }
+
+                .heading {
+                    @include heading20;
+                    margin: 0 0 3px 0;
+                    color: var(--black-500);
+                    // color:red;
+                    --webkit-line-clamp: 2; 
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+
+                    @include respond-to("sm") {
+                        @include font18;
+                        font-weight: 500;
+                    }
+                }
+
             }
         }
     }

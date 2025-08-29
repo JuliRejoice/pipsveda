@@ -196,10 +196,8 @@ const PaymenyHistory = () => {
                 toast.error('Please enter at least one valid account number');
                 return;
             }
-            console.log(validAccounts);
 
             const response = await addmetaAccountNo(currentPayment._id, validAccounts);
-            console.log(response);
             // TODO: Call your API to save the meta accounts
             // await saveMetaAccounts(currentPayment._id, validAccounts);
 

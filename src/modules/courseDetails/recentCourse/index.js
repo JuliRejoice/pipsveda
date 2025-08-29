@@ -31,7 +31,6 @@ export default function RecentCourse({id}) {
         fetchCourses();
     }, [id]);
 
-    console.log(courses);   
     return (
         <div className={styles.recentCourse}>
             <div className='container'>

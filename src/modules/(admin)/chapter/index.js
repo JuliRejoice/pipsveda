@@ -7,7 +7,6 @@ import RecentCourse from './recentCourse';
 
 export default function Chapters({ params }) {
   const [selectedCourse , setSelectedCourse] = useState(null);
-  console.log(selectedCourse)
   return (
     <div>
       <Breadcumbs/>

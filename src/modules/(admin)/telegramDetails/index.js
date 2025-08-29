@@ -49,7 +49,6 @@ function TelegramDetails({ id }) {
         try {
             setIsLoading(true);
             const response = await getTelegramChannels(id);
-            console.log(response)
             setTelegramData(response.payload.data[0]);
             setPlans(response.payload.data[0].telegramPlan);
 

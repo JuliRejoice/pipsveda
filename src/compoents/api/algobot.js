@@ -25,7 +25,6 @@ export const purchasedCourses = async () => {
 }
 
 export const getAlgobot = async (id = '',searchQuery = '') => {
-    console.log("searchQuery",searchQuery,'------------',id)
     const token = getAuthToken()
     try {
         const url = `${BASEURL}/strategyPlan/getStrategiesByCategory${id ? `?id=${id}` : searchQuery ? `?search=${searchQuery}` : ''}`;

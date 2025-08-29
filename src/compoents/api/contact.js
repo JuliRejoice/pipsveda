@@ -10,7 +10,6 @@ export const getAuthToken = () => {
 
 export const contactUs = async (data) => {
     const token = getAuthToken();
-    console.log(token);
     try {
         const response = await fetch(`${BASEURL}/contactUs/createContact`, {
             method: 'POST',

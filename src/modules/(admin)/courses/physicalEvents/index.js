@@ -12,7 +12,6 @@ import EmptyState from '../../chapter/recentCourse/EmptyState';
 import Link from 'next/link';
 
 export default function PhysicalEvents({ physicalCourses = [], isLoading = false, error = null }) {
-    console.log(physicalCourses);
     // Loading skeleton for physical events
     const renderSkeletons = (count = 3) => {
         return Array(count).fill(0).map((_, i) => (

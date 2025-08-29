@@ -142,16 +142,6 @@ export default function BlogListingCard({ searchQuery }) {
     const blogs = blogData?.blogs_connection?.nodes || [];
     const totalItems = blogData?.blogs_connection?.pageInfo?.total|| 0;
 
-    // Debug logs
-    console.log('Pagination Debug:', {
-        currentPage,
-        totalItems,
-        itemsPerPage,
-        shouldShowPagination: totalItems > itemsPerPage,
-        blogData: blogData?.blogs_connection?.meta?.pagination
-    });
-
-    // Loading state
     if (loading) {
         return (
             <div className={styles.blogListingCard}>
@@ -180,7 +170,9 @@ export default function BlogListingCard({ searchQuery }) {
         return (
             <div className={styles.blogListingCard}>
                 <div className='container'>
-                    <EmptyState />
+                    <div className={styles.emptyState}>
+                        <EmptyState title={'No Blog Found'} description={'We couldn\'t find any blog posts matching your criteria.'}/>
+                    </div>
                 </div>
             </div>
         );
@@ -253,6 +245,7 @@ export default function BlogListingCard({ searchQuery }) {
                                     <motion.h3
                                         whileHover={{ scale: 1.01 }}
                                         transition={{ duration: 0.2 }}
+                                        className={styles.heading}
                                     >
                                         {blog.title}
                                     </motion.h3>

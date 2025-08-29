@@ -54,7 +54,6 @@ function MyTelegram({ telegramCourses, isLoading }) {
         );
     }
 
-    console.log(telegramCourses)
     return (
         <div className={styles.myAlgobots}>
             <div className={styles.cardgrid}>

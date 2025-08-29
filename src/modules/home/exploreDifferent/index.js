@@ -78,7 +78,6 @@ export default function ExploreDifferent() {
         const fetchCourses = async () => {
             try {
                 const response = await getCourseByType();
-                console.log(response);
                 setCourses(response.payload.courses);
             } catch (error) {
                 console.error('Error fetching courses:', error);

@@ -81,7 +81,6 @@ export default function CourseBanner({
     }
     getAllCourses();
   }, [params]);
-console.log(searchQuery);
  
   useEffect(() => {
     setInputValue(searchQuery);
@@ -92,7 +91,6 @@ console.log(searchQuery);
       setIsLoading(true);
       const response = await getCourses(searchQuery);
       if (response.success) {
-        console.log(response.payload.data.slice(0, 3));
         setCourses(response.payload.data.slice(0, 3));
       } else {
         console.error("Failed to fetch courses:", response.message);

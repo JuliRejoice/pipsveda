@@ -43,12 +43,10 @@ function AlgobotDetails({ id }) {
   const [selectedLanguageIndex, setSelectedLanguageIndex] = useState(0);
   const [availableLanguages, setAvailableLanguages] = useState([]);
 
-  console.log(selectedPlan, '----------------===========')
 
   const handleLanguageChange = (e) => {
     setSelectedLanguageIndex(Number(e.target.value));
   };
-  console.log(algobotData)
   const fetchAlgobotData = async () => {
     try {
       setIsLoading(true);
@@ -112,7 +110,6 @@ function AlgobotDetails({ id }) {
     setIsModalOpen(true);
   };
 
-  console.log(selectedPlan)
 
   const handleApplyCoupon = async () => {
     if (!coupon.trim()) {
@@ -132,19 +129,6 @@ function AlgobotDetails({ id }) {
         const totaldiscount = selectedPlan.discount + couponDiscountPercentage;
         const discountAmount = (originalPrice * totaldiscount) / 100;
         const finalPrice = originalPrice - discountAmount;
-
-
-        // console.log(originalPrice) // true  
-        // console.log(commonDiscountAmount) // false
-        // console.log(selectedPlan.discount) 
-
-        // // Apply coupon discount on the price after common discount
-        // const couponDiscountAmount = (priceAfterCommonDiscount * couponDiscountPercentage) / 100;
-        // const discount = commonDiscountAmount + couponDiscountAmount;
-        // const finalPrice = originalPrice - discount;
-
-        // console.log(couponDiscountAmount)
-        // console.log(finalPrice)
 
         setCouponId(response.payload._id);
         setAppliedCoupon({
@@ -298,7 +282,6 @@ function AlgobotDetails({ id }) {
     );
   };
 
-  console.log(selectedPlan)
 
   return (
     <div>

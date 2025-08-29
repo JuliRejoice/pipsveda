@@ -46,8 +46,7 @@ export default function AboutBanner() {
                             variants={textVariants}
                             transition={{ delay: 0.2 }}
                         >
-                            Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
-                            type specimen book.
+                          PipsVeda is your one-stop solution for forex success. We offer an advanced AlgoBot, expert-led forex courses (recorded, live, or in-person), and a premium Telegram channel. Learn, automate, and grow your trading skills—all in one place. Easy online purchases make it simple to get started today.
                         </motion.p>
                     </motion.div>
                     <div className={styles.griditems}>

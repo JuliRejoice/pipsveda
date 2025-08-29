@@ -106,3 +106,38 @@ img {
   opacity: 1;
 }
 
+.protect {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.01); /* almost invisible */
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.watermark {
+  position: fixed;
+  top: 30%;
+  left: 20%;
+  opacity: 0.2;
+  font-size: 4rem;
+  color: red;
+  pointer-events: none;
+  transform: rotate(-30deg);
+}
+
+/* .watermark::before {
+  content: "Confidential";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-size: 5rem;
+  font-weight: bold;
+  color: rgba(255, 0, 0, 0.15);
+  pointer-events: none;
+  z-index: 9999;
+  white-space: nowrap;
+} */
+
+
+

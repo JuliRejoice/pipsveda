@@ -3,7 +3,6 @@ import React from "react";
 import styles from './recentCourse.module.scss';
 
 function EmptyState({ title, description }) {
-  console.log(title, description)
   return (
     <div className={styles.emptyState}>
       <div className={styles.emptyImage}>

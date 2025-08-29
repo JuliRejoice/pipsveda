@@ -20,7 +20,6 @@ export default function CourseInformation({ id }) {
     const fetchChapter = async () => {
       try {
         const response = await getChapters(id);
-        console.log(response)
       } catch (error) {
         console.error('Error fetching course:', error);
       }
@@ -59,7 +58,6 @@ export default function CourseInformation({ id }) {
           else{
             toast.error("Payment failed. Please try again");
           }
-          console.log(response)
         } catch (error) {
           console.error('Error fetching course:', error);
         }

@@ -46,8 +46,6 @@ export default function DifferentCourses({course}) {
     const isInView = useInView(ref, { once: true, amount: 0.1 });
     const router = useRouter();
 
-    console.log(course);
-
     useEffect(() => {
         if (isInView) {
             controls.start("visible");

@@ -190,7 +190,6 @@ export default function AllAlgobots() {
                     {bot
                         ?.filter(item => selectedCategory === item.categoryName)
                         ?.map((item) => {
-                            console.log("item", item);
                             return item.strategies?.map((strategy) => (
                                 <div className={styles.griditems} key={strategy._id || strategy.id}>
                                     <div className={styles.image}>

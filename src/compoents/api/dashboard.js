@@ -15,7 +15,6 @@ export const getCourses = async ({
   courseType = "",
   id = ""
 }) => {
-console.log(id)
   try {
     const token = getAuthToken();
 

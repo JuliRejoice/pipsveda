@@ -34,7 +34,6 @@ export default function ContactUs() {
         const fetchUtility = async () => {
             try {
                 const response = await getUtilityData();
-                console.log('Utility data:', response);
                 setUtility(response.payload || {});
             } catch (error) {
                 console.error('Error fetching utility:', error);
@@ -100,7 +99,6 @@ export default function ContactUs() {
             setIsSubmitting(false);
         }
     };
-    console.log(utility);
     return (
         <div>
             <AdminHeader />

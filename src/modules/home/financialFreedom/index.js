@@ -52,7 +52,6 @@ export default function FinancialFreedom() {
         const fetchCourses = async () => {
             try {
                 const response = await getCourseByType();
-                console.log('API Response:', response);
                 if (response && response.payload && response.payload.courses) {
                     setCourses({
                         recorded: response.payload.courses.recorded.slice(0, 5) || [],

@@ -90,7 +90,6 @@ function AlgobotInformation({ id }) {
     const quantity = planQuantities[plan._id] || 1;
     const originalPrice = plan.initialPrice * quantity;
     const commonDiscountAmount = (originalPrice * commonDiscount) / 100;
-    console.log(originalPrice)
     setSelectedPlan({
       ...plan,
       originalPrice: originalPrice,
@@ -126,9 +125,6 @@ function AlgobotInformation({ id }) {
         const originalTotal = selectedPlan.originalPrice;
         const discountAmount = (originalTotal * discountPercentage) / 100;
 
-        console.log(discountAmount)
-        console.log(originalTotal)
-        console.log(discountPercentage)
         
         setDiscount(discountAmount);
         setCouponId(response.payload._id);

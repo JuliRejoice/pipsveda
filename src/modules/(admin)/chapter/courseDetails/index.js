@@ -15,7 +15,7 @@ import Modal from "@/compoents/modal/Modal";
 import toast from "react-hot-toast";
 import Arrowicon from "@/icons/arrowicon";
 import Slider from "react-slick/lib/slider";
-import ReactPlayer from "react-player";
+
 
 const LockIcon = '/assets/icons/lock.svg';
 const RightBlackIcon = '/assets/icons/right-white.svg';
@@ -129,7 +129,6 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
   const pathname = usePathname();
   const isLiveOnline = pathname.includes('/live-online');
   const isInPerson = pathname.includes("in-person");
-  console.log(isInPerson)
   const id = params;
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -168,7 +167,6 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
       const res = await getCourses({ id: params });
       setSelectedCourse(res?.payload?.data?.[0] || {});
       const data = await getSessionData(id);
-      console.log(data)
       setSessions(data?.payload?.data || []);
       setIsPaid(data?.payload.isPayment);
       setError(null);
@@ -189,8 +187,6 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     }
   }, [id]);
 
-  console.log(sessions)
-  console.log(pathname.includes('/live-online'), '======================')
 
   useEffect(() => {
     const isPayment = searchParams.get('isPayment');
@@ -243,15 +239,12 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     const sessionDateTime = new Date(`${session.date}`);
     const currentDateTime = new Date();
 
-    console.log(sessionDateTime, 'sessionDateTime', currentDateTime)
 
     return sessionDateTime < currentDateTime;
   };
 
   // Filter out expired sessions
   const upcomingSessions = sessions.filter(session => !isSessionExpired(session));
-
-  console.log(upcomingSessions, 'sessions')
 
   const handlePayment = async () => {
     try {
@@ -261,7 +254,6 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
         cancel_url: window.location.href,
         courseId: id
       });
-      console.log("response", response)
       if (response?.payload?.code !== "00000") {
         toast.error("A payment session is already active and will expire in 10 minutes. Please complete the current payment or try again after it expires.");
       } else {
@@ -275,9 +267,6 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
       setIsProcessingPayment(false);
     }
   };
-
-  console.log(sessions, '------------------')
-  console.log(selectedCourse, 'isPaid')
 
   const renderPaymentModal = () => {
     if (!showPaymentModal) return null;
@@ -493,7 +482,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
               </div>
               <div className={styles.iconText}>
                 <ProfileGroupIcon />
-                <span>1234</span>
+                <span>{selectedCourse?.subscribed || '0'}</span>
               </div>
               <div className={styles.iconText}>
                 <span>Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString('en-GB')} | English</span>
@@ -545,16 +534,15 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                           />
                         </div>
                       ) : (
-                        <ReactPlayer
+                        <video
                           width="100%"
-                          height="100%"
                           src={`${selectedChapter.chapterVideo}`}
                           title={selectedChapter.chapterName}
-                          style={{ width: '100%', height: 'auto' ,borderRadius: '20px'}}
-                          // frameBorder="0"
-                          // allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          // allowFullScreen
+                          style={{ width: '100%', minHeight: '400px', borderRadius: '20px', objectFit: 'cover' }}
                           controls={true}
+                          controlsList="nodownload"
+                          disablePictureInPicture
+                          noremoteplayback
                         />
                       )
                     ) : (
