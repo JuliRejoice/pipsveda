@@ -55,8 +55,34 @@
             }
 
             .details {
-                padding-top: 15px;
+       
 
+                .title{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 0 0 16px 0;
+                    background: var(--button-gradient);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+    
+                    button {
+                        background-color: transparent;
+                        padding: 8px 30px;
+                        @include font16;
+                        border: 1px solid var(--border-light);
+                        border-radius: 99px;
+    
+                        span {
+                            background: var(--button-gradient);
+                            background-clip: text;
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                            display: block;
+                        }
+                    }
+                }
                 h3 {
                     @include font18;
                     color: var(--black-500);
@@ -80,7 +106,7 @@
                     @include font16;
                     font-family: var(--font-lexend);
                     color: var(--grey-600);
-                    -webkit-line-clamp: 2;
+                    -webkit-line-clamp: 3;
                     -webkit-box-orient: vertical;
                     display: -webkit-box;
                     overflow: hidden;

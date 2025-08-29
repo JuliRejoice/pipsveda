@@ -1,5 +1,5 @@
 'use client'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './contactUs.module.scss';
 import AdminHeader from '@/compoents/adminHeader';
 import Input from '@/compoents/input';
@@ -9,6 +9,7 @@ import { sendMessage } from '@/compoents/api/contactus';
 
 import 'react-toastify/dist/ReactToastify.css';
 import toast from 'react-hot-toast';
+import { getUtilityData } from '@/compoents/api/dashboard';
 
 const ChatIcon = '/assets/icons/chat.svg';
 const EmailIcon = '/assets/icons/email-icon.svg';
@@ -27,6 +28,21 @@ export default function ContactUs() {
     });
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [utility, setUtility] = useState({})
+
+    useEffect(() => {
+        const fetchUtility = async () => {
+            try {
+                const response = await getUtilityData();
+                console.log('Utility data:', response);
+                setUtility(response.payload || {});
+            } catch (error) {
+                console.error('Error fetching utility:', error);
+                toast.error('Failed to load utility');
+            }
+        };
+        fetchUtility();
+    }, []);
 
     const validate = () => {
         const newErrors = {};
@@ -60,7 +76,7 @@ export default function ContactUs() {
             toast.error('Please fill in all required fields correctly');
             return;
         }
-        
+
         setIsSubmitting(true);
         try {
             const response = await sendMessage(form);
@@ -84,7 +100,7 @@ export default function ContactUs() {
             setIsSubmitting(false);
         }
     };
-
+    console.log(utility);
     return (
         <div>
             <AdminHeader />
@@ -101,7 +117,7 @@ export default function ContactUs() {
                                     label='First Name'
                                     placeholder='Enter your first name'
                                     value={form.firstName}
-                                    onChange={e => handleChange('firstName', e.target.value)} 
+                                    onChange={e => handleChange('firstName', e.target.value)}
                                 />
                                 {errors.firstName && <span className={styles.error}>{errors.firstName}</span>}
                             </div>
@@ -152,7 +168,7 @@ export default function ContactUs() {
                             {errors.description && <span className={styles.error}>{errors.description}</span>}
                         </div>
                         <div className={styles.btnAlignment}>
-                            <Button text="Send Message" icon={RightIcon}  disabled={isSubmitting} onClick={handleSubmit}/>
+                            <Button text="Send Message" icon={RightIcon} disabled={isSubmitting} onClick={handleSubmit} />
                         </div>
                     </div>
                     <div className={styles.griditems}>
@@ -168,8 +184,11 @@ export default function ContactUs() {
                                     <p>
                                         Available 24/7 for instant support
                                     </p>
-                                    <a href='callto:+91 98765 43210' aria-label='+91 98765 43210'>
-                                        +91 98765 43210
+                                    <a href={`https://wa.me/${utility?.chatNumber?.replace(/[^0-9]/g, "")}`}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        aria-label={utility?.chatNumber}>
+                                        {utility?.chatNumber}
                                     </a>
                                 </div>
                             </div>
@@ -184,9 +203,14 @@ export default function ContactUs() {
                                     <p>
                                         For detailed inquiries
                                     </p>
-                                    <a href='callto:support@PipsVedatrading.com' aria-label='support@PipsVedatrading.com'>
-                                        support@PipsVedatrading.com
+                                    <a
+                                        href={`mailto:${utility?.email ?? ''}`}
+                                        aria-label={utility?.email ?? 'Email'}
+                                        className="text-blue-500 underline"
+                                    >
+                                        {utility?.email ?? 'Email not available'}
                                     </a>
+
                                 </div>
                             </div>
                             <div className={styles.box}>
@@ -200,8 +224,8 @@ export default function ContactUs() {
                                     <p>
                                         Call us during business hours
                                     </p>
-                                    <a href='callto:+91 98765 43210' aria-label='+91 98765 43210'>
-                                        +91 98765 43210
+                                    <a href={`callto:${utility?.phoneNo}`} aria-label='+91 98765 43210'>
+                                        {utility?.phoneNo}
                                     </a>
                                 </div>
                             </div>
@@ -217,7 +241,7 @@ export default function ContactUs() {
                                         For offline programs
                                     </p>
                                     <a aria-label='Mumbai, Maharashtra'>
-                                        Mumbai, Maharashtra
+                                        {utility?.location}
                                     </a>
                                 </div>
                             </div>

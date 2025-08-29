@@ -133,3 +133,11 @@
     font-family: var(--font-funneldisplay);
     line-height: 25px;
 }
+
+@mixin font17 {
+    font-size: 17px;
+    font-style: normal;
+    font-weight: 500;
+    font-family: var(--font-funneldisplay);
+    line-height: 22px;
+}

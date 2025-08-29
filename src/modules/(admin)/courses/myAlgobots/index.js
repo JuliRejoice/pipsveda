@@ -26,28 +26,19 @@ export default function MyAlgobots({ algobotCourses, isLoading = false }) {
         <div className={styles.cardgrid}>
           {[...Array(3)].map((_, index) => (
             <div key={`skeleton-${index}`} className={styles.cardgridItems}>
-              <Skeleton width={120} height={36} />
-              <div className={styles.twoContentAlignment}>
-                <div>
-                  <Skeleton width={150} height={24} />
-                  <Skeleton width={120} height={16} />
-                </div>
-                <div className={styles.dateShow}>
-                  <Skeleton width={16} height={16} />
-                  <Skeleton width={80} height={16} />
-                </div>
+              <div className={styles.image}>
+                <Skeleton width="100%" height={220} className={styles.imageSkeleton} />
               </div>
-              <div className={styles.alltextStyle}>
-                {[...Array(3)].map((_, i) => (
-                  <div key={`stat-${i}`}>
-                    <Skeleton width={60} height={12} />
-                    <Skeleton width={40} height={12} />
-                  </div>
-                ))}
-              </div>
-              <div className={styles.downloadContent}>
-                <Skeleton width={20} height={20} style={{ marginRight: '8px' }} />
-                <Skeleton width={100} height={20} />
+              <div className={styles.details}>
+                <h3>
+                  <Skeleton width="100%" height={23} />
+                </h3>
+                <h4>
+                  <Skeleton width="100%" height={22} />
+                </h4>
+                <p>
+                  <Skeleton width="100%" height={20} />
+                </p>
               </div>
             </div>
           ))}
@@ -60,11 +51,11 @@ export default function MyAlgobots({ algobotCourses, isLoading = false }) {
   const renderEmptyState = () => {
     return (
       <div className={styles.emptyState}>
-            <EmptyState 
-                title="No Algobots Found"
-                description="You haven't Buy any algobots yet."
-            />
-        </div>
+        <EmptyState
+          title="No Algobots Found"
+          description="You haven't Buy any algobots yet."
+        />
+      </div>
     );
   }
 
@@ -75,11 +66,19 @@ export default function MyAlgobots({ algobotCourses, isLoading = false }) {
         {algobotCourses?.length === 0 ? (
           renderEmptyState()
         ) : (
-        
-        
-        algobotCourses?.map((algobotCourse, index) => (
-          <div key={algobotCourse?.botId?._id || index} className={styles.cardgridItems}>
-            <Button text="Pending Setup" />
+
+
+          algobotCourses?.map((algobotCourse, index) => (
+            <div key={algobotCourse?.botId?._id || index} className={styles.cardgridItems}>
+              <div className={styles.image}>
+                <img src={algobotCourse?.botId?.strategyId.imageUrl} alt='image' />
+              </div>
+              <div className={styles.details}>
+                <h3>{algobotCourse?.botId?.strategyId.title}</h3>
+                <h4>Plans : {algobotCourse?.botId?.planType}</h4>
+                <p>{algobotCourse?.botId?.strategyId.shortDescription}</p>
+              </div>
+              {/* <Button text="Pending Setup" />
             <div className={styles.twoContentAlignment}>
               <div>
                 <p>{algobotCourse?.botId?.botName}</p>
@@ -107,13 +106,13 @@ export default function MyAlgobots({ algobotCourses, isLoading = false }) {
                 <p>Trades</p>
                 <span>145</span>
               </div>
-            </div>
-            {/* <div className={styles.downloadContent}>
+            </div> */}
+              {/* <div className={styles.downloadContent}>
               <DownloadIcon />
               <span>Download Now</span>
             </div> */}
-          </div>
-        )))}
+            </div>
+          )))}
       </div>
     </div>
   );

@@ -9,8 +9,10 @@ import DownloadIcon from '@/icons/downloadIcon';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import EmptyState from '../../chapter/recentCourse/EmptyState';
+import Link from 'next/link';
 
 export default function PhysicalEvents({ physicalCourses = [], isLoading = false, error = null }) {
+    console.log(physicalCourses);
     // Loading skeleton for physical events
     const renderSkeletons = (count = 3) => {
         return Array(count).fill(0).map((_, i) => (
@@ -27,7 +29,7 @@ export default function PhysicalEvents({ physicalCourses = [], isLoading = false
     // Empty state component
     const renderEmptyState = () => (
         <div className={styles.emptyState}>
-            <EmptyState 
+            <EmptyState
                 title="No Physical Events Available"
                 description="You haven't enrolled in any Physical Events yet."
             />
@@ -39,7 +41,7 @@ export default function PhysicalEvents({ physicalCourses = [], isLoading = false
         return (
             <div className={styles.errorState}>
                 <p>{error}</p>
-                <button 
+                <button
                     className={styles.retryButton}
                     onClick={() => window.location.reload()}
                 >
@@ -56,40 +58,41 @@ export default function PhysicalEvents({ physicalCourses = [], isLoading = false
                     {renderSkeletons()}
                 </div>
             ) : physicalCourses.length === 0 ? (
-              renderEmptyState()
+                renderEmptyState()
             ) : (
                 <div className={styles.cardgrid}>
                     {physicalCourses.map((event, index) => (
+                        <Link href={`/courses/in-person/${event?.courseId?._id}`}>
                         <div className={styles.cardgridItems} key={index}>
-                            <Button text="Upcoming" />
+                            <div className={styles.cardgridItemsimage}>
+                                <img src={event?.courseId?.courseVideo
+                                } alt="" />
+                            </div>
                             <div className={styles.content}>
-                                <h3>{event?.courseId?.courseName || 'Event Name'}</h3>
+                                <h3>{event?.courseId?.CourseName || 'Event Name'}</h3>
                                 <div className={styles.icontext}>
                                     <MenIcon />
                                     <span>{event?.courseId?.instructor || 'Instructor Name'}</span>
                                 </div>
                             </div>
                             <div className={styles.textgrid}>
-                                <div className={styles.textgridItems}>
+                                <div className={styles.textgridItemsleft}>
                                     <h4>Location</h4>
-                                    <p>
-                                        {event?.location || 'Location not specified'}
+                                    <p title={event?.courseId.location || 'Location not specified'}>
+                                        {event?.courseId.location || 'Location not specified'}
                                     </p>
                                 </div>
                                 <div className={styles.textgridItems}>
                                     <h4>Schedule</h4>
-                                    <p>{event?.date || 'Date not specified'}</p>
+                                    {/* <p>{new Date(event?.courseId.courseStart).toLocaleDateString() || 'Date not specified'}</p> */}
                                     <div className={styles.clockText}>
-                                        <ClockGreyIcon/>    
-                                        <p>{event?.time || 'Time not specified'}</p>
+                                        <ClockGreyIcon />
+                                        <p>{`${new Date(event?.courseId.courseStart).toLocaleDateString()} - ${new Date(event?.courseId.courseEnd).toLocaleDateString()}` || 'Time not specified'}</p>
                                     </div>
                                 </div>
                             </div>
-                            <div className={styles.downlodIcon}>
-                                <DownloadIcon/>    
-                                <span>Download Details</span>
-                            </div>
                         </div>
+                        </Link>
                     ))}
                 </div>
             )}

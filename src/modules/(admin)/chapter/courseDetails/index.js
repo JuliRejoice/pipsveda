@@ -15,6 +15,7 @@ import Modal from "@/compoents/modal/Modal";
 import toast from "react-hot-toast";
 import Arrowicon from "@/icons/arrowicon";
 import Slider from "react-slick/lib/slider";
+import ReactPlayer from "react-player";
 
 const LockIcon = '/assets/icons/lock.svg';
 const RightBlackIcon = '/assets/icons/right-white.svg';
@@ -544,14 +545,16 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                           />
                         </div>
                       ) : (
-                        <iframe
+                        <ReactPlayer
                           width="100%"
                           height="100%"
-                          src={selectedChapter.chapterVideo}
+                          src={`${selectedChapter.chapterVideo}`}
                           title={selectedChapter.chapterName}
-                          frameBorder="0"
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
+                          style={{ width: '100%', height: 'auto' ,borderRadius: '20px'}}
+                          // frameBorder="0"
+                          // allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          // allowFullScreen
+                          controls={true}
                         />
                       )
                     ) : (

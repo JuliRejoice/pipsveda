@@ -8,9 +8,38 @@ import { useRouter } from 'next/navigation';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Slider from 'react-slick/lib/slider';
+import Arrowicon from '@/icons/arrowicon';
 
 const RightBlackIcon = '/assets/icons/right-black.svg';
 const CardImage = '/assets/images/crypto.png';
+
+function SampleNextArrow(props) {
+    const { onClick } = props;
+    return (
+        <div
+            className={styles.nextarrow}
+            onClick={onClick}
+        >
+            <div className={styles.arrow}>
+                <Arrowicon />
+            </div>
+        </div>
+    );
+}
+
+function SamplePrevArrow(props) {
+    const { onClick } = props;
+    return (
+        <div
+            className={styles.prevarrow}
+            onClick={onClick}
+        >
+            <div className={styles.arrow}>
+                <Arrowicon />
+            </div>
+        </div>
+    );
+}
 
 // Skeleton component to match the card layout
 const CardSkeleton = () => (
@@ -79,14 +108,17 @@ export default function AllAlgobots() {
     // Show skeleton loading while data is being fetched
     if (loading) {
         return (
-            <div className={styles.arbitrageAlgoAlignment}>
-                <div className={styles.title}>
-                    <Skeleton width={200} height={32} />
-                </div>
-                <div className={styles.grid}>
-                    {[...Array(3)].map((_, index) => (
-                        <CardSkeleton key={index} />
-                    ))}
+            <div className='container'>
+
+                <div className={styles.arbitrageAlgoAlignment}>
+                    <div className={styles.title}>
+                        <Skeleton width={200} height={32} />
+                    </div>
+                    <div className={styles.grid}>
+                        {[...Array(3)].map((_, index) => (
+                            <CardSkeleton key={index} />
+                        ))}
+                    </div>
                 </div>
             </div>
         );
@@ -109,7 +141,32 @@ export default function AllAlgobots() {
         infinite: false,
         speed: 500,
         slidesToShow: 2,
-        slidesToScroll: 1
+        slidesToScroll: 1,
+        nextArrow: <SampleNextArrow />,
+        prevArrow: <SamplePrevArrow />,
+        responsive: [
+            {
+                breakpoint: 1300,
+                settings: {
+                    slidesToShow: 1.5,
+                    slidesToScroll: 1,
+                }
+            },
+            {
+                breakpoint: 768,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                }
+            },
+            {
+                breakpoint: 576,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                }
+            },
+        ]
     };
 
     return (

@@ -35,7 +35,8 @@ export default function Sidebar({ setToogle, toogle }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    const isCoursePage = pathname.startsWith('/courses/') || pathname === '/course';
+    const isCoursePage =
+      pathname.startsWith("/courses/") || pathname === "/course";
     setDropdown(isCoursePage);
   }, [pathname]);
 
@@ -45,9 +46,7 @@ export default function Sidebar({ setToogle, toogle }) {
     router.replace(goTo);
     setActiveSubTab("");
     setToogle(false);
-
   };
-
 
   const handleLogout = () => {
     if (isLoggingOut) return; // Prevent multiple clicks
@@ -64,8 +63,6 @@ export default function Sidebar({ setToogle, toogle }) {
     setUser(userName);
   }, []);
 
-
-
   return (
     <div className={styles.stickyBar}>
       <aside className={styles.sidebar}>
@@ -73,15 +70,18 @@ export default function Sidebar({ setToogle, toogle }) {
           <img src={SidebarLayer} alt="SidebarLayer" />
         </div>
         <div className={styles.logo}>
-          <Link href="/"><Logo /></Link>
+          <Link href="/">
+            <Logo />
+          </Link>
           <div className={styles.close} onClick={() => setToogle(false)}>
             <CloseIcon />
           </div>
         </div>
         <div className={styles.sidebarBody}>
           <div
-            className={`${styles.menu} ${pathname === "/dashboard" ? styles.active : ""
-              }`}
+            className={`${styles.menu} ${
+              pathname === "/dashboard" ? styles.active : ""
+            }`}
             onClick={() => {
               handleTabClick("dashboard");
             }}
@@ -92,10 +92,9 @@ export default function Sidebar({ setToogle, toogle }) {
           <div className={styles.relative}>
             <Link href="#">
               <div
-                className={`${styles.menu} ${pathname.includes("/courses")
-                    ? styles.active
-                    : ""
-                  }`}
+                className={`${styles.menu} ${
+                  pathname.includes("/courses") ? styles.active : ""
+                }`}
                 onClick={() => setDropdown(!dropdown)}
               >
                 <CourseIcon />
@@ -122,7 +121,9 @@ export default function Sidebar({ setToogle, toogle }) {
               <div className={styles.dropdownAlignment}>
                 <span
                   className={
-                    pathname.includes("/pre-recorded") ? styles.activeSubTab : ""
+                    pathname.includes("/pre-recorded")
+                      ? styles.activeSubTab
+                      : ""
                   }
                   onClick={() => handleTabClick("courses/pre-recorded")}
                 >
@@ -147,7 +148,9 @@ export default function Sidebar({ setToogle, toogle }) {
               </div>
             </div>
           </div>
-          <div className={`${styles.menu} ${pathname === "/algobot" ? styles.active : ""
+          <div
+            className={`${styles.menu} ${
+              pathname === "/algobot" ? styles.active : ""
             }`}
             onClick={() => handleTabClick("algobot")}
           >
@@ -155,7 +158,20 @@ export default function Sidebar({ setToogle, toogle }) {
             <span>AlgoBots</span>
           </div>
 
-          <div className={`${styles.menu} ${pathname === "/my-courses" ? styles.active : ""
+               <div
+            className={`${styles.menu} ${
+              pathname === "/telegram" ? styles.active : ""
+            }`}
+            onClick={() => {
+              handleTabClick("telegram");
+            }}
+          >
+            <TelegramIcon />
+            Telegram
+          </div>
+          <div
+            className={`${styles.menu} ${
+              pathname === "/my-courses" ? styles.active : ""
             }`}
             onClick={() => {
               handleTabClick("my-courses");
@@ -175,18 +191,11 @@ export default function Sidebar({ setToogle, toogle }) {
               <NotificationIcon />
               <span>Notifications</span>
             </div> */}
+       
           <div
-           className={`${styles.menu} ${pathname === "/paymentHistory" ? styles.active : ""
-           }`}
-         onClick={() => {
-           handleTabClick("telegram");
-         }}>
-           <TelegramIcon />
-            Telegram
-          </div>
-          <div
-            className={`${styles.menu} ${pathname === "/paymentHistory" ? styles.active : ""
-              }`}
+            className={`${styles.menu} ${
+              pathname === "/paymentHistory" ? styles.active : ""
+            }`}
             onClick={() => {
               handleTabClick("paymentHistory");
             }}
@@ -195,8 +204,9 @@ export default function Sidebar({ setToogle, toogle }) {
             <span>Payment History</span>
           </div>
           <div
-            className={`${styles.menu} ${pathname === "/contact-us" ? styles.active : ""
-              }`}
+            className={`${styles.menu} ${
+              pathname === "/contact-us" ? styles.active : ""
+            }`}
             onClick={() => {
               handleTabClick("contact-us");
             }}
@@ -226,7 +236,10 @@ export default function Sidebar({ setToogle, toogle }) {
               )}
             >
               <div className={styles.dropdownSpacing}>
-                <div className={styles.iconText} onClick={() => handleTabClick("profile")}>
+                <div
+                  className={styles.iconText}
+                  onClick={() => handleTabClick("profile")}
+                >
                   <ProfileI />
                   <span>Profile</span>
                 </div>
@@ -235,11 +248,13 @@ export default function Sidebar({ setToogle, toogle }) {
                     <span>Settings</span>
                   </div> */}
                 <div className={styles.iconText} onClick={handleLogout}>
-                  <SignoutIcon text="Logout"
+                  <SignoutIcon
+                    text="Logout"
                     onClick={handleLogout}
                     disabled={isLoggingOut}
                     icon={LogoutIcon}
-                    className={styles.logoutButton} />
+                    className={styles.logoutButton}
+                  />
                   <span>Logout</span>
                 </div>
               </div>

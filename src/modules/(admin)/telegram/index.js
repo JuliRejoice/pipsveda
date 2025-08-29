@@ -12,7 +12,7 @@ export default function Telegram() {
   return (
     <div>
       <AdminHeader/>
-      <Marketplace  searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
+      <Marketplace searchQuery={searchQuery} setSearchQuery={setSearchQuery} />
       <TelegramChannels channels={channels} setChannels={setChannels} searchQuery={searchQuery} setSearchQuery={setSearchQuery} loading={loading} setLoading={setLoading} error={error} setError={setError} selectedChannel={selectedChannel} setSelectedChannel={setSelectedChannel}/>
     </div>
   )

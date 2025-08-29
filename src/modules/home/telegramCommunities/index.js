@@ -100,7 +100,7 @@ export default function TelegramCommunities() {
                 {channel.telegramPlan.length > 0 &&
                 channel?.telegramPlan?.map((plan)=>{
                   return(
-                    <div className={styles.priceContainer}>
+                    <div className={styles.priceContainer} key={plan._id} >
                     <span className={styles.price}>${plan.initialPrice}</span>
                     <span className={styles.priceLabel}>/{plan.planType}</span>
                   </div>

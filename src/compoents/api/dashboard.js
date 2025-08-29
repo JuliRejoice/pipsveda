@@ -218,7 +218,7 @@ export const getSessionData = async (id) => {
     }
 }
 
-export const getTelegramChannels = async (id) => {
+export const getTelegramChannels = async (id,searchQuery) => {
     const token = getAuthToken();   
     const headers = {};
 
@@ -226,7 +226,7 @@ export const getTelegramChannels = async (id) => {
         headers['x-auth-token'] = token;
     }
     try {
-        const res = await fetch(`${BASEURL}/telegram/getAllTelegram${id ? `?id=${id}` : ''}`, { headers });
+        const res = await fetch(`${BASEURL}/telegram/getAllTelegram${id ? `?id=${id}` : searchQuery ? `?search=${searchQuery}` : ''}`, { headers });
         const data = await res.json();
         return data;
     } catch (error) {

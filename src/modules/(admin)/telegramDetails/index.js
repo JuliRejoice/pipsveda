@@ -257,13 +257,12 @@ function TelegramDetails({ id }) {
         );
     };
 
-    console.log(selectedPlan,'-----------------')
-
     return (
         <div className={styles.telegramDetails}>
             {renderPaymentModal()}
             <Breadcumbs />
             {/* Header Section */}
+            <div className={styles.telegramDetailsContainer}>
             <div className={styles.telegramDetailstitle}>
                 <h1>{telegramData?.channelName || <Skeleton width="100%" height={24} />}</h1>
                 <p>{telegramData?.description || <Skeleton width="100%" height={24} count={2} />}</p>
@@ -282,7 +281,7 @@ function TelegramDetails({ id }) {
                             <div key={plan._id} className={styles.planCard}>
                                 <div className={styles.plancardheader}>
                                     <span>{plan.planType}</span>
-                                    <h3>${plan.price}</h3>
+                                    <h3>${plan.price.toFixed(2)}</h3>
                                 </div>
                                 <div className={styles.plandetails}>
                                     <div className={styles.plandetailsflx}>
@@ -381,6 +380,7 @@ function TelegramDetails({ id }) {
                     </div>
                 )}
             </Modal>
+            </div>
         </div>
     );
 }

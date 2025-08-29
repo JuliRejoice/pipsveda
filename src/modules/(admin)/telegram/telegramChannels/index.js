@@ -57,7 +57,7 @@ export default function TelegramChannels({ channels, setChannels, searchQuery, s
         const fetchTelegramChannelsData = async () => {
             try {
                 setLoading(true);
-                const response = await getTelegramChannels();
+                const response = await getTelegramChannels('',searchQuery);
                 console.log("Telegram channels response:", response);
                 setChannels(response?.payload?.data || []);
             } catch (error) {

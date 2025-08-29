@@ -10,6 +10,7 @@ import PlayIcon from '@/icons/playIcon';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import EmptyState from '../../chapter/recentCourse/EmptyState';
+import Link from 'next/link';
 
 export default function LiveSessions({ liveCourses = [], isLoading = false, error = null }) {
     // Loading skeleton for live sessions
@@ -59,79 +60,63 @@ export default function LiveSessions({ liveCourses = [], isLoading = false, erro
                     renderEmptyState()
                 ) : (
                     liveCourses.map((liveCourse, index) => (
+                        <Link href={`/courses/live-online/${liveCourse.courseId._id}`}  key={index}>
                         <div className={styles.cardgridItems} key={index}>
-                            <Button text="Upcoming" />
+                            {liveCourse?.courseId?.courseVideo && (
+                                <div className={styles.courseImageContainer}>
+                                    <img 
+                                        src={liveCourse.courseId.courseVideo} 
+                                        alt={liveCourse?.courseId?.CourseName || 'Course'} 
+                                        className={styles.courseImage}
+                                        onError={(e) => {
+                                            e.target.style.display = 'none';
+                                            e.target.nextElementSibling.style.display = 'flex';
+                                        }}
+                                    />
+                                </div>
+                            )}
                             <div className={styles.content}>
-                                <h3>{liveCourse?.courseId?.courseName}</h3>
+                                <h3>{liveCourse?.courseId?.CourseName || 'Course Name Not Available'}</h3>
                                 <div className={styles.icontext}>
                                     <MenIcon />
-                                    <span>{liveCourse?.courseId?.instructor}</span>
+                                    <span>{liveCourse?.courseId?.instructor || 'Instructor Name'}</span>
                                 </div>
+                                <p className={styles.courseDescription}>
+                                    {liveCourse?.courseId?.description || 'No description available'}
+                                </p>
                             </div>
                             <div className={styles.bottomContentAlignment}>
                                 <div className={styles.nextsession}>
-                                    <p>Next Live Session</p>
+                                    {/* <p>Course Details</p> */}
                                     <div className={styles.twoIconTextAlignment}>
                                         <div className={styles.textIcon}>
                                             <DateIcon />
-                                            <span>{liveCourse?.courseId?.startDate}</span>
+                                            <span>
+                                                {liveCourse?.courseId?.courseStart ? 
+                                                    new Date(liveCourse.courseId.courseStart).toLocaleDateString() : 'N/A'}
+                                            </span>
                                         </div>
                                         <div className={styles.textIcon}>
                                             <ClockGreyIcon />
-                                            <span>{liveCourse?.courseId?.startTime}</span>
+                                            <span>{liveCourse?.courseId?.hours || 'N/A'} hours</span>
                                         </div>
+                                        {/* <div className={styles.textIcon}>
+                                            <span>${liveCourse?.courseId?.price || 'N/A'}</span>
+                                        </div> */}
                                     </div>
                                 </div>
-                                <div className={styles.mettingContent}>
+                                {/* <div className={styles.mettingContent}>
                                     <DownloadPrimaryIcon />
                                     <span>Get Meeting Link</span>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
+                        </Link>
                     ))
                 )}
             </div>
 
-            {/* Previous Recordings */}
-            
-            <div className={styles.sessionGrid}>
-                {isLoading ? (
-                    <div className={styles.sessionGridItems}>
-                        <div className={styles.content}>
-                            <Skeleton height={24} width="80%" style={{ marginBottom: '12px' }} />
-                            <Skeleton height={16} width="60%" count={2} />
-                        </div>
-                        <Skeleton height={20} width={80} />
-                    </div>
-                ) : liveCourses.length > 0 ? (
-                    <>
-                    <div className={styles.title}>
-                        <h2>Previous Recordings</h2>
-                    </div>
-                    {liveCourses.map((liveCourse, index) => (
-                        <div className={styles.sessionGridItems} key={index}>
-                            <div className={styles.content}>
-                                <h3>{liveCourse?.courseId?.CourseName}</h3>
-                                <div className={styles.twoIcontext}>
-                                    <div className={styles.iconText}>
-                                        <DateIcon />
-                                        <span>{liveCourse?.courseId?.startDate}</span>
-                                    </div>
-                                    <div className={styles.iconText}>
-                                        <ClockGreyIcon />
-                                        <span>{liveCourse?.courseId?.startTime}</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={styles.watchText}>
-                                <PlayIcon />
-                                <span>Watch</span>
-                            </div>
-                        </div>
-                    ))}
-                    </>
-                ) : null}
-            </div>
+        
         </div>
     );
 }

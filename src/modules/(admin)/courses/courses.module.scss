@@ -75,10 +75,23 @@
 
     .grid {
         display: grid;
-        grid-template-columns: repeat(4 , 1fr);
+        grid-template-columns: repeat(4, 1fr);
         gap: 22px;
 
-        .emptyState{
+        @include respond-to("lg") {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include respond-to("md") {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include respond-to("sm") {
+            grid-template-columns: repeat(1, 1fr);
+        }
+
+
+        .emptyState {
             grid-column: 1 / span 4;
             display: flex;
             flex-direction: column;
@@ -92,14 +105,22 @@
             margin: 2rem auto;
             max-width: 600px;
         }
+
         .griditems {
             cursor: pointer;
+            background-color: var(--bg-light-700);
+            clip-path: polygon(0 30px, 25px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);
+            padding: 30px;
+
             .cardImage {
-                img {
-                    display: block;
+
+                img,
+                .cardImageskl {
+                    object-fit: cover;
+                    clip-path: polygon(0 30px, 25px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);
                     width: 100%;
-                    height: 230px;
-                    border-radius: 12px;
+                    height: 220px;
+                    display: block;
                 }
             }
 
@@ -125,14 +146,25 @@
 
                 .twoalignment {
                     display: flex;
-                    align-items: center;
-                    padding: 6px 0 6px 0;
-                    gap: 30px;
+                    justify-content: space-between;
+                    flex-wrap: wrap;
+                    padding-top: 15px;
+                    gap: 10px;
 
                     .text {
                         display: flex;
                         align-items: center;
                         gap: 4px;
+
+                        p{
+                            @include font16;
+                            font-family: var(--font-lexend);
+                            color: var(--grey-600);
+                            -webkit-line-clamp: 3;
+                            -webkit-box-orient: vertical;
+                            display: -webkit-box;
+                            overflow: hidden;
+                        }
 
                         span {
                             display: block;
