@@ -6,7 +6,6 @@ import Logo from "@/compoents/logo";
 import Button from "@/compoents/button";
 import Authentication from "@/compoents/authentication";
 import Link from "next/link";
-import { sign } from "crypto";
 import { signUp } from "@/compoents/api/auth";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -146,6 +145,11 @@ const validateConfirmPassword = (value, password) => {
                 label="Name"
                 placeholder="Enter your name"
                 value={data.name}
+                onKeyDown={(e) => {
+                  if (e.key === ' ') {
+                    e.preventDefault();
+                  }
+                }}
                 onChange={(e) => {
                   setData({ ...data, name: e.target.value.trim() });
                   setErrors((prev) => ({

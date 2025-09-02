@@ -1,11 +1,13 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from './contactUs.module.scss';
 import AdminHeader from '@/compoents/adminHeader';
 import Input from '@/compoents/input';
 import Textarea from '@/compoents/textarea';
 import Button from '@/compoents/button';
 import { sendMessage } from '@/compoents/api/contactus';
+import Dropdownarrow from '@/icons/dropdownarrow';
+import { regions } from '@/regions';
 
 import 'react-toastify/dist/ReactToastify.css';
 import toast from 'react-hot-toast';
@@ -17,11 +19,13 @@ const CallIcon = '/assets/icons/call.svg';
 const LocationIcon = '/assets/icons/location.svg';
 const RightIcon = '/assets/icons/right.svg';
 
+
 export default function ContactUs() {
     const [form, setForm] = useState({
         firstName: '',
         lastName: '',
         email: '',
+        countryCode: '',
         phone: '',
         subject: '',
         description: ''
@@ -29,6 +33,9 @@ export default function ContactUs() {
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [utility, setUtility] = useState({})
+    const [selectedCountryCode, setSelectedCountryCode] = useState('91');
+    const [showCountryDropdown, setShowCountryDropdown] = useState(false);
+    const countryRef = useRef(null);
 
     useEffect(() => {
         const fetchUtility = async () => {
@@ -86,6 +93,7 @@ export default function ContactUs() {
                     lastName: '',
                     email: '',
                     phone: '',
+                    countryCode: '',
                     subject: '',
                     description: ''
                 });
@@ -137,14 +145,54 @@ export default function ContactUs() {
                                 />
                                 {errors.email && <span className={styles.error}>{errors.email}</span>}
                             </div>
-                            <div>
-                                <Input
-                                    label='Phone Number'
-                                    placeholder='+91 9999999999'
-                                    value={form.phone}
-                                    onChange={e => handleChange('phone', e.target.value)}
-                                />
-                                {errors.phone && <span className={styles.error}>{errors.phone}</span>}
+                            <div className={styles.telephoninputmain}>
+                                <div className={styles.dropdownrelative} ref={countryRef}>
+                                    <label>Phone</label>
+                                    <div className={styles.telephoninput}>
+                                        <div className={styles.countrycodeselectormain}>
+                                            <div className={styles.countrycodeselectorrelative}>
+                                                <div
+                                                    className={styles.countrycodeselector}
+                                                    onClick={() => setShowCountryDropdown(prev => !prev)}
+                                                    onChange={(e) => handleChange('countryCode', e.target.value)}
+                                                >
+                                                    <span>{selectedCountryCode}</span>
+                                                    <div className={styles.dropdownarrow}><Dropdownarrow /></div>
+                                                </div>
+
+                                                {showCountryDropdown && (
+                                                    <div className={styles.dropdown}>
+                                                        <div className={styles.dropdownSpacing}>
+                                                            {regions.map((region) => (
+                                                                <div
+                                                                    className={styles.iconText}
+                                                                    key={region.code}
+                                                                    onClick={() => {
+                                                                        setSelectedCountryCode(region.numberCode);
+                                                                        handleChange("countryCode", region.numberCode);
+                                                                        setShowCountryDropdown(false);
+                                                                      }}
+                                                                    
+                                                                      
+                                                                >
+                                                                    <span>{region.numberCode}</span>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            name="phone"
+                                            placeholder='Enter your number'
+                                            value={form.phone}
+                                            onChange={(e) => handleChange('phone', e.target.value)}
+                                        />
+
+                                    </div>
+                                </div>
                             </div>
                             <div className={styles.fullwidth}>
                                 <Input

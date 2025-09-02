@@ -12,7 +12,7 @@ import EmptyState from '../../chapter/recentCourse/EmptyState';
 
 
 const PaymenyHistory = () => {
-    const [paymentHistory, setPaymentHistory] = useState([]);
+    const [paymentHistory, setPaymentHistory] = useState({});
     const [filteredPayments, setFilteredPayments] = useState([]);
     const [activeTab, setActiveTab] = useState('all');
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,33 +24,41 @@ const PaymenyHistory = () => {
 
     useEffect(() => {
         const fetchPaymentHistory = async () => {
-            try {
-                setIsLoading(true);
-                const response = await getpaymentHistory();
-                setPaymentHistory(response.payload.data || []);
-                setFilteredPayments(response.payload.data || []);
-            } catch (error) {
-                console.error('Error fetching payment history:', error);
-                toast.error('Failed to load payment history');
-            } finally {
-                setIsLoading(false);
+          try {
+            setIsLoading(true);
+      
+            let response;
+            if (activeTab === "all") {
+              response = await getpaymentHistory(); // 👈 don't pass type
+            } else {
+              response = await getpaymentHistory(activeTab); // 👈 pass type normally
             }
+      
+            setPaymentHistory(response.payload.data || {});
+          } catch (error) {
+            console.error("Error fetching payment history:", error);
+            toast.error("Failed to load payment history");
+          } finally {
+            setIsLoading(false);
+          }
         };
+      
         fetchPaymentHistory();
-    }, []);
+      }, [activeTab]);
+      
 
-    // Filter payments based on active tab
-    useEffect(() => {
-        if (activeTab === 'all') {
-            setFilteredPayments(paymentHistory);
-        } else if (activeTab === 'course') {
-            setFilteredPayments(paymentHistory.filter(payment => payment.courseId));
-        } else if (activeTab === 'bot') {
-            setFilteredPayments(paymentHistory.filter(payment => payment.botId));
-        } else if (activeTab === 'telegram') {
-            setFilteredPayments(paymentHistory.filter(payment => payment.telegramId));
-        }
-    }, [activeTab, paymentHistory]);
+
+    // useEffect(() => {
+    //     if (activeTab === 'all') {
+    //         setFilteredPayments([...(paymentHistory?.COURSE || []), ...(paymentHistory?.BOTS || []), ...(paymentHistory?.TELEGRAM || [])]);
+    //     } else if (activeTab === 'course') {
+    //         setFilteredPayments(paymentHistory?.COURSE || []);
+    //     } else if (activeTab === 'bot') {
+    //         setFilteredPayments(paymentHistory?.BOTS || []);
+    //     } else if (activeTab === 'telegram') {
+    //         setFilteredPayments(paymentHistory.TELEGRAM);
+    //     }
+    // }, [activeTab, paymentHistory]);
 
     // Loading state skeleton
     if (isLoading) {
@@ -59,64 +67,64 @@ const PaymenyHistory = () => {
                 <h2>Payment History</h2>
                 <p>View a detailed record of all your past transactions, including payment dates, amounts, methods, and statuses.</p>
                 <div className={styles.tabs}>
-                    <button 
+                    <button
                         className={`${styles.tab} ${styles.active}`}
                     >
                         All
                     </button>
-                    <button 
+                    <button
                         className={styles.tab}
                     >
-                        Course
+                        Courses
                     </button>
-                    <button 
+                    <button
                         className={styles.tab}
                     >
-                        Bot
+                        Bots
                     </button>
-                    <button 
+                    <button
                         className={styles.tab}
                     >
-                        Telegram
+                        Telegram Channels
                     </button>
                 </div>
                 <div className={styles.paymenyhistorytable}>
-                <table >
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Purchased Date</th>
-                            <th>Course Name</th>
-                            <th>Strategy Name</th>
-                            <th>Telegram Channel</th>
-                            <th>Plan</th>
-                            <th>Amount</th>
-                            <th>Transaction ID</th>
-                            <th>Meta Account No.</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {[...Array(5)].map((_, index) => (
-                            <tr key={index}>
-                                <td><Skeleton height={24} width={48}/></td>
-                                <td><Skeleton height={24} width={120}/></td>
-                                <td><Skeleton height={24} width={120}/></td>
-                                <td><Skeleton height={24} width={120}/></td>
-                                <td><Skeleton height={24} width={120}/></td>
-                                <td><Skeleton height={24} width={120}/></td>
-                                <td><Skeleton height={24} width={120}/></td>
-                                <td><Skeleton height={24} width={120}/></td>
-                                <td>
-                                   <Skeleton height={24} width={24} className={styles.viewmorebutton}/>
-                                </td>
-                                <td>
-                                    <Skeleton height={24} width={24} className={styles.paidbutton}/>
-                                </td>
+                    <table >
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Purchased Date</th>
+                                <th>Course Name</th>
+                                <th>Strategy Name</th>
+                                <th>Telegram Channel</th>
+                                <th>Plan</th>
+                                <th>Amount</th>
+                                <th>Transaction ID</th>
+                                <th>Meta Account No.</th>
+                                <th>Status</th>
                             </tr>
-                        ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                            {[...Array(5)].map((_, index) => (
+                                <tr key={index}>
+                                    <td><Skeleton height={24} width={48} /></td>
+                                    <td><Skeleton height={24} width={120} /></td>
+                                    <td><Skeleton height={24} width={120} /></td>
+                                    <td><Skeleton height={24} width={120} /></td>
+                                    <td><Skeleton height={24} width={120} /></td>
+                                    <td><Skeleton height={24} width={120} /></td>
+                                    <td><Skeleton height={24} width={120} /></td>
+                                    <td><Skeleton height={24} width={120} /></td>
+                                    <td>
+                                        <Skeleton height={24} width={24} className={styles.viewmorebutton} />
+                                    </td>
+                                    <td>
+                                        <Skeleton height={24} width={24} className={styles.paidbutton} />
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         );
@@ -128,7 +136,7 @@ const PaymenyHistory = () => {
             <div className={styles.paymenyhistorymain}>
                 <h2>Payment History</h2>
                 <p>View a detailed record of all your past transactions, including payment dates, amounts, methods, and statuses.</p>
-                <div className={styles.tabs}>
+                {/* <div className={styles.tabs}>
                     <button 
                         className={`${styles.tab} ${styles.active}`}
                     >
@@ -149,7 +157,7 @@ const PaymenyHistory = () => {
                     >
                         Telegram
                     </button>
-                </div>
+                </div> */}
                 <div className={styles.emptyState}>
                     <EmptyState
                         title="No Payment History Found"
@@ -219,45 +227,47 @@ const PaymenyHistory = () => {
     };
 
 
-    const courseType =(type)=>{
-        if(type === 'recorded'){
+    const courseType = (type) => {
+        if (type === 'recorded') {
             return 'Pre-Recorded'
-        }else if(type === 'live'){
+        } else if (type === 'live') {
             return 'Live-Online'
-        }else if(type === 'physical'){
+        } else if (type === 'physical') {
             return 'In-person'
         }
     }
+
+    console.log(filteredPayments);
     return (
         <div className={styles.paymenyhistorymain}>
             <h2>Payment History</h2>
             <p>View a detailed record of all your past transactions, including payment dates, amounts, methods, and statuses.</p>
-            
+
             {/* Tabs */}
             <div className={styles.tabs}>
-                <button 
+                <button
                     className={`${styles.tab} ${activeTab === 'all' ? styles.active : ''}`}
                     onClick={() => setActiveTab('all')}
                 >
                     All
                 </button>
-                <button 
-                    className={`${styles.tab} ${activeTab === 'course' ? styles.active : ''}`}
-                    onClick={() => setActiveTab('course')}
+                <button
+                    className={`${styles.tab} ${activeTab === 'Course' ? styles.active : ''}`}
+                    onClick={() => setActiveTab('Course')}
                 >
-                    Course
+                    Courses
                 </button>
-                <button 
-                    className={`${styles.tab} ${activeTab === 'bot' ? styles.active : ''}`}
-                    onClick={() => setActiveTab('bot')}
+                <button
+                    className={`${styles.tab} ${activeTab === 'Bot' ? styles.active : ''}`}
+                    onClick={() => setActiveTab('Bot')}
                 >
-                    Bot
+                    Bots
                 </button>
-                <button 
-                    className={`${styles.tab} ${activeTab === 'telegram' ? styles.active : ''}`}
-                    onClick={() => setActiveTab('telegram')}
+                <button
+                    className={`${styles.tab} ${activeTab === 'Telegram' ? styles.active : ''}`}
+                    onClick={() => setActiveTab('Telegram')}
                 >
-                    Telegram
+                    Telegram Channels
                 </button>
             </div>
 
@@ -286,11 +296,11 @@ const PaymenyHistory = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {filteredPayments.map((payment, index) => (
+                        {paymentHistory?.map((payment, index) => (
                             <tr key={payment._id}>
                                 <td>{index + 1}</td>
                                 <td>{new Date(payment.createdAt).toLocaleString('en-GB')}</td>
-                                
+
                                 {activeTab === 'all' && (
                                     <>
                                         <td>{payment.courseId?.CourseName || '-'}</td>
@@ -301,7 +311,7 @@ const PaymenyHistory = () => {
                                 {activeTab === 'course' && <td>{payment.courseId?.CourseName || '-'}</td>}
                                 {activeTab === 'bot' && <td>{payment.botId?.strategyId?.title || '-'}</td>}
                                 {activeTab === 'telegram' && <td>{payment?.telegramId?.telegramId?.channelName || '-'}</td>}
-                                
+
                                 {(activeTab === 'all' || activeTab === 'course') && <td>{courseType(payment.courseId?.courseType) || '-'}</td>}
                                 {activeTab !== 'course' && <td>{payment.planType}</td>}
                                 <td>${payment.price}</td>

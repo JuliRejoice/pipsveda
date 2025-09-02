@@ -36,7 +36,7 @@ export default function RecentCourse({id}) {
             <div className='container'>
                 <div className={styles.title}>
                     <h2>
-                        Recent Course
+                        Recent Courses
                     </h2>
                 </div>
                 <div className={styles.grid}>

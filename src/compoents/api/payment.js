@@ -8,9 +8,9 @@ export const getAuthToken = () => {
     return null;
 };
 
-export const getpaymentHistory = async () => {
+export const getpaymentHistory = async (type) => {
     const token = getAuthToken();
-    const response = await fetch(`${BASEURL}/payment/getPaymentHistory`, {
+    const response = await fetch(`${BASEURL}/payment/getPaymentHistory?${type ? `isType=${type}` : ''}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

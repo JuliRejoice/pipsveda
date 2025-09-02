@@ -13,7 +13,13 @@ p:last-child {
   margin: 0;
 }
 
-h1, h2, h3, h4, h5, h6, p {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
   margin: 0;
 }
 
@@ -76,6 +82,7 @@ img {
     padding: 20px;
   }
 }
+
 /* Container background */
 .custom-toast {
   background: #fff !important;
@@ -109,7 +116,8 @@ img {
 .protect {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.01); /* almost invisible */
+  background: rgba(0, 0, 0, 0.01);
+  /* almost invisible */
   z-index: 9999;
   pointer-events: none;
 }
@@ -141,3 +149,37 @@ img {
 
 
 
+
+/* <---- React date picker css starts here ----> */
+.react-datepicker__header {
+  background: #fff !important;
+}
+
+.react-datepicker-popper[data-placement^="bottom"] .react-datepicker__triangle {
+  fill: #fff !important;
+  color: #fff !important;
+}
+
+.react-datepicker__day--selected {
+  background: var(--button-gradient) !important;
+}
+
+.react-datepicker {
+  border-radius: 10px !important;
+  overflow: hidden;
+}
+
+.react-datepicker__input-container input {
+  background-color: #f7f8fa !important;
+  font-family: var(--font-lexend);
+  color: var(--black-500) !important;
+  border: 1px solid var(--border-color2) !important;
+  border-radius: 10px !important;
+  height: 55px;
+  padding: 0 16px !important;
+  font-size: 16px !important;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  transition: all .3s ease-in-out;
+}

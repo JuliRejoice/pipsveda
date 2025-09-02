@@ -40,6 +40,7 @@ export default function CourseBanner({
   courseType,
   setCourseType,
   setCourseLoading,
+  setSelectedTab,
 }) {
   const [courses, setCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -103,21 +104,22 @@ export default function CourseBanner({
   };
 
   const handleTypeChange = async (type) => {
-    setCourseLoading(true);
-    try {
-      setCourseType(type);
-      const response = await getTrendingOrPopularCourses(type);
+    setSelectedTab(type);
+    // setCourseLoading(true);
+    // try {
+    //   setCourseType(type);
+    //   const response = await getTrendingOrPopularCourses(type);
 
-      if (response.success) {
-        setAllCourse(response.payload.data);
-      } else {
-        console.error("Failed to fetch courses:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching courses:", error);
-    } finally {
-      setCourseLoading(false);
-    }
+    //   if (response.success) {
+    //     setAllCourse(response.payload.data);
+    //   } else {
+    //     console.error("Failed to fetch courses:", response.message);
+    //   }
+    // } catch (error) {
+    //   console.error("Error fetching courses:", error);
+    // } finally {
+    //   setCourseLoading(false);
+    // }
   };
 
 

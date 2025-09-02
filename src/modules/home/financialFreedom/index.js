@@ -189,13 +189,13 @@ export default function FinancialFreedom() {
                                                     <div>
                                                         <h3>{course.CourseName || 'Course Title'}</h3>
                                                         <div className={styles.allIconText}>
-                                                            <div className={styles.icontext}>
+                                                            {/* <div className={styles.icontext}>
                                                                 <StarIcon />
                                                                 <span>{course.rating || '4.8'}</span>
-                                                            </div>
+                                                            </div> */}
                                                             <div className={styles.icontext}>
                                                                 <ProfileIcon />
-                                                                <span>{course.students || '123'}</span>
+                                                                <span>{course.subscribed || '0'}</span>
                                                             </div>
                                                             <div className={styles.icontext}>
                                                                 <ClockIcon />

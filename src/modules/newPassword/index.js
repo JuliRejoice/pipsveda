@@ -35,44 +35,51 @@ export default function NewPassword() {
 
   const handleSetNewPassword = async () => {
     setErrors({ newPassword: "", confirmPassword: "", submit: "" });
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
     const validationErrors = {
       newPassword: "",
       confirmPassword: "",
-      submit: "",
+      submit: ""
     };
-
+  
+    // Validate new password
     if (!newPassword || newPassword.trim() === "") {
       validationErrors.newPassword = "New password is required";
-    } else if (!passwordRegex.test(newPassword)) {
-      validationErrors.newPassword =
-        "Password must be at least 6 characters and include uppercase, lowercase, number, and special character.Example: Hello@123";
+    } else if (newPassword.length < 6) {
+      validationErrors.newPassword = "Password must be at least 6 characters";
     }
-
+  
+    // Validate confirm password
     if (!confirmPassword || confirmPassword.trim() === "") {
       validationErrors.confirmPassword = "Confirm password is required";
     } else if (newPassword !== confirmPassword) {
       validationErrors.confirmPassword = "Passwords do not match";
     }
-
-    if (Object.values(validationErrors).some((err) => err !== "")) {
+  
+    // Check if there are any validation errors
+    const hasError = Object.values(validationErrors).some(err => err !== "");
+    if (hasError) {
       setErrors(validationErrors);
       return;
     }
-
+  
     try {
       setIsSubmitting(true);
-      const res = await updatePassword({ email, password: newPassword });
-
+      
+      const res = await updatePassword({ 
+        email,
+        password: newPassword 
+      });
+  
       if (res.success) {
-        localStorage.removeItem("email");
-        toast.success("Password reset successfully.");
-        router.push("/signin");
+        // Clear sensitive data from localStorage
+        localStorage.removeItem('email');
+        // Redirect to signin on success
+        router.push("/login");
       } else {
+        // Handle API error response
         setErrors({
           ...validationErrors,
-          submit: res.message || "Failed to update password. Please try again.",
+          submit: res.message || "Failed to update password. Please try again."
         });
       }
     } catch (err) {

@@ -124,7 +124,7 @@ export default function Header() {
                 Offline Sessions
               </a>
               <a href="/algobots" className={pathname === ('/algobots' || '/algobot-details') ? styles.active : ''} aria-label='Community'>AlgoBots</a>
-              <a href="/blog" className={pathname === '/blog' ? styles.active : ''} aria-label='Blog'>Blog</a>
+              <a href="/blog" className={pathname === '/blog' ? styles.active : ''} aria-label='Blog'>Blogs</a>
               <a href="/about"aria-label='About Us'>About Us</a>
             </div>
 
@@ -196,7 +196,7 @@ export default function Header() {
           <a href="/our-course?course=live">Live Online Classes</a>
           <a href="/our-course?course=physical">Offline Sessions</a>
           <a href="/algotbots">AlgoBots</a>
-          <a href="/blog">Blog</a>
+          <a href="/blog">Blogs</a>
           <a href="#">About Us</a>
         </div>
         <div className={styles.mobileFooter}>

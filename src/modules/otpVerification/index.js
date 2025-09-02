@@ -172,7 +172,7 @@ export default function OtpVerification() {
                 text={isVerifying ? "Verifying..." : "Continue"}
                 icon={isVerifying ? null : RightIcon}
                 disabled={isVerifying}
-                onClick={!isVerifying && handleVerifyOtp}
+                onClick={!isVerifying ? handleVerifyOtp : undefined}
               />
             </div>
           </div>

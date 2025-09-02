@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCourses } from '@/compoents/api/dashboard';
+import { getCourses, getTrendingOrPopularCourses } from '@/compoents/api/dashboard';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './recentCourse.module.scss';
@@ -14,47 +14,72 @@ const CardImage = '/assets/images/crypto.png';
 
 const ITEMS_PER_PAGE = 8; // Adjust based on your layout
 
-export default function RecentCourse({courseType ,setCourseType , searchQuery , allCourse , setAllCourses , courseLoading , setCourseLoading }) {
+export default function RecentCourse({ selectedTab, courseType, setCourseType, searchQuery, allCourse, setAllCourses, courseLoading, setCourseLoading }) {
     const [error, setError] = useState(null);
     const [pagination, setPagination] = useState({
         currentPage: 1,
         totalItems: 0,
         itemsPerPage: ITEMS_PER_PAGE
     });
-    
+    console.log(selectedTab);
     const router = useRouter();
 
     const fetchCourses = async (page = 1) => {
         try {
-            setCourseLoading(true);
-            const params = {
-                ...(searchQuery && { searchQuery }),
-                page,
-                limit: ITEMS_PER_PAGE,
-                ...(!searchQuery && { courseType: 'recorded' })
-            };
-            const data = await getCourses(params);
-            if (data?.success) {
-                setAllCourses(data?.payload?.data || []);
-            }
-            setPagination(prev => ({
+          setCourseLoading(true);
+      
+          // If selectedTab is trending or popular -> use special API
+          if (selectedTab === "trending" || selectedTab === "popular") {
+            setCourseType(selectedTab); // update parent state if needed
+            const response = await getTrendingOrPopularCourses(selectedTab);
+      
+            if (response.success) {
+              setAllCourses(response.payload.data || []);
+              setPagination((prev) => ({
                 ...prev,
-                currentPage: page,
-                totalItems: data?.payload?.count || 0
+                currentPage: 1, // reset pagination for trending/popular
+                totalItems: response.payload.data?.length || 0,
+              }));
+            } else {
+              console.error("Failed to fetch courses:", response.message);
+              setAllCourses([]);
+            }
+          } else {
+            // Default flow -> getCourses API
+            const params = {
+              ...(searchQuery && { searchQuery }),
+              page,
+              limit: ITEMS_PER_PAGE,
+              ...(!searchQuery && { courseType: selectedTab || "recorded" }),
+            };
+      
+            const data = await getCourses(params);
+      
+            if (data?.success) {
+              setAllCourses(data?.payload?.data || []);
+            }
+      
+            setPagination((prev) => ({
+              ...prev,
+              currentPage: page,
+              totalItems: data?.payload?.count || 0,
             }));
-            setError(null);
+          }
+      
+          setError(null);
         } catch (error) {
-            console.error('Error fetching courses:', error);
-            setError('Failed to load courses. Please try again later.');
-            setAllCourses([]);
+          console.error("Error fetching courses:", error);
+          setError("Failed to load courses. Please try again later.");
+          setAllCourses([]);
         } finally {
-            setCourseLoading(false);
+          setCourseLoading(false);
         }
-    };
-    
+      };
+      
+
     useEffect(() => {
         fetchCourses(1);
-    }, [searchQuery]);
+    }, [searchQuery, selectedTab]);
 
     const handlePageChange = (newPage) => {
         if (newPage >= 1 && newPage <= Math.ceil(pagination.totalItems / pagination.itemsPerPage)) {
@@ -85,26 +110,26 @@ export default function RecentCourse({courseType ,setCourseType , searchQuery , 
     // Empty state
     const renderEmptyState = () => (
         <div className={styles.emptyState}>
-        <img
-          src="/assets/icons/no-course.svg"
-          alt="No courses"
-          className={styles.emptyImage}
-        />
-        <h3>No Courses Available</h3>
-        <p>
-          There are no courses to display at the moment.  
-          Please check back later.
-        </p>
-       
-      </div>
-      
+            <img
+                src="/assets/icons/no-course.svg"
+                alt="No courses"
+                className={styles.emptyImage}
+            />
+            <h3>No Courses Available</h3>
+            <p>
+                There are no courses to display at the moment.
+                Please check back later.
+            </p>
+
+        </div>
+
     );
- 
+
     return (
         <div className={styles.recentCourse}>
-            <div className={styles.title}>
+            {/* <div className={styles.title}>
                 <h2>{courseType.slice(0, 1).toUpperCase() + courseType.slice(1)} Course</h2>
-            </div>
+            </div> */}
             <div className={styles.grid}>
                 {courseLoading ? (
                     renderSkeletons()
@@ -117,9 +142,9 @@ export default function RecentCourse({courseType ,setCourseType , searchQuery , 
                     allCourse.map((course) => (
                         <div className={styles.griditems} key={course._id}>
                             <div className={styles.image}>
-                                <img 
-                                    src={course.courseVideo || CardImage} 
-                                    alt={course.CourseName || 'Course'} 
+                                <img
+                                    src={course.courseVideo || CardImage}
+                                    alt={course.CourseName || 'Course'}
                                     onError={(e) => {
                                         e.target.onerror = null;
                                         e.target.src = CardImage;
@@ -136,12 +161,12 @@ export default function RecentCourse({courseType ,setCourseType , searchQuery , 
                                         <span>{course?.instructor || 'John Doe'}</span>
                                     </div>
                                 </div>
-                                <OutlineButton 
-                                    text="Enroll Now" 
-                                    icon={RightBlackIcon} 
+                                <OutlineButton
+                                    text="Enroll Now"
+                                    icon={RightBlackIcon}
                                     onClick={() =>
-                                     router.push(`/courses/pre-recorded/${course._id}`) 
-                                    } 
+                                        router.push(`/courses/pre-recorded/${course._id}`)
+                                    }
                                 />
                             </div>
                         </div>
@@ -151,16 +176,20 @@ export default function RecentCourse({courseType ,setCourseType , searchQuery , 
                 )}
             </div>
 
-            {!courseLoading && pagination.totalItems > pagination.itemsPerPage && (
-                <div className={styles.paginationAlignment}>
-                    <Pagination
-                        currentPage={pagination.currentPage}
-                        totalItems={pagination.totalItems}
-                        itemsPerPage={pagination.itemsPerPage}
-                        onPageChange={handlePageChange}
-                    />
-                </div>
-            )}
+            {!courseLoading &&
+                pagination.totalItems > pagination.itemsPerPage &&
+                selectedTab !== "trending" &&
+                selectedTab !== "popular" && (
+                    <div className={styles.paginationAlignment}>
+                        <Pagination
+                            currentPage={pagination.currentPage}
+                            totalItems={pagination.totalItems}
+                            itemsPerPage={pagination.itemsPerPage}
+                            onPageChange={handlePageChange}
+                        />
+                    </div>
+                )}
+
         </div>
     );
 }

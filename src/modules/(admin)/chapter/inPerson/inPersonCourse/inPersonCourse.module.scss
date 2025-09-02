@@ -22,7 +22,8 @@
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 20px;
-        padding: 22px 0 50px 0;
+        // padding: 22px 0 50px 0;
+        padding: 0 0 50px 0;
 
         @media (max-width: 1500px) {
             grid-template-columns: repeat(3, 1fr);

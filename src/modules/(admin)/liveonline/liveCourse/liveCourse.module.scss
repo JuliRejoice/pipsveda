@@ -3,6 +3,7 @@
 @use '../../../../scss/typography/typography.scss' as *;
 
 .recentCourseAlignment {
+
     // padding: 40px 0 0 0;
     @include respond-to("sm") {
         padding: 20px 0 0 0;
@@ -22,19 +23,22 @@
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 20px;
-        padding: 22px 0 50px 0;
+        // padding: 22px 0 50px 0;
+        padding: 0 0 50px 0;
 
         @media (max-width: 1500px) {
             grid-template-columns: repeat(3, 1fr);
         }
+
         @include respond-to("md") {
 
             grid-template-columns: repeat(2, 1fr);
         }
+
         @include respond-to("sm") {
             grid-template-columns: repeat(1, 1fr);
         }
-    
+
     }
 
     .griditems {

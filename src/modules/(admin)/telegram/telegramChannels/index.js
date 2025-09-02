@@ -130,11 +130,11 @@ export default function TelegramChannels({ channels, setChannels, searchQuery, s
                                             </div>
                                             <div className={styles.contentAlignment}>
                                                 <span>Price:</span>
-                                                <h4>${plan.price}</h4>
+                                                <h4>${plan.price.toFixed(2)}</h4>
                                             </div>
                                             <div className={styles.contentAlignment}>
                                                 <span>M.R.P:</span>
-                                                <h5>${plan.initialPrice}</h5>
+                                                <h5>${plan.initialPrice.toFixed(2)}</h5>
                                             </div>
 
                                             <div className={styles.contentAlignment}>

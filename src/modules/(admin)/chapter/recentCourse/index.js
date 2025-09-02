@@ -59,7 +59,7 @@ export default function RecentCourse({ selectedCourse }) {
     return (
         <div className={styles.recentCourseAlignment}>
             <div className={styles.title}>
-                <h2>Recent Course</h2>
+                <h2>Recent Courses</h2>
             </div>
             
             {error ? (

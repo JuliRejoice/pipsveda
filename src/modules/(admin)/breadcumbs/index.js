@@ -4,11 +4,29 @@ import styles from "./breadcumbs.module.scss";
 import RightMdcon from "@/icons/rightMdcon";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Breadcumbs() {
   const router = useRouter();
   const pathname = usePathname();
   const pathSegments = pathname.split('/').filter(segment => segment);
+
+  const redirect = () => {
+    const pathSegments = pathname.split('/').filter(Boolean);
+    // Redirect to /courses/pre-recorded if path matches certain conditions
+    if (pathSegments[0] === 'courses' && pathSegments[1] === 'pre-recorded') {
+      router.push('/courses/pre-recorded');
+    }
+    else if(pathSegments[0] === 'courses' && pathSegments[1] === 'live-online'){
+      router.push('/courses/live-online');
+    }
+    else if(pathSegments[0] === 'courses' && pathSegments[1] === 'in-person'){
+      router.push('/courses/in-person');
+    }
+    else{
+      router.back()
+    }
+  };
 
   // Format the breadcrumb text (e.g., 'pre-recorded' -> 'Pre Recorded')
   const formatBreadcrumb = (segment) => {
@@ -25,12 +43,13 @@ export default function Breadcumbs() {
     const isLast = index === pathSegments.length - 1;
     const path = `/${pathSegments.slice(0, index + 1).join('/')}`;
     const displayText = formatBreadcrumb(segment);
+  
 
     return (
       <React.Fragment key={segment}>
         {!isLast && <RightMdcon />}
         {!isLast && (
-          <button type="button" onClick={() => router.back()} className={styles.breadcrumbLink}>
+          <button type="button" onClick={() => redirect()} className={styles.breadcrumbLink}>
             {displayText}
           </button>
         )}

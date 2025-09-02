@@ -115,9 +115,7 @@ export default function AutomateTrades() {
                   <Button 
                     text="Buy Now" 
                     onClick={() => { 
-                      getCookie('userToken') 
-                        ? router.push(`/algobot/${strategy._id}`) 
-                        : router.push('/signin'); 
+                     router.push(`algobot-details?id=${strategy._id}`)
                     }} 
                   />
                 </div>

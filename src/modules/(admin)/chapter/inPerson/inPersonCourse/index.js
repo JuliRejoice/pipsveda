@@ -40,9 +40,9 @@ function InPersonCourse() {
 
   return (
     <div className={styles.recentCourseAlignment}>
-      <div className={styles.title}>
+      {/* <div className={styles.title}>
         <h2>In Person Course</h2>
-      </div>
+      </div> */}
 
       {error ? (
         <div className={styles.errorState}>

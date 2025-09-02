@@ -90,12 +90,12 @@ export default function CourseInformation({ id }) {
                 <span>{course?.instructor}</span>
               </div>
               <div className={styles.iconText}>
-                <StarIcon />
-                <span>4.8</span>
+                {/* <StarIcon />
+                <span>4.8</span> */}
               </div>
               <div className={styles.iconText}>
                 <ProfileGroupIcon />
-                <span>1234</span>
+                <span>{course?.subscribed || '0'}</span>
               </div>
               <div className={styles.iconText}>
                 <span>Last-Update: {new Date(course?.updatedAt || new Date()).toLocaleDateString('en-GB')} | English</span>

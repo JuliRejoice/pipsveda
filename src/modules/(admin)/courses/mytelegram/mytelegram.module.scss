@@ -2,8 +2,7 @@
 @use '../../../../scss/breakpoints/breakpoints.scss' as *;
 @use '../../../../scss/typography/typography.scss' as *;
 
-.myAlgobots {
-    padding: 30px 0 0 0;
+.myAlgobots {   
 
     .emptyState {
         grid-column: 1 / span 4;

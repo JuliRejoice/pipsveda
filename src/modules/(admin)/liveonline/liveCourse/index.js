@@ -40,9 +40,9 @@ function LiveCourse() {
 
   return (
     <div className={styles.recentCourseAlignment}>
-      <div className={styles.title}>
+      {/* <div className={styles.title}>
         <h2>Live Course</h2>
-      </div>
+      </div> */}
 
       {error ? (
         <div className={styles.errorState}>
