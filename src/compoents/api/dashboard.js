@@ -94,23 +94,30 @@ export const getChapters = async (id) => {
     }
 };
 
-export const getTrendingOrPopularCourses = async (type) => {
+export const getTrendingOrPopularCourses = async ({ type, searchQuery = "" }) => {
     try {
-        const token = getAuthToken();
-        const headers = {};
-
-        if (token) {
-            headers['x-auth-token'] = token;
-        }
-
-        const res = await fetch(`${BASEURL}/course/getDefineCourse?type=${type}`, { headers });
-        const data = await res.json();
-        return data;
+      const token = getAuthToken();
+      const headers = {};
+  
+      if (token) {
+        headers["x-auth-token"] = token;
+      }
+  
+      // Build query string dynamically
+      let url = `${BASEURL}/course/getDefineCourse?type=${type}`;
+      if (searchQuery.trim()) {
+        url += `&search=${encodeURIComponent(searchQuery)}`;
+      }
+  
+      const res = await fetch(url, { headers });
+      const data = await res.json();
+      return data;
     } catch (error) {
-        console.error("Error fetching trending courses", error);
-        throw error;
+      console.error("Error fetching trending/popular courses", error);
+      throw error;
     }
-};
+  };
+  
 
 export const getPaymentUrl = async (data) => {
     try {

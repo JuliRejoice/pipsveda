@@ -182,7 +182,7 @@ function AlgobotInformation({ id }) {
         botId: algobotData?._id,
         couponId: couponId || undefined,
         noOfBots: planQuantities[selectedPlan._id] || 1,
-        success_url: window.location.href,
+        success_url: 'https://pips-veda.vercel.app/my-courses',
         cancel_url: window.location.href,
       };
 

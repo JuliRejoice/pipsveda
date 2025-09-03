@@ -68,7 +68,7 @@ export default function TelegramCommunities() {
 
         {/* Cards Animation */}
         <motion.div
-          className={styles.grid}
+          className={telegramChannels?.length > 2 ? styles.grid : styles.flex}
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
@@ -112,7 +112,7 @@ export default function TelegramCommunities() {
               <div className={styles.btn}>
                 <Button 
                   text={'Join Now'}
-                  onClick={() => getCookie('userToken') ? router.push(`/telegram/${channel._id}`) : router.push('/signin')}
+                  onClick={() => router.push(`/telegramDetails?id=${channel._id}`)}
                 />
               </div>
             </motion.div>

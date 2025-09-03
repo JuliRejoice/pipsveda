@@ -161,7 +161,7 @@ export default function Courses() {
                 <h2>My Courses</h2>
                 {/* <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p> */}
             </div>
-            <div className={styles.tabAlignment}>
+            {/* <div className={styles.tabAlignment}>
                 {Object.values(TABS).map((tab) => (
                     <button
                         key={tab}
@@ -170,7 +170,23 @@ export default function Courses() {
                     >
                         {tab}
                     </button>
+
+                    
                 ))}
+            </div> */}
+            <div className={styles.algotabsmain}>
+                <div className={styles.algotabs}>
+                    {Object.values(TABS)?.map((tab, i) => (
+                        <button
+                            key={i}
+                            type="button"
+                            className={`${styles.algotabs} ${activeTab === tab ? styles.active : ''}`}
+                            onClick={() => setActiveTab(tab)}
+                        >
+                            <span>{tab}</span>
+                        </button>
+                    ))}
+                </div>
             </div>
             {renderTabContent()}
         </div>

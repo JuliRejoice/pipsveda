@@ -14,7 +14,7 @@ const CardImage = '/assets/images/crypto.png';
 
 const ITEMS_PER_PAGE = 8; // Adjust based on your layout
 
-export default function RecentCourse({ selectedTab, courseType, setCourseType, searchQuery, allCourse, setAllCourses, courseLoading, setCourseLoading }) {
+export default function     RecentCourse({ selectedTab, courseType, setCourseType, searchQuery, allCourse, setAllCourses, courseLoading, setCourseLoading }) {
     const [error, setError] = useState(null);
     const [pagination, setPagination] = useState({
         currentPage: 1,
@@ -28,29 +28,33 @@ export default function RecentCourse({ selectedTab, courseType, setCourseType, s
         try {
           setCourseLoading(true);
       
-          // If selectedTab is trending or popular -> use special API
           if (selectedTab === "trending" || selectedTab === "popular") {
-            setCourseType(selectedTab); // update parent state if needed
-            const response = await getTrendingOrPopularCourses(selectedTab);
-      
+            setCourseType(selectedTab);
+          
+            const response = await getTrendingOrPopularCourses({
+              type: selectedTab,
+              searchQuery: searchQuery || "",
+            });
+          
             if (response.success) {
               setAllCourses(response.payload.data || []);
               setPagination((prev) => ({
                 ...prev,
-                currentPage: 1, // reset pagination for trending/popular
+                currentPage: 1,
                 totalItems: response.payload.data?.length || 0,
               }));
             } else {
               console.error("Failed to fetch courses:", response.message);
               setAllCourses([]);
             }
-          } else {
-            // Default flow -> getCourses API
+          }
+          else {
+            // ✅ Always send both searchQuery & courseType
             const params = {
-              ...(searchQuery && { searchQuery }),
+              searchQuery: searchQuery || "",
               page,
               limit: ITEMS_PER_PAGE,
-              ...(!searchQuery && { courseType: selectedTab || "recorded" }),
+              courseType: selectedTab || "recorded",
             };
       
             const data = await getCourses(params);
@@ -75,6 +79,7 @@ export default function RecentCourse({ selectedTab, courseType, setCourseType, s
           setCourseLoading(false);
         }
       };
+      
       
 
     useEffect(() => {

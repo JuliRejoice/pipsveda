@@ -37,7 +37,6 @@ export default function Sidebar({ setToogle, toogle }) {
     setProfileDropdown(false);
     const goTo = "/" + tab;
     router.replace(goTo);
-    setActiveSubTab("");
     setToogle(false);
   };
 

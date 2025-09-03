@@ -22,12 +22,30 @@ export const purchasedCourses = async () => {
         console.log("error", error)
         throw error;
     }
-}
+}   
 
-export const getAlgobot = async (id = '',searchQuery = '') => {
+
+export const getAlgobotCategories = async () =>{
     const token = getAuthToken()
     try {
-        const url = `${BASEURL}/strategyPlan/getStrategiesByCategory${id ? `?id=${id}` : searchQuery ? `?search=${searchQuery}` : ''}`;
+        const response = await fetch(`${BASEURL}/categories/dropdown`, {
+            headers: {
+                'Content-Type': 'application/json',
+                ['x-auth-token']: token,
+            }
+        })
+        return await response.json();
+    } catch (error) {
+        console.log("error", error)
+        throw error;
+    }
+}
+
+export const getAlgobot = async (id = '',searchQuery = '', page = 1, limit = 10) => {
+    console.log(id,'id');
+    const token = getAuthToken()
+    try {
+        const url = `${BASEURL}/strategyPlan/getStrategiesByCategory?page=${page}&limit=${limit}${id ? `&categoryId=${id}` : searchQuery ? `&search=${searchQuery}` : ''}`;
         const response = await fetch(url, {
             headers: {
                 'Content-Type': 'application/json',

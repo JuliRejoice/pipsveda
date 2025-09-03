@@ -9,7 +9,8 @@ import toast from 'react-hot-toast';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import EmptyState from '../../chapter/recentCourse/EmptyState';
-
+import Pagination from '@/compoents/pagination';
+const ITEMS_PER_PAGE = 7;
 
 const PaymenyHistory = () => {
     const [paymentHistory, setPaymentHistory] = useState({});
@@ -21,31 +22,52 @@ const PaymenyHistory = () => {
     const [isViewMode, setIsViewMode] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    
+    const [pagination, setPagination] = useState({
+        currentPage: 1,
+        totalItems: 0,
+        itemsPerPage: ITEMS_PER_PAGE
+    });
 
-    useEffect(() => {
-        const fetchPaymentHistory = async () => {
-          try {
-            setIsLoading(true);
+    const fetchPaymentHistory = async (page = 1) => {
+        try {
+          setIsLoading(true);
       
-            let response;
-            if (activeTab === "all") {
-              response = await getpaymentHistory(); // 👈 don't pass type
-            } else {
-              response = await getpaymentHistory(activeTab); // 👈 pass type normally
-            }
-      
-            setPaymentHistory(response.payload.data || {});
-          } catch (error) {
-            console.error("Error fetching payment history:", error);
-            toast.error("Failed to load payment history");
-          } finally {
-            setIsLoading(false);
+          let response;
+          if (activeTab === "all") {
+            response = await getpaymentHistory('', { page, limit: ITEMS_PER_PAGE });
+          } else {
+            response = await getpaymentHistory(activeTab, { page, limit: ITEMS_PER_PAGE });
           }
-        };
       
-        fetchPaymentHistory();
+          console.log(response, "response");
+      
+          setPaymentHistory(response.payload.data || {});
+          setPagination((prev) => ({
+            ...prev,
+            currentPage: page,  // update state correctly
+            totalItems: response.payload.count || 0,
+          }));
+        } catch (error) {
+          console.error("Error fetching payment history:", error);
+          toast.error("Failed to load payment history");
+        } finally {
+          setIsLoading(false);
+        }
+      };
+      
+    useEffect(() => {
+        console.log('==============')
+        fetchPaymentHistory(1);
       }, [activeTab]);
       
+      const handlePageChange = (newPage) => {
+        if (newPage >= 1 && newPage <= Math.ceil(pagination.totalItems / pagination.itemsPerPage)) {
+            fetchPaymentHistory(newPage);
+            // Optional: Scroll to top when changing pages
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    };
 
 
     // useEffect(() => {
@@ -346,6 +368,15 @@ const PaymenyHistory = () => {
                         ))}
                     </tbody>
                 </table>
+            </div>
+
+            <div className={styles.pagination}>
+                <Pagination
+                     currentPage={pagination.currentPage}
+                     totalItems={pagination.totalItems}
+                     itemsPerPage={pagination.itemsPerPage}
+                     onPageChange={handlePageChange}
+                />
             </div>
 
             <Modal

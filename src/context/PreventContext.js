@@ -30,7 +30,6 @@ export function PreventProvider({ children }) {
       let blocked = false;
       if (
         e.key === "printscreen" ||
-        e.key === "c" ||
         (e.ctrlKey &&
           e.shiftKey &&
           ["i", "j", "c"].includes(e.key.toLowerCase())) ||
