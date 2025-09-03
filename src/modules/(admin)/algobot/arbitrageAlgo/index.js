@@ -84,6 +84,7 @@ export default function ArbitrageAlgo({ bot, setBot, searchQuery, setSearchQuery
     const router = useRouter();
     const pathname = usePathname();
     useEffect(() => {
+        console.log(bot,'bot');
         setSelectedCategory(bot?.[0]?.categoryName);
     }, [bot]);
 
@@ -198,30 +199,6 @@ export default function ArbitrageAlgo({ bot, setBot, searchQuery, setSearchQuery
                                 <div className={styles.details}>
                                     <h3>{strategy.title}</h3>
                                     <p>{strategy.shortDescription}</p>
-                                    {/* <div className={styles.planslidermain}>
-                                <div className={styles.planslider}>
-                                    <div className={styles.twoColgrid}>
-                                        {item.strategyPlan?.map((plan, index) => (
-                                            <div className={styles.items} key={index}>
-                                                <div className={styles.contentAlignment}>
-                                                    <span>{plan.planType}:</span>
-                                                    <h4>${plan.price}</h4>
-                                                </div>
-                                                <div className={styles.contentAlignment}>
-                                                    <span>M.R.P:</span>
-                                                    <h5>${plan.initialPrice}</h5>
-                                                </div>
-                                                <div className={styles.contentAlignment}>
-                                                    <span>Discount:</span>
-                                                    <h5 className={styles.dangerText}>
-                                                        {plan.discount > 0 ? `-${plan.discount}%` : '0%'}
-                                                    </h5>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div> */}
                                     {strategy.strategyPlan?.length > 1 && (
                                         <Slider {...settings}>
                                             {strategy.strategyPlan?.map((plan, index) => (
@@ -255,12 +232,12 @@ export default function ArbitrageAlgo({ bot, setBot, searchQuery, setSearchQuery
                                                 </div>
                                                 <div className={styles.contentAlignment}>
                                                     <span>M.R.P:</span>
-                                                    <h5>${item.strategyPlan[0].initialPrice}</h5>
+                                                    <h5>${strategy.strategyPlan[0].initialPrice}</h5>
                                                 </div>
                                                 <div className={styles.contentAlignment}>
                                                     <span>Discount:</span>
                                                     <h5 className={styles.dangerText}>
-                                                        {item.strategyPlan[0].discount > 0 ? `-${item.strategyPlan[0].discount}%` : '0%'}
+                                                        {strategy.strategyPlan[0].discount > 0 ? `-${strategy.strategyPlan[0].discount}%` : '0%'}
                                                     </h5>
                                                 </div>
                                             </div>

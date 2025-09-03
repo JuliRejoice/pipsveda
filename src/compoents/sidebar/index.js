@@ -26,19 +26,12 @@ const DownIcon = "/assets/icons/down-white.svg";
 
 export default function Sidebar({ setToogle, toogle }) {
   const [user, setUser] = useState(null);
-  const [dropdown, setDropdown] = useState(false);
   const [profileDropdown, setProfileDropdown] = useState(false);
-  const [activeSubTab, setActiveSubTab] = useState("");
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
   const router = useRouter();
   const pathname = usePathname();
 
-  useEffect(() => {
-    const isCoursePage =
-      pathname.startsWith("/courses/") || pathname === "/course";
-    setDropdown(isCoursePage);
-  }, [pathname]);
 
   const handleTabClick = (tab) => {
     setProfileDropdown(false);
@@ -171,7 +164,7 @@ export default function Sidebar({ setToogle, toogle }) {
             }}
           >
             <TelegramIcon />
-            Telegram
+            Telegram Channels
           </div>
           <div
             className={`${styles.menu} ${pathname === "/my-courses" ? styles.active : ""

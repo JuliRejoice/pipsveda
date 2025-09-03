@@ -198,7 +198,7 @@ export default function CourseBanner({
                     <div
                       className={styles.iconText}
                       onClick={() =>
-                        router.push(`/courses/pre-recorded/${course._id}`)
+                        router.push(`/courses/${course._id}`)
                       }
                     >
                       <p>Enroll Now</p>

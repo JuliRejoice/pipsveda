@@ -60,7 +60,7 @@ export default function LiveSessions({ liveCourses = [], isLoading = false, erro
                     renderEmptyState()
                 ) : (
                     liveCourses.map((liveCourse, index) => (
-                        <Link href={`/courses/live-online/${liveCourse.courseId._id}`}  key={index}>
+                        <Link href={`/course/${liveCourse.courseId._id}`}  key={index}>
                         <div className={styles.cardgridItems} key={index}>
                             {liveCourse?.courseId?.courseVideo && (
                                 <div className={styles.courseImageContainer}>

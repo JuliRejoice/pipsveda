@@ -105,7 +105,7 @@ export default function RecentCourse({ selectedCourse }) {
                                 <OutlineButton 
                                     text="Enroll Now" 
                                     icon={RightBlackIcon} 
-                                    onClick={() => router.push(`/courses/${courseType(course?.courseType)}/${course?._id}`)} 
+                                    onClick={() => router.push(`/course/${course?._id}`)} 
                                 />
                             </div>
                         </div>

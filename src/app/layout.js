@@ -38,12 +38,12 @@ export default function RootLayout({ children }) {
       <body className={`${lexend.variable} ${funneldisplay.variable}`}>
         <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}><Loader /></div>}>
 
-          {/* <PreventProvider className="watermark"> */}
+          <PreventProvider className="watermark">
             <AuthProvider>
               {children}
             </AuthProvider>
 
-          {/* </PreventProvider> */}
+          </PreventProvider>
         </Suspense>
         <Toaster
           position="top-center"

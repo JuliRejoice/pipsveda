@@ -88,7 +88,7 @@ function InPersonCourse() {
                   text="Enroll Now"
                   icon={RightBlackIcon}
                   onClick={() =>{
-                    router.push(`/courses/in-person/${course?._id}`);
+                    router.push(`/course/${course?._id}`);
                   }}
                 />
               </div>

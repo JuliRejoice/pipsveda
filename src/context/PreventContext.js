@@ -54,8 +54,8 @@ export function PreventProvider({ children }) {
         blocked = true;
       }
 
-      if (event.keyCode === 91 || event.keyCode === 93) {
-        event.preventDefault(); // Prevents the default action of the Windows key
+      if (e.keyCode === 91 || e.keyCode === 93) {
+        e.preventDefault(); // Prevents the default action of the Windows key
         blocked = true;
 
       }
@@ -67,6 +67,7 @@ export function PreventProvider({ children }) {
         if ((e.keyCode === 91 || e.keyCode === 93) && e.keyCode === 71) {
           console.log("Meta + G pressed!");
           e.preventDefault();
+          e.stopPropagation()
           setShowBlackout(true);
           if (blackoutTimeoutRef.current) clearTimeout(blackoutTimeoutRef.current);
           blackoutTimeoutRef.current = setTimeout(() => setShowBlackout(false), 60000);
@@ -74,7 +75,7 @@ export function PreventProvider({ children }) {
       });
       
       // ESC key to remove blackout
-      if (e.key === "Escape" && showBlackout) {
+      if (e.key === "Escape") {
         setShowBlackout(false);
         if (blackoutTimeoutRef.current) clearTimeout(blackoutTimeoutRef.current);
         return;

@@ -88,7 +88,7 @@ function LiveCourse() {
                   text="Enroll Now"
                   icon={RightBlackIcon}
                   onClick={() =>{
-                router.push(`/courses/live-online/${course?._id}`);
+                router.push(`/course/${course?._id}`);
                   }}
                 />
               </div>

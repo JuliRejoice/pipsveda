@@ -61,7 +61,7 @@ export default function PhysicalEvents({ physicalCourses = [], isLoading = false
             ) : (
                 <div className={styles.cardgrid}>
                     {physicalCourses.map((event, index) => (
-                        <Link href={`/courses/in-person/${event?.courseId?._id}`}>
+                        <Link href={`/course/${event?.courseId?._id}`}>
                         <div className={styles.cardgridItems} key={index}>
                             <div className={styles.cardgridItemsimage}>
                                 <img src={event?.courseId?.courseVideo

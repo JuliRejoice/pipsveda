@@ -182,7 +182,7 @@ export default function Herobanner() {
                 className={styles.buttonAlignment}
                 variants={item}
               >
-                <Button text="Explore Courses" icon={RightIcon} onClick={() =>{getCookie("userToken") ? router.push(`/courses/pre-recorded?search=${searchParams}`) : router.push('/signin')}}/>
+                <Button text="Explore Courses" icon={RightIcon} onClick={() =>{getCookie("userToken") ? router.push(`/course?search=${searchParams}`) : router.push('/signin')}}/>
                
               </motion.div>
             </div>

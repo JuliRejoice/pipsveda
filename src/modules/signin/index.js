@@ -60,7 +60,7 @@ export default function Signin() {
         toast.success('Login successfully.');
         setCookie("userToken", data.payload.token);
         setCookie("user", data.payload);
-        router.push("/courses/pre-recorded");
+        router.push("/course");
       } else {
         toast.error(errorMessages[data?.message] ?? "Login failed. Please try again.");
       }

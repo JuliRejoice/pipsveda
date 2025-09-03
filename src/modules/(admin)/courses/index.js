@@ -120,7 +120,7 @@ export default function Courses() {
                             </div>
                         ) : (
                             recordedCourses.map((recordedCourse, index) => (
-                                <div key={index} className={styles.griditems} onClick={() => router.push(`/courses/pre-recorded/${recordedCourse?.courseId?._id}`)} >
+                                <div key={index} className={styles.griditems} onClick={() => router.push(`/course/${recordedCourse?.courseId?._id}`)} >
                                     <div className={styles.cardImage}>
                                         <img src={recordedCourse?.courseId?.courseVideo} alt='CardImage' />
                                     </div>

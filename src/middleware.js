@@ -16,9 +16,7 @@ export default function middleware(req) {
     "/profile",
     "/telegram",
     "/algobot",
-    "/courses/in-person",
-    "/courses/live-online",
-    "/courses/pre-recorded",
+    "/course",
   ];
 
   const isProtected = protectedPaths.some((path) =>
@@ -50,9 +48,7 @@ export const config = {
     "/signup",
 
     // Courses routes (with dynamic segments)
-    "/courses/in-person/:path*",
-    "/courses/live-online/:path*",
-    "/courses/pre-recorded/:path*",
+    "/course/:path*",
     "/algobot/:path*",
     "/telegram/:path*",
   ],

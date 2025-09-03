@@ -165,7 +165,7 @@ export default function RecentCourse({ selectedTab, courseType, setCourseType, s
                                     text="Enroll Now"
                                     icon={RightBlackIcon}
                                     onClick={() =>
-                                        router.push(`/courses/pre-recorded/${course._id}`)
+                                        router.push(`/course/${course._id}`)
                                     }
                                 />
                             </div>
