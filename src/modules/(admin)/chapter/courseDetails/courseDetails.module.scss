@@ -6,6 +6,7 @@
     border-radius: 18px;
     border: 1px solid var(--border-color5);
     padding: 30px;
+   
 
     @include respond-to("sm") {
         border-radius: 12px;
@@ -393,7 +394,7 @@
 
     .sessionListmain {
         position: relative;
-        height: 500px;
+        height: 575px;
 
         &.lockedSession {
             .sessionLockOverlay {
@@ -511,7 +512,7 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             padding: 20px;
             @include first-clip-path;
-
+      
             &:hover {
                 transform: translateY(-4px);
                 box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);

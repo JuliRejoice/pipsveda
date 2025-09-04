@@ -25,14 +25,14 @@ export default function Signin() {
 
 
   const validateEmail = (value) => {
-    const trimmedValue = value.trim();
+    const trimmedValue = value.trim().toLowerCase(); // 👈 force lowercase
     if (!trimmedValue) return "Email is required.";
-    if (trimmedValue.includes(' ')) return "Email cannot contain spaces.";
+    if (trimmedValue.includes(' ')) return "Email cannot contain spaces.";   
     const re = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
-    if (!re.test(trimmedValue)) return "Enter a valid email address.";
+    if (!re.test(trimmedValue)) return "Enter a valid email address.";   
     return "";
   };
-
+  
   const validatePassword = (value) => {
     if (!value || !value.trim()) return "Password is required.";
     if (value.includes(' ')) return "Password cannot contain spaces.";
@@ -100,9 +100,22 @@ export default function Signin() {
                     if (e.key === " ") e.preventDefault();
                   }}
                   onChange={(e) => {
-                    setEmail(e.target.value);
-                    setErrors((prev) => ({ ...prev, email: validateEmail(e.target.value) }));
-                  }}
+                    const value = e.target.value;
+                    setEmail(value.toLowerCase());
+                    // Only validate on change if there's an existing error
+                    if (errors.email) {
+                        setErrors(prev => ({ 
+                            ...prev, 
+                            email: validateEmail(value, false) 
+                        }));
+                    }
+                }}
+                onBlur={(e) => {
+                    setErrors(prev => ({ 
+                        ...prev, 
+                        email: validateEmail(e.target.value, true) 
+                    }));
+                }}
                 />
                 {errors.email && <span className={styles.errormsg}>{errors.email}</span>}
               </div>

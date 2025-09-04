@@ -15,6 +15,8 @@ export const errorMessages = {
    "Invalid token." : "Login Failed. Please try again.",
    "Unauthorized." : "You Don't have permission to access this page.",
    "OTP expired." : "OTP expired. Please try again.",
+   "Your account is currently deactivate" : "Your account is currently deactivate. Please Connect to Admin.",
+   "Your Account is inactive, Please Connect to admin." : "Your Account is deactive, Please Connect to Admin."
 };
 
 

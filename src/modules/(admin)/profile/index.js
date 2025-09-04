@@ -28,31 +28,41 @@ export default function Profile() {
     const [showGenderDropdown, setShowGenderDropdown] = useState(false);
     const [selectedCountryCode, setSelectedCountryCode] = useState('+12');
     const [selectedGender, setSelectedGender] = useState('');
+    const [isLoading, setIsLoading] = useState(false);
+    const [dateError, setDateError] = useState('');
+    const [phoneError, setPhoneError] = useState('');
+    const [initialUserData, setInitialUserData] = useState(null);
 
     const countryRef = useRef(null);
     const genderRef = useRef(null);
+    
     useEffect(() => {
+        fetchProfile();
+    }, []);
+
+    const fetchProfile = async () => {
         const userData = getCookie("user");
         const parsedUser = JSON.parse(userData);
         setUser(parsedUser);
-    
+        setInitialUserData(parsedUser);
+
         // Birthdate
         if (parsedUser?.birthday) {
             setBirthDate(new Date(parsedUser.birthday));
         }
-    
+
         // Country Code
         if (parsedUser?.countryCode) {
             setSelectedCountryCode(parsedUser.countryCode);
         }
-    
+
         // Gender
         if (parsedUser?.gender) {
             setSelectedGender(parsedUser.gender);
         }
-    }, []);
-    
-    
+    };
+
+
     // Close dropdowns on outside click
     useEffect(() => {
         const handleClickOutside = (e) => {
@@ -77,26 +87,69 @@ export default function Profile() {
     };
 
     const handleEditProfile = async () => {
-        if (validateUser()) {
+
+        setPhoneError('');
+        setDateError('');
+
+        // Phone number validation
+        if (!user?.phone || user.phone.length !== 10) {
+            setPhoneError('Phone number must be 10 digits');
+            return;
+        }
+        if (!validateUser()) {
+            toast.error("Please fill in all fields");
+            return;
+        }
+
+        // Check if user is at least 13 years old
+        const thirteenYearsAgo = new Date();
+        thirteenYearsAgo.setFullYear(thirteenYearsAgo.getFullYear() - 13);
+
+        if (birthDate > thirteenYearsAgo) {
+            setDateError('You must be at least 13 years old');
+            return;
+        }
+
+        if (isLoading) return; // Prevent multiple clicks
+
+        setIsLoading(true);
+        try {
             const payload = {
                 ...user,
-                phone: user.phone, // only the phone number
-                countryCode: selectedCountryCode, // separate field
+                phone: user.phone.trim(), // Trim phone number
+                countryCode: selectedCountryCode,
                 gender: selectedGender || user.gender,
                 birthday: birthDate ? birthDate.toISOString().split('T')[0] : ''
             };
-    
+
             const res = await editProfile(user._id, payload);
-    
+
             if (res.success) {
                 setCookie("user", JSON.stringify(res.payload));
                 toast.success("Profile updated successfully");
+                fetchProfile();
             }
-        } else {
-            toast.error("Please fill in all fields");
+        } catch (error) {
+            console.error('Error updating profile:', error);
+            toast.error("Failed to update profile. Please try again.");
+        } finally {
+            setIsLoading(false);
         }
     };
+
+  
+    const hasChanges = () => {
+        if (!initialUserData || !user) return false;
     
+        return (
+            user.name !== initialUserData.name ||
+            user.phone !== initialUserData.phone ||
+            user.location !== initialUserData.location ||
+            user.gender !== initialUserData.gender ||
+            (birthDate && initialUserData.birthday && 
+             new Date(birthDate).toISOString().split('T')[0] !== initialUserData.birthday)
+        );
+    };
 
     return (
         <div className={styles.profilePageAlignment}>
@@ -111,10 +164,18 @@ export default function Profile() {
 
                 <div className={styles.subbox}>
                     <div className={styles.grid}>
-                        <Input type="text" name="name" label='First Name' placeholder='Enter your first name'
-                            value={user?.name}
-                            onChange={(e) => setUser({ ...user, name: e.target.value })} />
-
+                        <Input
+                            type="text"
+                            name="name"
+                            label='First Name'
+                            placeholder='Enter your first name'
+                            value={user?.name || ''}
+                            onChange={(e) => {
+                                // Remove leading spaces
+                                const value = e.target.value.replace(/^\s+/, '');
+                                setUser({ ...user, name: value });
+                            }}
+                        />
                         {/* Country code + phone */}
                         <div className={styles.telephoninputmain}>
                             <div className={styles.dropdownrelative} ref={countryRef}>
@@ -152,13 +213,23 @@ export default function Profile() {
                                     </div>
 
                                     <input
-                                        type="text"
+                                        type="tel"  // Changed from text to tel for better mobile keyboard
                                         name="phone"
                                         placeholder='Enter your number'
-                                        value={user?.phone}
-                                        onChange={(e) => setUser({ ...user, phone: e.target.value })}
+                                        value={user?.phone || ''}
+                                        maxLength={10}  // Prevent typing more than 10 digits
+                                        onChange={(e) => {
+                                            // Only allow numbers and remove any non-digit characters
+                                            const value = e.target.value.replace(/\D/g, '');
+                                            setUser({ ...user, phone: value });
+                                            // Clear error when user starts typing
+                                            if (phoneError) {
+                                                setPhoneError('');
+                                            }
+                                        }}
                                     />
                                 </div>
+                                {phoneError && <span className={styles.errorMessage}>{phoneError}</span>}
                             </div>
                         </div>
 
@@ -206,21 +277,30 @@ export default function Profile() {
                             <label>Date of Birth</label>
                             <DatePicker
                                 selected={birthDate}
-                                onChange={(date) => setBirthDate(date)}
+                                onChange={(date) => {
+                                    setBirthDate(date);
+                                    setDateError(''); // Clear error when date changes
+                                }}
                                 dateFormat="dd/MM/yyyy"
                                 placeholderText="Select date of birth"
-                                className={`${styles.datePickerInput} date-picker-custom`}
+                                className={`${styles.datePickerInput} date-picker-custom ${dateError ? styles.error : ''}`}
                                 showYearDropdown
                                 scrollableYearDropdown
                                 yearDropdownItemNumber={100}
-                                maxDate={new Date()}
+                                maxDate={new Date()} // Prevent future dates
                                 locale="en-GB"
                             />
+                            {dateError && <span className={styles.errorMessage}>{dateError}</span>}
                         </div>
 
                     </div>
 
-                    <Button text="Save" icon={RightIcon} onClick={handleEditProfile} />
+                    <Button
+                        text={isLoading ? "Saving..." : "Save"}
+                        icon={RightIcon}
+                        onClick={handleEditProfile}
+                        disabled={!hasChanges() || isLoading}
+                    />
                 </div>
             </div>
         </div>

@@ -54,12 +54,22 @@ export default function ContactUs() {
         const newErrors = {};
         if (!form.firstName.trim()) newErrors.firstName = 'First name is required';
         if (!form.lastName.trim()) newErrors.lastName = 'Last name is required';
-        if (!form.email.trim()) {
+        
+        // Normalize email by trimming and converting to lowercase
+        const normalizedEmail = form.email.trim().toLowerCase();
+        if (!normalizedEmail) {
             newErrors.email = 'Email is required';
-        } else if (!/^\S+@\S+\.\S+$/.test(form.email)) {
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail)) {
             newErrors.email = 'Invalid email';
         }
-        if (!form.phone.trim()) newErrors.phone = 'Phone is required';
+        
+        // Phone number validation (numbers only, 8-15 digits)
+        if (!form.phone.trim()) {
+            newErrors.phone = 'Phone is required';
+        } else if (!/^\d{8,15}$/.test(form.phone)) {
+            newErrors.phone = 'Please enter a valid phone number (8-15 digits)';
+        }
+        
         if (!form.subject.trim()) newErrors.subject = 'Subject is required';
         if (!form.description.trim()) newErrors.description = 'Message is required';
         setErrors(newErrors);
@@ -67,6 +77,13 @@ export default function ContactUs() {
     };
 
     const handleChange = (field, value) => {
+        // Prevent leading/trailing spaces for all fields
+        if (typeof value === 'string') {
+            value = field === 'phone' 
+                ? value.replace(/\D/g, '') // Remove non-digits for phone
+                : value.trimStart(); // Only trim start for other fields to allow spaces in between
+        }
+        
         if (errors[field]) {
             setErrors(prev => ({
                 ...prev,
@@ -77,6 +94,17 @@ export default function ContactUs() {
     };
 
     const handleSubmit = async () => {
+        // Trim all string fields before validation
+        const trimmedForm = {
+            ...form,
+            firstName: form.firstName.trim(),
+            lastName: form.lastName.trim(),
+            email: form.email.trim().toLowerCase(),
+            subject: form.subject.trim(),
+            description: form.description.trim()
+        };
+        
+        setForm(trimmedForm);
         const isValid = validate();
         if (!isValid) {
             toast.error('Please fill in all required fields correctly');

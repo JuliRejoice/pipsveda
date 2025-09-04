@@ -140,3 +140,20 @@ export const editProfile = async (id, data) => {
     throw error;
   }
 };
+
+export const getProfile = async (id) => {
+    const token = getAuthToken();
+    try {
+        const response = await fetch(`${BASEURL}/user/get?id=${id}`, {
+            headers: {
+                'Content-Type': 'application/json',
+                ['x-auth-token']: token,
+            }
+        })
+        return await response.json();
+    } catch (error) {
+        console.log("error", error)
+        throw error;
+    }
+}
+

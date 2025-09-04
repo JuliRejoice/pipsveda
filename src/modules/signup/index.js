@@ -44,10 +44,12 @@ const validateName = (value) => {
 
 // Email: RFC-like but practical for web use
 const validateEmail = (value) => {
-    if (!value) return "Email is required.";
-    const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
-    if (!emailRegex.test(value)) return "Enter a valid email address.";
-    return "";
+  const trimmedValue = value.trim().toLowerCase(); // 👈 force lowercase
+  if (!trimmedValue) return "Email is required.";
+  if (trimmedValue.includes(' ')) return "Email cannot contain spaces.";   
+  const re = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+  if (!re.test(trimmedValue)) return "Enter a valid email address.";   
+  return "";
 };
 
 // Password: Min 8 chars, at least 1 uppercase, 1 lowercase, 1 number, 1 special char
@@ -173,11 +175,19 @@ const validateConfirmPassword = (value, password) => {
                   }
                 }}
                 onChange={(e) => {
-                  setData({ ...data, email: e.target.value });
-                  setErrors((prev) => ({
-                    ...prev,
-                    email: validateEmail(e.target.value),
-                  }));
+                  setData({ ...data, email: e.target.value.toLowerCase() });
+                  if (errors.email) {
+                    setErrors(prev => ({ 
+                        ...prev, 
+                        email: validateEmail(e.target.value.toLowerCase(), false) 
+                    }));
+                }
+                }}
+                onBlur={(e) => {
+                    setErrors(prev => ({ 
+                        ...prev, 
+                        email: validateEmail(e.target.value.toLowerCase(), true) 
+                    }));
                 }}
               />
               {errors.email && (

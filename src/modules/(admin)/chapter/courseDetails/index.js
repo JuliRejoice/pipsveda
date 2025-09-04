@@ -127,8 +127,10 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [sessions, setSessions] = useState([]);
   const pathname = usePathname();
-  const isLiveOnline = pathname.includes('/live-online');
-  const isInPerson = pathname.includes("in-person");
+  const [isLiveOnline, setIsLiveOnline] = useState(false);
+  const [isInPerson, setIsInPerson] = useState(false);
+  // const isLiveOnline = selectedCourse?.courseType === 'live';
+  // const isInPerson = selectedCourse?.courseType === 'physical';
   const id = params;
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -139,6 +141,15 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     highConfidenceBlocks: 0,
     mediumConfidenceBlocks: 0,
   })
+
+  console.log(isLiveOnline, isInPerson)
+
+  useEffect(()=>{
+    if(selectedCourse){
+      setIsLiveOnline(selectedCourse?.courseType === 'live');
+      setIsInPerson(selectedCourse?.courseType === 'physical');
+    }
+  },[selectedCourse])
 
   const fetchChapters = async () => {
     try {
@@ -179,13 +190,16 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
   };
 
   useEffect(() => {
+    console.log("useEffect",id)
+    console.log("isLiveOnline",isLiveOnline)
     if (!id) return;
     if (isLiveOnline) {
+      console.log("fetching sessions")
       fetchSessions();
     } else {
       fetchChapters();
     }
-  }, [id]);
+  }, [id,isLiveOnline]);
 
 
   useEffect(() => {
@@ -217,7 +231,6 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
         breakpoint: 1440,
         settings: {
           slidesToShow: 2,
-          infinite: true,
           centerMode: false
         }
       },
@@ -225,7 +238,6 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
         breakpoint: 768,
         settings: {
           slidesToShow: 1,
-          infinite: true,
           centerMode: false
         }
       },

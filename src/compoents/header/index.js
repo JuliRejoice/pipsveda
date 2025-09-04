@@ -61,7 +61,8 @@ export default function Header() {
       removeCookie("userToken");
       removeCookie("user");
       toast.success("Logout successfully.");
-      router.push('/signin');
+      await router.push('/');
+      window.location.reload();
     } catch (error) {
       console.error('Failed to log out', error);
     }

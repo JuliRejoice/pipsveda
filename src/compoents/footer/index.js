@@ -24,11 +24,14 @@ export default function Footer() {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            if (!validateEmail(email)) {
+            // Convert email to lowercase before validation
+            const normalizedEmail = email.toLowerCase();
+            
+            if (!validateEmail(normalizedEmail)) {
                 toast.error('Please enter a valid email address');
                 return;
             }
-            const response = await createNewsLetter({ email });
+            const response = await createNewsLetter({ email: normalizedEmail });
             if (response.success) {
                 toast.success('Newsletter Subscribed Successfully.');
                 setEmail('');

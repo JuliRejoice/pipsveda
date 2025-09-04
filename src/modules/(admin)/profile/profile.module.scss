@@ -398,3 +398,13 @@
         }
     }
 }
+
+.error {
+    border-color: #ff4d4f !important;
+}
+
+.errorMessage {
+    color: #ff4d4f;
+    font-size: 12px;
+    display: block;
+}

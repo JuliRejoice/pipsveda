@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./newPassword.module.scss";
 import Button from "@/compoents/button";
 import Input from "@/compoents/input";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { updatePassword } from "@/compoents/api/auth";
 import toast from "react-hot-toast";
 
@@ -25,13 +25,26 @@ export default function NewPassword() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const [email, setEmail] = useState("");
+  const searchParams = useSearchParams();
 
   useEffect(() => {
+
+    if (typeof window === 'undefined') return;
+
     const emailFromState = localStorage.getItem("email");
+    const emailFromParams = searchParams.get('email');
+    
     if (emailFromState) {
       setEmail(emailFromState);
+      setIsLoading(false);
+    } else if (emailFromParams) {
+      localStorage.setItem("email", emailFromParams);
+      setEmail(emailFromParams);
+      setIsLoading(false);
+    } else {
+      router.replace("/signin");
     }
-  }, []);
+  }, [router, searchParams]);
 
   const handleSetNewPassword = async () => {
     setErrors({ newPassword: "", confirmPassword: "", submit: "" });
