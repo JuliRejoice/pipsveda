@@ -22,7 +22,7 @@ const PaymenyHistory = () => {
     const [isViewMode, setIsViewMode] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    
+
     const [pagination, setPagination] = useState({
         currentPage: 1,
         totalItems: 0,
@@ -31,37 +31,40 @@ const PaymenyHistory = () => {
 
     const fetchPaymentHistory = async (page = 1) => {
         try {
-          setIsLoading(true);
-      
-          let response;
-          if (activeTab === "all") {
-            response = await getpaymentHistory('', { page, limit: ITEMS_PER_PAGE });
-          } else {
-            response = await getpaymentHistory(activeTab, { page, limit: ITEMS_PER_PAGE });
-          }
-      
-          console.log(response, "response");
-      
-          setPaymentHistory(response.payload.data || {});
-          setPagination((prev) => ({
-            ...prev,
-            currentPage: page,  // update state correctly
-            totalItems: response.payload.count || 0,
-          }));
+            setIsLoading(true);
+
+            let response;
+            if (activeTab === "all") {
+                response = await getpaymentHistory('', { page, limit: ITEMS_PER_PAGE });
+            } else {
+                response = await getpaymentHistory(activeTab, { page, limit: ITEMS_PER_PAGE });
+            }
+
+            console.log(response, "response");
+
+            setPaymentHistory(response.payload.data || {});
+            setPagination((prev) => ({
+                ...prev,
+                currentPage: page,  // update state correctly
+                totalItems: response.payload.count || 0,
+            }));
         } catch (error) {
-          console.error("Error fetching payment history:", error);
-          toast.error("Failed to load payment history");
+            console.error("Error fetching payment history:", error);
+            toast.error("Failed to load payment history");
         } finally {
-          setIsLoading(false);
+            setIsLoading(false);
         }
-      };
-      
+    };
+
+    const handleTabChange = async (tab) => {
+        setActiveTab(tab);
+    };
+
     useEffect(() => {
-        console.log('==============')
         fetchPaymentHistory(1);
-      }, [activeTab]);
-      
-      const handlePageChange = (newPage) => {
+    }, [activeTab]);
+
+    const handlePageChange = (newPage) => {
         if (newPage >= 1 && newPage <= Math.ceil(pagination.totalItems / pagination.itemsPerPage)) {
             fetchPaymentHistory(newPage);
             // Optional: Scroll to top when changing pages
@@ -69,20 +72,6 @@ const PaymenyHistory = () => {
         }
     };
 
-
-    // useEffect(() => {
-    //     if (activeTab === 'all') {
-    //         setFilteredPayments([...(paymentHistory?.COURSE || []), ...(paymentHistory?.BOTS || []), ...(paymentHistory?.TELEGRAM || [])]);
-    //     } else if (activeTab === 'course') {
-    //         setFilteredPayments(paymentHistory?.COURSE || []);
-    //     } else if (activeTab === 'bot') {
-    //         setFilteredPayments(paymentHistory?.BOTS || []);
-    //     } else if (activeTab === 'telegram') {
-    //         setFilteredPayments(paymentHistory.TELEGRAM);
-    //     }
-    // }, [activeTab, paymentHistory]);
-
-    // Loading state skeleton
     if (isLoading) {
         return (
             <div className={styles.paymenyhistorymain}>
@@ -90,29 +79,30 @@ const PaymenyHistory = () => {
                 <p>View a detailed record of all your past transactions, including payment dates, amounts, methods, and statuses.</p>
                 <div className={styles.tabs}>
                     <button
-                        className={`${styles.tab} ${styles.active}`}
+                        className={`${styles.tab} ${activeTab === 'all' ? styles.active : ''}`}
                     >
                         All
                     </button>
                     <button
-                        className={styles.tab}
+                        className={`${styles.tab} ${activeTab === 'Course' ? styles.active : ''}`}
                     >
                         Courses
                     </button>
                     <button
-                        className={styles.tab}
+                        className={`${styles.tab} ${activeTab === 'Bot' ? styles.active : ''}`}
                     >
                         Bots
                     </button>
                     <button
-                        className={styles.tab}
+                        className={`${styles.tab} ${activeTab === 'Telegram' ? styles.active : ''}`}
                     >
                         Telegram Channels
                     </button>
                 </div>
+
                 <div className={styles.paymenyhistorytable}>
                     <table >
-                        <thead>
+                        {/* <thead>
                             <tr>
                                 <th>No</th>
                                 <th>Purchased Date</th>
@@ -125,7 +115,7 @@ const PaymenyHistory = () => {
                                 <th>Meta Account No.</th>
                                 <th>Status</th>
                             </tr>
-                        </thead>
+                        </thead> */}
                         <tbody>
                             {[...Array(5)].map((_, index) => (
                                 <tr key={index}>
@@ -158,28 +148,7 @@ const PaymenyHistory = () => {
             <div className={styles.paymenyhistorymain}>
                 <h2>Payment History</h2>
                 <p>View a detailed record of all your past transactions, including payment dates, amounts, methods, and statuses.</p>
-                {/* <div className={styles.tabs}>
-                    <button 
-                        className={`${styles.tab} ${styles.active}`}
-                    >
-                        All
-                    </button>
-                    <button 
-                        className={styles.tab}
-                    >
-                        Course
-                    </button>
-                    <button 
-                        className={styles.tab}
-                    >
-                        Bot
-                    </button>
-                    <button 
-                        className={styles.tab}
-                    >
-                        Telegram
-                    </button>
-                </div> */}
+
                 <div className={styles.emptyState}>
                     <EmptyState
                         title="No Payment History Found"
@@ -269,25 +238,25 @@ const PaymenyHistory = () => {
             <div className={styles.tabs}>
                 <button
                     className={`${styles.tab} ${activeTab === 'all' ? styles.active : ''}`}
-                    onClick={() => setActiveTab('all')}
+                    onClick={() => handleTabChange('all')}
                 >
                     All
                 </button>
                 <button
                     className={`${styles.tab} ${activeTab === 'Course' ? styles.active : ''}`}
-                    onClick={() => setActiveTab('Course')}
+                    onClick={() => handleTabChange('Course')}
                 >
                     Courses
                 </button>
                 <button
                     className={`${styles.tab} ${activeTab === 'Bot' ? styles.active : ''}`}
-                    onClick={() => setActiveTab('Bot')}
+                    onClick={() => handleTabChange('Bot')}
                 >
                     Bots
                 </button>
                 <button
                     className={`${styles.tab} ${activeTab === 'Telegram' ? styles.active : ''}`}
-                    onClick={() => setActiveTab('Telegram')}
+                    onClick={() => handleTabChange('Telegram')}
                 >
                     Telegram Channels
                 </button>
@@ -306,14 +275,14 @@ const PaymenyHistory = () => {
                                     <th>Telegram Channel</th>
                                 </>
                             )}
-                            {activeTab === 'course' && <th>Course Name</th>}
-                            {activeTab === 'bot' && <th>Strategy Name</th>}
-                            {activeTab === 'telegram' && <th>Telegram Channel</th>}
-                            {(activeTab === 'all' || activeTab === 'course') && <th>Course Type</th>}
-                            {activeTab !== 'course' && <th>Plan</th>}
+                            {activeTab === 'Course' && <th>Course Name</th>}
+                            {activeTab === 'Bot' && <th>Strategy Name</th>}
+                            {activeTab === 'Telegram' && <th>Telegram Channel</th>}
+                            {(activeTab === 'all' || activeTab === 'Course') && <th>Course Type</th>}
+                            {activeTab !== 'Course' && <th>Plan</th>}
                             <th>Amount</th>
                             <th>Transaction ID</th>
-                            {activeTab !== 'course' && activeTab !== 'telegram' && <th>Meta Account No.</th>}
+                            {activeTab !== 'Course' && activeTab !== 'Telegram' && <th>Meta Account No.</th>}
                             <th>Status</th>
                         </tr>
                     </thead>
@@ -330,15 +299,15 @@ const PaymenyHistory = () => {
                                         <td>{payment?.telegramId?.telegramId?.channelName || '-'}</td>
                                     </>
                                 )}
-                                {activeTab === 'course' && <td>{payment.courseId?.CourseName || '-'}</td>}
-                                {activeTab === 'bot' && <td>{payment.botId?.strategyId?.title || '-'}</td>}
-                                {activeTab === 'telegram' && <td>{payment?.telegramId?.telegramId?.channelName || '-'}</td>}
+                                {activeTab === 'Course' && <td>{payment.courseId?.CourseName || '-'}</td>}
+                                {activeTab === 'Bot' && <td>{payment.botId?.strategyId?.title || '-'}</td>}
+                                {activeTab === 'Telegram' && <td>{payment?.telegramId?.telegramId?.channelName || '-'}</td>}
 
-                                {(activeTab === 'all' || activeTab === 'course') && <td>{courseType(payment.courseId?.courseType) || '-'}</td>}
-                                {activeTab !== 'course' && <td>{payment.planType}</td>}
+                                {(activeTab === 'all' || activeTab === 'Course') && <td>{courseType(payment.courseId?.courseType) || '-'}</td>}
+                                {activeTab !== 'Course' && <td>{payment.planType}</td>}
                                 <td>${payment.price}</td>
                                 <td>{payment.orderId}</td>
-                                {activeTab !== 'course' && activeTab !== 'telegram' && (
+                                {activeTab !== 'Course' && activeTab !== 'Telegram' && (
                                     <td>
                                         {payment.botId ? (
                                             payment.metaAccountNo?.length > 0 ? (
@@ -372,10 +341,10 @@ const PaymenyHistory = () => {
 
             <div className={styles.pagination}>
                 <Pagination
-                     currentPage={pagination.currentPage}
-                     totalItems={pagination.totalItems}
-                     itemsPerPage={pagination.itemsPerPage}
-                     onPageChange={handlePageChange}
+                    currentPage={pagination.currentPage}
+                    totalItems={pagination.totalItems}
+                    itemsPerPage={pagination.itemsPerPage}
+                    onPageChange={handlePageChange}
                 />
             </div>
 

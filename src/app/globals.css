@@ -65,7 +65,7 @@ img {
 
 .admin-layout-children {
   padding: 30px;
-  width: calc(100% - 235px);
+  width: calc(100% - 255px);
 }
 
 @media (max-width:1024px) {

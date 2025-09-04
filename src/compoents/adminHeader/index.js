@@ -15,7 +15,7 @@ useEffect(() => {
         Hello {user}, welcome!
       </h2>
       <p>
-        Your monetisation journey on TagMango starts here!
+      Begin your monetization journey with expert-led courses in Forex, AlgoBots, and more.
       </p>
     </div>
   )
