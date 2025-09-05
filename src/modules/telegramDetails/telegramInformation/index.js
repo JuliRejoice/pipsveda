@@ -229,30 +229,48 @@ function TelegramInformation({ id }) {
 
         const modalContent = paymentStatus === 'success' ? (
             <div className={styles.paymentModalContent}>
-                <img src={SuccessIcon} alt="Success" className={styles.paymentIcon} />
-                <h3>Payment Successful!</h3>
-                <p>Thank you for your purchase. Please check your email for the download link.</p>
-            </div>
-        ) : (
-            <div className={styles.paymentModalContent}>
-                <img src={ErrorIcon} alt="Cancelled" className={styles.paymentIcon} />
-                <h3>Payment Cancelled</h3>
-                <p>Your payment was not completed. Please try again to purchase.</p>
-                <div className={styles.modalButtons}>
-                    <OutlineButton
-                        text="Try Again"
-                        onClick={() => {
-                            setShowPaymentModal(false);
-                            handlePurchase();
-                        }}
-                    />
-                    <Button
-                        text="Close"
-                        onClick={() => setShowPaymentModal(false)}
-                        style={{ marginLeft: '10px' }}
-                    />
-                </div>
-            </div>
+        <div className={styles.paymentModaltitlecontent}>
+          <img src={SuccessIcon} alt="Success" className={styles.paymentIcon} />
+          {isInPerson && <h3>Congratulations!</h3>}
+          <h3>Payment Successful!</h3>
+          <p>Thank you for your purchase. You now have full access to this course.</p>
+        </div>
+        {isInPerson &&
+          <div className={styles.paymentmodaldetails}>
+            <p>Please Contact for extra Information.</p>
+            <p><span>Address</span> : {selectedCourse?.location && `${selectedCourse?.location}`}</p>
+            <p><span>Email</span> : {selectedCourse?.email && `${selectedCourse?.email}`}</p>
+            <p><span>Phone</span> : {selectedCourse?.phone && `${selectedCourse?.phone}`}</p>
+          </div>
+        }
+        <Button
+          text="Start Learning"
+          onClick={() => {
+            setShowPaymentModal(false);
+            setIsPaid(false);
+          }}
+        />
+      </div>
+    ) : (
+      <div className={styles.paymentModalContent}>
+        <img src={ErrorIcon} alt="Cancelled" className={styles.paymentIcon} />
+        <h3>Payment Cancelled</h3>
+        <p>Your payment was not completed. Please try again to access the course.</p>
+        <div className={styles.modalButtons}>
+          <OutlineButton
+            text="Try Again"
+            onClick={() => {
+              setShowPaymentModal(false);
+              handlePayment();
+            }}
+          />
+          <Button
+            text="Close"
+            onClick={() => setShowPaymentModal(false)}
+            style={{ marginLeft: '10px' }}
+          />
+        </div>
+      </div>
         );
 
         return (
@@ -264,8 +282,8 @@ function TelegramInformation({ id }) {
 
     return (
         <div className="container">
-        <div className={styles.telegramDetails}>
             {renderPaymentModal()}
+        <div className={styles.telegramDetails}>
           
             {/* Header Section */}
             <div className={styles.telegramDetailsContainer}>

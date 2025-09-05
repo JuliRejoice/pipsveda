@@ -93,31 +93,39 @@ const validateConfirmPassword = (value, password) => {
     }
     setIsSubmitting(true);
     signUp({ name: data.name, email: data.email, password: data.password })
-      .then((response) => {
-        if (response.success) {
-          setIsSubmitting(false);
-          toast.success('User Signup successfully.');
-          setErrors({
-            name: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-            submit: "",
-          });
-          router.push("/signin");
-        }
-        else{
-          setIsSubmitting(false);
-          toast.error(errorMessages[response?.message] ?? "User Signup failed. Please try again.");
-        }
-      })
-      .catch((error) => {
-        setIsSubmitting(false);
-        setErrors((prev) => ({
-          ...prev,
-          submit: errorMessages[response?.message]|| "User Signup failed. Please try again.",
-        }));
+  .then((response) => {
+    if (response.success) {
+      setIsSubmitting(false);
+      toast.success("User Signup successfully.");
+      setErrors({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        submit: "",
       });
+      router.push("/signin");
+    } else {
+      setIsSubmitting(false);
+      toast.error(
+        errorMessages[response?.message] ??
+          "User Signup failed. Please try again."
+      );
+    }
+  })
+  .catch((error) => {
+    setIsSubmitting(false);
+
+    const serverMessage = error.response?.data?.message;
+
+    setErrors((prev) => ({
+      ...prev,
+      submit:
+        (serverMessage && errorMessages[serverMessage]) ||
+        "User Signup failed. Please try again.",
+    }));
+  });
+
   };
   return (
     <div className={styles.signup}>

@@ -119,6 +119,9 @@
         clip-path: polygon(0 70px, 65px 0, 100% 0, 100% calc(100% - 70px), calc(100% - 70px) 100%, 0 100%, 0 70px);
         padding: 40px 50px;
         border-radius: 12px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         transition: .3s ease-in-out;
 
         @media (max-width:1600px) {
@@ -182,36 +185,6 @@
                 }
             }
 
-            .buttonAlignment {
-                padding: 40px 0 0 0;
-                display: flex;
-                justify-content: center;
-
-                @include respond-to("sm") {
-                    padding: 20px 0 0 0;
-                }
-
-                button {
-                    border: 1px solid var(--border-light);
-                    border-radius: 999px;
-                    padding: 10px 20px;
-                    display: flex;
-                    cursor: pointer;
-                    align-items: center;
-                    @include font16normal;
-                    gap: 6px;
-                    background-color: transparent;
-
-                    span {
-                        background: var(--button-gradient);
-                        background-clip: text;
-                        -webkit-background-clip: text;
-                        -webkit-text-fill-color: transparent;
-                        display: block;
-                    }
-                }
-            }
-
             p {
                 @include font16normal;
                 color: var(--grey-600);
@@ -222,6 +195,36 @@
                 -webkit-line-clamp: 3;
                 -webkit-box-orient: vertical;
                 overflow: hidden;
+            }
+        }
+
+        .buttonAlignment {
+            padding: 40px 0 0 0;
+            display: flex;
+            justify-content: center;
+
+            @include respond-to("sm") {
+                padding: 20px 0 0 0;
+            }
+
+            button {
+                border: 1px solid var(--border-light);
+                border-radius: 999px;
+                padding: 10px 20px;
+                display: flex;
+                cursor: pointer;
+                align-items: center;
+                @include font16normal;
+                gap: 6px;
+                background-color: transparent;
+
+                span {
+                    background: var(--button-gradient);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+                    display: block;
+                }
             }
         }
     }
@@ -239,5 +242,14 @@
 
     @include respond-to("sm") {
         grid-template-columns: repeat(1, 1fr);
+    }
+
+    a {
+        height: 100%;
+        display: block;
+
+        .card {
+            height: 100%;
+        }
     }
 }

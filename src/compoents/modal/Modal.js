@@ -25,17 +25,10 @@ const Modal = ({ isOpen, onClose, children, title, showCloseButton = true }) => 
     };
   }, [isOpen, onClose]);
 
-  // Handle overlay click
-  const handleOverlayClick = (e) => {
-    if (e.target === e.currentTarget) {
-      onClose();
-    }
-  };
-
   if (!isOpen) return null;
 
   return ReactDOM.createPortal(
-    <div className={styles.modalOverlay} onClick={handleOverlayClick}>
+    <div className={styles.modalOverlay}>
       <div
         className={styles.modalContent}
         role="dialog"

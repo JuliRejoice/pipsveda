@@ -104,15 +104,6 @@ export function PreventProvider({ children }) {
 
   // Blackout overlay style
   const blackoutStyle = {
-    position: "fixed",
-    top: 0,
-    left: 0,
-    width: "100vw",
-    height: "100vh",
-    background: "#000",
-    zIndex: 9999,
-    pointerEvents: "none",
-    transition: "opacity 0.3s",
     opacity: showBlackout ? 1 : 0,
   };
   console.log(showBlackout);
@@ -120,7 +111,7 @@ export function PreventProvider({ children }) {
   return (
     <PreventContext.Provider value={{ prevent: true }}>
       {/* Blackout overlay */}
-      <div style={blackoutStyle}></div>
+      <div style={blackoutStyle} className="blocker"></div>
       {/* Wrap children in a sensitive-content div for visibility control */}
       <div id="sensitive-content">{children}</div>
     </PreventContext.Provider>

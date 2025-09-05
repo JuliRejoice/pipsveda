@@ -80,8 +80,6 @@ export default function     RecentCourse({ selectedTab, courseType, setCourseTyp
         }
       };
       
-      
-
     useEffect(() => {
         fetchCourses(1);
     }, [searchQuery, selectedTab]);

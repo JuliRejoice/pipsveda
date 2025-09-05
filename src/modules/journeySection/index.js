@@ -73,7 +73,7 @@ export default function JourneySection() {
                   <div>
                     <img src={MessageIcon} alt="MessageIcon" />
                   </div>
-                  <div>
+                  <div className={styles.cardmiddlecontent}>
                     <h3>Join Telegram Group</h3>
                     <p>
                       Connect with 15,000+ active traders for daily insights and

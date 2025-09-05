@@ -34,23 +34,32 @@ export default function ResetPassword() {
         setError(null);
 
         forgetPassword({ email })
-            .then((data) => {
-                if(data.success) {
-                    localStorage.setItem('email', email);
-                    toast.success('OTP sent successfully.');
-                    router.push('/otp-verification');
-                }
-                else{
-                    toast.error(errorMessages[data.message] || 'Failed to send reset email. Please try again.');
-                }
-            })
-            .catch((error) => {
-                console.error('Password reset error:', error);
-                setError(error.message || 'Failed to send reset email. Please try again.');
-            })
-            .finally(() => {
-                setIsLoading(false);
-            });
+        .then((data) => {
+          if (data.success) {
+            localStorage.setItem("email", email);
+            toast.success("OTP sent successfully.");
+            router.push("/otp-verification");
+          } else {
+            toast.error(
+              errorMessages[data.message] || "Failed to send reset email. Please try again."
+            );
+          }
+        })
+        .catch((error) => {
+          console.error("Password reset error:", error);
+      
+          const serverMessage = error.response?.data?.message;
+      
+          if (serverMessage && errorMessages[serverMessage]) {
+            toast.error(errorMessages[serverMessage]);
+          } else {
+            toast.error("Failed to send reset email. Please try again.");
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+      
     };
 
     return (

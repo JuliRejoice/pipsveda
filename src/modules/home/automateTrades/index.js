@@ -8,6 +8,7 @@ import OutlineButton from '@/compoents/outlineButton';
 import { getAlgobot } from '@/compoents/api/algobot';
 import { useRouter } from 'next/navigation';
 import { getCookie } from '../../../../cookie';
+import { getBots } from '@/compoents/api/dashboard';
 
 const containerVariants = {
   hidden: {},
@@ -45,10 +46,11 @@ export default function AutomateTrades() {
   useEffect(() => {
     const fetchAlgobotData = async () => {
       try {
-        const response = await getAlgobot();
+        const response = await getBots();
+        console.log(response)
         // Flatten the strategies array from all categories
-        const allStrategies = response.payload.flatMap(category => category.strategies);
-        setAlgobotData(allStrategies.slice(0, 3)); // Get first 3 strategies
+        const allStrategies = response.payload.data;
+        setAlgobotData(allStrategies); // Get first 3 strategies
       } catch (error) {
         console.error("Error fetching data:", error);
       }

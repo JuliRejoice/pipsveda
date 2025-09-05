@@ -307,4 +307,128 @@
         margin-top: 1rem;
     }
 
+    .downloadButton {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+        
+        &:hover {
+            background-color: #f0f0f0;
+        }
+        
+        svg {
+            width: 18px;
+            height: 18px;
+            fill: #4CAF50;
+        }
+    }
+
+    table {
+        th, td {
+            &:last-child {
+                text-align: center;
+                min-width: 60px;
+            }
+        }
+    }
 }
+
+/* src/components/InvoiceTemplate/InvoiceTemplate.module.css */
+.invoiceContainer {
+    width: 100%;
+    max-width: 595px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Helvetica', Arial, sans-serif;
+    color: #333;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #3B82F6;
+  }
+  
+  .invoiceTitle {
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .details {
+    margin-bottom: 20px;
+  }
+  
+  .label {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+  }
+  
+  .billTo {
+    margin: 30px 0;
+  }
+  
+  .sectionTitle {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .itemsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  .itemsTable th {
+    background-color: #F3F4F6;
+    text-align: left;
+    padding: 10px;
+    font-weight: 600;
+  }
+  
+  .itemsTable td {
+    padding: 15px 10px;
+    border-bottom: 1px solid #E5E7EB;
+  }
+  
+  .totalSection {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+    padding-top: 10px;
+    border-top: 1px solid #E5E7EB;
+    font-weight: bold;
+  }
+  
+  .paymentStatus {
+    color: #10B981;
+    font-weight: 500;
+    margin: 5px 0;
+  }
+  
+  .validity {
+    color: #374151;
+    font-size: 12px;
+    margin: 5px 0 30px;
+  }
+  
+  .footer {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 12px;
+    color: #6B7280;
+    line-height: 1.6;
+  }

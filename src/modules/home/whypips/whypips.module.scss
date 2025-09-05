@@ -138,6 +138,7 @@
                 transition: .3s ease-in-out;
                 padding: 30px;
                 position: relative;
+                height: 100%;
                 @include first-clip-path;
                 z-index: 2;
 

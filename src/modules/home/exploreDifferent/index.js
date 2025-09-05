@@ -95,7 +95,7 @@ export default function ExploreDifferent() {
             image: CardImage1,
             courses: `${courses?.recorded?.length} Recorded Courses`,
             icon: BookIcon,
-            link:"/our-course?course=recorded"
+            link: "/our-course?course=recorded"
         },
         {
             id: 2,
@@ -105,7 +105,7 @@ export default function ExploreDifferent() {
             image: CardImage3,
             courses: `${courses?.live?.length} Live Sessions`,
             icon: BookIcon,
-            link:"/our-course?course=live"
+            link: "/our-course?course=live"
         },
         {
             id: 3,
@@ -115,11 +115,11 @@ export default function ExploreDifferent() {
             image: CardImage2,
             courses: `${courses?.physical?.length} In-Person Programs`,
             icon: BookIcon,
-            link:"/our-course?course=physical"
+            link: "/our-course?course=physical"
         },
-        
+
     ];
-   
+
 
     return (
         <motion.div
@@ -159,18 +159,21 @@ export default function ExploreDifferent() {
                                     delay: 0.4 + (index * 0.1)
                                 }}
                             >
-                               <Link href={card.link}>
-                                <div className={styles.card}>
-                                    <motion.div
-                                        className={styles.image}
-                                        whileHover={{ scale: 1.03 }}
-                                        transition={{ type: "spring", stiffness: 300 }}
-                                    >
-                                        <img src={card.image} alt={card.title} />
-                                    </motion.div>
-                                    <div className={styles.details}>
-                                        <h2>{card.title}</h2>
-                                        <p>{card.description}</p>
+                                <Link href={card.link}>
+                                    <div className={styles.card}>
+                                        <div>
+                                            <motion.div
+                                                className={styles.image}
+                                                whileHover={{ scale: 1.03 }}
+                                                transition={{ type: "spring", stiffness: 300 }}
+                                            >
+                                                <img src={card.image} alt={card.title} />
+                                            </motion.div>
+                                            <div className={styles.details}>
+                                                <h2>{card.title}</h2>
+                                                <p>{card.description}</p>
+                                            </div>
+                                        </div>
                                         <div className={styles.buttonAlignment}>
                                             <motion.button
                                                 whileHover={{ scale: 1.05 }}
@@ -181,11 +184,10 @@ export default function ExploreDifferent() {
                                             </motion.button>
                                         </div>
                                     </div>
-                                </div>
                                 </Link>
                             </motion.div>
                         ))}
-                   </div>
+                    </div>
                 </motion.div>
             </div>
         </motion.div>

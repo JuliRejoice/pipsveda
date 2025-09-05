@@ -1,73 +1,41 @@
-import { getCookie } from "../../../cookie";
-
-const BASEURL = process.env.NEXT_PUBLIC_BASE_URL;
-export const getAuthToken = () => {
-    if (typeof window !== 'undefined') {
-        return getCookie('userToken');
-    }
-    return null;
-};
+import api from "@/utils/axiosInstance";
 
 export const getCourses = async ({
-  page = 1,
-  limit = 10,
-  searchQuery = "",
-  courseType = "",
-  id = ""
-}) => {
-  try {
-    const token = getAuthToken();
-
-    const headers = {
-      "Content-Type": "application/json",
-    };
-
-    if (token) {
-      headers["x-auth-token"] = token;
+    page = 1,
+    limit = 10,
+    searchQuery = "",
+    courseType = "",
+    id = "",
+  }) => {
+    try {
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: limit.toString(),
+      });
+  
+      if (searchQuery) {
+        params.append("search", searchQuery);
+      }
+      if (courseType) {
+        params.append("courseType", courseType);
+      }
+      if (id) {
+        params.append("id", id);
+      }
+  
+      const response = await api.get(`/course/getAllCourse?${params.toString()}`);
+  
+      return response.data;
+    } catch (error) {
+      console.error("Error fetching courses", error);
+      throw error;
     }
-
-    const params = new URLSearchParams({
-      page: page.toString(),
-      limit: limit.toString(),
-    });
-
-    if (searchQuery) {
-      params.append("search", searchQuery); 
-    }
-    if (courseType) {
-      params.append("courseType", courseType);
-    }
-    if (id) {
-      params.append("id", id);
-    }
-
-    const response = await fetch(
-      `${BASEURL}/course/getAllCourse?${params.toString()}`,
-      { method: "GET", headers }
-    );
-
-    if (!response.ok) {
-      throw new Error("Failed to fetch courses");
-    }
-
-    return response.json();
-  } catch (error) {
-    console.error("Error fetching courses", error);
-    throw error;
-  }
-};
+  };
 
 export const getCourseByType = async () => {
     try {
-        const token = getAuthToken();
-        const headers = {};
-
-        if (token) {
-            headers['x-auth-token'] = token;
-        }
-
-        const res = await fetch(`${BASEURL}/course/getCoueseByType`, { headers });
-        const data = await res.json();
+        const res = await api.get(`/course/getCoueseByType`);
+        const data = await res.data;
         return data;
     } catch (error) {
         console.error("Error fetching courses by type", error);
@@ -77,16 +45,8 @@ export const getCourseByType = async () => {
 
 export const getChapters = async (id) => {
     try {
-        const token = getAuthToken();
-        const headers = {};
-
-        if (token) {
-            headers['x-auth-token'] = token;
-        }
-
-
-        const res = await fetch(`${BASEURL}/chapter/getChapterByCourse?courseId=${id}&sortBy=chapterNo&sortOrder=1`, { headers });
-        const data = await res.json();
+        const res = await api.get(`/chapter/getChapterByCourse?courseId=${id}&sortBy=chapterNo&sortOrder=1`);
+        const data = await res.data;
         return data;
     } catch (error) {
         console.error("Error fetching chapters", error);
@@ -96,54 +56,41 @@ export const getChapters = async (id) => {
 
 export const getTrendingOrPopularCourses = async ({ type, searchQuery = "" }) => {
     try {
-      const token = getAuthToken();
-      const headers = {};
-  
-      if (token) {
-        headers["x-auth-token"] = token;
-      }
-  
-      // Build query string dynamically
-      let url = `${BASEURL}/course/getDefineCourse?type=${type}`;
+      let url = `/course/getDefineCourse?type=${type}`;
       if (searchQuery.trim()) {
         url += `&search=${encodeURIComponent(searchQuery)}`;
       }
   
-      const res = await fetch(url, { headers });
-      const data = await res.json();
+      const res = await api.get(url);
+      const data = await res.data;
       return data;
     } catch (error) {
       console.error("Error fetching trending/popular courses", error);
       throw error;
     }
   };
+
+  export const getBots = async () => {
+    try {
+        const res = await api.get(`/strategies?page=1&limit=3`);
+        const data = await res.data;
+        console.log(data)
+        return data;
+    } catch (error) {
+        console.error("Error fetching bots", error);
+        throw error;
+    }
+}
   
 
 export const getPaymentUrl = async (data) => {
     try {
-        const token = getAuthToken();
-        const headers = {
-            'Content-Type': 'application/json'
-        };
-
-        if (token) {
-            headers['x-auth-token'] = token;
-        }
-
-        const response = await fetch(
-            `${BASEURL}/payment/createPayment`,
-            {
-                method: 'POST',
-                headers: headers,
-                body: JSON.stringify(data)
-            }
+        const response = await api.post(
+            `/payment/createPayment`,
+            data
         );
         
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        
-        const responseData = await response.json();
+        const responseData = await response.data;
         return responseData;
     } catch (error) {
         console.error("Error creating payment URL:", error);
@@ -153,8 +100,8 @@ export const getPaymentUrl = async (data) => {
 
 export const getUtilityData = async () => {
     try {
-        const res = await fetch(`${BASEURL}/utilitySetting/`);
-        const data = await res.json();
+        const res = await api.get(`/utilitySetting/`);
+        const data = await res.data;
         return data;
     } catch (error) {
         console.error("Error fetching utility data", error);
@@ -164,25 +111,11 @@ export const getUtilityData = async () => {
 
 export const createNewsLetter = async (formData) => {
     try {
-        const token = getAuthToken();
-        const headers = {
-            'Content-Type': 'application/json'
-        };
-        if (token) {
-            headers['x-auth-token'] = token;
-        }
-        const response = await fetch(
-            `${BASEURL}/newsletter/createNewsLetter`,
-            {
-                method: 'POST',
-                headers: headers,
-                body: JSON.stringify(formData)
-            }
+        const response = await api.post(
+            `/newsletter/createNewsLetter`,
+            formData
         );
-        if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const responseData = await response.json();
+        const responseData = await response.data;
         return responseData;
     } catch (error) {
         console.error("Error creating newsletter:", error);
@@ -191,15 +124,9 @@ export const createNewsLetter = async (formData) => {
 }
 
 export const getDashboardData = async () => {
-    const token = getAuthToken();   
-    const headers = {};
-
-    if (token) {
-        headers['x-auth-token'] = token;
-    }
     try {
-        const res = await fetch(`${BASEURL}/payment/getUserDashHistory`, { headers });
-        const data = await res.json();
+        const res = await api.get(`/payment/getUserDashHistory`);
+        const data = await res.data;
         return data;
     } catch (error) {
         console.error("Error fetching dashboard data", error);
@@ -208,15 +135,9 @@ export const getDashboardData = async () => {
 }
 
 export const getSessionData = async (id) => {
-    const token = getAuthToken();   
-    const headers = {};
-
-    if (token) {
-        headers['x-auth-token'] = token;
-    }
     try {
-        const res = await fetch(`${BASEURL}/sesstion/getSessionByCourse?courseId=${id}`, { headers });
-        const data = await res.json();
+        const res = await api.get(`/sesstion/getSessionByCourse?courseId=${id}`);
+        const data = await res.data;
         return data;
     } catch (error) {
         console.error("Error fetching dashboard data", error);
@@ -224,16 +145,11 @@ export const getSessionData = async (id) => {
     }
 }
 
-export const getTelegramChannels = async (id,searchQuery) => {
-    const token = getAuthToken();   
-    const headers = {};
 
-    if (token) {
-        headers['x-auth-token'] = token;
-    }
+export const getTelegramChannels = async (id,searchQuery) => {
     try {
-        const res = await fetch(`${BASEURL}/telegram/getAllTelegram${id ? `?id=${id}` : searchQuery ? `?search=${searchQuery}` : ''}`, { headers });
-        const data = await res.json();
+        const res = await api.get(`/telegram/getAllTelegram${id ? `?id=${id}` : searchQuery ? `?search=${searchQuery}` : ''}`);
+        const data = await res.data;
         return data;
     } catch (error) {
         console.error("Error fetching dashboard data", error);

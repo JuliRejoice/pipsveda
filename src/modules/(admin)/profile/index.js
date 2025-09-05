@@ -5,7 +5,7 @@ import Breadcumbs from '../breadcumbs';
 import Input from '@/compoents/input';
 import Button from '@/compoents/button';
 import { getCookie, setCookie } from '../../../../cookie';
-import { editProfile } from '@/compoents/api/auth';
+import { editProfile, getProfile } from '@/compoents/api/auth';
 import toast from 'react-hot-toast';
 import Dropdownarrow from '@/icons/dropdownarrow';
 import { regions } from '@/regions';
@@ -37,28 +37,31 @@ export default function Profile() {
     const genderRef = useRef(null);
     
     useEffect(() => {
-        fetchProfile();
+        fetchProfile(); 
     }, []);
 
     const fetchProfile = async () => {
         const userData = getCookie("user");
-        const parsedUser = JSON.parse(userData);
-        setUser(parsedUser);
-        setInitialUserData(parsedUser);
+        const parsedUser = JSON.parse(userData)._id;
+        console.log(parsedUser);
+        const response = await getProfile(parsedUser);
+        const user = response.payload.data[0];
+        setUser(user);
+        setInitialUserData(user);
 
-        // Birthdate
-        if (parsedUser?.birthday) {
-            setBirthDate(new Date(parsedUser.birthday));
+        // Set birthdate if available
+        if (user?.birthday) {
+            setBirthDate(new Date(user.birthday));
         }
 
-        // Country Code
-        if (parsedUser?.countryCode) {
-            setSelectedCountryCode(parsedUser.countryCode);
+        // Set country code if available
+        if (user?.countryCode) {
+            setSelectedCountryCode(user.countryCode);
         }
 
-        // Gender
-        if (parsedUser?.gender) {
-            setSelectedGender(parsedUser.gender);
+        // Set gender if available
+        if (user?.gender) {
+            setSelectedGender(user.gender);
         }
     };
 

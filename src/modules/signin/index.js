@@ -56,16 +56,28 @@ export default function Signin() {
     setIsSubmitting(true);
     try {
       const data = await signIn(email, password);
+      console.log("data", data);
+    
       if (data.success) {
-        toast.success('Login successfully.');
+        toast.success("Login successfully.");
         setCookie("userToken", data.payload.token);
         setCookie("user", data.payload);
         router.push("/course");
       } else {
+        // handle case where API responds with success=false
         toast.error(errorMessages[data?.message] ?? "Login failed. Please try again.");
       }
     } catch (error) {
-      toast.error("An error occurred. Please try again.");
+      console.error("Login error:", error);
+    
+      // axios puts the server error here
+      const serverMessage = error.response?.data?.message;
+    
+      if (serverMessage && errorMessages[serverMessage]) {
+        toast.error(errorMessages[serverMessage]);
+      } else {
+        toast.error("An error occurred. Please try again.");
+      }
     } finally {
       setIsSubmitting(false);
     }

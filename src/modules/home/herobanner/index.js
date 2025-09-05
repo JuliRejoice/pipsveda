@@ -145,7 +145,7 @@ export default function Herobanner() {
               </motion.div>
 
               <h1>
-                Pips Veda the Markets Build  <br /> a Financial Future That Lasts
+                Pips Veda the Markets Build a Financial Future That Lasts
               </h1>
 
               <motion.p

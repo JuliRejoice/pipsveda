@@ -35,6 +35,7 @@ function TelegramDetails({ id }) {
     const [paymentStatus, setPaymentStatus] = useState('');
     const [commonDiscount, setCommonDiscount] = useState(0); // 10% common discount
     const [appliedCoupon, setAppliedCoupon] = useState(null);
+    const [telegramId, setTelegramId] = useState('');
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -94,6 +95,7 @@ function TelegramDetails({ id }) {
             priceAfterCommonDiscount: priceAfterCommonDiscount
         });
         
+        setTelegramId('');
         setCoupon('');
         setDiscount(commonDiscountAmount);
         setError('');
@@ -143,7 +145,10 @@ function TelegramDetails({ id }) {
     };
 
     const handlePurchase = async () => {
-        if (!selectedPlan) return;
+        if (!selectedPlan || !telegramId.trim()) {
+            setError(telegramId.trim() ? 'Please enter your Telegram ID' : 'Please enter your Telegram ID');
+            return;
+        }
 
         try {
             setIsProcessingPayment(true);
@@ -151,6 +156,7 @@ function TelegramDetails({ id }) {
 
             const orderData = {
                 telegramPlanId: selectedPlan._id,
+                telegramAccountNo: telegramId.trim(),
                 couponId: couponId || undefined,
                 success_url: window.location.href,
                 cancel_url: window.location.href
@@ -161,8 +167,6 @@ function TelegramDetails({ id }) {
                 router.replace(response?.payload?.data?.checkout_url);
                 setIsModalOpen(false);
             } else {
-
-
                 setError(response.message || 'Failed to process payment');
             }
         } catch (error) {
@@ -223,15 +227,19 @@ function TelegramDetails({ id }) {
 
         const modalContent = paymentStatus === 'success' ? (
             <div className={styles.paymentModalContent}>
+                <div className={styles.paymentModaltitlecontent}>
                 <img src={SuccessIcon} alt="Success" className={styles.paymentIcon} />
                 <h3>Payment Successful!</h3>
                 <p>Thank you for your purchase. Please check your email for the download link.</p>
+                </div>
             </div>
         ) : (
             <div className={styles.paymentModalContent}>
+                <div className={styles.paymentModaltitlecontent}>
                 <img src={ErrorIcon} alt="Cancelled" className={styles.paymentIcon} />
                 <h3>Payment Cancelled</h3>
                 <p>Your payment was not completed. Please try again to purchase.</p>
+                </div>
                 <div className={styles.modalButtons}>
                     <OutlineButton
                         text="Try Again"
@@ -316,6 +324,16 @@ function TelegramDetails({ id }) {
             >
                 {selectedPlan && (
                     <div className={styles.modalContent}>
+                           <div className={styles.telegramIdSection}>
+                            <Input
+                                type="text"
+                                placeholder="Enter your Telegram ID"
+                                value={telegramId}
+                                onChange={(e) => setTelegramId(e.target.value)}
+                                className={styles.couponInput}
+                                required
+                            />
+                        </div>
                         <div className={styles.planInfo}>
                             <h3>{selectedPlan.planType} Plan</h3>
                             <p>
@@ -342,6 +360,8 @@ function TelegramDetails({ id }) {
                                 <span>${selectedPlan.totalPrice?.toFixed(2) || '0.00'}</span>
                             </h4>
                         </div>
+
+                    
 
                         <div className={styles.couponSection}>
                             <Input
