@@ -80,6 +80,42 @@ export default function Whypips() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
+  // 3D tilt handlers (no HTML structure changes)
+  const maxTilt = 12; // degrees
+
+  const handleMouseEnter = (e) => {
+    const el = e.currentTarget;
+    el.style.willChange = 'transform';
+    el.style.transition = 'transform 120ms ease-out';
+    // Ensure perspective is applied before move
+    if (!el.style.transform || !el.style.transform.includes('perspective')) {
+      el.style.transform = 'perspective(900px)';
+    }
+  };
+
+  const handleMouseMove = (e) => {
+    const el = e.currentTarget;
+    const rect = el.getBoundingClientRect();
+    const x = e.clientX - rect.left; // x within element
+    const y = e.clientY - rect.top;  // y within element
+
+    const px = (x / rect.width) - 0.5;  // -0.5 to 0.5
+    const py = (y / rect.height) - 0.5; // -0.5 to 0.5
+
+    const rotateY = px * (maxTilt * 2);     // left(-) to right(+)
+    const rotateX = -py * (maxTilt * 2);    // top(+) to bottom(-)
+
+    el.style.transition = 'transform 40ms linear';
+    el.style.transform = `perspective(900px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.03, 1.03, 1.03)`;
+  };
+
+  const handleMouseLeave = (e) => {
+    const el = e.currentTarget;
+    el.style.transition = 'transform 180ms ease-out';
+    el.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+    el.style.willChange = 'auto';
+  };
+
   return (
     <div className={styles.whypips}>
       <div className={styles.bottomVec}>
@@ -113,6 +149,10 @@ export default function Whypips() {
               key={card.id}
               className={styles.griditemsmain}
               variants={cardVariants}
+              onMouseEnter={handleMouseEnter}
+              onMouseMove={handleMouseMove}
+              onMouseLeave={handleMouseLeave}
+              style={{ transformStyle: 'preserve-3d' }}
             >
               <div className={styles.griditems}>
                 <div className={styles.iconCenter}>

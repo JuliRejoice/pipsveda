@@ -58,6 +58,24 @@ export default function AutomateTrades() {
     fetchAlgobotData();
   }, []);
 
+  const handleTilt = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width;
+    const y = (e.clientY - rect.top) / rect.height;
+    const rotateY = (x - 0.5) * 18; // left/right
+    const rotateX = (0.5 - y) * 18; // up/down
+    card.style.transition = 'transform 60ms ease-out';
+    card.style.transformStyle = 'preserve-3d';
+    card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+  };
+
+  const resetTilt = (e) => {
+    const card = e.currentTarget;
+    card.style.transition = 'transform 300ms ease';
+    card.style.transform = '';
+  };
+
   return (
     <div className={styles.automateTrades}>
       <div className="container" ref={ref}>
@@ -84,6 +102,9 @@ export default function AutomateTrades() {
               className={styles.mainCard}
               key={strategy._id}
               variants={cardVariants}
+              onMouseMove={handleTilt}
+              onMouseLeave={resetTilt}
+              style={{ willChange: 'transform' }}
             >
               <div className={styles.card}>
                 <div className={styles.textstyle}>

@@ -1,6 +1,6 @@
 'use client';
 import React, { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, useMotionValue, useSpring } from 'framer-motion';
 import styles from './ourStudents.module.scss';
 import Slider from 'react-slick';
 import StarIcon from '@/icons/starIcon';
@@ -91,6 +91,28 @@ export default function OurStudents() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
+  // Hover tilt state
+  const [hoveredCardId, setHoveredCardId] = React.useState(null);
+  const [tilt, setTilt] = React.useState({ rotateX: 0, rotateY: 0, scale: 1 });
+
+  const handleMouseMove = (e, id) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width; // 0 to 1
+    const y = (e.clientY - rect.top) / rect.height; // 0 to 1
+
+    const rotateMax = 10; // intensity
+    const rotateY = (x - 0.5) * 2 * rotateMax; // left/right
+    const rotateX = -(y - 0.5) * 2 * rotateMax; // top/bottom
+
+    setHoveredCardId(id);
+    setTilt({ rotateX, rotateY, scale: 1.03 });
+  };
+
+  const handleMouseLeave = () => {
+    setHoveredCardId(null);
+    setTilt({ rotateX: 0, rotateY: 0, scale: 1 });
+  };
+
   const settings = {
     dots: false,
     infinite: true,
@@ -137,6 +159,17 @@ export default function OurStudents() {
               variants={cardVariants}
               initial="hidden"
               animate={isInView ? 'visible' : 'hidden'}
+              onMouseMove={(e) => handleMouseMove(e, testimonial.id)}
+              onMouseLeave={handleMouseLeave}
+              transition={{ type: 'spring', stiffness: 200, damping: 15, mass: 0.5 }}
+              style={{
+                transformPerspective: 800,
+                transformStyle: 'preserve-3d',
+                rotateX: hoveredCardId === testimonial.id ? tilt.rotateX : 0,
+                rotateY: hoveredCardId === testimonial.id ? tilt.rotateY : 0,
+                scale: hoveredCardId === testimonial.id ? tilt.scale : 1,
+                willChange: 'transform',
+              }}
             >
               <div className={styles.whiteBox}>
                 <img src={SqureIcon} alt="SqureIcon" />

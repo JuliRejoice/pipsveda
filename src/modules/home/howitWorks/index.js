@@ -63,8 +63,15 @@ export default function HowitWorks() {
             </p>
           </motion.div>
 
-          <motion.div className={styles.image} variants={itemVariants}>
-            <img src={ProcessOne} alt="ProcessOne" />
+          <motion.div className={styles.image} variants={itemVariants} style={{ perspective: 1000 }}>
+            <motion.img
+              src={ProcessOne}
+              alt="ProcessOne"
+              style={{ transformPerspective: 800, transformStyle: 'preserve-3d', willChange: 'transform' }}
+              whileHover={{ rotateX: -6, rotateY: 8, scale: 1.03 }}
+              whileTap={{ scale: 0.98 }}
+              transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+            />
             <h5>2</h5>
           </motion.div>
 
@@ -85,9 +92,16 @@ export default function HowitWorks() {
         >
           <motion.div className={styles.first} variants={itemVariants}>
             <div className={styles.dot}></div>
-            <div className={styles.image}>
+            <div className={styles.image} style={{ perspective: 1000 }}>
               <h5>1</h5>
-              <img src={ProcessOne} alt="ProcessOne" />
+              <motion.img
+                src={ProcessOne}
+                alt="ProcessOne"
+                style={{ transformPerspective: 800, transformStyle: 'preserve-3d', willChange: 'transform' }}
+                whileHover={{ rotateX: -6, rotateY: 8, scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              />
             </div>
           </motion.div>
 
@@ -104,9 +118,16 @@ export default function HowitWorks() {
 
           <motion.div className={styles.first} variants={itemVariants}>
             <div className={styles.dot}></div>
-            <div className={styles.image}>
+            <div className={styles.image} style={{ perspective: 1000 }}>
               <h5>3</h5>
-              <img src={ProcessOne} alt="ProcessOne" />
+              <motion.img
+                src={ProcessOne}
+                alt="ProcessOne"
+                style={{ transformPerspective: 800, transformStyle: 'preserve-3d', willChange: 'transform' }}
+                whileHover={{ rotateX: -6, rotateY: 8, scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              />
             </div>
           </motion.div>
         </motion.div>
@@ -121,7 +142,14 @@ export default function HowitWorks() {
                 Create your account and select from our comprehensive course catalog tailored to your 
                 skill level.
               </p>
-              <img src={ProcessOne} alt='ProcessOne'/>
+              <motion.img
+                src={ProcessOne}
+                alt='ProcessOne'
+                style={{ transformPerspective: 800, transformStyle: 'preserve-3d', willChange: 'transform' }}
+                whileHover={{ rotateX: -6, rotateY: 8, scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              />
             </div>
             <div className={styles.mainGridItems}>
               <h4>2</h4>
@@ -132,7 +160,14 @@ export default function HowitWorks() {
                 Create your account and select from our comprehensive course catalog tailored to your 
                 skill level.
               </p>
-              <img src={ProcessOne} alt='ProcessOne'/>
+              <motion.img
+                src={ProcessOne}
+                alt='ProcessOne'
+                style={{ transformPerspective: 800, transformStyle: 'preserve-3d', willChange: 'transform' }}
+                whileHover={{ rotateX: -6, rotateY: 8, scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              />
             </div>
             <div className={styles.mainGridItems}>
               <h4>3</h4>
@@ -143,7 +178,14 @@ export default function HowitWorks() {
                 Create your account and select from our comprehensive course catalog tailored to your 
                 skill level.
               </p>
-              <img src={ProcessOne} alt='ProcessOne'/>
+              <motion.img
+                src={ProcessOne}
+                alt='ProcessOne'
+                style={{ transformPerspective: 800, transformStyle: 'preserve-3d', willChange: 'transform' }}
+                whileHover={{ rotateX: -6, rotateY: 8, scale: 1.03 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              />
             </div>
           </div>
         </div>
