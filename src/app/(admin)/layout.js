@@ -1,5 +1,4 @@
 'use client'
-import AdminHeader from '@/compoents/adminHeader'
 import AdminTabHeader from '@/compoents/adminTabHeader'
 import Sidebar from '@/compoents/sidebar'
 import React, { useState } from 'react'

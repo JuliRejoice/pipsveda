@@ -8,8 +8,7 @@ import { AuthProvider } from "@/context/AuthContext";
 import { Toaster } from "react-hot-toast";
 import { Suspense } from "react";
 import Loader from "@/compoents/loader";
-import { PreventProvider } from "@/context/PreventContext";
-
+  
 const lexend = Lexend({
   variable: "--font-lexend",
   subsets: ["latin"],
@@ -37,13 +36,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${lexend.variable} ${funneldisplay.variable}`}>
         <Suspense fallback={<div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}><Loader /></div>}>
-
-          <PreventProvider className="watermark">
-            <AuthProvider>
-              {children}
-            </AuthProvider>
-
-          </PreventProvider>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
         </Suspense>
         <Toaster
           position="top-center"
