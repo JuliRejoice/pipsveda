@@ -159,30 +159,178 @@ export default function ExploreDifferent() {
                                     duration: 0.5,
                                     delay: 0.4 + (index * 0.1)
                                 }}
+                                whileHover={{
+                                    rotateY: 8,
+                                    rotateX: 3,
+                                    scale: 1.03,
+                                    y: -8,
+                                    z: 100,
+                                    transition: {
+                                        type: "spring",
+                                        stiffness: 200,
+                                        damping: 25,
+                                        mass: 0.8
+                                    }
+                                }}
+                              
+                                style={{
+                                    perspective: 1200,
+                                    transformStyle: "preserve-3d"
+                                }}
                             >
                                <Link href={card.link}>
-                                <div className={styles.card}>
+                                <motion.div 
+                                    className={styles.card}
+                                    whileHover={{
+                                        transition: {
+                                            type: "spring",
+                                            stiffness: 200,
+                                            damping: 25
+                                        }
+                                    }}
+                                    transition={{
+                                        type: "spring",
+                                        stiffness: 600,
+                                        damping: 40
+                                    }}
+                                >
                                     <motion.div
                                         className={styles.image}
-                                        whileHover={{ scale: 1.03 }}
-                                        transition={{ type: "spring", stiffness: 300 }}
+                                        whileHover={{ 
+                                            scale: 1.08,
+                                            rotateY: -5,
+                                            rotateX: 2,
+                                            y: -3,
+                                            z: 20,
+                                            transition: {
+                                                type: "spring",
+                                                stiffness: 300,
+                                                damping: 30,
+                                                mass: 0.6
+                                            }
+                                        }}
+                                        transition={{
+                                            type: "spring",
+                                            stiffness: 700,
+                                            damping: 50,
+                                            mass: 0.2
+                                        }}
                                     >
-                                        <img src={card.image} alt={card.title} />
+                                        <motion.img 
+                                            src={card.image} 
+                                            alt={card.title}
+                                            whileHover={{
+                                                scale: 1.1,
+                                                rotateZ: 1,
+                                                filter: "brightness(1.1) contrast(1.05)",
+                                                transition: {
+                                                    type: "spring",
+                                                    stiffness: 400,
+                                                    damping: 25
+                                                }
+                                            }}
+                                            transition={{
+                                                type: "spring",
+                                                stiffness: 800,
+                                                damping: 60
+                                            }}
+                                        />
                                     </motion.div>
-                                    <div className={styles.details}>
-                                        <h2>{card.title}</h2>
-                                        <p>{card.description}</p>
+                                    <motion.div 
+                                        className={styles.details}
+                                        whileHover={{
+                                            y: -8,
+                                            z: 10,
+                                            transition: {
+                                                type: "spring",
+                                                stiffness: 300,
+                                                damping: 25
+                                            }
+                                        }}
+                                        transition={{
+                                            type: "spring",
+                                            stiffness: 700,
+                                            damping: 50
+                                        }}
+                                    >
+                                        <motion.h2
+                                            whileHover={{
+                                                scale: 1.02,
+                                                y: -2,
+                                                transition: {
+                                                    type: "spring",
+                                                    stiffness: 400,
+                                                    damping: 20
+                                                }
+                                            }}
+                                            transition={{
+                                                type: "spring",
+                                                stiffness: 800,
+                                                damping: 60
+                                            }}
+                                        >
+                                            {card.title}
+                                        </motion.h2>
+                                        <motion.p
+                                            whileHover={{
+                                                y: -1,
+                                                transition: {
+                                                    type: "spring",
+                                                    stiffness: 400,
+                                                    damping: 25
+                                                }
+                                            }}
+                                            transition={{
+                                                type: "spring",
+                                                stiffness: 800,
+                                                damping: 60
+                                            }}
+                                        >
+                                            {card.description}
+                                        </motion.p>
                                         <div className={styles.buttonAlignment}>
                                             <motion.button
-                                                whileHover={{ scale: 1.05 }}
+                                                whileHover={{ 
+                                                    scale: 1.1,
+                                                    y: -3,
+                                                    rotateX: 5,
+                                                    boxShadow: "0 8px 20px rgba(0,0,0,0.1)",
+                                                    transition: {
+                                                        type: "spring",
+                                                        stiffness: 400,
+                                                        damping: 20
+                                                    }
+                                                }}
+                                                transition={{
+                                                    type: "spring",
+                                                    stiffness: 700,
+                                                    damping: 50
+                                                }}
                                                 whileTap={{ scale: 0.95 }}
                                             >
-                                                <img src={card.icon} alt="icon" />
+                                                <motion.img 
+                                                    src={card.icon} 
+                                                    alt="icon"
+                                                    whileHover={{
+                                                        rotate: 5,
+                                                        scale: 1.1,
+                                                        transition: {
+                                                            type: "spring",
+                                                            stiffness: 500,
+                                                            damping: 15
+                                                        }
+                                                    }}
+                                                    transition={{
+                                                        type: "spring",
+                                                        stiffness: 900,
+                                                        damping: 70
+                                                    }}
+                                                />
                                                 <span>{card.courses}</span>
                                             </motion.button>
                                         </div>
-                                    </div>
-                                </div>
+                                    </motion.div>
+                                </motion.div>
                                 </Link>
                             </motion.div>
                         ))}

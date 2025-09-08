@@ -1,5 +1,5 @@
 'use client'
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { motion, useInView, useAnimation } from 'framer-motion';
 import styles from './telegramCommunities.module.scss';
 import ArrowVec from '@/icons/arrowVec';
@@ -30,6 +30,49 @@ export default function TelegramCommunities() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
 
+  const CARD_COUNT = 3;
+  const [tilts, setTilts] = useState(Array.from({ length: CARD_COUNT }, () => ({ x: 0, y: 0 })));
+  const [hovers, setHovers] = useState(Array.from({ length: CARD_COUNT }, () => false));
+
+  const handleMouseMove = (index, e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const centerX = rect.left + rect.width / 2;
+    const centerY = rect.top + rect.height / 2;
+    const x = e.clientX - centerX;
+    const y = e.clientY - centerY;
+
+    const maxRotate = 10; // degrees
+    const rotateY = (x / (rect.width / 2)) * maxRotate; // left/right
+    const rotateX = (-y / (rect.height / 2)) * maxRotate; // top/bottom
+
+    setTilts((prev) => {
+      const next = [...prev];
+      next[index] = { x: rotateX, y: rotateY };
+      return next;
+    });
+  };
+
+  const handleMouseEnter = (index) => {
+    setHovers((prev) => {
+      const next = [...prev];
+      next[index] = true;
+      return next;
+    });
+  };
+
+  const handleMouseLeave = (index) => {
+    setHovers((prev) => {
+      const next = [...prev];
+      next[index] = false;
+      return next;
+    });
+    setTilts((prev) => {
+      const next = [...prev];
+      next[index] = { x: 0, y: 0 };
+      return next;
+    });
+  };
+
   return (
     <div className={styles.telegramCommunities}>
       <div className="container" ref={ref}>
@@ -54,11 +97,24 @@ export default function TelegramCommunities() {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {[...Array(3)].map((_, i) => (
+          {[...Array(CARD_COUNT)].map((_, i) => (
             <motion.div
               className={styles.griditems}
               key={i}
               variants={cardVariants}
+              style={{ transformPerspective: 1000, willChange: 'transform', transformStyle: 'preserve-3d' }}
+              onMouseMove={(e) => handleMouseMove(i, e)}
+              onMouseEnter={() => handleMouseEnter(i)}
+              onMouseLeave={() => handleMouseLeave(i)}
+              animate={{
+                rotateX: tilts[i].x,
+                rotateY: tilts[i].y,
+                scale: hovers[i] ? 1.02 : 1,
+                boxShadow: hovers[i]
+                  ? '0 12px 30px rgba(0,0,0,0.15)'
+                  : '0 6px 12px rgba(0,0,0,0.06)'
+              }}
+              transition={{ type: 'spring', stiffness: 250, damping: 20, mass: 0.6 }}
             >
               <div className={styles.cardHeader}>
                 <button aria-label='Free'>
