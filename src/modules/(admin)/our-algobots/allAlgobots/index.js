@@ -283,7 +283,7 @@ export default function AllAlgobots() {
                                 <OutlineButton
                                     text="Buy Now"
                                     icon={RightBlackIcon}
-                                    onClick={() => router.push(`/algobot/${strategy._id}`)}
+                                    onClick={() => router.push(`/algobot-details?id=${strategy._id}`)}
                                 />
                             </div>
                         </div>
