@@ -47,7 +47,6 @@ export default function AutomateTrades() {
     const fetchAlgobotData = async () => {
       try {
         const response = await getBots();
-        console.log(response)
         // Flatten the strategies array from all categories
         const allStrategies = response.payload.data;
         setAlgobotData(allStrategies); // Get first 3 strategies

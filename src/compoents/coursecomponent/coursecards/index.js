@@ -3,7 +3,6 @@ import styles from "./coursecards.module.scss";
 
 export default function Coursecards({ onSelect , selectedTab}) {
     const [activeTab, setActiveTab] = useState(selectedTab || 'recorded');
-    console.log(activeTab);
     useEffect(() => {
         setActiveTab(selectedTab || 'recorded');
     }, [selectedTab]);

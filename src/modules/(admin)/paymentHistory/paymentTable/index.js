@@ -40,7 +40,6 @@ const PaymenyHistory = () => {
                 response = await getpaymentHistory(activeTab, { page, limit: ITEMS_PER_PAGE });
             }
 
-            console.log(response, "response");
 
             setPaymentHistory(response.payload.data || {});
             setPagination((prev) => ({
@@ -228,7 +227,6 @@ const PaymenyHistory = () => {
         }
     }
 
-    console.log(filteredPayments);
     return (
         <div className={styles.paymenyhistorymain}>
             <h2>Payment History</h2>

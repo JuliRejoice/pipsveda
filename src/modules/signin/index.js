@@ -56,7 +56,6 @@ export default function Signin() {
     setIsSubmitting(true);
     try {
       const data = await signIn(email, password);
-      console.log("data", data);
     
       if (data.success) {
         toast.success("Login successfully.");

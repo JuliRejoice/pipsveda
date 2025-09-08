@@ -142,7 +142,6 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     mediumConfidenceBlocks: 0,
   })
 
-  console.log(isLiveOnline, isInPerson)
 
   useEffect(()=>{
     if(selectedCourse){
@@ -190,11 +189,8 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
   };
 
   useEffect(() => {
-    console.log("useEffect",id)
-    console.log("isLiveOnline",isLiveOnline)
     if (!id) return;
     if (isLiveOnline) {
-      console.log("fetching sessions")
       fetchSessions();
     } else {
       fetchChapters();

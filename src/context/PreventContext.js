@@ -7,8 +7,6 @@ export function PreventProvider({ children }) {
   const [showBlackout, setShowBlackout] = useState(false);
   const pressedKeys = useRef(new Set());
   const blackoutTimeoutRef = useRef(null);
-  console.log(pressedKeys.current);
-  console.log(blackoutTimeoutRef.current,'-----------------------');
   useEffect(() => {
     const handleContextMenu = (e) => e.preventDefault();
     // Hide content on tab switch/minimize
@@ -64,7 +62,6 @@ export function PreventProvider({ children }) {
 
       document.addEventListener("keydown", (e) => {
         if ((e.keyCode === 91 || e.keyCode === 93) && e.keyCode === 71) {
-          console.log("Meta + G pressed!");
           e.preventDefault();
           e.stopPropagation()
           setShowBlackout(true);
@@ -106,7 +103,6 @@ export function PreventProvider({ children }) {
   const blackoutStyle = {
     opacity: showBlackout ? 1 : 0,
   };
-  console.log(showBlackout);
 
   return (
     <PreventContext.Provider value={{ prevent: true }}>

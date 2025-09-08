@@ -196,7 +196,6 @@ export default function ArbitrageAlgo({ bot, setBot, searchQuery, setSearchQuery
         ]
     };
 
-    console.log(bot)
 
     return (
         <div className={styles.arbitrageAlgoAlignment}>

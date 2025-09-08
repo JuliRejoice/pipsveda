@@ -74,7 +74,6 @@ export const getTrendingOrPopularCourses = async ({ type, searchQuery = "" }) =>
     try {
         const res = await api.get(`/strategies?page=1&limit=3`);
         const data = await res.data;
-        console.log(data)
         return data;
     } catch (error) {
         console.error("Error fetching bots", error);

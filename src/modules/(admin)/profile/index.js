@@ -43,7 +43,6 @@ export default function Profile() {
     const fetchProfile = async () => {
         const userData = getCookie("user");
         const parsedUser = JSON.parse(userData)._id;
-        console.log(parsedUser);
         const response = await getProfile(parsedUser);
         const user = response.payload.data[0];
         setUser(user);

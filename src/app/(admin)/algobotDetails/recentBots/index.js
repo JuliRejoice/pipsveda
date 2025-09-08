@@ -93,7 +93,6 @@ export default function RecentBots({ id, category }) {
     }, [currentBotId, id, category, pathname]);
 
 
-    console.log(allBots, 'allBots');
     if (loading) {
         return (
             <div className={styles.arbitrageAlgoAlignment}>

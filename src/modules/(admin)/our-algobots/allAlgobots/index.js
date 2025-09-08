@@ -99,7 +99,7 @@ export default function AllAlgobots() {
             console.error('Error fetching categories:', error);
         }
     }
-console.log(selectedCategory)
+
     const fetchAlgobotData = async () => {
         try {
             setLoading(true);

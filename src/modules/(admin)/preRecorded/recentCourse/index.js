@@ -21,7 +21,6 @@ export default function     RecentCourse({ selectedTab, courseType, setCourseTyp
         totalItems: 0,
         itemsPerPage: ITEMS_PER_PAGE
     });
-    console.log(selectedTab);
     const router = useRouter();
 
     const fetchCourses = async (page = 1) => {
