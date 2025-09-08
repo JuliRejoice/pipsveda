@@ -14,7 +14,7 @@ export default function AlgobotDetails() {
             <AlgobotInformation id={botId}/>
             <div className="container">
                 
-            <RecentBots id={botId}/>
+            <RecentBots id={botId} />
             </div>
         </div>
     )   

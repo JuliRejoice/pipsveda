@@ -13,7 +13,6 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { marked } from "marked";
 import Dropdownarrow from "@/icons/dropdownarrow";
-import RecentBots from "@/app/(admin)/algobotDetails/recentBots";
 const RightIcon = "/assets/icons/right.svg";
 const MinusIcon = "/assets/icons/minus.svg";
 const PlusIcon = "/assets/icons/plus.svg";

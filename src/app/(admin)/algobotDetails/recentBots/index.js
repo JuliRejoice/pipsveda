@@ -59,30 +59,21 @@ export default function RecentBots({ id, category }) {
     const pathname = usePathname();
     const currentBotId = pathname.split('/').pop();
 
-
     useEffect(() => {
         const fetchAlgobotData = async () => {
             try {
                 setLoading(true);
-                const response = await getAlgobot('');
+                const response = await getAlgobot(category);
                 
-                // Store all bots for filtering
-                setAllBots(response.payload || []);
+                setAllBots(response.payload.result || []);
                 
-                // Filter out current bot and filter by category if provided
                 let filteredBots = [];
-                
-                response.payload?.forEach(categoryGroup => {
-                    const filteredStrategies = categoryGroup.strategies?.filter(
-                        strategy => strategy._id !== currentBotId && strategy._id !== id
-                    ) || [];
-                    
-                    if (category && categoryGroup.categoryName !== category) {
-                        return; // Skip categories that don't match the filter
+                response.payload.result?.forEach((item) => {
+                    if (item._id !== id) {
+                        filteredBots.push(item);
                     }
-                    
-                    filteredBots = [...filteredBots, ...filteredStrategies];
                 });
+                
                 
                 setBot(filteredBots);
             } catch (error) {
@@ -169,7 +160,7 @@ export default function RecentBots({ id, category }) {
                                 <OutlineButton
                                     text="Buy Now"
                                     icon={RightBlackIcon}
-                                    onClick={() => router.push(`/algobot-details?id=${item._id}`)}
+                                    onClick={() =>{pathname.split('/')[1] === 'algobot' ? router.push(`/algobot/${item._id}`) : router.push(`/algobot-details?id=${item._id}`)}}
                                 />
                             </div>
                         </div>

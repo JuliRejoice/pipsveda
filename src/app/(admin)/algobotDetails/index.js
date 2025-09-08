@@ -515,7 +515,7 @@ function AlgobotDetails({ id }) {
               </div>
             </div>
             <div>
-              <RecentBots category={algobotData?.categoryId?.title} />
+              <RecentBots id={algobotData?._id} category={algobotData?.categoryId?._id} />
             </div>
           </>
         )}

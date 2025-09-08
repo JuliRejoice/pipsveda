@@ -24,15 +24,29 @@ export const getAlgobotCategories = async () =>{
          
 
 
-export const getAlgobot = async (id = '',searchQuery = '', page = 1, limit = 10) => {
+export const getAlgobot = async (id = '', searchQuery = '', page = 1, limit = 10) => {
     try {
-        const response = await api.get(`/strategyPlan/getStrategiesByCategory?page=${page}&limit=${limit}${id ? `&categoryId=${id}` : searchQuery ? `&search=${searchQuery}` : ''}`);
-        return response.data;
+      const params = new URLSearchParams({
+        page,
+        limit,
+      });
+  
+      if (id) {
+        params.append("categoryId", id);
+      }
+  
+      if (searchQuery) {
+        params.append("search", searchQuery);
+      }
+  
+      const response = await api.get(`/strategyPlan/getStrategiesByCategory?${params.toString()}`);
+      return response.data;
     } catch (error) {
-        console.log("error", error)
-        throw error;
+      console.log("error", error);
+      throw error;
     }
-}
+  };
+  
 
 export const getOneBot = async (id) => {
     try {

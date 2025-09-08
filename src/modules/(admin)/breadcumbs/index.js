@@ -14,14 +14,14 @@ export default function Breadcumbs() {
   const redirect = () => {
     const pathSegments = pathname.split('/').filter(Boolean);
     // Redirect to /courses/pre-recorded if path matches certain conditions
-    if (pathSegments[0] === 'courses' && pathSegments[1] === 'pre-recorded') {
-      router.push('/courses/pre-recorded');
+    if (pathSegments[0] === 'course') {
+      router.push('/course');
     }
-    else if(pathSegments[0] === 'courses' && pathSegments[1] === 'live-online'){
-      router.push('/courses/live-online');
+    else if(pathSegments[0] === 'algobot' ){
+      router.push('/algobot');
     }
-    else if(pathSegments[0] === 'courses' && pathSegments[1] === 'in-person'){
-      router.push('/courses/in-person');
+    else if(pathSegments[0] === 'telegram'){
+      router.push('/telegram');
     }
     else{
       router.back()

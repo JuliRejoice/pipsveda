@@ -32,11 +32,11 @@ export function PreventProvider({ children }) {
         e.key === "printscreen" ||
         (e.ctrlKey &&
           e.shiftKey &&
-          ["i", "j", "c"].includes(e.key.toLowerCase())) ||
+          ["i", "j"].includes(e.key.toLowerCase())) ||
         (e.ctrlKey && e.key.toLowerCase() === "s") ||
         (e.metaKey &&
           e.shiftKey &&
-          ["i", "j", "c"].includes(e.key.toLowerCase())) ||
+          ["i", "j"].includes(e.key.toLowerCase())) ||
         (e.metaKey && e.key.toLowerCase() === "s") ||
         (e.metaKey && e.key.toLowerCase() === "p") ||
         (e.metaKey && e.key.toLowerCase() === "g") ||
