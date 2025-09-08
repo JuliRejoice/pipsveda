@@ -16,11 +16,11 @@ const titleVariants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
 };
 
+// Keep variants free of transform properties to avoid conflicts with hover tilt
 const cardVariants = {
-  hidden: { opacity: 0, scale: 0.95 },
+  hidden: { opacity: 0 },
   visible: (i) => ({
     opacity: 1,
-    scale: 1,
     transition: {
       delay: i * 0.2,
       duration: 0.6,
@@ -32,6 +32,37 @@ const cardVariants = {
 export default function Insights() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+
+  const handleMouseMove = (e) => {
+    const card = e.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const midX = rect.width / 2;
+    const midY = rect.height / 2;
+
+    // Tilt range in degrees
+    const rotateRange = 10;
+    const rotateY = ((x - midX) / midX) * rotateRange; // left/right
+    const rotateX = -((y - midY) / midY) * rotateRange; // up/down (invert for natural feel)
+
+    card.style.setProperty('--rx', `${rotateX.toFixed(2)}deg`);
+    card.style.setProperty('--ry', `${rotateY.toFixed(2)}deg`);
+  };
+
+  const handleMouseEnter = (e) => {
+    const card = e.currentTarget;
+    card.style.setProperty('--s', '1.03');
+    card.style.setProperty('--rx', '0deg');
+    card.style.setProperty('--ry', '0deg');
+  };
+
+  const handleMouseLeave = (e) => {
+    const card = e.currentTarget;
+    card.style.setProperty('--s', '1');
+    card.style.setProperty('--rx', '0deg');
+    card.style.setProperty('--ry', '0deg');
+  };
 
   return (
     <div className={styles.insights}>
@@ -62,6 +93,16 @@ export default function Insights() {
               custom={i}
               initial="hidden"
               animate={isInView ? 'visible' : 'hidden'}
+              onMouseMove={handleMouseMove}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              style={{
+                transform:
+                  'perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(var(--s, 1))',
+                transformStyle: 'preserve-3d',
+                transition: 'transform 150ms ease',
+                willChange: 'transform',
+              }}
             >
               <div className={styles.image}>
                 <img src={BlogImage} alt='BlogImage' />
