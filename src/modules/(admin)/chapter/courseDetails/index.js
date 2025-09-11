@@ -126,21 +126,12 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [sessions, setSessions] = useState([]);
-  const pathname = usePathname();
   const [isLiveOnline, setIsLiveOnline] = useState(false);
   const [isInPerson, setIsInPerson] = useState(false);
-  // const isLiveOnline = selectedCourse?.courseType === 'live';
-  // const isInPerson = selectedCourse?.courseType === 'physical';
+
   const id = params;
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [state, setState] = useState({
-    violations: 0,
-    lastDetection: null,
-    detectedTools: [],
-    highConfidenceBlocks: 0,
-    mediumConfidenceBlocks: 0,
-  })
 
 
   useEffect(()=>{
@@ -409,6 +400,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
               </div>
               {!isPaid && <div>
                 <Button
+                fill
                   text={isProcessingPayment ? 'Enrolling...' : 'Enroll Now'}
                   icon={isProcessingPayment ? null : RightBlackIcon}
                   onClick={handlePayment}
@@ -420,7 +412,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
           <h2>Upcoming Sessions</h2>
           <div className={`${styles.sessionListmain} ${!isPaid ? styles.lockedSession : ''}`}>
             <div className={styles.sessionListslider}>
-              {upcomingSessions.length > 0 ? (
+              {(upcomingSessions.length > 0 && !loading) ? (
                 <Slider {...settings}>
                   {upcomingSessions.map((session) => (
                     <div key={session._id}>

@@ -1,9 +1,9 @@
 import api from "@/utils/axiosInstance";
 
-export const purchasedCourses = async () => {
+export const purchasedCourses = async ({type, page = 1, limit = 8}) => {
 
     try {
-        const response = await api.get(`/payment/getMyCourseHistory`)
+        const response = await api.get(`/payment/getMyCourseHistory?type=${type}&page=${page}&limit=${limit}`)
         return response.data;
     } catch (error) {
         console.log("error", error)

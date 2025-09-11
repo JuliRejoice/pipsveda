@@ -11,6 +11,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useRouter } from 'next/navigation';
 import MyTelegram from './mytelegram';
+import Pagination from '@/compoents/pagination';
 
 const TABS = {
     VIDEO_COURSES: 'Pre Recorded Courses',
@@ -19,6 +20,8 @@ const TABS = {
     MY_ALGOBOTS: 'My AlgoBots',
     MY_TELEGRAM: 'My Telegram'
 };
+
+const ITEMS_PER_PAGE = 8;
 
 const CourseSkeleton = () => {
     return Array(4).fill(0).map((_, index) => (
@@ -46,25 +49,27 @@ const CourseSkeleton = () => {
 export default function Courses() {
     const [activeTab, setActiveTab] = useState(TABS.VIDEO_COURSES);
     const [recordedCourses, setRecordedCourses] = useState([]);
-    const [liveCourses, setLiveCourses] = useState([]);
-    const [physicalCourses, setPhysicalCourses] = useState([]);
-    const [algobotCourses, setAlgoBotCourses] = useState([]);
-    const [telegramCourses, setTelegramCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState('');
     const router = useRouter();
+    const [pagination, setPagination] = useState({
+        currentPage: 1,
+        totalItems: 0,
+        itemsPerPage: 10,
+    });
 
     useEffect(() => {
         const fetchCourses = async () => {
             try {
                 setLoading(true);
-                const response = await purchasedCourses();
+                const response = await purchasedCourses({ type: "RECORDED", page: pagination.currentPage, limit: ITEMS_PER_PAGE });
                 if (response && response.success) {
                     setRecordedCourses(response.payload.RECORDED);
-                    setLiveCourses(response.payload.LIVE);
-                    setPhysicalCourses(response.payload.PHYSICAL);
-                    setAlgoBotCourses(response.payload.BOTS);
-                    setTelegramCourses(response.payload.TELEGRAM);
+                    setPagination((prev) => ({
+                        ...prev,
+                        currentPage: 1,
+                        totalItems: response.payload.RECORDED.length,
+                    }));
                 } else {
                     throw new Error(response?.message || 'Failed to fetch courses');
                 }
@@ -80,25 +85,23 @@ export default function Courses() {
         fetchCourses();
     }, []);
 
+    const handlePageChange = (page) => {
+        setPagination((prev) => ({
+            ...prev,
+            currentPage: page,
+        }));
+    };
 
     const renderTabContent = () => {
         switch (activeTab) {
             case TABS.LIVE_SESSIONS:
-                return <LiveSessions
-                    liveCourses={liveCourses}
-                    isLoading={loading}
-                    error={error}
-                />;
+                return <LiveSessions />;
             case TABS.PHYSICAL_EVENTS:
-                return <PhysicalEvents
-                    physicalCourses={physicalCourses}
-                    isLoading={loading}
-                    error={error}
-                />;
+                return <PhysicalEvents />;
             case TABS.MY_ALGOBOTS:
-                return <MyAlgobots algobotCourses={algobotCourses} isLoading={loading} />;
+                return <MyAlgobots />;
             case TABS.MY_TELEGRAM:
-                return <MyTelegram telegramCourses={telegramCourses} isLoading={loading} />;
+                return <MyTelegram />;
             case TABS.VIDEO_COURSES:
             default:
                 if (loading) {
@@ -140,7 +143,7 @@ export default function Courses() {
                                                 </svg>
 
                                                 <span>8/12 Lessons</span> */}
-                                               <p>{recordedCourse?.courseId?.description}</p> 
+                                                <p>{recordedCourse?.courseId?.description}</p>
                                             </div>
                                         </div>
                                         {/* <div className={styles.iconText}>
@@ -189,6 +192,13 @@ export default function Courses() {
                 </div>
             </div>
             {renderTabContent()}
+
+            <Pagination
+                currentPage={pagination.currentPage}
+                totalItems={pagination.totalItems}
+                itemsPerPage={pagination.itemsPerPage}
+                onPageChange={handlePageChange}
+            />
         </div>
     );
 }

@@ -6,25 +6,62 @@ import DownloadIcon from '@/icons/downloadIcon';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import EmptyState from '../../chapter/recentCourse/EmptyState';
+import Pagination from '@/compoents/pagination';
+import { purchasedCourses } from '@/compoents/api/algobot';
 
-export default function MyAlgobots({ algobotCourses, isLoading = false }) {
-  // State to track if we're showing skeleton (initial load)
-  const [showSkeleton, setShowSkeleton] = useState(true);
+const ITEMS_PER_PAGE = 8;
+export default function MyAlgobots() {
+  const [algobotCourses, setAlgobotCourses] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    totalItems: 0,
+    itemsPerPage: ITEMS_PER_PAGE,
+  });
 
-  // Hide skeleton after initial data load
   useEffect(() => {
-    if (!isLoading) {
-      const timer = setTimeout(() => setShowSkeleton(false), 500);
-      return () => clearTimeout(timer);
-    }
-  }, [isLoading]);
+    const fetchCourses = async () => {
+      try {
+        setLoading(true);
+        const response = await purchasedCourses({ 
+          type: "BOTS", 
+          page: pagination.currentPage, 
+          limit: pagination.itemsPerPage 
+        });
+        if (response && response.success) {
+          setAlgobotCourses(response.payload.BOTS || []);
+          setPagination(prev => ({
+            ...prev,
+            totalItems: response.payload.count || 0,
+          }));
+        } else {
+          throw new Error(response?.message || 'Failed to fetch courses');
+        }
+      } catch (err) {
+        console.error('Error fetching courses:', err);
+        setError(err.message || 'Failed to load courses');
+        toast.error(err.message || 'Failed to load courses');
+      } finally {
+        setLoading(false);
+      }
+    };
 
-  // Loading state
-  if (isLoading || showSkeleton) {
+    fetchCourses();
+  }, [pagination.currentPage, pagination.itemsPerPage]);
+
+  const handlePageChange = (page) => {
+    setPagination(prev => ({
+      ...prev,
+      currentPage: page,
+    }));
+  };
+
+
+  if (loading) {
     return (
       <div className={styles.myAlgobots}>
         <div className={styles.cardgrid}>
-          {[...Array(3)].map((_, index) => (
+          {[...Array(4)].map((_, index) => (
             <div key={`skeleton-${index}`} className={styles.cardgridItems}>
               <div className={styles.image}>
                 <Skeleton width="100%" height={220} className={styles.imageSkeleton} />
@@ -66,8 +103,6 @@ export default function MyAlgobots({ algobotCourses, isLoading = false }) {
         {algobotCourses?.length === 0 ? (
           renderEmptyState()
         ) : (
-
-
           algobotCourses?.map((algobotCourse, index) => (
             <div key={algobotCourse?.botId?._id || index} className={styles.cardgridItems}>
               <div className={styles.image}>
@@ -112,8 +147,15 @@ export default function MyAlgobots({ algobotCourses, isLoading = false }) {
               <span>Download Now</span>
             </div> */}
             </div>
-          )))}
+          ))
+        )}
       </div>
+      <Pagination
+        currentPage={pagination.currentPage}
+        totalItems={pagination.totalItems}
+        itemsPerPage={pagination.itemsPerPage}
+        onPageChange={handlePageChange}
+      />
     </div>
   );
 }

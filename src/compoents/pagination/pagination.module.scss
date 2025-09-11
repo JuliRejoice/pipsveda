@@ -83,6 +83,17 @@
                 color: var(--text-white);
                 background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
             }
+
+        }
+        .active {
+            color: var(--text-white);
+            background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
+
+            svg {
+                path {
+                    fill: var(--text-white);
+                }
+            }
         }
     }
 }

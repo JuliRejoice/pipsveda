@@ -4,26 +4,59 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import EmptyState from '../../chapter/recentCourse/EmptyState';
 import ArrowVec from '@/icons/arrowVec';
+import Pagination from '@/compoents/pagination';
+import { purchasedCourses } from '@/compoents/api/algobot';
 
+const ITEMS_PER_PAGE = 8;
+function MyTelegram() {
+    const [telegramCourses, setTelegramCourses] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [pagination, setPagination] = useState({
+        currentPage: 1,
+        totalItems: 0,
+        itemsPerPage: ITEMS_PER_PAGE,
+    });
 
-function MyTelegram({ telegramCourses, isLoading }) {
-
-    const [showSkeleton, setShowSkeleton] = useState(true);
-
-    // Hide skeleton after initial data load
     useEffect(() => {
-        if (!isLoading) {
-            const timer = setTimeout(() => setShowSkeleton(false), 500);
-            return () => clearTimeout(timer);
-        }
-    }, [isLoading]);
+        const fetchCourses = async () => {
+            try {
+                setLoading(true);
+                const response = await purchasedCourses({ type: "TELEGRAM", page: pagination.currentPage, limit: ITEMS_PER_PAGE });
+                if (response && response.success) {
+                    setTelegramCourses(response.payload.TELEGRAM);
+                    setPagination((prev) => ({
+                        ...prev,
+                        currentPage: 1,
+                        totalItems: response.payload.count,
+                    }));
+                } else {
+                    throw new Error(response?.message || 'Failed to fetch courses');
+                }
+            } catch (err) {
+                console.error('Error fetching courses:', err);
+                setError(err.message || 'Failed to load courses');
+                toast.error(err.message || 'Failed to load courses');
+            } finally {
+                setLoading(false);
+            }
+        };
 
-    // Loading state
-    if (isLoading || showSkeleton) {
+        fetchCourses();
+    }, []);
+
+    const handlePageChange = (page) => {
+        setPagination((prev) => ({
+            ...prev,
+            currentPage: page,
+        }));
+    };
+
+
+    if (loading) {
         return (
             <div className={styles.myAlgobots}>
                 <div className={styles.cardgrid}>
-                    {[...Array(3)].map((_, index) => (
+                    {[...Array(4)].map((_, index) => (
                         <div key={`skeleton-${index}`} className={styles.cardgridItems}>
 
                             <div className={styles.details}>
@@ -73,7 +106,7 @@ function MyTelegram({ telegramCourses, isLoading }) {
                                 <div className={styles.title}>
                                     <div className={styles.textStyle}>
                                         <h3>{telegramCourse?.telegramId?.telegramId.channelName}</h3>
-                                       
+
                                     </div>
                                     <ArrowVec />
                                 </div>
@@ -84,6 +117,12 @@ function MyTelegram({ telegramCourses, isLoading }) {
                         </div>
                     )))}
             </div>
+            <Pagination
+                currentPage={pagination.currentPage}
+                totalItems={pagination.totalItems}
+                itemsPerPage={pagination.itemsPerPage}
+                onPageChange={handlePageChange}
+            />
         </div>
     )
 }

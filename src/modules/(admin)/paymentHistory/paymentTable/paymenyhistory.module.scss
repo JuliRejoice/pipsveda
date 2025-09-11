@@ -335,6 +335,19 @@
                 text-align: center;
                 min-width: 60px;
             }
+
+            .downloadAnimation{
+                display: inline-flex;
+                width: 20px;
+                height: 20px;
+                animation: pulse 1s ease-in-out infinite;
+                cursor: not-allowed;
+            }
+
+            @keyframes pulse {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.3; }
+            }
         }
     }
 }

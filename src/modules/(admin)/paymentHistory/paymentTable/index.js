@@ -3,13 +3,14 @@ import React, { useState, useEffect } from 'react'
 import styles from "./paymenyhistory.module.scss"
 import Modal from '@/compoents/modal/Modal';
 import Input from '@/compoents/input';
-import { addmetaAccountNo, getpaymentHistory } from '@/compoents/api/payment';
+import { addmetaAccountNo, downloadInvoice, getpaymentHistory } from '@/compoents/api/payment';
 import Button from '@/compoents/button';
 import toast from 'react-hot-toast';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import EmptyState from '../../chapter/recentCourse/EmptyState';
 import Pagination from '@/compoents/pagination';
+import DownloadIcon from '@/icons/downloadIcon';
 const ITEMS_PER_PAGE = 7;
 
 const PaymenyHistory = () => {
@@ -22,6 +23,7 @@ const PaymenyHistory = () => {
     const [isViewMode, setIsViewMode] = useState(false);
     const [isSaving, setIsSaving] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
+    const [loadingInvoices, setLoadingInvoices] = useState({});
 
     const [pagination, setPagination] = useState({
         currentPage: 1,
@@ -227,6 +229,87 @@ const PaymenyHistory = () => {
         }
     }
 
+    const calculateExpiryDate = (purchaseDate, planDuration) => {
+        if (!planDuration || planDuration === 'N/A') return null;
+    
+        const purchase = new Date(purchaseDate);
+        const duration = parseInt(planDuration);
+     
+        if (planDuration.includes('Month')) {
+            purchase.setMonth(purchase.getMonth() + duration);
+        } else if (planDuration.includes('year')) {
+            purchase.setFullYear(purchase.getFullYear() + duration);
+        }
+        return purchase.toLocaleDateString("en-US");
+    };
+
+    const handleDownloadInvoice = async (payment) => {
+        try {
+            setLoadingInvoices(prev => ({ ...prev, [payment._id]: true }));
+            const expiryDate = payment.planExpiry || 
+                             calculateExpiryDate(payment.createdAt, payment.planType); 
+            
+            // Handle date safely
+            let purchaseDate = 'N/A';
+            if (payment.createdAt) {
+                const date = new Date(payment.createdAt);
+                purchaseDate = !isNaN(date.getTime()) ? date.toLocaleDateString("en-US") : 'Invalid date';
+            }
+
+            const invoicePayload = {
+                transactionId: payment.orderId,
+                purchaseDate: purchaseDate,
+                expiryDate: expiryDate,
+                items: [
+                    {
+                        planName:
+                            payment.telegramId?.telegramId?.channelName ||
+                            payment.botId?.strategyId?.title ||
+                            payment.courseId?.CourseName ||
+                            "N/A",
+                        planDuration: payment.planType || "N/A",
+                        metaNo: payment.telegramAccountNo || payment.metaAccountNo?.[0] || "N/A",
+                        qty: payment.noOfBots || 1,
+                        amount: parseFloat(payment.price) || 0,
+                    },
+                ],
+                couponDiscount: payment.couponDiscount > 0 ? `-${payment.couponDiscount}` : "-",
+                planDiscount: payment.discount > 0 ? `-${payment.discount}` : "-",
+                totalValue: parseFloat(payment.initialPrice) || 0,
+                total: parseFloat(payment.price) || 0,
+            };
+
+            const response = await downloadInvoice(invoicePayload);
+
+            if (response.success && response.payload) {
+
+                const pdfRes = await fetch(response.payload);
+                const blob = await pdfRes.blob();
+
+                const url = window.URL.createObjectURL(blob);
+
+                const link = document.createElement("a");
+                link.href = url;
+                link.download = `invoice-${payment.orderId || Date.now()}.pdf`;
+
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+                window.URL.revokeObjectURL(url);
+
+                toast.success("Invoice downloaded successfully!");
+            } else {
+                throw new Error("Failed to generate invoice");
+            }
+        } catch (error) {
+            console.error("Error generating invoice:", error);
+            toast.error(error.message || "Failed to generate invoice");
+        } finally {
+            setLoadingInvoices(prev => ({ ...prev, [payment._id]: false }));
+        }
+    };
+
     return (
         <div className={styles.paymenyhistorymain}>
             <h2>Payment History</h2>
@@ -282,6 +365,7 @@ const PaymenyHistory = () => {
                             <th>Transaction ID</th>
                             {activeTab !== 'Course' && activeTab !== 'Telegram' && <th>Meta Account No.</th>}
                             <th>Status</th>
+                            <th>Invoice</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -330,6 +414,28 @@ const PaymenyHistory = () => {
                                     <button className={payment.status === 'paid' ? styles.paidbutton : styles.pendingbutton}>
                                         {payment.status.charAt(0).toUpperCase() + payment.status.slice(1)}
                                     </button>
+                                </td>
+                                <td>
+                                    <button
+                                        onClick={() => handleDownloadInvoice(payment)}
+                                        disabled={loadingInvoices[payment._id]}
+                                        className={styles.downloadButton}
+                                        title={
+                                            loadingInvoices[payment._id]
+                                                ? "Generating invoice..."
+                                                : "Download Invoice"
+                                        }
+                                    >
+                                        {loadingInvoices[payment._id] ? (
+                                            <span className={styles.downloadAnimation}>
+                                                <DownloadIcon />
+                                            </span>
+                                        ) : (
+                                            <DownloadIcon />
+                                        )}
+
+                                    </button>
+
                                 </td>
                             </tr>
                         ))}

@@ -14,7 +14,7 @@ const CardImage = '/assets/images/crypto.png';
 
 const ITEMS_PER_PAGE = 8; // Adjust based on your layout
 
-export default function     RecentCourse({ selectedTab, courseType, setCourseType, searchQuery, allCourse, setAllCourses, courseLoading, setCourseLoading }) {
+export default function RecentCourse({ selectedTab, courseType, setCourseType, searchQuery, allCourse, setAllCourses, courseLoading, setCourseLoading }) {
     const [error, setError] = useState(null);
     const [pagination, setPagination] = useState({
         currentPage: 1,
