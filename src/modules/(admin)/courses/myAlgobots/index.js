@@ -8,6 +8,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import EmptyState from '../../chapter/recentCourse/EmptyState';
 import Pagination from '@/compoents/pagination';
 import { purchasedCourses } from '@/compoents/api/algobot';
+import Link from 'next/link';
 
 const ITEMS_PER_PAGE = 8;
 export default function MyAlgobots() {
@@ -104,7 +105,8 @@ export default function MyAlgobots() {
           renderEmptyState()
         ) : (
           algobotCourses?.map((algobotCourse, index) => (
-            <div key={algobotCourse?.botId?._id || index} className={styles.cardgridItems}>
+            <Link href={`/algobot/${algobotCourse?.botId?.strategyId?._id}`} key={algobotCourse?.botId?._id || index}>
+            <div  className={styles.cardgridItems}>
               <div className={styles.image}>
                 <img src={algobotCourse?.botId?.strategyId.imageUrl} alt='image' />
               </div>
@@ -114,7 +116,7 @@ export default function MyAlgobots() {
                 <p>{algobotCourse?.botId?.strategyId.shortDescription}</p>
               </div>
               {/* <Button text="Pending Setup" />
-            <div className={styles.twoContentAlignment}>
+              <div className={styles.twoContentAlignment}>
               <div>
                 <p>{algobotCourse?.botId?.botName}</p>
                 <span className={styles.spanStyle}>{algobotCourse?.botId?.botType || "High-Frequency Scalping"}</span>
@@ -127,8 +129,8 @@ export default function MyAlgobots() {
                     : "08/08/2025"}
                 </span>
               </div>
-            </div>
-            <div className={styles.alltextStyle}>
+              </div>
+              <div className={styles.alltextStyle}>
               <div>
                 <p>Return</p>
                 <span>+15.8%</span>
@@ -141,12 +143,13 @@ export default function MyAlgobots() {
                 <p>Trades</p>
                 <span>145</span>
               </div>
-            </div> */}
+              </div> */}
               {/* <div className={styles.downloadContent}>
               <DownloadIcon />
               <span>Download Now</span>
-            </div> */}
+              </div> */}
             </div>
+            </Link>
           ))
         )}
       </div>

@@ -6,6 +6,7 @@ import EmptyState from '../../chapter/recentCourse/EmptyState';
 import ArrowVec from '@/icons/arrowVec';
 import Pagination from '@/compoents/pagination';
 import { purchasedCourses } from '@/compoents/api/algobot';
+import Link from 'next/link';
 
 const ITEMS_PER_PAGE = 8;
 function MyTelegram() {
@@ -93,10 +94,9 @@ function MyTelegram() {
                 {telegramCourses?.length === 0 ? (
                     renderEmptyState()
                 ) : (
-
-
                     telegramCourses?.map((telegramCourse, index) => (
-                        <div key={telegramCourse?.telegramId?._id || index} className={styles.cardgridItems}>
+                    <Link href={`/telegram/${telegramCourse?.telegramId?.telegramId?._id}` }  key={telegramCourse?.telegramId?._id || index}>
+                        <div className={styles.cardgridItems}>
                             {/* <div className={styles.image}>
                 <img src={telegramCourse?.telegramId?.imageUrl} alt='image' />
               </div> */}
@@ -115,7 +115,12 @@ function MyTelegram() {
                             </div>
 
                         </div>
-                    )))}
+                    </Link>
+                    )
+                    
+                    )
+                    
+                    )}
             </div>
             <Pagination
                 currentPage={pagination.currentPage}

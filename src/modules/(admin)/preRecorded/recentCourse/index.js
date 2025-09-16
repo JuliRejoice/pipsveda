@@ -141,8 +141,8 @@ export default function RecentCourse({ selectedTab, courseType, setCourseType, s
                         <button onClick={() => window.location.reload()}>Try Again</button>
                     </div>
                 ) : allCourse.length > 0 ? (
-                    allCourse.map((course) => (
-                        <div className={styles.griditems} key={course._id}>
+                    allCourse.map((course, index) => (
+                        <div className={styles.griditems} key={course._id ? `course-${JSON.stringify(course._id)}-${index}` : `course-${index}`}>
                             <div className={styles.image}>
                                 <img
                                     src={course.courseVideo || CardImage}

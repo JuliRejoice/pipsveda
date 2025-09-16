@@ -1,0 +1,313 @@
+@use '../../scss/main.scss' as *;
+@use '../../scss/typography/typography.scss' as *;
+
+.videoContainer {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    height: 400px;
+    background-color: #000;
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+
+    &.fullscreen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw !important;
+        height: 100vh !important;
+        z-index: 1;
+        border-radius: 0;
+    }
+
+    .videoCanvas {
+        width: 100%;
+        height: 100%;
+        flex-grow: 1;
+        display: block;
+        background-color: #000;
+    }
+
+    .controls {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background: linear-gradient(transparent, rgba(0, 0, 0, 0.7));
+        padding: 30px;
+        // opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 10;
+
+        .videoContainer:hover &,
+        .videoContainer:focus-within &,
+        &.visible {
+            opacity: 1;
+        }
+
+        .timelineflx {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 27px;
+            width: 100%;
+            margin-bottom: 15px;
+
+            .timer {
+                span {
+                    @include font16normal;
+                    color: var(--text-white);
+                    font-family: var(--font-funneldisplay);
+                }
+            }
+
+            .timelinerelative {
+                width: 100%;
+                height: 4px;
+                position: relative;
+                border-radius: 6px;
+                background: #fafafa80;
+
+                .loadprogress {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 70%;
+                    height: 4px;
+                    background-color: #ffffff66;
+                    border-radius: 6px;
+                }
+
+                .progressmain {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    height: 4px;
+                    width: 50%;
+                    background-color: #fff;
+                    border-radius: 6px;
+
+                    .progress {
+                        position: relative;
+                        width: 100%;
+                        height: 100%;
+
+
+                        .progressdotmain {
+                            position: absolute;
+                            right: -10px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            width: 20px;
+                            height: 20px;
+                            background-color: #fff;
+                            border-radius: 50%;
+                        }
+                    }
+                }
+            }
+        }
+
+        .videcontrolsflx {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 27px;
+
+            .videcontrolsflxleft,
+            .videcontrolsflxright {
+                display: flex;
+                align-items: center;
+                gap: 20px;
+
+                .icons {
+                    width: 28px;
+                    height: 28px;
+
+                    svg {
+                        width: 100%;
+                        height: 100%;
+                    }
+                }
+            }
+        }
+    }
+
+    .controlButton {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 18px;
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        &:focus {
+            outline: 2px solid rgba(255, 255, 255, 0.5);
+            outline-offset: 2px;
+        }
+    }
+
+    .progressBar {
+        flex-grow: 1;
+        height: 4px;
+        background-color: rgba(255, 255, 255, 0.2);
+        border-radius: 2px;
+        position: relative;
+        cursor: pointer;
+        margin: 0 8px;
+
+        .progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            background-color: #ff4d4f;
+            border-radius: 2px;
+            transition: width 0.1s linear;
+
+            &::after {
+                content: '';
+                position: absolute;
+                right: -6px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 12px;
+                height: 12px;
+                background-color: #ff4d4f;
+                border-radius: 50%;
+                opacity: 0;
+                transition: opacity 0.2s ease;
+            }
+        }
+
+        &:hover .progress::after {
+            opacity: 1;
+        }
+    }
+
+    .timeDisplay {
+        color: white;
+        font-size: 12px;
+        font-family: monospace;
+        min-width: 100px;
+        text-align: right;
+    }
+
+    .volumeControl {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-left: 8px;
+
+        .volumeSlider {
+            -webkit-appearance: none;
+            width: 80px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            outline: none;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+
+            &::-webkit-slider-thumb {
+                -webkit-appearance: none;
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background: white;
+                cursor: pointer;
+                opacity: 0;
+                transition: opacity 0.2s;
+            }
+
+            &:hover {
+                opacity: 1;
+
+                &::-webkit-slider-thumb {
+                    opacity: 1;
+                }
+            }
+        }
+    }
+
+    .fullscreenButton {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 18px;
+        width: 36px;
+        height: 36px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        margin-left: auto;
+        transition: background-color 0.2s ease;
+
+        &:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+    }
+
+    // Responsive adjustments
+    @media (max-width: 768px) {
+        height: 250px;
+        border-radius: 4px;
+
+        .controls {
+            padding: 8px 12px;
+            gap: 8px;
+        }
+
+        .timeDisplay {
+            min-width: 80px;
+            font-size: 11px;
+        }
+
+        .volumeControl {
+            .volumeSlider {
+                width: 60px;
+            }
+        }
+    }
+}
+
+
+.fullscreen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: black;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .videoCanvas {
+        width: 100vw;
+        height: 100vh;
+    }
+
+    .controls {
+        position: absolute;
+        width: 98%;
+    }
+}

@@ -6,7 +6,7 @@
     border-radius: 18px;
     border: 1px solid var(--border-color5);
     padding: 30px;
-   
+
 
     @include respond-to("sm") {
         border-radius: 12px;
@@ -29,6 +29,21 @@
                 @include font14;
             }
         }
+
+        .price{
+            display: flex;
+            justify-content: flex-end;
+        
+        .priceText{
+            @include heading20;
+            background: var(--button-gradient);
+            background-clip: text;
+            margin: 0 0 14px 0;
+     
+            // -webkit-background-clip: text;
+            -webkit-text-fill-color: rgba(0, 0, 0, 0);
+        }
+    }
     }
 
     .alignments {
@@ -195,6 +210,11 @@
                 border-radius: 12px;
             }
 
+            video {
+                width: 100%;
+                height: 100%;
+            }
+
             iframe {
                 border-radius: 20px;
                 display: block;
@@ -230,7 +250,7 @@
         display: flex;
         align-items: center;
         gap: 20px;
-        padding :0px 0px 20px 0px;
+        padding: 0px 0px 20px 0px;
 
         .physicaldetail {
             display: flex;
@@ -246,6 +266,36 @@
                 @include font18;
                 color: var(--grey-600);
                 margin-bottom: 0;
+            }
+        }
+    }
+
+    .videoWrapper {
+        position: relative;
+        width: 100%;
+        height: 400px;
+        border-radius: 20px;
+        overflow: hidden;
+        background-color: #000;
+
+        .videoPlayer {
+            width: 100%;
+            height: 100%;
+            min-height: 400px;
+            object-fit: cover;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        @media (max-width: 768px) {
+            min-height: 250px;
+            border-radius: 10px;
+
+            .videoPlayer {
+                min-height: 250px;
+                border-radius: 10px;
             }
         }
     }
@@ -512,7 +562,7 @@
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             padding: 20px;
             @include first-clip-path;
-      
+
             &:hover {
                 transform: translateY(-4px);
                 box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);

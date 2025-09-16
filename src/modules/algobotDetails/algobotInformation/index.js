@@ -13,6 +13,7 @@ import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import { marked } from "marked";
 import Dropdownarrow from "@/icons/dropdownarrow";
+import { getCookie } from "../../../../cookie";
 const RightIcon = "/assets/icons/right.svg";
 const MinusIcon = "/assets/icons/minus.svg";
 const PlusIcon = "/assets/icons/plus.svg";
@@ -20,6 +21,7 @@ const SuccessIcon = "/assets/icons/success.svg";
 const ErrorIcon = "/assets/icons/error.svg";
 
 function AlgobotInformation({ id }) {
+  const [user, setUser] = useState(null);
   const [algobotData, setAlgobotData] = useState({});
   const [plans, setPlans] = useState([]);
   const [planQuantities, setPlanQuantities] = useState({});
@@ -101,6 +103,10 @@ function AlgobotInformation({ id }) {
   };
 
   const handleBuyNow = (plan) => {
+    if (!user) {
+      router.push("/signin");
+      return;
+    }
     const quantity = planQuantities[plan._id] || 1;
     const originalPrice = plan.initialPrice * quantity;
     const commonDiscountAmount = (originalPrice * (plan.discount || 0)) / 100;
@@ -202,6 +208,8 @@ function AlgobotInformation({ id }) {
 
   useEffect(() => {
     fetchAlgobotData();
+    const newUser = getCookie("user");
+    setUser(newUser);
   }, []);
 
   useEffect(() => {

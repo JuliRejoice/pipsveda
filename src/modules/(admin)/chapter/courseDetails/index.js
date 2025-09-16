@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import styles from "./courseDetails.module.scss";
 import ClockIcon from "@/icons/clockIcon";
 import BathIcon from "@/icons/bathIcon";
@@ -15,6 +15,8 @@ import Modal from "@/compoents/modal/Modal";
 import toast from "react-hot-toast";
 import Arrowicon from "@/icons/arrowicon";
 import Slider from "react-slick/lib/slider";
+import { getCookie } from "../../../../../cookie";
+import CustomVideoPlayer from "@/compoents/CustomVideoPlayer";
 
 
 const LockIcon = '/assets/icons/lock.svg';
@@ -117,6 +119,7 @@ const SessionSkeleton = () => (
 );
 
 export default function CourseDetails({ params, selectedCourse, setSelectedCourse }) {
+  const [user, setUser] = useState(null);
   const [chapters, setChapters] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedChapter, setSelectedChapter] = useState(null);
@@ -134,12 +137,14 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
   const searchParams = useSearchParams();
 
 
-  useEffect(()=>{
-    if(selectedCourse){
+  console.log("user", user);
+
+  useEffect(() => {
+    if (selectedCourse) {
       setIsLiveOnline(selectedCourse?.courseType === 'live');
       setIsInPerson(selectedCourse?.courseType === 'physical');
     }
-  },[selectedCourse])
+  }, [selectedCourse])
 
   const fetchChapters = async () => {
     try {
@@ -186,7 +191,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     } else {
       fetchChapters();
     }
-  }, [id,isLiveOnline]);
+  }, [id, isLiveOnline]);
 
 
   useEffect(() => {
@@ -201,6 +206,10 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     }
   }, [searchParams]);
 
+  useEffect(() => {
+    const user = JSON.parse(getCookie("user"));
+    setUser(user);
+  }, []);
 
   const settings = {
     dots: false,
@@ -400,7 +409,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
               </div>
               {!isPaid && <div>
                 <Button
-                fill
+                  fill
                   text={isProcessingPayment ? 'Enrolling...' : 'Enroll Now'}
                   icon={isProcessingPayment ? null : RightBlackIcon}
                   onClick={handlePayment}
@@ -466,28 +475,34 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
         <div className={styles.textStyle}>
           <h3>{selectedCourse?.CourseName || 'Course Name Not Available'}</h3>
           <p>{selectedCourse?.description || 'No description available'}</p>
+          {!isPaid && <div className={styles.price}>
+              <h4 className={styles.priceText}>${selectedCourse.price}</h4>
+            </div>}
           <div className={styles.alignments}>
-            <div className={styles.allIconTextAlignment}>
-              <div className={styles.iconText}>
-                <ClockIcon />
-                <span>{selectedCourse?.hours || '12'} hours</span>
-              </div>
-              <div className={styles.iconText}>
-                <BathIcon />
-                <span>{selectedCourse?.instructor || 'Instructor'}</span>
-              </div>
-              {/* <div className={styles.iconText}>
+            <div>
+              <div className={styles.allIconTextAlignment}>
+                <div className={styles.iconText}>
+                  <ClockIcon />
+                  <span>{selectedCourse?.hours || '12'} hours</span>
+                </div>
+                <div className={styles.iconText}>
+                  <BathIcon />
+                  <span>{selectedCourse?.instructor || 'Instructor'}</span>
+                </div>
+                {/* <div className={styles.iconText}>
                 <StarIcon />
                 <span>4.8</span>
               </div> */}
-              <div className={styles.iconText}>
-                <ProfileGroupIcon />
-                <span>{selectedCourse?.subscribed || '0'}</span>
-              </div>
-              <div className={styles.iconText}>
-                <span>Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString('en-GB')} | English</span>
+                <div className={styles.iconText}>
+                  <ProfileGroupIcon />
+                  <span>{selectedCourse?.subscribed || '0'}</span>
+                </div>
+                <div className={styles.iconText}>
+                  <span>Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString('en-GB')} | English</span>
+                </div>
               </div>
             </div>
+           
             {!isPaid && <div>
               <Button
                 text={isProcessingPayment ? 'Enrolling...' : 'Enroll Now'}
@@ -534,16 +549,30 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                           />
                         </div>
                       ) : (
-                        <video
-                          width="100%"
-                          src={`${selectedChapter.chapterVideo}`}
-                          title={selectedChapter.chapterName}
-                          style={{ width: '100%', minHeight: '400px', borderRadius: '20px', objectFit: 'cover' }}
-                          controls={true}
-                          controlsList="nodownload"
-                          disablePictureInPicture
-                          noremoteplayback
-                        />
+                        <div className={styles.videoWrapper}>
+                          {/* <VideoPlayer
+                            src={selectedChapter.chapterVideo}
+                            userId={user?._id}
+                            controls
+                            controlsList="nodownload"
+                            disablePictureInPicture
+                            noremoteplayback
+                            className={styles.videoPlayer}
+                          /> */}
+                          {console.log("selectedChapter.chapterVideo", selectedChapter.chapterVideo)}
+
+                          <CustomVideoPlayer
+                            src={selectedChapter.chapterVideo}
+                            // src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                            // src="https://pipsveda.s3.us-east-1.azonaws.com/pipsveda/blob-1757418874956new%20latest.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAVJSBBJ5XMZUEA2XW%2F20250913%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250913T063038Z&X-Amz-Expires=3600&X-Amz-Signature=e0ed6c6d43a4038201fd1206007456c1387457b7cb86fb7335d92417d65ba51b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject"
+                            userId={user?._id}
+                            controls
+                            controlsList="nodownload"
+                            disablePictureInPicture
+                            noremoteplayback
+                            className={styles.videoPlayer}
+                          />
+                        </div>
                       )
                     ) : (
                       <div className={styles.noVideo}>Video not available</div>
