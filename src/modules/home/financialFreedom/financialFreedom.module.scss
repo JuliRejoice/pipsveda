@@ -236,13 +236,12 @@
                         img {
                             height: 260px;
                             object-fit: cover;
-                            border-radius: 12px;
+                            border-radius: 16px;
                             display: block;
                             width: 100%;
 
                             @include respond-to("sm") {
                                 height: 200px;
-                                @include sm-sec-clip-path;
                             }
                         }
                     }
@@ -307,12 +306,10 @@
                 padding: 20px;
                 background-color: var(--black-100);
                 width: 100%;
-                border-radius: 12px;
+                border-radius: 16px;
                 transition: .3s ease-in-out;
 
-                @include respond-to("sm") {
-                    @include sm-sec-clip-path;
-                }
+
             }
         }
     }

@@ -92,6 +92,11 @@
         gap: 16px;
         margin: 0 auto;
         max-width: calc(500px + 212px);
+
+        @include respond-to("sm") {
+            grid-template-columns: 1fr;
+            gap: 16px;
+        }
     }
 
     .cardGrid {

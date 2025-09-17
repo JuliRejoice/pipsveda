@@ -115,9 +115,8 @@
 
     .card {
         background-color: var(--light-bg);
-        border-radius: 8px;
         padding: 30px;
-        border-radius: 18px;
+        border-radius: 16px;
         transition: .3s ease-in-out;
 
         @include respond-to("md") {
@@ -125,7 +124,6 @@
         }
 
         @include respond-to("sm") {
-            @include sm-sec-clip-path;
             padding: 20px 16px;
 
         }

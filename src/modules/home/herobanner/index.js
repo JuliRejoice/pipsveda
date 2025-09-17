@@ -212,41 +212,6 @@ export default function Herobanner() {
 
                 </motion.div>
               </div>
-              <div className={styles.cardGrid}>
-                {
-                  [...Array(3)].map((_, index) => {
-                    return (
-                      <motion.div
-                        className={styles.cardGridItems}
-                        key={index}
-                        onMouseEnter={() => handleMouseEnter(index)}
-                        onMouseMove={(e) => handleMouseMove(e, index)}
-                        onMouseLeave={() => handleMouseLeave(index)}
-                        initial={{ rotateX: 0, rotateY: 0, scale: 1 }}
-                        animate={{ rotateX: cardTilt[index].rx, rotateY: cardTilt[index].ry, scale: cardTilt[index].scale }}
-                        transition={{ type: 'spring', stiffness: 260, damping: 18, mass: 0.6 }}
-                      >
-                        <div className={styles.image}>
-                          <img src={CardImage} alt='CardImage' />
-                          <button>
-                            undefined Live Sessions
-                          </button>
-                        </div>
-                        <div className={styles.details}>
-                          <h2>
-                            Live Webinars
-                          </h2>
-                          <p>
-                            Join interactive live sessions with market experts. Ask questions, participate in
-                            discussions, and get your trading queries resolved in real-time.
-                          </p>
-
-                        </div>
-                      </motion.div>
-                    )
-                  })
-                }
-              </div>
             </div>
           </div>
         </motion.div>

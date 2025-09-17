@@ -62,13 +62,9 @@
                 img {
                     object-fit: cover;
                     display: block;
-                    clip-path: polygon(0 70px, 65px 0, 100% 0, 100% calc(100% - 70px), calc(100% - 70px) 100%, 0 100%, 0 70px);
                     width: 100%;
+                    border-radius: 12px;
                     height: 100%;
-
-                    @include respond-to("sm") {
-                        @include first-clip-path;
-                    }
                 }
             }
         }
