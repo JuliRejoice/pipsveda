@@ -8,11 +8,39 @@ import IinstagramIcon from '@/icons/instagramIcon';
 import LinkdinIcon from '@/icons/linkdinIcon';
 import InstagramIcon from '@/icons/instagramIcon';
 import Button from '../button';
-import { getUtilityData } from '../api/dashboard';
+import { createNewsLetter, getUtilityData } from '../api/dashboard';
 import Link from 'next/link';
+import toast from 'react-hot-toast';
 const FooterImage = '/assets/images/footer-bg.png';
 export default function Footer() {
     const [footerData, setFooterData] = useState([]);
+    const [email, setEmail] = useState('');
+
+    const validateEmail = (email) => {
+        const re = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+        return re.test(email);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            // Convert email to lowercase before validation
+            const normalizedEmail = email.toLowerCase();
+            
+            if (!validateEmail(normalizedEmail)) {
+                toast.error('Please enter a valid email address');
+                return;
+            }
+            const response = await createNewsLetter({ email: normalizedEmail });
+            if (response.success) {
+                toast.success('Newsletter Subscribed Successfully.');
+                setEmail('');
+            }
+        } catch (error) {
+            console.error('Error creating newsletter:', error);
+            toast.error('Failed to create newsletter');
+        }
+    };
     useEffect(() => {
         const fetchFooterData = async () => {
             try {
@@ -25,7 +53,6 @@ export default function Footer() {
         fetchFooterData();
     }, []);
 
-    console.log(footerData);
 
     return (
         <div>
@@ -33,7 +60,7 @@ export default function Footer() {
                 <div className='container'>
                     <div className={styles.grid}>
                         <div className={styles.gridItems}>
-                            <Logo />
+                            <Logo logo={'/assets/logo/logo-white.png'}/>
                             <div className={styles.mainText}>
                                 <p>
                                     Empowering traders with knowledge, community
@@ -74,7 +101,7 @@ export default function Footer() {
                                 <a href="/about" aria-label='About'>About</a>
                                 <a href="/our-course" aria-label='Courses'>Courses</a>
                                 <a href="/blog" aria-label='Blog'>Blog</a>
-                                <a href="/contact" aria-label='Contact'>Contact</a>
+                                {/* <a href="/contact" aria-label='Contact'>Contact</a> */}
                                 <a href="/faq" aria-label='FAQ'>FAQ</a>
                             </div>
                         </div>
@@ -86,10 +113,10 @@ export default function Footer() {
                                 <div className={styles.line}></div>
                             </div>
                             <div className={styles.menu}>
-                                <a aria-label='Terms of Service'>Terms of Service</a>
-                                <a aria-label='Privacy Policy'>Privacy Policy</a>
-                                <a aria-label='Telegram Group'>Telegram Group</a>
-                                <a aria-label='Refund Policy'>Refund Policy</a>
+                                <a href="/terms-conditions"aria-label='Terms of Service'>Terms of Service</a>
+                                <a href="/privacy-policy" aria-label='Privacy Policy'>Privacy Policy</a>
+                                {/* <a href="/telegram-group" aria-label='Telegram Group'>Telegram Group</a> */}
+                                <a href="/refund-policy" aria-label='Refund Policy'>Refund Policy</a>
                             </div>
                         </div>
                         <div className={styles.gridItems}>
@@ -103,15 +130,15 @@ export default function Footer() {
                                 </p>
                             </div>
                             <div className={styles.inputRelative}>
-                                <input type='text' placeholder='Enter your Email' />
+                                <input type='text' placeholder='Enter your Email' value={email} onChange={(e) => setEmail(e.target.value)}/>
                                 <div className={styles.buttonRight}>
-                                    <Button text="Subscribe" />
+                                    <Button text="Subscribe" onClick={handleSubmit} />
                                 </div>
                             </div>
-                            <div className={styles.checkboxText}>
+                            {/* <div className={styles.checkboxText}>
                                 <input type='checkbox' />
                                 <label>I agree to the Privacy Policy</label>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>

@@ -54,7 +54,7 @@
         gap: 22px;
 
         @include respond-to("md") {
-            grid-template-columns: 1fr 1fr;
+            grid-template-columns: 1fr;
             gap: 20px;
         }
 
@@ -114,6 +114,7 @@
             }
 
             .details {
+                height: 132px;
                 padding: 22px 0 30px 0;
 
                 @include respond-to("md") {

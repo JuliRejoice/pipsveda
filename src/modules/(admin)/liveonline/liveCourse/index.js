@@ -40,9 +40,9 @@ function LiveCourse() {
 
   return (
     <div className={styles.recentCourseAlignment}>
-      <div className={styles.title}>
+      {/* <div className={styles.title}>
         <h2>Live Course</h2>
-      </div>
+      </div> */}
 
       {error ? (
         <div className={styles.errorState}>
@@ -88,7 +88,7 @@ function LiveCourse() {
                   text="Enroll Now"
                   icon={RightBlackIcon}
                   onClick={() =>{
-                router.push(`/courses/live-online/${course?._id}`);
+                router.push(`/course/${course?._id}`);
                   }}
                 />
               </div>

@@ -25,14 +25,14 @@ export default function Signin() {
 
 
   const validateEmail = (value) => {
-    const trimmedValue = value.trim();
+    const trimmedValue = value.trim().toLowerCase(); // 👈 force lowercase
     if (!trimmedValue) return "Email is required.";
-    if (trimmedValue.includes(' ')) return "Email cannot contain spaces.";
+    if (trimmedValue.includes(' ')) return "Email cannot contain spaces.";   
     const re = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
-    if (!re.test(trimmedValue)) return "Enter a valid email address.";
+    if (!re.test(trimmedValue)) return "Enter a valid email address.";   
     return "";
   };
-
+  
   const validatePassword = (value) => {
     if (!value || !value.trim()) return "Password is required.";
     if (value.includes(' ')) return "Password cannot contain spaces.";
@@ -56,16 +56,27 @@ export default function Signin() {
     setIsSubmitting(true);
     try {
       const data = await signIn(email, password);
+    
       if (data.success) {
-        toast.success('Login successfully.');
+        toast.success("Login successfully.");
         setCookie("userToken", data.payload.token);
         setCookie("user", data.payload);
-        router.push("/courses/pre-recorded");
+        router.push("/course");
       } else {
+        // handle case where API responds with success=false
         toast.error(errorMessages[data?.message] ?? "Login failed. Please try again.");
       }
     } catch (error) {
-      toast.error("An error occurred. Please try again.");
+      console.error("Login error:", error);
+    
+      // axios puts the server error here
+      const serverMessage = error.response?.data?.message;
+    
+      if (serverMessage && errorMessages[serverMessage]) {
+        toast.error(errorMessages[serverMessage]);
+      } else {
+        toast.error("An error occurred. Please try again.");
+      }
     } finally {
       setIsSubmitting(false);
     }
@@ -100,9 +111,22 @@ export default function Signin() {
                     if (e.key === " ") e.preventDefault();
                   }}
                   onChange={(e) => {
-                    setEmail(e.target.value);
-                    setErrors((prev) => ({ ...prev, email: validateEmail(e.target.value) }));
-                  }}
+                    const value = e.target.value;
+                    setEmail(value.toLowerCase());
+                    // Only validate on change if there's an existing error
+                    if (errors.email) {
+                        setErrors(prev => ({ 
+                            ...prev, 
+                            email: validateEmail(value, false) 
+                        }));
+                    }
+                }}
+                onBlur={(e) => {
+                    setErrors(prev => ({ 
+                        ...prev, 
+                        email: validateEmail(e.target.value, true) 
+                    }));
+                }}
                 />
                 {errors.email && <span className={styles.errormsg}>{errors.email}</span>}
               </div>

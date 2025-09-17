@@ -1,10 +1,18 @@
 'use client';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import styles from './insights.module.scss';
 import UserIcon from '@/icons/userIcon';
 import CalanderIcon from '@/icons/calanderIcon';
 import Button from '@/compoents/button';
+import { GET_ALL_BLOG_DATA, GET_BLOG_CATEGORIES } from '@/graphql/getBlogData';
+import { useRouter } from 'next/navigation';
+import { useQuery } from '@apollo/client/react';
+import ProfileIcon from '@/icons/profileIcon';
+import DateIcon from '@/icons/dateIcon';
+import OutlineButton from '@/compoents/outlineButton';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 const BottomVec = '/assets/images/bottomvec.png';
 const BlogImage = '/assets/images/blog-img.png';
@@ -30,8 +38,65 @@ const cardVariants = {
 };
 
 export default function Insights() {
+  const [itemsPerPage, setItemsPerPage] = useState(3);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [blogs, setBlogs] = useState([]);
+  const router = useRouter();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+
+  const { data: blogData, loading, error } = useQuery(GET_ALL_BLOG_DATA, {
+    variables: {
+      pagination: {
+        pageSize: itemsPerPage,
+        page: currentPage
+      },
+    }
+  });
+
+  useEffect(() => {
+    if (blogData) {
+      setBlogs(blogData?.blogs_connection?.nodes);
+    }
+  }, [blogData]);
+
+  // Skeleton loading component
+  const renderSkeletonCards = () => {
+    return Array(3).fill(0).map((_, index) => (
+      <motion.div
+        className={styles.griditems}
+        key={`skeleton-${index}`}
+        variants={cardVariants}
+        custom={index}
+        initial="hidden"
+        animate={isInView ? 'visible' : 'hidden'}
+      >
+        <div className={styles.image}>
+          <Skeleton height={200} style={{ marginBottom: '1rem' }} />
+        </div>
+        <div className={styles.content}>
+          <div className={styles.category}>
+            <Skeleton width={100} height={24} />
+          </div>
+          <h3>
+            <Skeleton count={2} />
+          </h3>
+          <p className={styles.desc}>
+            <Skeleton count={3} />
+          </p>
+          <div className={styles.author}>
+            <div className={styles.authorInfo}>
+              <Skeleton circle width={32} height={32} style={{ marginRight: '0.5rem' }} />
+              <Skeleton width={100} height={16} />
+            </div>
+            <div className={styles.date}>
+              <Skeleton width={80} height={16} />
+            </div>
+          </div>
+        </div>
+      </motion.div>
+    ));
+  };
 
   const handleMouseMove = (e) => {
     const card = e.currentTarget;
@@ -85,15 +150,18 @@ export default function Insights() {
 
         {/* Blog Cards */}
         <div className={styles.grid}>
-          {[...Array(3)].map((_, i) => (
-            <motion.div
-              className={styles.griditems}
-              key={i}
-              variants={cardVariants}
-              custom={i}
-              initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
-              onMouseMove={handleMouseMove}
+          {loading ? (
+            renderSkeletonCards()
+          ) : (
+            blogs.map((blog, i) => (
+              <motion.div
+                className={styles.griditems}
+                key={i}
+                variants={cardVariants}
+                custom={i}
+                initial="hidden"
+                animate={isInView ? 'visible' : 'hidden'}
+                onMouseMove={handleMouseMove}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               style={{
@@ -104,31 +172,41 @@ export default function Insights() {
                 willChange: 'transform',
               }}
             >
-              <div className={styles.image}>
-                <img src={BlogImage} alt='BlogImage' />
-              </div>
-              <div className={styles.details}>
-                <div className={styles.allIconText}>
-                  <div className={styles.iconText}>
-                    <UserIcon />
-                    <span>Vikash Kumar</span>
-                  </div>
-                  <div className={styles.iconText}>
-                    <CalanderIcon />
-                    <span>Dec 15, 2025</span>
-                  </div>
+                <div className={styles.image}>
+                  <img 
+                    src={process.env.NEXT_PUBLIC_NEXT_GRAPHQL_IMAGE_URL + blog?.coverImage?.url} 
+                    alt={blog.title} 
+                    onError={(e) => {
+                      e.target.onerror = null;
+                      e.target.src = BlogImage;
+                    }}
+                  />
                 </div>
-                <h3>
-                  5 Essential Risk Management Strategies for Day Trading
-                </h3>
-                <p>
-                  Learn how protect your capital while maximizing
-                  profits in volatile markets.
-                </p>
-                <Button text="Read More" icon={RightIcon} />
-              </div>
-            </motion.div>
-          ))}
+                <div className={styles.details}>
+                  <div className={styles.allIconText}>
+                    <div className={styles.iconText}>
+                      <UserIcon />
+                      <span>{blog.author?.name || 'Anonymous'}</span>
+                    </div>
+                    <div className={styles.iconText}>
+                      <CalanderIcon />
+                      <span>{new Date(blog.createdAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                      })}</span>
+                    </div>
+                  </div>
+                  <h3>{blog.title}</h3>
+                  <p>{blog.shortDescription}</p>
+                  <OutlineButton 
+                    text="Read More" 
+                    onClick={() => router.push(`/blog/${blog.slug}`)}
+                  />
+                </div>
+              </motion.div>
+            ))
+          )}
         </div>
       </div>
     </div>

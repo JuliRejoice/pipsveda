@@ -7,11 +7,13 @@ import { getCourseByType, getCourses } from '@/compoents/api/dashboard';
 import RenderSkeleton from '@/modules/(admin)/chapter/recentCourse/RenderSkeleton';
 const CardImage = '/assets/images/course-details-card.png';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { useRouter } from 'next/navigation';
 const BathIcon = '/assets/icons/bath-primary.svg';
 const RightIcon = '/assets/icons/right-black.svg';
 export default function RecentCourse({id}) {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
+    const router=useRouter()
     useEffect(() => {
         const fetchCourses = async () => {
             try {
@@ -29,13 +31,12 @@ export default function RecentCourse({id}) {
         fetchCourses();
     }, [id]);
 
-    console.log(courses);   
     return (
         <div className={styles.recentCourse}>
             <div className='container'>
                 <div className={styles.title}>
                     <h2>
-                        Recent Course
+                        Similar Courses
                     </h2>
                 </div>
                 <div className={styles.grid}>
@@ -64,7 +65,7 @@ export default function RecentCourse({id}) {
                                                 <span>{course?.instructor}</span>
                                             </div>
                                         </div>
-                                        <OutlineButton text="Enroll Now" icon={RightIcon} href={`/course-details?id=${course?.id}`}/>
+                                        <OutlineButton text="Enroll Now" icon={RightIcon} onClick={() => router.push(`/course-details?id=${course?._id}`)}/>
                                     </div>
                                 </div>
                             )

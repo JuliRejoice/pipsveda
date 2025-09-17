@@ -1,57 +1,57 @@
-import { getCookie } from "../../../cookie";
+import api from "@/utils/axiosInstance";
 
-const BASEURL = process.env.NEXT_PUBLIC_BASE_URL;
-export const getAuthToken = () => {
-    if (typeof window !== 'undefined') {
-        return getCookie('userToken') || '';
-    }
-    return null;
-};
+export const purchasedCourses = async ({type, page = 1, limit = 8}) => {
 
-export const purchasedCourses = async () => {
-    const token = getAuthToken()
     try {
-        const response = await fetch(`${BASEURL}/payment/getMyCourseHistory`, {
-            headers: {
-                'Content-Type': 'application/json',
-                ['x-auth-token']: token,
-            }
-        })
-        return await response.json();
+        const response = await api.get(`/payment/getMyCourseHistory?type=${type}&page=${page}&limit=${limit}`)
+        return response.data;
+    } catch (error) {
+        console.log("error", error)
+        throw error;
+    }
+}   
+
+
+export const getAlgobotCategories = async () =>{
+    try {
+        const response = await api.get(`/categories/dropdown`)
+        return response.data;
     } catch (error) {
         console.log("error", error)
         throw error;
     }
 }
+         
 
-export const getAlgobot = async (id = '',searchQuery = '') => {
-    console.log("searchQuery",searchQuery,'------------',id)
-    const token = getAuthToken()
+
+export const getAlgobot = async (id = '', searchQuery = '', page = 1, limit = 10) => {
     try {
-        const url = `${BASEURL}/strategies${id ? `?id=${id}` : searchQuery ? `?search=${searchQuery}` : ''}`;
-        const response = await fetch(url, {
-            headers: {
-                'Content-Type': 'application/json',
-                ['x-auth-token']: token,
-            }
-        })
-        return await response.json();
+      const params = new URLSearchParams({
+        page,
+        limit,
+      });
+  
+      if (id) {
+        params.append("categoryId", id);
+      }
+  
+      if (searchQuery) {
+        params.append("search", searchQuery);
+      }
+  
+      const response = await api.get(`/strategyPlan/getStrategiesByCategory?${params.toString()}`);
+      return response.data;
     } catch (error) {
-        console.log("error", error)
-        throw error;
+      console.log("error", error);
+      throw error;
     }
-}
+  };
+  
 
 export const getOneBot = async (id) => {
-    const token = getAuthToken()
     try {
-        const response = await fetch(`${BASEURL}/strategies/${id}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                ['x-auth-token']: token,
-            }
-        })
-        return await response.json();
+        const response = await api.get(`/strategies/${id}`)
+        return response.data;
     } catch (error) {
         console.log("error", error)
         throw error;
@@ -59,33 +59,23 @@ export const getOneBot = async (id) => {
 }
 
 export const getPlan = async (id) => {
-    const token = getAuthToken()
     try {
-        const response = await fetch(`${BASEURL}/strategyPlan/all/${id}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                ['x-auth-token']: token,
-            }
-        })
-        return await response.json();
+        const response = await api.get(`/strategyPlan/all/${id}`)
+        return response.data;
     } catch (error) {
         console.log("error", error)
         throw error;
     }
 }
+      
 
 export const getCoupon = async (couponCode) => {
-    const token = getAuthToken()
     try {
-        const response = await fetch(`${BASEURL}/coupon/get-coupon-name?couponCode=${couponCode}`, {
-            headers: {
-                'Content-Type': 'application/json',
-                ['x-auth-token']: token,
-            }
-        })
-        return await response.json();
+        const response = await api.get(`/coupon/get-coupon-name?couponCode=${couponCode}`)
+        return response.data;
     } catch (error) {
         console.log("error", error)
         throw error;
     }
 }
+          

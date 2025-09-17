@@ -73,12 +73,10 @@ export default function Havequestions() {
             newErrors.description = 'Message is required';
             isValid = false;
         }
-        console.log("newErrors", newErrors)
         setErrors(newErrors);
         return isValid;
     };
 
-    console.log("errors", errors)
 
     const resetForm = () => {
         setForm({
@@ -146,7 +144,6 @@ export default function Havequestions() {
         fetchutilityData();
     }, []);
 
-    console.log("utilityData", utilityData)
 
     return (
         <div className={styles.havequestions}>

@@ -8,8 +8,6 @@ import { useSearchParams } from 'next/navigation';
 export default function OurCourse() {
     const searchParams = useSearchParams();
     const course = searchParams.get('course');
-    console.log(course);
-    // console.log(searchParams.getAll());
     
     return (
         <div>

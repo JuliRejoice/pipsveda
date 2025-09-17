@@ -9,6 +9,7 @@ export default function Pagination({
   onPageChange = () => { },
   maxVisiblePages = 5
 }) {
+
   const totalPages = Math.ceil(totalItems / itemsPerPage);
 
   if (totalPages <= 1) return null;

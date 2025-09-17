@@ -5,10 +5,23 @@
 .liveSessionsAlignment {
     .cardgrid {
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
         gap: 30px;
+        margin-top: 20px;
 
-        .emptyState{
+        @include respond-to("lg") {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include respond-to("md") {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include respond-to("sm") {
+            grid-template-columns: repeat(1, 1fr);
+        }
+
+        .emptyState {
             grid-column: 1 / span 4;
             display: flex;
             flex-direction: column;
@@ -25,65 +38,141 @@
 
         .cardgridItems {
             background-color: var(--bg-light-700);
-            padding: 30px;
+            padding: 20px;
+            border-radius: 12px;
             @include first-clip-path;
 
-            button {
-                padding: 9px 24px;
-                @include font14;
-                clip-path: polygon(0 15px, 14px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+            .infoCard {
+                background: #f8f9fa;
+                border-radius: 8px;
+                padding: 15px;
+                margin-top: 15px;
+                border: 1px solid #e9ecef;
+                width: 100%;
+            
+                .infoRow {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 10px;
+                    font-size: 14px;
+                    line-height: 1.4;
+            
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+            
+                    .infoLabel {
+                        color: #6c757d;
+                        font-weight: 500;
+                        margin-right: 8px;
+                    }
+            
+                    .infoValue {
+                        color: #212529;
+                        text-align: right;
+                        flex: 1;
+                    }
+            
+                    .price {
+                        color: #28a745;
+                        font-weight: 600;
+                    }
+                }
+            }
+
+
+            .courseImageContainer {
+                img {
+                    object-fit: cover;
+                    clip-path: polygon(0 30px, 25px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);
+                    width: 100%;
+                    height: 220px;
+                    display: block;
+                }
             }
 
             .content {
-                padding: 12px 0 16px 0;
-                border-bottom: 1px solid var(--border-color7);
+
+                flex-grow: 1;
+                display: flex;
+                flex-direction: column;
 
                 h3 {
                     @include heading18;
-                    margin: 0 0 4px 0;
+                    margin: 0 0 12px 0;
                     color: var(--black-500);
+                    line-height: 1.4;
+                    margin-top: 10px;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
                 }
 
                 .icontext {
                     display: flex;
-                    gap: 5px;
+                    gap: 8px;
                     align-items: center;
 
+
                     span {
-                        display: block;
-                        @include font16normal;
+                        @include font16;
                         color: var(--grey-600);
                     }
+                }
+
+                .courseDescription {
+                    margin-top: 10px;
+                    @include font16;
+                    font-family: var(--font-lexend);
+                    color: var(--grey-600);
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    display: -webkit-box;
+                    overflow: hidden;
                 }
             }
 
             .bottomContentAlignment {
                 display: flex;
-                align-items: flex-start;
-                justify-content: space-between;
+                flex-direction: column;
+                gap: 16px;
                 padding: 12px 0 0 0;
 
                 .nextsession {
                     p {
-                        @include font16normal;
-                        margin: 0 0 6px 0;
+                        @include font16;
+                        margin: 0 0 8px 0;
                         color: var(--black-500);
+                        font-weight: 500;
                     }
 
                     .twoIconTextAlignment {
                         display: flex;
-                        align-items: center;
-                        gap: 18px;
+                        flex-wrap: wrap;
+                        gap: 20px;
+                        // margin-top: 12px;
 
                         .textIcon {
                             display: flex;
                             align-items: center;
-                            gap: 4px;
+                            gap: 6px;
+                            background: var(--bg-light-600);
+                            border-radius: 6px;
+
+                            svg {
+                                flex-shrink: 0;
+                            }
 
                             span {
-                                display: block;
-                                @include font16normal;
+                                white-space: nowrap;
+                                @include font16;
+                                font-family: var(--font-lexend);
                                 color: var(--grey-600);
+                                -webkit-line-clamp: 3;
+                                -webkit-box-orient: vertical;
+                                display: -webkit-box;
+                                overflow: hidden;
                             }
                         }
                     }
@@ -93,11 +182,22 @@
             .mettingContent {
                 display: flex;
                 align-items: center;
-                gap: 6px;
+                justify-content: center;
+                gap: 8px;
+                padding: 10px;
+                background: rgba(99, 102, 241, 0.05);
+                border-radius: 8px;
+                margin-top: 8px;
+                cursor: pointer;
+                transition: background-color 0.2s ease;
+
+                &:hover {
+                    background: rgba(99, 102, 241, 0.1);
+                }
 
                 span {
-                    display: block;
-                    @include font16normal;
+                    @include font14;
+                    font-weight: 500;
                     background: var(--button-gradient);
                     background-clip: text;
                     -webkit-background-clip: text;
@@ -121,7 +221,7 @@
         display: grid;
         grid-template-columns: repeat(3, 1fr);
         gap: 30px;
-        padding: 25px  0 0 0;
+        padding: 25px 0 0 0;
 
         .sessionGridItems {
             background-color: var(--bg-light-700);
@@ -130,6 +230,7 @@
             align-items: center;
             justify-content: space-between;
             @include first-clip-path;
+
             .content {
                 h3 {
                     @include font16normal;
@@ -137,6 +238,7 @@
                     color: var(--black-500);
                     margin: 0 0 4px 0;
                 }
+
                 .twoIcontext {
                     display: flex;
                     align-items: center;
@@ -146,6 +248,7 @@
                         display: flex;
                         align-items: center;
                         gap: 4px;
+
                         span {
                             display: block;
                             @include font16normal;

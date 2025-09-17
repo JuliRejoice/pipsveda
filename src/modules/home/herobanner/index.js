@@ -171,7 +171,7 @@ export default function Herobanner() {
           <div className='container-md'>
             <div className={styles.text}>
               <h1>
-                Pips Veda the Markets Build  <br /> a Financial Future That Lasts
+                Pips Veda the Markets Build a Financial Future That Lasts
               </h1>
 
               <motion.p
@@ -183,76 +183,39 @@ export default function Herobanner() {
                 AI technology services aim to provide intelligent solutions that help businesses
                 improve efficiency,
               </motion.p>
-              <div className={styles.searchButtonalignment}>
+            </div>
+            <div className={styles.searchButtonalignment}>
+              <motion.div
+                className={styles.searchbar}
+                variants={item}
+              >
                 <motion.div
-                  className={styles.searchbar}
-                  variants={item}
+                  className={styles.inputwrapper}
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
+                  <input type='text' placeholder='Search for Course...' onChange={(e) => setSearchParams(e.target.value)} />
                   <motion.div
-                    className={styles.inputwrapper}
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                    className={styles.searchIcon}
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.9 }}
                   >
-                    <input type='text' placeholder='Search for Course...' onChange={(e) => setSearchParams(e.target.value)} />
-                    <motion.div
-                      className={styles.searchIcon}
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                    >
-                      <SearchIcon />
-                    </motion.div>
+                    <SearchIcon />
                   </motion.div>
                 </motion.div>
+              </motion.div>
 
-                <motion.div
-                  className={styles.buttonAlignment}
-                  variants={item}
-                >
-                  <Button text="Explore Courses" icon={RightIcon} onClick={() => { getCookie("userToken") ? router.push(`/courses/pre-recorded?search=${searchParams}`) : router.push('/signin') }} />
+              <motion.div
+                className={styles.buttonAlignment}
+                variants={item}
+              >
+                <Button text="Explore Courses" icon={RightIcon} onClick={() => { getCookie("userToken") ? router.push(`/course?search=${searchParams}`) : router.push('/signin') }} />
 
-                </motion.div>
-              </div>
+              </motion.div>
             </div>
           </div>
         </motion.div>
 
-        {/* <motion.div
-          className={styles.herobannerVideo}
-          initial={{ opacity: 0, y: 50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-        >
-          <div className='container'>
-            <motion.div
-              className={styles.videoPoster}
-              whileHover={{ scale: 1.02 }}
-              transition={{ type: 'spring', stiffness: 300 }}
-            >
-              <motion.img
-                src={VideoPoster}
-                alt='VideoPoster'
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.8, duration: 0.6 }}
-              />
-              <div
-                className={styles.roundTopalignment}
-              >
-                <div className={styles.circleanimation}>
-                  <CircleAnimation />
-                  <div
-                    className={styles.circleanimatiopnlogomain}
-
-                  >
-                    <div className={styles.circleanimatiopnlogo}>
-                      <img src={IconLogo} alt="logo" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </motion.div> */}
       </motion.div>
     </AnimatePresence>
   );

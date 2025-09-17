@@ -63,12 +63,12 @@ img {
 }
 
 .admin-layout-sidebar {
-  width: 235px;
+  width: 255px;
 }
 
 .admin-layout-children {
   padding: 30px;
-  width: calc(100% - 235px);
+  width: calc(100% - 255px);
 }
 
 @media (max-width: 1024px) {
@@ -85,6 +85,7 @@ img {
     padding: 20px;
   }
 }
+
 /* Container background */
 .custom-toast {
   background: #fff !important;
@@ -113,4 +114,87 @@ img {
 .Toastify__close-button:hover {
   color: #333 !important;
   opacity: 1;
+}
+
+.protect {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.01);
+  /* almost invisible */
+  z-index: 9999;
+  pointer-events: none;
+}
+
+.watermark {
+  position: fixed;
+  top: 30%;
+  left: 20%;
+  opacity: 0.2;
+  font-size: 4rem;
+  color: red;
+  pointer-events: none;
+  transform: rotate(-30deg);
+}
+
+/* .watermark::before {
+  content: "Confidential";
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(-30deg);
+  font-size: 5rem;
+  font-weight: bold;
+  color: rgba(255, 0, 0, 0.15);
+  pointer-events: none;
+  z-index: 9999;
+  white-space: nowrap;
+} */
+
+
+
+
+/* <---- React date picker css starts here ----> */
+.react-datepicker__header {
+  background: #fff !important;
+}
+
+.react-datepicker-popper[data-placement^="bottom"] .react-datepicker__triangle {
+  fill: #fff !important;
+  color: #fff !important;
+}
+
+.react-datepicker__day--selected {
+  background: var(--button-gradient) !important;
+}
+
+.react-datepicker {
+  border-radius: 10px !important;
+  overflow: hidden;
+}
+
+.react-datepicker__input-container input {
+  background-color: #f7f8fa !important;
+  font-family: var(--font-lexend);
+  color: var(--black-500) !important;
+  border: 1px solid var(--border-color2) !important;
+  border-radius: 10px !important;
+  height: 55px;
+  padding: 0 16px !important;
+  font-size: 16px !important;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
+  transition: all .3s ease-in-out;
+}
+
+.blocker {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000;
+  z-index: 9999;
+  pointer-events: none;
+  transition: opacity 0.3s;
 }

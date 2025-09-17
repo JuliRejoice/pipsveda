@@ -1,7 +1,7 @@
 'use client'
 import React, { useState } from 'react'
 import AdminHeader from '@/compoents/adminHeader';
-import ComingSoon from '@/compoents/comingSoon';
+import DashboardCard from '../dashboard/dashboardcard';
 export default function Dashboard() {
 
 
@@ -9,8 +9,8 @@ export default function Dashboard() {
 
     <div>
       <AdminHeader />
-      <ComingSoon />
-
+      <DashboardCard />
+      {/* <ComingSoon /> */}
     </div>
   )
 }

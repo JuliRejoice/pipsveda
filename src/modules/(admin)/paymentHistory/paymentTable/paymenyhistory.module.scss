@@ -182,6 +182,9 @@
         }
     }
 
+    .pagination {
+        margin-top: 20px;
+    }
   
 
     // .cancelButton {
@@ -249,9 +252,52 @@
         cursor: default;
     }
 
-}
-    
-    
+    /* Tabs */
+    .tabs {
+        display: flex;
+        gap: 1rem;
+        margin: 1.5rem 0;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 0.5rem;
+        
+        .tab {
+            padding: 0.5rem 1rem;
+            background: none;
+            border: none;
+            border-radius: 0.25rem;
+            font-size: 0.875rem;
+            font-family: var(--font-lexend);
+            font-weight: 500;
+            color: #64748b;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+            outline: none;
+
+            &:hover {
+                color: #334155;
+                // background-color: #f1f5f9;
+            }
+
+            &.active {
+                color: var(--text-black);
+                // background: var(--button-gradient);
+                font-weight: 600;
+
+                &::after {
+                    content: '';
+                    position: absolute;
+                    bottom: -0.5rem;
+                    left: 0;
+                    width: 100%;
+                    height: 2px;
+                    background: var(--button-gradient);
+                    border-radius: 2px;
+                }
+            }
+        }
+    }
+
     .modalActions {
         display: flex;
         justify-content:flex-end;
@@ -260,3 +306,142 @@
         border-top: 1px solid #eee;
         margin-top: 1rem;
     }
+
+    .downloadButton {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 4px;
+        transition: background-color 0.2s;
+        
+        &:hover {
+            background-color: #f0f0f0;
+        }
+        
+        svg {
+            width: 18px;
+            height: 18px;
+            fill: #4CAF50;
+        }
+    }
+
+    table {
+        th, td {
+            &:last-child {
+                text-align: center;
+                min-width: 60px;
+            }
+
+            .downloadAnimation{
+                display: inline-flex;
+                width: 20px;
+                height: 20px;
+                animation: pulse 1s ease-in-out infinite;
+                cursor: not-allowed;
+            }
+
+            @keyframes pulse {
+                0%, 100% { opacity: 1; }
+                50% { opacity: 0.3; }
+            }
+        }
+    }
+}
+
+/* src/components/InvoiceTemplate/InvoiceTemplate.module.css */
+.invoiceContainer {
+    width: 100%;
+    max-width: 595px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Helvetica', Arial, sans-serif;
+    color: #333;
+  }
+  
+  .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+  }
+  
+  .logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #3B82F6;
+  }
+  
+  .invoiceTitle {
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .details {
+    margin-bottom: 20px;
+  }
+  
+  .label {
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 5px;
+  }
+  
+  .billTo {
+    margin: 30px 0;
+  }
+  
+  .sectionTitle {
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  
+  .itemsTable {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+  }
+  
+  .itemsTable th {
+    background-color: #F3F4F6;
+    text-align: left;
+    padding: 10px;
+    font-weight: 600;
+  }
+  
+  .itemsTable td {
+    padding: 15px 10px;
+    border-bottom: 1px solid #E5E7EB;
+  }
+  
+  .totalSection {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+    padding-top: 10px;
+    border-top: 1px solid #E5E7EB;
+    font-weight: bold;
+  }
+  
+  .paymentStatus {
+    color: #10B981;
+    font-weight: 500;
+    margin: 5px 0;
+  }
+  
+  .validity {
+    color: #374151;
+    font-size: 12px;
+    margin: 5px 0 30px;
+  }
+  
+  .footer {
+    margin-top: 50px;
+    text-align: center;
+    font-size: 12px;
+    color: #6B7280;
+    line-height: 1.6;
+  }

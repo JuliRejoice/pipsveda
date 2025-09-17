@@ -80,12 +80,34 @@
                     max-width: 266px;
                 }
 
-                p {
-                    @include font16normal;
-                    color: var(--grey-650);
-                    max-width: 266px;
-                    font-weight: 400;
-                    line-height: 22px;
+                .cardmiddlecontent {
+                    @include respond-to("md") {
+                        width: calc(100% - 235px);
+                    }
+
+                    h3 {
+                        @include heading20;
+                        color: var(--black-500);
+                        margin: 0 0 4px 0;
+                        max-width: 266px;
+
+                        @include respond-to("md") {
+                            max-width: 100%;
+                        }
+                    }
+
+                    p {
+                        @include font16normal;
+                        color: var(--grey-650);
+                        max-width: 266px;
+                        font-weight: 400;
+                        line-height: 22px;
+
+                        @include respond-to("md") {
+                            max-width: 100%;
+                        }
+                    }
+
                 }
             }
         }

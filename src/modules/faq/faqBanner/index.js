@@ -6,10 +6,10 @@ export default function FaqBanner() {
             <div className='container'>
                 <div className={styles.text}>
                     <h1>
-                        Frequently Ask Question
+                        Frequently Asked Questions
                     </h1>
                     <p>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                        Get quick answers about our trading tools, courses, and support. Need help? Contact our team anytime.
                     </p>
                 </div>
             </div>

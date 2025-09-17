@@ -1,41 +1,35 @@
-import { getCookie } from "../../../cookie";
+import api from "@/utils/axiosInstance";
 
-const BASEURL = process.env.NEXT_PUBLIC_BASE_URL;
-export const getAuthToken = () => {
-    if (typeof window !== 'undefined') {
-        return getCookie('userToken') || '';
+export const getpaymentHistory = async (type,queryData) => {
+    try {
+        const response = await api.get(`/payment/getPaymentHistory?page=${queryData.page}&limit=${queryData.limit}${type ? `&isType=${type}` : ''}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching payment history:', error);
+        throw error;
     }
-    return null;
 };
 
-export const getpaymentHistory = async () => {
-    const token = getAuthToken();
-    const response = await fetch(`${BASEURL}/payment/getPaymentHistory`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            ['x-auth-token']: token,
-        },
-    });
-    if (!response.ok) {
-        throw new Error('Failed to fetch payment history');
-    }
-    return await response.json();
-};
 
 
 export const addmetaAccountNo = async (paymentId, metaAccountNo) => {
-    const token = getAuthToken();
-    const response = await fetch(`${BASEURL}/payment/updateMetaAccountNo/${paymentId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-            ['x-auth-token']: token,
-        },
-        body: JSON.stringify({"metaAccountNo" : metaAccountNo}),
-    });
-    if (!response.ok) {
-        throw new Error('Failed to add meta account number');
+    try {
+        const response = await api.put(`/payment/updateMetaAccountNo/${paymentId}`, {
+            "metaAccountNo" : metaAccountNo
+        });
+        return response.data;
+    } catch (error) {
+        console.error('Error adding meta account number:', error);
+        throw error;
     }
-    return await response.json();
+};
+
+export const downloadInvoice = async (paymentData) => {
+    try {
+        const response = await api.post(`/payment/createInvoice`,paymentData);
+        return response.data;
+    } catch (error) {
+        console.error('Error downloading invoice:', error);
+        throw error;
+    }
 };

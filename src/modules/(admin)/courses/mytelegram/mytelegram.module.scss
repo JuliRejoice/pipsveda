@@ -1,0 +1,249 @@
+@use '../../../../scss/main.scss' as *;
+@use '../../../../scss/breakpoints/breakpoints.scss' as *;
+@use '../../../../scss/typography/typography.scss' as *;
+
+.myAlgobots {   
+
+    .emptyState {
+        grid-column: 1 / span 4;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        padding: 3rem 1rem;
+        background: #f9fafb; // light gray background
+        border-radius: 16px;
+        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+        margin: 2rem auto;
+        max-width: 600px;
+    }
+
+    .cardgrid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 30px;
+        padding-top: 20px;
+
+        @include respond-to("lg") {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include respond-to("md") {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        @include respond-to("sm") {
+            grid-template-columns: repeat(1, 1fr);
+        }
+
+        .cardgridItems {
+            background-color: var(--bg-light-700);
+            padding: 30px;
+            @include first-clip-path;
+
+            .image {
+
+                img,
+                .imageSkeleton {
+                    object-fit: cover;
+                    clip-path: polygon(0 30px, 25px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);
+                    width: 100%;
+                    height: 220px;
+                    display: block;
+                }
+            }
+            .infoCard {
+                background: #f8f9fa;
+                border-radius: 8px;
+                padding: 15px;
+                margin-top: 15px;
+                border: 1px solid #e9ecef;
+                width: 100%;
+            
+                .infoRow {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 10px;
+                    font-size: 14px;
+                    line-height: 1.4;
+            
+                    &:last-child {
+                        margin-bottom: 0;
+                    }
+            
+                    .infoLabel {
+                        color: #6c757d;
+                        font-weight: 500;
+                        margin-right: 8px;
+                    }
+            
+                    .infoValue {
+                        color: #212529;
+                        text-align: right;
+                        flex: 1;
+                    }
+            
+                    .price {
+                        color: #28a745;
+                        font-weight: 600;
+                    }
+                }
+            }
+
+            .details {
+       
+    
+                .title{
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    padding: 0 0 16px 0;
+                    background: var(--button-gradient);
+                    background-clip: text;
+                    -webkit-background-clip: text;
+                    -webkit-text-fill-color: transparent;
+    
+                    button {
+                        background-color: transparent;
+                        padding: 8px 30px;
+                        @include font16;
+                        border: 1px solid var(--border-light);
+                        border-radius: 99px;
+    
+                        span {
+                            background: var(--button-gradient);
+                            background-clip: text;
+                            -webkit-background-clip: text;
+                            -webkit-text-fill-color: transparent;
+                            display: block;
+                        }
+                    }
+                }
+                h3 {
+                    @include font18;
+                    color: var(--black-500);
+                    font-family: var(--font-funneldisplay);
+                    font-weight: 600;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
+                    display: -webkit-box;
+                    overflow: hidden;
+                    margin-bottom: 10px;
+                }
+
+                h4 {
+                    @include font17;
+                    color: var(--black-500);
+                    font-family: var(--font-funneldisplay);
+                }
+
+                p {
+                    margin-top: 10px;
+                    @include font16;
+                    font-family: var(--font-lexend);
+                    color: var(--grey-600);
+                    -webkit-line-clamp: 3;
+                    -webkit-box-orient: vertical;
+                    display: -webkit-box;
+                    overflow: hidden;
+                }
+            }
+
+            // button {
+            //     padding: 9px 24px;
+            //     @include font14;
+            //     clip-path: polygon(0 15px, 14px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
+            // }
+
+            // .downloadContent {
+            //     display: flex;
+            //     align-items: center;
+            //     gap: 6px;
+
+            //     span {
+            //         display: block;
+            //         @include font16normal;
+            //         color: var(--black-500);
+            //         line-height: 4px;
+            //     }
+
+            //     .spanStyle {
+            //         display: block;
+            //         @include font16normal;
+            //         color: var(--black-500);
+            //     }
+            // }
+
+            // .alltextStyle {
+            //     padding: 15px 0;
+            //     display: flex;
+            //     justify-content: space-between;
+
+            //     p {
+            //         @include font16normal;
+            //         color: var(--black-500);
+            //         font-weight: 500;
+            //         line-height: 20px;
+            //     }
+
+            //     span {
+            //         @include font16normal;
+            //         display: block;
+            //         background: var(--button-gradient);
+            //         background-clip: text;
+            //         -webkit-background-clip: text;
+            //         -webkit-text-fill-color: transparent;
+            //     }
+            // }
+
+            // .twoContentAlignment {
+            //     display: flex;
+            //     align-items: center;
+            //     justify-content: space-between;
+            //     padding: 15px 0;
+            //     border-bottom: 1px solid var(--border-color7);
+
+            //     .dateShow {
+            //         display: flex;
+            //         align-items: center;
+            //         gap: 4px;
+
+            //         span {
+            //             display: block;
+            //             @include font16normal;
+            //             color: var(--grey-600);
+            //             line-height: 4px;
+            //         }
+
+            //         .spanStyle {
+            //             display: block;
+            //             @include font16normal;
+            //             color: var(--grey-600);
+            //         }
+            //     }
+
+            //     p {
+            //         @include font16normal;
+            //         color: var(--black-500);
+            //         font-weight: 500;
+            //         margin: 0;
+            //         line-height: 22px;
+            //     }
+
+            //     span {
+            //         display: block;
+            //         @include font16normal;
+            //         color: var(--grey-600);
+            //         line-height: 4px;
+            //     }
+
+            //     .spanStyle {
+            //         display: block;
+            //         @include font16normal;
+            //         color: var(--grey-600);
+            //     }
+            // }
+        }
+    }
+}

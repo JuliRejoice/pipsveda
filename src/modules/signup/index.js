@@ -6,7 +6,6 @@ import Logo from "@/compoents/logo";
 import Button from "@/compoents/button";
 import Authentication from "@/compoents/authentication";
 import Link from "next/link";
-import { sign } from "crypto";
 import { signUp } from "@/compoents/api/auth";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
@@ -45,10 +44,12 @@ const validateName = (value) => {
 
 // Email: RFC-like but practical for web use
 const validateEmail = (value) => {
-    if (!value) return "Email is required.";
-    const emailRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
-    if (!emailRegex.test(value)) return "Enter a valid email address.";
-    return "";
+  const trimmedValue = value.trim().toLowerCase(); // 👈 force lowercase
+  if (!trimmedValue) return "Email is required.";
+  if (trimmedValue.includes(' ')) return "Email cannot contain spaces.";   
+  const re = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+  if (!re.test(trimmedValue)) return "Enter a valid email address.";   
+  return "";
 };
 
 // Password: Min 8 chars, at least 1 uppercase, 1 lowercase, 1 number, 1 special char
@@ -92,31 +93,39 @@ const validateConfirmPassword = (value, password) => {
     }
     setIsSubmitting(true);
     signUp({ name: data.name, email: data.email, password: data.password })
-      .then((response) => {
-        if (response.success) {
-          setIsSubmitting(false);
-          toast.success('User Signup successfully.');
-          setErrors({
-            name: "",
-            email: "",
-            password: "",
-            confirmPassword: "",
-            submit: "",
-          });
-          router.push("/signin");
-        }
-        else{
-          setIsSubmitting(false);
-          toast.error(errorMessages[response?.message] ?? "User Signup failed. Please try again.");
-        }
-      })
-      .catch((error) => {
-        setIsSubmitting(false);
-        setErrors((prev) => ({
-          ...prev,
-          submit: errorMessages[response?.message]|| "User Signup failed. Please try again.",
-        }));
+  .then((response) => {
+    if (response.success) {
+      setIsSubmitting(false);
+      toast.success("User Signup successfully.");
+      setErrors({
+        name: "",
+        email: "",
+        password: "",
+        confirmPassword: "",
+        submit: "",
       });
+      router.push("/signin");
+    } else {
+      setIsSubmitting(false);
+      toast.error(
+        errorMessages[response?.message] ??
+          "User Signup failed. Please try again."
+      );
+    }
+  })
+  .catch((error) => {
+    setIsSubmitting(false);
+
+    const serverMessage = error.response?.data?.message;
+
+    setErrors((prev) => ({
+      ...prev,
+      submit:
+        (serverMessage && errorMessages[serverMessage]) ||
+        "User Signup failed. Please try again.",
+    }));
+  });
+
   };
   return (
     <div className={styles.signup}>
@@ -146,6 +155,11 @@ const validateConfirmPassword = (value, password) => {
                 label="Name"
                 placeholder="Enter your name"
                 value={data.name}
+                onKeyDown={(e) => {
+                  if (e.key === ' ') {
+                    e.preventDefault();
+                  }
+                }}
                 onChange={(e) => {
                   setData({ ...data, name: e.target.value.trim() });
                   setErrors((prev) => ({
@@ -169,11 +183,19 @@ const validateConfirmPassword = (value, password) => {
                   }
                 }}
                 onChange={(e) => {
-                  setData({ ...data, email: e.target.value });
-                  setErrors((prev) => ({
-                    ...prev,
-                    email: validateEmail(e.target.value),
-                  }));
+                  setData({ ...data, email: e.target.value.toLowerCase() });
+                  if (errors.email) {
+                    setErrors(prev => ({ 
+                        ...prev, 
+                        email: validateEmail(e.target.value.toLowerCase(), false) 
+                    }));
+                }
+                }}
+                onBlur={(e) => {
+                    setErrors(prev => ({ 
+                        ...prev, 
+                        email: validateEmail(e.target.value.toLowerCase(), true) 
+                    }));
                 }}
               />
               {errors.email && (

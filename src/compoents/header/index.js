@@ -1,17 +1,23 @@
 'use client'
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext, useRef } from 'react'
 import styles from './header.module.scss';
 import Logo from '../logo';
 import Button from '../button';
 import classNames from 'classnames';
 import MenuIcon from '@/icons/menuIcon';
 import CloseIcon from '@/icons/closeIcon';
+import UserIcon from '@/icons/userIcon';
 import Link from 'next/link';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { usePathname, useSearchParams, useRouter } from 'next/navigation';
+import { getCookie, removeCookie } from '../../../cookie';
+import ProfileIcon from '@/icons/profileIcon';
+import toast from 'react-hot-toast';
+const DownIcon = "/assets/icons/down-white.svg";
 const RightIcon = '/assets/icons/right.svg';
+const LogoutIcon = "/assets/icons/logout.svg";
+
 function useScrollDirection() {
   const [scrollDirection, setScrollDirection] = useState("noScroll");
-
 
   useEffect(() => {
     let lastScrollY = window.pageYOffset;
@@ -31,14 +37,58 @@ function useScrollDirection() {
       window.removeEventListener("scroll", updateScrollDirection);
     };
   }, [scrollDirection]);
+
   return scrollDirection;
 }
+
 export default function Header() {
   const scrollDirection = useScrollDirection();
   const [header, setHeader] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
+  const dropdownRef = useRef(null);
+  const [user, setUser] = useState(null);
+  
+
+
+
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const router = useRouter();
   const course = searchParams.get("course");
+
+  const handleLogout = async () => {
+    try {
+      removeCookie("userToken");
+      removeCookie("user");
+      toast.success("Logout successfully.");
+      await router.push('/');
+      window.location.reload();
+    } catch (error) {
+      console.error('Failed to log out', error);
+    }
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      // Check if click is outside both dropdown button and dropdown menu
+      const isClickInside = 
+        event.target.closest(`.${styles.userDropdown}`) || 
+        (dropdownRef.current && dropdownRef.current.contains(event.target));
+      
+      if (!isClickInside) {
+        setShowDropdown(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const user = getCookie("userToken");
+    setUser(user);
+  }, []);
+
   return (
     <>
       <header className={classNames(
@@ -48,7 +98,7 @@ export default function Header() {
           : scrollDirection === 'noScroll'
             ? null
             : styles.hide
-      )} >
+      )}>
         <div className='container'>
           <div className={styles.headerDesign}>
             <a href='/'><Logo /></a>
@@ -60,7 +110,6 @@ export default function Header() {
               >
                 Courses
               </a>
-
               <a
                 className={course === 'live' ? styles.active : ''}
                 href="/our-course?course=live"
@@ -68,7 +117,6 @@ export default function Header() {
               >
                 Live Online Classes
               </a>
-
               <a
                 className={course === 'physical' ? styles.active : ''}
                 href="/our-course?course=physical"
@@ -76,25 +124,67 @@ export default function Header() {
               >
                 Offline Sessions
               </a>
+              <a href="/algobots" className={pathname === ('/algobots' || '/algobot-details') ? styles.active : ''} aria-label='Community'>AlgoBots</a>
+              <a href="/blog" className={pathname === '/blog' ? styles.active : ''} aria-label='Blog'>Blogs</a>
+              <a href="/about"aria-label='About Us'>About Us</a>
+            </div>
 
-              <a aria-label='Community'>AlgoBots</a>
-              {/* <a aria-label='Resources'>Resources</a>
-              <a aria-label='Blog'>Blog</a> */}
-              <a aria-label='About Us'>About Us</a>
-            </div>
             <div className={styles.buttonDesign}>
-              <Link href="/signin">
-                <Button text="Login" icon={RightIcon} />
-              </Link>
+              {user ? (
+                <div className={styles.userDropdown}>
+                  <button
+                    className={styles.userButton}
+                    onClick={() => setShowDropdown(!showDropdown)}
+                    aria-label="User menu"
+                  >
+                    <UserIcon />
+                    <span>{user.displayName?.split(' ')[0] || 'User'}</span>
+                    <img src={DownIcon} alt="DownIcon" />
+                  </button>
+                </div>
+              ) : (
+                <Link href="/signin">
+                  <Button text="Login" icon={RightIcon} />
+                </Link>
+              )}
             </div>
+
             <div className={styles.menuIcon} onClick={() => setHeader(!header)}>
               <MenuIcon />
             </div>
           </div>
-
-
         </div>
       </header>
+
+      {/* {dropdown wrapper} */}
+      <div className={classNames(
+        styles.dropdownwrapper,
+        scrollDirection === 'downToTop'
+          ? styles.show
+          : scrollDirection === 'noScroll'
+            ? null
+            : styles.hide
+      )}>
+        <div className='container'>
+          <div className={styles.profiledropdownrelative}>
+            {showDropdown && (
+              <div className={styles.dropdownMenu} ref={dropdownRef}>
+                <Link className={styles.dropdownItem} href="/profile"><ProfileIcon /> Profile</Link>
+                <div className={styles.dropdownhr}></div>
+                <button
+                  onClick={handleLogout}
+                  className={classNames(styles.dropdownItem, styles.logoutButton)}
+                >
+                  <img src={LogoutIcon} alt='LogoutIcon' />
+                  Logout
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu */}
       <div className={classNames(styles.mobileHeader, header ? styles.show : styles.hide)}>
         <div className={styles.mobileSmHeader}>
           <Logo />
@@ -103,16 +193,26 @@ export default function Header() {
           </div>
         </div>
         <div className={styles.mobileBody}>
-          <a href="/our-course" aria-label='Courses'>Courses</a>
-          <a href="/our-course" aria-label='Live Online Classes'>Live Online Classes</a>
-          <a href="/our-course" aria-label='Offline Sessions'>Offline Sessions</a>
-          <a href="/algotbots" aria-label='Community'>AlgoBots</a>
-          {/* <a href="/resources" aria-label='Resources'>Resources</a>
-          <a href="/blog" aria-label='Blog'>Blog</a> */}
-          <a aria-label='About Us'>About Us</a>
+          <a href="/our-course?course=recorded">Courses</a>
+          <a href="/our-course?course=live">Live Online Classes</a>
+          <a href="/our-course?course=physical">Offline Sessions</a>
+          <a href="/algotbots">AlgoBots</a>
+          <a href="/blog">Blogs</a>
+          <a href="#">About Us</a>
         </div>
         <div className={styles.mobileFooter}>
-          <Button text="Login" icon={RightIcon} />
+          {user ? (
+            <>
+              <Link href="/profile">
+                <Button text="Profile" />
+              </Link>
+              <Button text="Logout" onClick={handleLogout} />
+            </>
+          ) : (
+            <Link href="/signin">
+              <Button text="Login" icon={RightIcon} />
+            </Link>
+          )}
         </div>
       </div>
     </>

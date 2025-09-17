@@ -40,6 +40,7 @@ export default function CourseBanner({
   courseType,
   setCourseType,
   setCourseLoading,
+  setSelectedTab,
 }) {
   const [courses, setCourses] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -81,7 +82,6 @@ export default function CourseBanner({
     }
     getAllCourses();
   }, [params]);
-console.log(searchQuery);
  
   useEffect(() => {
     setInputValue(searchQuery);
@@ -92,7 +92,6 @@ console.log(searchQuery);
       setIsLoading(true);
       const response = await getCourses(searchQuery);
       if (response.success) {
-        console.log(response.payload.data.slice(0, 3));
         setCourses(response.payload.data.slice(0, 3));
       } else {
         console.error("Failed to fetch courses:", response.message);
@@ -105,21 +104,22 @@ console.log(searchQuery);
   };
 
   const handleTypeChange = async (type) => {
-    setCourseLoading(true);
-    try {
-      setCourseType(type);
-      const response = await getTrendingOrPopularCourses(type);
+    setSelectedTab(type);
+    // setCourseLoading(true);
+    // try {
+    //   setCourseType(type);
+    //   const response = await getTrendingOrPopularCourses(type);
 
-      if (response.success) {
-        setAllCourse(response.payload.data);
-      } else {
-        console.error("Failed to fetch courses:", response.message);
-      }
-    } catch (error) {
-      console.error("Error fetching courses:", error);
-    } finally {
-      setCourseLoading(false);
-    }
+    //   if (response.success) {
+    //     setAllCourse(response.payload.data);
+    //   } else {
+    //     console.error("Failed to fetch courses:", response.message);
+    //   }
+    // } catch (error) {
+    //   console.error("Error fetching courses:", error);
+    // } finally {
+    //   setCourseLoading(false);
+    // }
   };
 
 
@@ -130,14 +130,10 @@ console.log(searchQuery);
         <div className={styles.griditems}>
           <div className={styles.text}>
             <h2>
-              Trade crypto CFDs with FOREX.com without needing to own the
-              cryptocurrency itself.
+            Learn to trade crypto CFDs at Pips Veda no need to hold the coins, just trade the opportunities.
             </h2>
             <p>
-              Trade crypto CFDs with FOREX.com without needing to own the
-              cryptocurrency itself. With competitive spreads on Ripple, Ether
-              and Bitcoin CFDs. Go long or short on CFDs - Get competitive
-              spreads - Trade without the need for a digital wallet
+            Pips Veda Trading Academy helps you unlock the world of crypto CFD trading. Learn to trade Bitcoin, Ether, and Ripple CFDs with flexible strategies go long or short, understand spreads, and trade without needing a digital wallet.
             </p>
             <motion.div className={styles.searchbar} variants={item}>
               <motion.div
@@ -198,7 +194,7 @@ console.log(searchQuery);
                     <div
                       className={styles.iconText}
                       onClick={() =>
-                        router.push(`/courses/pre-recorded/${course._id}`)
+                        router.push(`/course/${course._id}`)
                       }
                     >
                       <p>Enroll Now</p>

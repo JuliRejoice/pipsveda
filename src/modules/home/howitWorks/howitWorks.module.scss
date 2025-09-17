@@ -6,6 +6,7 @@
 .howitWorks {
     padding: 180px 0 120px 0;
     position: relative;
+    overflow: hidden;
 
     @include respond-to("md") {
         padding: 80px 0;

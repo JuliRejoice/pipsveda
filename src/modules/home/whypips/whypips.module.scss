@@ -132,6 +132,15 @@
                 background: linear-gradient(90deg, rgba(110, 48, 249, 0.18) 0%, rgba(254, 105, 23, 0.18) 85.71%);
             }
 
+
+            @media (max-width:1600px) {
+                padding: 30px 20px;
+            }
+
+            &:hover {
+                background: linear-gradient(90deg, rgba(110, 48, 249, 0.18) 0%, rgba(254, 105, 23, 0.18) 85.71%);
+            }
+
             .iconCenter {
                 display: flex;
                 padding: 0 0 22px 0;
@@ -152,4 +161,5 @@
             }
         }
     }
+
 }

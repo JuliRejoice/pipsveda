@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./newPassword.module.scss";
 import Button from "@/compoents/button";
 import Input from "@/compoents/input";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { updatePassword } from "@/compoents/api/auth";
 import toast from "react-hot-toast";
 
@@ -25,54 +25,74 @@ export default function NewPassword() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const [email, setEmail] = useState("");
+  const searchParams = useSearchParams();
 
   useEffect(() => {
+
+    if (typeof window === 'undefined') return;
+
     const emailFromState = localStorage.getItem("email");
+    const emailFromParams = searchParams.get('email');
+    
     if (emailFromState) {
       setEmail(emailFromState);
+      setIsLoading(false);
+    } else if (emailFromParams) {
+      localStorage.setItem("email", emailFromParams);
+      setEmail(emailFromParams);
+      setIsLoading(false);
+    } else {
+      router.replace("/signin");
     }
-  }, []);
+  }, [router, searchParams]);
 
   const handleSetNewPassword = async () => {
     setErrors({ newPassword: "", confirmPassword: "", submit: "" });
-    const passwordRegex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
     const validationErrors = {
       newPassword: "",
       confirmPassword: "",
-      submit: "",
+      submit: ""
     };
-
+  
+    // Validate new password
     if (!newPassword || newPassword.trim() === "") {
       validationErrors.newPassword = "New password is required";
-    } else if (!passwordRegex.test(newPassword)) {
-      validationErrors.newPassword =
-        "Password must be at least 6 characters and include uppercase, lowercase, number, and special character.Example: Hello@123";
+    } else if (newPassword.length < 6) {
+      validationErrors.newPassword = "Password must be at least 6 characters";
     }
-
+  
+    // Validate confirm password
     if (!confirmPassword || confirmPassword.trim() === "") {
       validationErrors.confirmPassword = "Confirm password is required";
     } else if (newPassword !== confirmPassword) {
       validationErrors.confirmPassword = "Passwords do not match";
     }
-
-    if (Object.values(validationErrors).some((err) => err !== "")) {
+  
+    // Check if there are any validation errors
+    const hasError = Object.values(validationErrors).some(err => err !== "");
+    if (hasError) {
       setErrors(validationErrors);
       return;
     }
-
+  
     try {
       setIsSubmitting(true);
-      const res = await updatePassword({ email, password: newPassword });
-
+      
+      const res = await updatePassword({ 
+        email,
+        password: newPassword 
+      });
+  
       if (res.success) {
-        localStorage.removeItem("email");
-        toast.success("Password reset successfully.");
-        router.push("/signin");
+        // Clear sensitive data from localStorage
+        localStorage.removeItem('email');
+        // Redirect to signin on success
+        router.push("/login");
       } else {
+        // Handle API error response
         setErrors({
           ...validationErrors,
-          submit: res.message || "Failed to update password. Please try again.",
+          submit: res.message || "Failed to update password. Please try again."
         });
       }
     } catch (err) {

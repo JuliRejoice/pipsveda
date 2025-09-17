@@ -4,7 +4,7 @@ import styles from "./otpVerification.module.scss";
 import Button from "@/compoents/button";
 import Link from "next/link";
 import { forgetPassword, verifyOtp } from "@/compoents/api/auth";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Logo from "@/compoents/logo";
 import toast from "react-hot-toast";
 
@@ -19,13 +19,25 @@ export default function OtpVerification() {
   const [isResending, setIsResending] = useState(false);
   const router = useRouter();
 
+  const searchParams = useSearchParams();
+
   useEffect(() => {
-    // Get email from URL state when component mounts
+    if (typeof window === 'undefined') return;
     const emailFromState = localStorage.getItem("email");
+    const emailFromParams = searchParams.get('email');
+    
     if (emailFromState) {
       setEmail(emailFromState);
+      setIsLoading(false);
+    } else if (emailFromParams) {
+      localStorage.setItem("email", emailFromParams);
+      setEmail(emailFromParams);
+      setIsLoading(false);
+    } else {
+      router.replace("/signin");
     }
-  }, []);
+  }, [router, searchParams]);
+
 
   const handleChange = (e, index) => {
     const value = e.target.value;
@@ -48,7 +60,6 @@ export default function OtpVerification() {
         newOtp[i] = digit;
       });
       setOtp(newOtp);
-      // Focus last filled box
       const nextIndex =
         digits.length < otp.length ? digits.length : otp.length - 1;
       document.getElementById(`otp-${nextIndex}`).focus();
@@ -172,7 +183,7 @@ export default function OtpVerification() {
                 text={isVerifying ? "Verifying..." : "Continue"}
                 icon={isVerifying ? null : RightIcon}
                 disabled={isVerifying}
-                onClick={!isVerifying && handleVerifyOtp}
+                onClick={!isVerifying ? handleVerifyOtp : undefined}
               />
             </div>
           </div>

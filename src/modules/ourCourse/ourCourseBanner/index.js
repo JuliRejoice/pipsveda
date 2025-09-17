@@ -1,10 +1,12 @@
 'use client'
 import React, { useEffect } from 'react'
 import styles from './ourCourseBanner.module.scss';
-import { useSearchParams } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { useAnimate, useInView } from 'framer-motion';
 const CardImage = '/assets/images/card1.png'
+
 export default function OurCourseBanner({course}) {
+    const pathname = usePathname();
     let title = '';
     let description = '';
    if(course === 'live') {
@@ -18,6 +20,10 @@ export default function OurCourseBanner({course}) {
    else if(course === 'physical') {
     title = 'In Person Courses'
     description = 'For those who thrive in a traditional classroom setting, our in-person sessions offer a hands-on, immersive learning experience. Meet your mentors face-to-face, participate in live trading simulations, and benefit from personalized guidance in a focused environment. Ideal for learners who prefer direct interaction and real-time feedback.'      
+   }
+   else if(pathname === '/algobots') {
+    title = 'AlgoBots'
+    description = 'Leverage the power of automation with our intelligent AlgoBot, designed to assist you in making data-driven trading decisions. This smart tool analyzes market trends, executes strategies, and manages trades based on predefined rules — all in real time. Perfect for traders who value efficiency, consistency, and the ability to act without emotional bias, AlgoBot helps you streamline your trading while minimizing manual effort.'      
    }
   
    const [scope, animate] = useAnimate();

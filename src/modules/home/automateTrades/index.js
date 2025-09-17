@@ -8,6 +8,7 @@ import OutlineButton from '@/compoents/outlineButton';
 import { getAlgobot } from '@/compoents/api/algobot';
 import { useRouter } from 'next/navigation';
 import { getCookie } from '../../../../cookie';
+import { getBots } from '@/compoents/api/dashboard';
 
 const containerVariants = {
   hidden: {},
@@ -45,9 +46,10 @@ export default function AutomateTrades() {
   useEffect(() => {
     const fetchAlgobotData = async () => {
       try {
-        const response = await getAlgobot();
-        console.log("response", response)
-        setAlgobotData(response.payload.data.slice(0, 3));
+        const response = await getBots();
+        // Flatten the strategies array from all categories
+        const allStrategies = response.payload.data;
+        setAlgobotData(allStrategies); // Get first 3 strategies
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -94,55 +96,50 @@ export default function AutomateTrades() {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {algobotData.map((algobot, i) => (
+          {algobotData.map((strategy, i) => (
             <motion.div
               className={styles.mainCard}
-              key={i}
+              key={strategy._id}
               variants={cardVariants}
               onMouseMove={handleTilt}
               onMouseLeave={resetTilt}
               style={{ willChange: 'transform' }}
             >
               <div className={styles.card}>
-
                 <div className={styles.textstyle}>
                   <div style={{ display: "flex", justifyContent: "space-between" }}>
                     <div className={styles.titleText}>
-                      <h3>{algobot.title}</h3>
-                      <p>{algobot.shortDescription}</p>
+                      <h3>{strategy.title}</h3>
+                      <p>{strategy.shortDescription}</p>
                     </div>
                     <FlashIcon />
                   </div>
                   <div className={styles.planplangrdmain}>
                     <div className={styles.planplangrd}>
-                      <div className={styles.planitem}>
-                        <h4>
-                          ${algobot.strategyPlan[0]?.price}<sub>/{algobot.strategyPlan[0]?.planType}</sub>
-                        </h4>
-                      </div>
-                      <div className={styles.planitem}>
-                        <h4>
-                          ${algobot.strategyPlan[1]?.price}<sub>/{algobot.strategyPlan[1]?.planType}</sub>
-                        </h4>
-                      </div>
-                      {/* <div className={styles.planitem}>
-                        <h4>
-                          ${algobot.strategyPlan[2]?.price}<sub>/{algobot.strategyPlan[2]?.planType}</sub>
-                        </h4>
-                      </div> */}
+                      {strategy.strategyPlan?.slice(0, 2).map((plan, idx) => (
+                        <div className={styles.planitem} key={plan._id}>
+                          <h4>
+                            ${plan.price}<sub>/{plan.planType}</sub>
+                          </h4>
+                        </div>
+                      ))}
                     </div>
                   </div>
                 </div>
                 <div className={styles.details}>
                   <div className={styles.listAlignment}>
-                    <span className={styles.listText}>{algobot.description}</span>
+                    <span className={styles.listText}>
+                      {strategy.description.replace(/<[^>]*>?/gm, '')}
+                    </span>
                   </div>
                 </div>
                 <div className={styles.buttonGrid}>
-                  <Button text="Buy Now" onClick={() => { getCookie('userToken') ? router.push(`/algobot/${algobot._id}`) : router.push('/signin'); }} />
-                  {/* <div className={styles.btndesign}>
-                    <OutlineButton text="Subscribe Now" />
-                  </div> */}
+                  <Button
+                    text="Buy Now"
+                    onClick={() => {
+                      router.push(`algobot-details?id=${strategy._id}`)
+                    }}
+                  />
                 </div>
               </div>
             </motion.div>

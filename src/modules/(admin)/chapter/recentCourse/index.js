@@ -2,15 +2,17 @@
 import React, { useEffect, useState, useCallback } from 'react'
 import styles from './recentCourse.module.scss';
 import OutlineButton from '@/compoents/outlineButton';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { getCourses } from '@/compoents/api/dashboard';
 import 'react-loading-skeleton/dist/skeleton.css';
 import RenderSkeleton from './RenderSkeleton';
 import EmptyState from './EmptyState';
+import Button from '@/compoents/button';
 
 const CardImage = '/assets/images/crypto.png';
 const BathIcon = '/assets/icons/bath.svg';
 const RightBlackIcon = '/assets/icons/right-black.svg';
+const RightIcon = '/assets/icons/right.svg';
 
 export default function RecentCourse({ selectedCourse }) {
     const [courses, setCourses] = useState([]);
@@ -18,6 +20,17 @@ export default function RecentCourse({ selectedCourse }) {
     const [hasFetched, setHasFetched] = useState(false);
     const [error, setError] = useState(null);
     const router = useRouter();
+    const pathname = usePathname();
+
+    const courseType = () =>{
+        if(pathname.includes('pre-recorded')){
+            return 'pre-recorded'
+        }else if(pathname.includes('live-online')){
+            return 'live-online'
+        }else if(pathname.includes('in-person')){
+            return 'in-person'
+        }
+    }
 
     const fetchCourses = useCallback(async () => {
         if (!selectedCourse?._id) return;
@@ -48,7 +61,7 @@ export default function RecentCourse({ selectedCourse }) {
     return (
         <div className={styles.recentCourseAlignment}>
             <div className={styles.title}>
-                <h2>Recent Course</h2>
+                <h2>Similar Courses</h2>
             </div>
             
             {error ? (
@@ -91,11 +104,18 @@ export default function RecentCourse({ selectedCourse }) {
                                         <span>{course?.instructor || 'John Doe'}</span>
                                     </div>
                                 </div>
+                                {course.isPayment ?
+                                <Button 
+                                    text="Enrolled" 
+                                    icon={RightIcon} 
+                                    onClick={() => router.push(`/my-courses/course/${course?._id}`)} 
+                                />
+                                :
                                 <OutlineButton 
                                     text="Enroll Now" 
                                     icon={RightBlackIcon} 
-                                    onClick={() => router.push(`/courses/pre-recorded/${course?._id}`)} 
-                                />
+                                    onClick={() => router.push(`/course/${course?._id}`)} 
+                                />}
                             </div>
                         </div>
                     ))}

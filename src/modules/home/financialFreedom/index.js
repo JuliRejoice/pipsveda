@@ -101,7 +101,6 @@ export default function FinancialFreedom() {
         const fetchCourses = async () => {
             try {
                 const response = await getCourseByType();
-                console.log('API Response:', response);
                 if (response && response.payload && response.payload.courses) {
                     setCourses({
                         recorded: response.payload.courses.recorded.slice(0, 5) || [],
@@ -263,7 +262,7 @@ export default function FinancialFreedom() {
                                                                 text="Enroll Now"
                                                                 onClick={() => {
                                                                     const courseType = courseTypes.find(t => t.id === activeType)?.course || 'pre-recorded';
-                                                                    { getCookie('userToken') ? router.push(`/courses/${courseType}/${course._id}`) : router.push('/signin'); }
+                                                                    { getCookie('userToken') ? router.push(`/course/${course._id}`) : router.push('/signin'); }
                                                                 }}
                                                             />
                                                         </div>

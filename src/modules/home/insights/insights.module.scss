@@ -100,6 +100,7 @@
             @include respond-to("sm") {
                 @include font16normal;
             }
+
         }
     }
 
@@ -137,12 +138,21 @@
                     @include heading20;
                     margin: 0 0 5px 0;
                     color: var(--black-500);
+                    display: -webkit-box;
+                    -webkit-line-clamp: 1;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
                 }
 
                 p {
-                    @include font18;
+                    @include font16normal;
                     color: var(--grey-600);
                     margin: 0 0 18px 0;
+                    display: -webkit-box;
+                    -webkit-line-clamp: 2;
+                    margin: 0 0 12px 0;
+                    -webkit-box-orient: vertical;
+                    overflow: hidden;
 
                     @include respond-to("md") {
                         @include font16normal;

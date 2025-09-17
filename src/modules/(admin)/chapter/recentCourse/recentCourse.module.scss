@@ -34,7 +34,7 @@
         @include respond-to("sm") {
             grid-template-columns: repeat(1, 1fr);
         }
-    
+
     }
 
     .griditems {
@@ -44,7 +44,9 @@
         border-radius: 12px;
 
         .image {
-            img {
+
+            img,
+            video {
                 width: 100%;
                 height: 220px;
                 object-fit: cover;
@@ -170,4 +172,11 @@
 
         }
     }
+}
+
+.meetingLink{
+    background: var(--gradient-color);
+    color: var(--bg-white);
+
+    
 }

@@ -1,9 +1,12 @@
 'use client'
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useInView, useAnimation } from 'framer-motion';
 import styles from './telegramCommunities.module.scss';
 import ArrowVec from '@/icons/arrowVec';
 import Button from '@/compoents/button';
+import { getTelegramChannels, getTelegramFordashboard } from '@/compoents/api/dashboard';
+import { useRouter } from 'next/navigation';
+import { getCookie } from '../../../../cookie';
 
 const ProfileImage = '/assets/images/profile-img.png';
 
@@ -29,6 +32,22 @@ const textVariants = {
 export default function TelegramCommunities() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const [telegramChannels,setTelegramChannels] = useState([]);
+  const router = useRouter()
+
+  useEffect(()=>{
+    const fetchTelegramChannels = async () => {
+      try {
+        const response = await getTelegramFordashboard();
+        setTelegramChannels(response.payload.data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+    fetchTelegramChannels();
+  }, []);
+
+
 
   const CARD_COUNT = 3;
   const [tilts, setTilts] = useState(Array.from({ length: CARD_COUNT }, () => ({ x: 0, y: 0 })));
@@ -72,7 +91,7 @@ export default function TelegramCommunities() {
       return next;
     });
   };
-
+console.log(telegramChannels)
   return (
     <div className={styles.telegramCommunities}>
       <div className="container" ref={ref}>
@@ -92,23 +111,27 @@ export default function TelegramCommunities() {
 
         {/* Cards Animation */}
         <motion.div
-          className={styles.grid}
+          className={telegramChannels?.length > 2 ? styles.grid : styles.flex}
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {[...Array(CARD_COUNT)].map((_, i) => (
+          {telegramChannels?.length > 0 && telegramChannels?.slice(0, 3).map((channel, i) => (
             <motion.div
               className={styles.griditems}
-              key={i}
+              key={channel._id}
               variants={cardVariants}
-              style={{ transformPerspective: 1000, willChange: 'transform', transformStyle: 'preserve-3d' }}
+              style={{
+                transformPerspective: 1000,
+                willChange: 'transform',
+                transformStyle: 'preserve-3d'
+              }}
               onMouseMove={(e) => handleMouseMove(i, e)}
               onMouseEnter={() => handleMouseEnter(i)}
               onMouseLeave={() => handleMouseLeave(i)}
               animate={{
-                rotateX: tilts[i].x,
-                rotateY: tilts[i].y,
+                rotateX: tilts[i]?.x || 0,
+                rotateY: tilts[i]?.y || 0,
                 scale: hovers[i] ? 1.02 : 1,
                 boxShadow: hovers[i]
                   ? '0 12px 30px rgba(0,0,0,0.15)'
@@ -117,37 +140,35 @@ export default function TelegramCommunities() {
               transition={{ type: 'spring', stiffness: 250, damping: 20, mass: 0.6 }}
             >
               <div className={styles.cardHeader}>
-                <button aria-label='Free'>
-                  <span>Free</span>
-                </button>
+                <div className={styles.textStyle}>
+                  <h3>{channel.channelName}</h3>
+                </div>
                 <ArrowVec />
               </div>
-              <div className={styles.textStyle}>
-                <h3>Intraday Calls</h3>
-                <div className={styles.textImagealignment}>
-                  <div className={styles.imageAlignment}>
-                    <img src={ProfileImage} alt="ProfileImage" />
-                    <img src={ProfileImage} alt="ProfileImage" />
-                    <div className={styles.plus}>+</div>
-                  </div>
-                  <span>12.5k members</span>
-                </div>
-              </div>
+
               <div className={styles.listAlignment}>
-                <ul>
-                  <li>Daily market insights</li>
-                  <li>Live trade calls</li>
-                  <li>Community support</li>
-                </ul>
+                <p>{channel.description || 'Join our community for updates and insights'}</p>
               </div>
-              <div className={styles.freeaccess}>
-                <span>Free Access</span>
+
+              <div className={styles.priceSection}>
+                {channel.telegramPlan?.length > 0 &&
+                  channel.telegramPlan.map((plan) => (
+                    <div className={styles.priceContainer} key={plan._id}>
+                      <span className={styles.price}>${plan.initialPrice}</span>
+                      <span className={styles.priceLabel}>/{plan.planType}</span>
+                    </div>
+                  ))}
               </div>
+
               <div className={styles.btn}>
-                <Button text="Join Now" />
+                <Button
+                  text={'Join Now'}
+                  onClick={() => router.push(`/telegramDetails?id=${channel._id}`)}
+                />
               </div>
             </motion.div>
           ))}
+
         </motion.div>
       </div>
     </div>

@@ -40,9 +40,9 @@ function InPersonCourse() {
 
   return (
     <div className={styles.recentCourseAlignment}>
-      <div className={styles.title}>
+      {/* <div className={styles.title}>
         <h2>In Person Course</h2>
-      </div>
+      </div> */}
 
       {error ? (
         <div className={styles.errorState}>
@@ -88,7 +88,7 @@ function InPersonCourse() {
                   text="Enroll Now"
                   icon={RightBlackIcon}
                   onClick={() =>{
-                    router.push(`/courses/in-person/${course?._id}`);
+                    router.push(`/course/${course?._id}`);
                   }}
                 />
               </div>
