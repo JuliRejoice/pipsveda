@@ -104,9 +104,9 @@ export default function AutomateTrades() {
               style={{ willChange: 'transform' }}
             >
               <div className={styles.card}>
-                
+
                 <div className={styles.textstyle}>
-                  <div style={{display: "flex", justifyContent: "space-between"}}>
+                  <div style={{ display: "flex", justifyContent: "space-between" }}>
                     <div className={styles.titleText}>
                       <h3>{algobot.title}</h3>
                       <p>{algobot.shortDescription}</p>

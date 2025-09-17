@@ -95,7 +95,7 @@ export default function GetCertified() {
                         verification ID
                       </p>
                       <div className={styles.centerButton}>
-                        <button aria-label='LinkedIn Verified' onClick={() => window.open('https://in.linkedin.com/')}> 
+                        <button aria-label='LinkedIn Verified' onClick={() => window.open('https://in.linkedin.com/')}>
                           <img src={LinkdinIcon} alt="LinkdinIcon" />
                           LinkedIn Verified
                         </button>

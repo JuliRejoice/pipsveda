@@ -63,30 +63,12 @@
         }
 
         .mainCard {
-            padding: 1px;
-            background: #2A303C;
-            clip-path: polygon(0 50px, 45px 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%, 0 100%, 0 50px);
-            width: 100%;
-            border-radius: 12px;
-            transition: .3s ease-in-out;
-            position: relative;
-
-            @include respond-to("sm") {
-                clip-path: polygon(0 30px, 25px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);
-
-            }
-
-            &:hover {
-                background: var(--button-gradient);
-            }
-
-
 
             .card {
                 width: 100%;
                 padding: 50px;
-                border-radius: 12px;
-                @include sec-clip-path;
+                border-radius: 16px;
+                border: 1px solid #2A303C;
                 background-color: var(--black-100);
                 gap: 9px;
 
@@ -99,7 +81,6 @@
                 }
 
                 @include respond-to("sm") {
-                    clip-path: polygon(0 30px, 25px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);
                     padding: 30px 16px;
                 }
 
@@ -162,13 +143,15 @@
                 padding: 0 0 22px 0;
                 border-bottom: 1px solid var(--black-300);
 
-                .titleText{
+                .titleText {
                     max-width: 80%;
                 }
-                svg{
+
+                svg {
                     height: 48px;
                     width: 48px;
                 }
+
                 h3 {
                     @include heading20;
                     color: var(--text-white);

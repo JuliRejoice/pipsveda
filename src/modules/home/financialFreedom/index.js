@@ -138,9 +138,9 @@ export default function FinancialFreedom() {
     };
 
     const courseTypes = [
-        { id: 'recorded', label: 'On demand courses' , course : 'pre-recorded'},
-        { id: 'live', label: 'Live Online Courses' , course : 'live-online'},
-        { id: 'physical', label: 'In-Person Courses' , course : 'in-person'}
+        { id: 'recorded', label: 'On demand courses', course: 'pre-recorded' },
+        { id: 'live', label: 'Live Online Courses', course: 'live-online' },
+        { id: 'physical', label: 'In-Person Courses', course: 'in-person' }
     ];
 
     const currentCourses = courses[activeType] || [];
@@ -200,7 +200,7 @@ export default function FinancialFreedom() {
                                     }
                                 }}
                             >
-                                <button 
+                                <button
                                     className={`${styles.button} ${activeType === type.id ? styles.active : ''}`}
                                     onClick={() => setActiveType(type.id)}
                                     aria-pressed={activeType === type.id}
@@ -220,14 +220,14 @@ export default function FinancialFreedom() {
                         <Slider {...settings}>
                             {currentCourses.map((course, index) => (
                                 <div key={index}>
-                                    <div className={styles.mainCard}>
-                                        <CardTilt>
+                                    <CardTilt>
+                                        <div className={styles.mainCard}>
                                             <div className={styles.card}>
                                                 <div className={styles.grid}>
                                                     <div className={styles.griditems}>
                                                         <div className={styles.img}>
-                                                            <img 
-                                                                src={course.courseVideo || Card4} 
+                                                            <img
+                                                                src={course.courseVideo || Card4}
                                                                 alt={course.CourseName || 'Course Image'}
                                                                 onError={(e) => {
                                                                     e.target.onerror = null;
@@ -250,7 +250,7 @@ export default function FinancialFreedom() {
                                                                 </div>
                                                                 <div className={styles.icontext}>
                                                                     <ClockIcon />
-                                                                    <span>{`${course?.hours} hours`  || '12 hours'}</span>
+                                                                    <span>{`${course?.hours} hours` || '12 hours'}</span>
                                                                 </div>
                                                             </div>
                                                             <div className={styles.textAlignment}>
@@ -259,19 +259,19 @@ export default function FinancialFreedom() {
                                                             </div>
                                                         </div>
                                                         <div className={styles.btnWidthfull}>
-                                                            <Button 
-                                                                text="Enroll Now" 
+                                                            <Button
+                                                                text="Enroll Now"
                                                                 onClick={() => {
                                                                     const courseType = courseTypes.find(t => t.id === activeType)?.course || 'pre-recorded';
-                                                                  {getCookie('userToken') ? router.push(`/courses/${courseType}/${course._id}`) : router.push('/signin');}
-                                                                }} 
+                                                                    { getCookie('userToken') ? router.push(`/courses/${courseType}/${course._id}`) : router.push('/signin'); }
+                                                                }}
                                                             />
                                                         </div>
                                                     </div>
                                                 </div>
                                             </div>
-                                        </CardTilt>
-                                    </div>
+                                        </div>
+                                    </CardTilt>
                                 </div>
                             ))}
                         </Slider>

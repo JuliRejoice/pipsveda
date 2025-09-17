@@ -30,9 +30,11 @@
                 max-width: 50%;
                 margin: 0 auto;
             }
+
             @include respond-to("sm") {
                 max-width: 90%;
             }
+
             img {
                 display: block;
                 object-fit: cover;
@@ -43,11 +45,11 @@
             .card:last-child {
                 margin: 0;
             }
+
             .card {
                 padding: 35px 40px;
                 background-color: var(--light-bg);
-                border-radius: 12px;
-                @include first-clip-path;
+                border-radius: 16px;
                 display: flex;
                 align-items: center;
                 gap: 20px;
@@ -60,14 +62,17 @@
                     grid-template-columns: 1fr;
                     gap: 16px;
                 }
+
                 button {
-                background-color: var(--light-bg);
+                    background-color: var(--light-bg);
                 }
+
                 @include respond-to("sm") {
                     img {
                         max-width: 30px;
                     }
                 }
+
                 h3 {
                     @include heading20;
                     color: var(--black-500);
@@ -97,9 +102,11 @@
                 color: var(--black-500);
                 max-width: 460px;
                 margin: 0 0 16px 0;
+
                 @include respond-to("md") {
                     @include heading40;
                 }
+
                 @include respond-to("sm") {
                     @include heading32;
                 }
@@ -110,6 +117,7 @@
                 color: var(--black-500);
                 opacity: 0.9;
                 max-width: 460px;
+
                 @include respond-to("sm") {
                     @include font16normal;
                 }

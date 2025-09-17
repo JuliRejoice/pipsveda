@@ -19,16 +19,16 @@ export default function HomePage() {
       <Herobanner />
       <ExploreDifferent />
       <FinancialFreedom />
-      <TelegramCommunities/>
-      <HowitWorks/>
-      <AutomateTrades/>
-      <Whypips/>
-      <OurStudents/>
-      <AnimationLine/>
-      <JourneySection/>
-      <GetCertified/>
-      <Insights/>
-      <Havequestions/>
+      <TelegramCommunities />
+      <HowitWorks />
+      <AutomateTrades />
+      <Whypips />
+      <OurStudents />
+      <AnimationLine />
+      <JourneySection />
+      <GetCertified />
+      <Insights />
+      <Havequestions />
     </div>
   )
 }

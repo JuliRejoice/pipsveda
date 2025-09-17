@@ -5,7 +5,8 @@
 .whypips {
     padding: 120px 0;
     position: relative;
-        @include respond-to("md") {
+
+    @include respond-to("md") {
         padding: 80px 0;
     }
 
@@ -13,7 +14,7 @@
         padding: 60px 0;
     }
 
-        
+
     .bottomVec {
         position: absolute;
         right: 0;
@@ -40,6 +41,7 @@
         filter: blur(215px);
         content: '';
         z-index: -1;
+
         @include respond-to("sm") {
             width: 100%;
         }
@@ -59,14 +61,16 @@
         background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
         filter: blur(215px);
         content: '';
-          @include respond-to("sm") {
+
+        @include respond-to("sm") {
             width: 100%;
         }
     }
 
-     .title {
+    .title {
         padding: 0 0 60px 0;
-         @include respond-to("sm") {
+
+        @include respond-to("sm") {
             padding: 0 0 40px 0;
         }
 
@@ -76,9 +80,11 @@
             text-transform: capitalize;
             margin: 0 0 16px 0;
             text-align: center;
-              @include respond-to("md") {
+
+            @include respond-to("md") {
                 @include heading40;
             }
+
             @include respond-to("sm") {
                 @include heading32;
             }
@@ -91,6 +97,7 @@
             margin: 0 auto;
             opacity: 0.9;
             text-align: center;
+
             @include respond-to("sm") {
                 @include font16normal;
             }
@@ -99,11 +106,11 @@
 
     .grid {
         display: grid;
-        grid-template-columns: repeat(5 , 1fr);
+        grid-template-columns: repeat(5, 1fr);
         gap: 20px;
 
         @include respond-to("md") {
-            grid-template-columns: repeat(2 , 1fr);
+            grid-template-columns: repeat(2, 1fr);
         }
 
         @include respond-to("sm") {
@@ -114,14 +121,15 @@
         .griditems {
             background-color: var(--light-bg);
             transition: .3s ease-in-out;
-            @include first-clip-path;
             padding: 30px;
+            border-radius: 12px;
+
             @media (max-width:1600px) {
                 padding: 30px 20px;
             }
 
             &:hover {
-                background:linear-gradient(90deg, rgba(110, 48, 249, 0.18) 0%, rgba(254, 105, 23, 0.18) 85.71%);
+                background: linear-gradient(90deg, rgba(110, 48, 249, 0.18) 0%, rgba(254, 105, 23, 0.18) 85.71%);
             }
 
             .iconCenter {

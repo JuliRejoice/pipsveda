@@ -13,6 +13,7 @@ const RightIcon = '/assets/icons/right.svg';
 const RightBlackIcon = '/assets/icons/right-black.svg';
 const LineImage = '/assets/icons/line.svg';
 const VideoPoster = '/assets/images/video-poster.jpg';
+const CardImage = '/assets/images/card1.png';
 const IconLogo = '/assets/logo/icon-logo.svg';
 
 // Animation variants
@@ -105,14 +106,53 @@ export default function Herobanner() {
   const controls = useAnimation();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
-  const router = useRouter(); 
+  const router = useRouter();
   const [searchParams, setSearchParams] = useState();
+  const [cardTilt, setCardTilt] = useState(
+    Array.from({ length: 3 }, () => ({ rx: 0, ry: 0, scale: 1 }))
+  );
 
   useEffect(() => {
     if (isInView) {
       controls.start('show');
     }
   }, [controls, isInView]);
+
+  const handleMouseEnter = (index) => {
+    setCardTilt((prev) => {
+      const next = [...prev];
+      next[index] = { rx: 0, ry: 0, scale: 1.02 };
+      return next;
+    });
+  };
+
+  const handleMouseMove = (event, index) => {
+    const card = event.currentTarget;
+    const rect = card.getBoundingClientRect();
+    const cardWidth = rect.width;
+    const cardHeight = rect.height;
+    const centerX = rect.left + cardWidth / 2;
+    const centerY = rect.top + cardHeight / 2;
+    const mouseX = event.clientX - centerX;
+    const mouseY = event.clientY - centerY;
+
+    const rotateY = (mouseX / (cardWidth / 2)) * 10; // left/right
+    const rotateX = (-mouseY / (cardHeight / 2)) * 10; // up/down
+
+    setCardTilt((prev) => {
+      const next = [...prev];
+      next[index] = { rx: rotateX, ry: rotateY, scale: 1.02 };
+      return next;
+    });
+  };
+
+  const handleMouseLeave = (index) => {
+    setCardTilt((prev) => {
+      const next = [...prev];
+      next[index] = { rx: 0, ry: 0, scale: 1 };
+      return next;
+    });
+  };
 
   return (
     <AnimatePresence>
@@ -128,22 +168,8 @@ export default function Herobanner() {
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
         >
-          <div className='container'>
+          <div className='container-md'>
             <div className={styles.text}>
-              <motion.div
-                className={styles.pipsvedaRound}
-                variants={item}
-              >
-                <span>Pips Veda Forex Trading Pips Veda</span>
-                <motion.img
-                  src={LineImage}
-                  alt='LineImage'
-                  initial={{ scaleX: 0, transformOrigin: 'left' }}
-                  animate={{ scaleX: 1 }}
-                  transition={{ delay: 0.8, duration: 0.8, ease: 'easeOut' }}
-                />
-              </motion.div>
-
               <h1>
                 Pips Veda the Markets Build  <br /> a Financial Future That Lasts
               </h1>
@@ -157,39 +183,75 @@ export default function Herobanner() {
                 AI technology services aim to provide intelligent solutions that help businesses
                 improve efficiency,
               </motion.p>
-
-              <motion.div
-                className={styles.searchbar}
-                variants={item}
-              >
+              <div className={styles.searchButtonalignment}>
                 <motion.div
-                  className={styles.inputwrapper}
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
+                  className={styles.searchbar}
+                  variants={item}
                 >
-                  <input type='text' placeholder='Search for Course...' onChange={(e) => setSearchParams(e.target.value)} />
                   <motion.div
-                    className={styles.searchIcon}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
+                    className={styles.inputwrapper}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
                   >
-                    <SearchIcon />
+                    <input type='text' placeholder='Search for Course...' onChange={(e) => setSearchParams(e.target.value)} />
+                    <motion.div
+                      className={styles.searchIcon}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <SearchIcon />
+                    </motion.div>
                   </motion.div>
                 </motion.div>
-              </motion.div>
 
-              <motion.div
-                className={styles.buttonAlignment}
-                variants={item}
-              >
-                <Button text="Explore Courses" icon={RightIcon} onClick={() =>{getCookie("userToken") ? router.push(`/courses/pre-recorded?search=${searchParams}`) : router.push('/signin')}}/>
-               
-              </motion.div>
+                <motion.div
+                  className={styles.buttonAlignment}
+                  variants={item}
+                >
+                  <Button text="Explore Courses" icon={RightIcon} onClick={() => { getCookie("userToken") ? router.push(`/courses/pre-recorded?search=${searchParams}`) : router.push('/signin') }} />
+
+                </motion.div>
+              </div>
+              <div className={styles.cardGrid}>
+                {
+                  [...Array(3)].map((_, index) => {
+                    return (
+                      <motion.div
+                        className={styles.cardGridItems}
+                        key={index}
+                        onMouseEnter={() => handleMouseEnter(index)}
+                        onMouseMove={(e) => handleMouseMove(e, index)}
+                        onMouseLeave={() => handleMouseLeave(index)}
+                        initial={{ rotateX: 0, rotateY: 0, scale: 1 }}
+                        animate={{ rotateX: cardTilt[index].rx, rotateY: cardTilt[index].ry, scale: cardTilt[index].scale }}
+                        transition={{ type: 'spring', stiffness: 260, damping: 18, mass: 0.6 }}
+                      >
+                        <div className={styles.image}>
+                          <img src={CardImage} alt='CardImage' />
+                          <button>
+                            undefined Live Sessions
+                          </button>
+                        </div>
+                        <div className={styles.details}>
+                          <h2>
+                            Live Webinars
+                          </h2>
+                          <p>
+                            Join interactive live sessions with market experts. Ask questions, participate in
+                            discussions, and get your trading queries resolved in real-time.
+                          </p>
+
+                        </div>
+                      </motion.div>
+                    )
+                  })
+                }
+              </div>
             </div>
           </div>
         </motion.div>
 
-        <motion.div
+        {/* <motion.div
           className={styles.herobannerVideo}
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
@@ -225,7 +287,7 @@ export default function Herobanner() {
               </div>
             </motion.div>
           </div>
-        </motion.div>
+        </motion.div> */}
       </motion.div>
     </AnimatePresence>
   );

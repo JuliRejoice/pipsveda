@@ -42,7 +42,7 @@
             text-align: center;
             margin: 0 0 16px 0;
 
-             @include respond-to("md") {
+            @include respond-to("md") {
                 @include heading40;
             }
 
@@ -76,9 +76,10 @@
             min-width: 224px;
 
             @include respond-to("md") {
-              width: 300px;
-            min-width: 300px;
+                width: 300px;
+                min-width: 300px;
             }
+
             @include respond-to("sm") {
                 width: 100%;
                 min-width: 100%;
@@ -137,7 +138,7 @@
                     background: var(--button-gradient);
                     color: var(--text-white);
                     // Add any other active state styles
-                  }
+                }
             }
         }
 
@@ -205,14 +206,17 @@
                 grid-template-columns: 230px 1fr;
                 gap: 30px;
                 width: 100%;
+
                 @include respond-to("sm") {
                     grid-template-columns: 1fr;
                     gap: 16px;
                 }
+
                 .btnWidthfull {
                     @include respond-to("sm") {
                         padding: 20px 0 0 0;
                     }
+
                     button {
                         width: 100%;
                         display: flex;
@@ -230,11 +234,12 @@
                 .griditems {
                     .img {
                         img {
-                            clip-path: polygon(0 40px, 35px 0, 100% 0, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%, 0 40px);
                             height: 260px;
                             object-fit: cover;
+                            border-radius: 12px;
                             display: block;
                             width: 100%;
+
                             @include respond-to("sm") {
                                 height: 200px;
                                 @include sm-sec-clip-path;
@@ -275,6 +280,7 @@
                         align-items: center;
                         gap: 20px;
                         padding: 0 0 24px 0;
+
                         @include respond-to("sm") {
                             padding: 0 0 20px 0;
                         }
@@ -295,46 +301,17 @@
                 }
             }
 
-           
+
 
             .mainCard {
-                padding: 1px;
-                background: #2A303C;
-                clip-path: polygon(0 50px, 45px 0, 100% 0, 100% calc(100% - 50px), calc(100% - 50px) 100%, 0 100%, 0 50px);
+                padding: 20px;
+                background-color: var(--black-100);
                 width: 100%;
                 border-radius: 12px;
                 transition: .3s ease-in-out;
+
                 @include respond-to("sm") {
-                        @include sm-sec-clip-path;
-                }
-
-                &:hover {
-                    background: var(--button-gradient);
-                }
-
-                .card {
-                    width: 100%;
-                    display: flex;
-                    align-items: center;
-                    cursor: pointer;
-                    padding: 40px;
-                    border-radius: 12px;
-                    @include sec-clip-path;
-                    color: var(--text-white);
-                    @include font16;
-                    background-color: var(--black-100);
-                    gap: 9px;
-                    @include respond-to("md") {
-                        padding: 30px;
-                        display: block;
-                    }
-                    @include respond-to("sm") {
-                        @include sm-sec-clip-path;
-                        padding: 20px 16px; 
-                    }
-                    img {
-                        transition: .3s ease-in-out;
-                    }
+                    @include sm-sec-clip-path;
                 }
             }
         }

@@ -93,8 +93,7 @@
         .blockBox {
             background-color: var(--bg-black-70);
             padding: 50px;
-            @include first-clip-path;
-            border-radius: 12px;
+            border-radius: 16px;
 
             @include respond-to("sm") {
                 padding: 30px 16px;
@@ -153,7 +152,7 @@
         }
     }
 
-    .error{
+    .error {
         color: red;
         font-size: 12px;
         margin-top: 4px;
