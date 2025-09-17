@@ -107,7 +107,16 @@ export default function LiveSessions() {
                     renderEmptyState()
                 ) : (
                     liveCourses?.map((liveCourse, index) => (
-                        <Link href={`/course/${liveCourse.courseId._id}`} key={index}>
+                        <Link 
+                            href={{
+                                pathname: `/my-courses/course/${liveCourse.courseId._id}`,
+                                query: { 
+                                    purchasedDate: new Date(liveCourse.createdAt).toISOString() 
+                                },
+                            }}
+                            as={`/my-courses/course/${liveCourse.courseId._id}?purchasedDate=${encodeURIComponent(new Date(liveCourse.createdAt).toISOString())}`}
+                            key={index}
+                        >
                             <div className={styles.cardgridItems} key={index}>
                                 {liveCourse?.courseId?.courseVideo && (
                                     <div className={styles.courseImageContainer}>
@@ -136,7 +145,7 @@ export default function LiveSessions() {
                                     <div className={styles.nextsession}>
                                         {/* <p>Course Details</p> */}
                                         <div className={styles.twoIconTextAlignment}>
-                                            <div className={styles.textIcon}>
+                                            {/* <div className={styles.textIcon}>
                                                 <DateIcon />
                                                 <span>
                                                     {liveCourse?.courseId?.courseStart ?
@@ -146,17 +155,27 @@ export default function LiveSessions() {
                                             <div className={styles.textIcon}>
                                                 <ClockGreyIcon />
                                                 <span>{liveCourse?.courseId?.hours || 'N/A'} hours</span>
-                                            </div>
+                                            </div> */}
                                             {/* <div className={styles.textIcon}>
                                             <span>${liveCourse?.courseId?.price || 'N/A'}</span>
                                         </div> */}
                                         </div>
+
                                     </div>
                                     {/* <div className={styles.mettingContent}>
                                     <DownloadPrimaryIcon />
                                     <span>Get Meeting Link</span>
                                 </div> */}
                                 </div>
+                                <div className={styles.infoCard}>
+                                                    
+
+                                                    <div className={styles.infoRow}>
+                                                        <span className={styles.infoLabel}>Purchased On:</span>
+                                                        <span className={styles.infoValue}>{new Date(liveCourse.createdAt).toLocaleDateString()}</span>
+                                                    </div>
+                                                    
+                                                </div>
                             </div>
                         </Link>
                     ))

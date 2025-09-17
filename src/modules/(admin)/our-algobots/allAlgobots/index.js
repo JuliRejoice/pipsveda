@@ -9,6 +9,7 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Slider from 'react-slick/lib/slider';
 import Arrowicon from '@/icons/arrowicon';
+import { getAlgobots } from '@/compoents/api/dashboard';
 
 const RightBlackIcon = '/assets/icons/right-black.svg';
 const CardImage = '/assets/images/crypto.png';
@@ -103,7 +104,7 @@ export default function AllAlgobots() {
     const fetchAlgobotData = async () => {
         try {
             setLoading(true);
-            const response = await getAlgobot(selectedCategory, '', pagination.currentPage, pagination.itemsPerPage);
+            const response = await getAlgobots(selectedCategory, pagination.currentPage, pagination.itemsPerPage);
             setBot(Array.isArray(response) ? response : response?.payload.result || []);
             setPagination((prev) => ({
                 ...prev,

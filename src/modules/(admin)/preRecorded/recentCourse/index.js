@@ -6,10 +6,12 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './recentCourse.module.scss';
 import Pagination from '@/compoents/pagination';
 import OutlineButton from '@/compoents/outlineButton';
+import Button from '@/compoents/button';
 
 
 const BathIcon = '/assets/icons/bath.svg';
 const RightBlackIcon = '/assets/icons/right-black.svg';
+const RightIcon = '/assets/icons/right.svg';
 const CardImage = '/assets/images/crypto.png';
 
 const ITEMS_PER_PAGE = 8; // Adjust based on your layout
@@ -163,6 +165,16 @@ export default function RecentCourse({ selectedTab, courseType, setCourseType, s
                                         <span>{course?.instructor || 'John Doe'}</span>
                                     </div>
                                 </div>
+                                {
+                                   course.isPayment ? (
+                                    <Button
+                                    text="Enrolled"
+                                    icon={RightIcon}
+                                    onClick={() =>
+                                        router.push(`/my-courses/course/${course._id}`)
+                                    }
+                                />
+                                   ) : (
                                 <OutlineButton
                                     text="Enroll Now"
                                     icon={RightBlackIcon}
@@ -170,6 +182,8 @@ export default function RecentCourse({ selectedTab, courseType, setCourseType, s
                                         router.push(`/course/${course._id}`)
                                     }
                                 />
+                                   )
+                                }
                             </div>
                         </div>
                     ))

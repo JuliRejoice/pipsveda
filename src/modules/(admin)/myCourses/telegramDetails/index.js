@@ -18,7 +18,7 @@ const PlusIcon = "/assets/icons/plus.svg";
 const SuccessIcon = "/assets/icons/success.svg";
 const ErrorIcon = "/assets/icons/error.svg";
 
-function TelegramDetails({ id }) {
+function    TelegramDetails({ id }) {
     const [telegramData, setTelegramData] = useState({});
     const [plans, setPlans] = useState([]);
     const [hasPurchasedPlan, setHasPurchasedPlan] = useState(false);
@@ -218,16 +218,21 @@ function TelegramDetails({ id }) {
             return renderSkeletonCards(3);
         }
 
+        // Check if any plan is purchased
+        const hasPurchasedPlan = plans.some(plan => plan.isPayment);
+
         return (
             <div className={styles.planGrid}>
                 {plans.map((plan) => {
                     const isPurchased = plan.isPayment;
+                    const isDisabled = hasPurchasedPlan && !isPurchased; // Disable if any plan is purchased and this one isn't
+                    
                     return (
                         <div 
                             key={plan._id} 
-                            className={`${styles.planGridItems} ${isPurchased ? styles.disabledCard : ''}`}
+                            className={`${styles.planGridItems} ${isDisabled || isPurchased ? styles.disabledCard : ''}`}
                         >
-                            {isPurchased && <div className={styles.overlay}></div>}
+                            {(isDisabled || isPurchased) && <div className={styles.overlay}></div>}
                             <div className={styles.cardHeaderAlignment}>
                                 <h3>{plan.planType}</h3>
                                 <h4>${plan.price.toFixed(2)}</h4>
@@ -245,19 +250,20 @@ function TelegramDetails({ id }) {
                                 </div>
                             </div>
                             <div className={styles.buttonAlignment}>
-                                {isPurchased ? 
-                                <Button
-                                    text={ "Subscribed" }
-                                   
-                                    className={styles.disabledButton}
-                                    disabled={isPurchased}
-                                />
-                                :
-                                <OutlineButton
-                                    text={"Subscribe Now"}
-                                    onClick={() => !isPurchased && handleBuyNow(plan)}
-                                    disabled={isPurchased}
-                                />}
+                                {isPurchased ? (
+                                    <Button
+                                        text="Subscribed"
+                                        className={styles.disabledButton}
+                                        disabled={true}
+                                    />
+                                ) : (
+                                    <Button
+                                        text="Subscribe Now"
+                                        onClick={() => !isDisabled && handleBuyNow(plan)}
+                                        className={isDisabled ? styles.disabledButton : ''}
+                                        disabled={isDisabled}
+                                    />
+                                )}
                             </div>
                         </div>
                     );

@@ -4,7 +4,7 @@ import { motion, useInView, useAnimation } from 'framer-motion';
 import styles from './telegramCommunities.module.scss';
 import ArrowVec from '@/icons/arrowVec';
 import Button from '@/compoents/button';
-import { getTelegramChannels } from '@/compoents/api/dashboard';
+import { getTelegramChannels, getTelegramFordashboard } from '@/compoents/api/dashboard';
 import { useRouter } from 'next/navigation';
 import { getCookie } from '../../../../cookie';
 
@@ -38,7 +38,7 @@ export default function TelegramCommunities() {
   useEffect(()=>{
     const fetchTelegramChannels = async () => {
       try {
-        const response = await getTelegramChannels();
+        const response = await getTelegramFordashboard();
         setTelegramChannels(response.payload.data);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -91,7 +91,7 @@ export default function TelegramCommunities() {
       return next;
     });
   };
-
+console.log(telegramChannels)
   return (
     <div className={styles.telegramCommunities}>
       <div className="container" ref={ref}>

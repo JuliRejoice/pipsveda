@@ -1,6 +1,6 @@
-@use "../../../scss/main.scss" as *;
-@use "../../../scss/breakpoints/breakpoints.scss" as *;
-@use "../../../scss/typography/typography.scss" as *;
+@use "../../../../scss/main.scss" as *;
+@use "../../../../scss/breakpoints/breakpoints.scss" as *;
+@use "../../../../scss/typography/typography.scss" as *;
 
 .algobotDetailsAlignment {
     background-color: var(--bg-white);
@@ -217,6 +217,14 @@
         position: relative;
         transition: all 0.3s ease;
 
+        .buttonAlignment {
+            padding-top: 20px;
+
+            button {
+                height: 46px;
+            }
+        }
+
         &.disabledCard {
             opacity: 0.7;
             pointer-events: none;
@@ -228,12 +236,8 @@
             .childBox .contentAlignment span {
                 opacity: 0.7;
             }
+        }
 
-        }
-        
-        .buttonAlignment {
-           padding-top: 20px;
-        }
         .overlay {
             position: absolute;
             top: 0;

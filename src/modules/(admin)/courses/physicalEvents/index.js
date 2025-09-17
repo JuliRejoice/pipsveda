@@ -108,7 +108,7 @@ export default function PhysicalEvents() {
             ) : (
                 <div className={styles.cardgrid}>
                     {physicalCourses?.map((event, index) => (
-                        <Link href={`/course/${event?.courseId?._id}`} key={index}>
+                        <Link href={`/my-courses/course/${event?.courseId?._id}`} key={index}>
                             <div className={styles.cardgridItems} >
                                 <div className={styles.cardgridItemsimage}>
                                     <img src={event?.courseId?.courseVideo
@@ -137,6 +137,15 @@ export default function PhysicalEvents() {
                                         </div>
                                     </div>
                                 </div>
+                                    <div className={styles.infoCard}>
+
+
+                                        <div className={styles.infoRow}>
+                                            <span className={styles.infoLabel}>Purchased On:</span>
+                                            <span className={styles.infoValue}>{new Date(event?.createdAt).toLocaleDateString()}</span>
+                                        </div>
+
+                                    </div>
                             </div>
                         </Link>
                     ))}

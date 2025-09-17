@@ -262,7 +262,7 @@ export default function FinancialFreedom() {
                                                                 text="Enroll Now" 
                                                                 onClick={() => {
                                                                     const courseType = courseTypes.find(t => t.id === activeType)?.course || 'pre-recorded';
-                                                                  {getCookie('userToken') ? router.push(`/courses/${courseType}/${course._id}`) : router.push('/signin');}
+                                                                  {getCookie('userToken') ? router.push(`/course/${course._id}`) : router.push('/signin');}
                                                                 }} 
                                                             />
                                                         </div>

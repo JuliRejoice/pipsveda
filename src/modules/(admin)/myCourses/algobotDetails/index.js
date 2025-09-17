@@ -1,27 +1,27 @@
 "use client";
 import React, { useEffect, useState, useRef } from "react";
-import styles from "./algobotInformation.module.scss";
+import styles from "./algobotDetails.module.scss";
+import Breadcumbs from "@/modules/(admin)/breadcumbs";
 import Button from "@/compoents/button";
 import Input from "@/compoents/input";
 import Modal from "@/compoents/modal/Modal";
 import { getCoupon, getOneBot, getPlan } from "@/compoents/api/algobot";
 import OutlineButton from "@/compoents/outlineButton";
 import toast from "react-hot-toast";
-import { getBotPlanForDashboard, getPaymentUrl } from "@/compoents/api/dashboard";
+import { getPaymentUrl } from "@/compoents/api/dashboard";
 import { useRouter, useSearchParams } from "next/navigation";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
+
 import { marked } from "marked";
 import Dropdownarrow from "@/icons/dropdownarrow";
-import { getCookie } from "../../../../cookie";
 const RightIcon = "/assets/icons/right.svg";
 const MinusIcon = "/assets/icons/minus.svg";
 const PlusIcon = "/assets/icons/plus.svg";
 const SuccessIcon = "/assets/icons/success.svg";
 const ErrorIcon = "/assets/icons/error.svg";
 
-function AlgobotInformation({ id }) {
-  const [user, setUser] = useState(null);
+function AlgobotDetails({ id }) {
   const [algobotData, setAlgobotData] = useState({});
   const [plans, setPlans] = useState([]);
   const [planQuantities, setPlanQuantities] = useState({});
@@ -69,7 +69,7 @@ function AlgobotInformation({ id }) {
       const response = await getOneBot(id);
       setAlgobotData(response.payload);
 
-      const plansResponse = await getBotPlanForDashboard(id);
+      const plansResponse = await getPlan(id);
       const initialQuantities = {};
       plansResponse.payload?.forEach((plan) => {
         initialQuantities[plan._id] = 1; // Initialize quantity as 1 for each plan
@@ -103,10 +103,6 @@ function AlgobotInformation({ id }) {
   };
 
   const handleBuyNow = (plan) => {
-    if (!user) {
-      router.push("/signin");
-      return;
-    }
     const quantity = planQuantities[plan._id] || 1;
     const originalPrice = plan.initialPrice * quantity;
     const commonDiscountAmount = (originalPrice * (plan.discount || 0)) / 100;
@@ -187,7 +183,7 @@ function AlgobotInformation({ id }) {
         botId: algobotData?._id,
         couponId: couponId || undefined,
         noOfBots: planQuantities[selectedPlan._id] || 1,
-        success_url: 'https://pips-veda.vercel.app/my-courses',
+        success_url: window.location.href,
         cancel_url: window.location.href,
       };
 
@@ -208,8 +204,6 @@ function AlgobotInformation({ id }) {
 
   useEffect(() => {
     fetchAlgobotData();
-    const newUser = getCookie("user");
-    setUser(newUser);
   }, []);
 
   useEffect(() => {
@@ -309,8 +303,9 @@ function AlgobotInformation({ id }) {
   };
 
   return (
-    <div className="container">
+    <div>
       {renderPaymentModal()}
+      <Breadcumbs />
       <div className={styles.algobotDetailsAlignment}>
         {isLoading ? (
           <>
@@ -365,6 +360,9 @@ function AlgobotInformation({ id }) {
             <div className={styles.pageHeaderAlignment}>
               <div className={styles.text}>
                 <h2>{algobotData?.title}</h2>
+
+
+                {/* purchsed date expiry date */}
               </div>
             </div>
             <div className={styles.algobanner}>
@@ -519,7 +517,7 @@ function AlgobotInformation({ id }) {
                 )}
               </div>
             </div>
-       
+          
           </>
         )}
       </div>
@@ -654,4 +652,4 @@ function AlgobotInformation({ id }) {
   );
 }
 
-export default AlgobotInformation;
+export default AlgobotDetails;

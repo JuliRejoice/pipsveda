@@ -24,10 +24,10 @@ export default function MyAlgobots() {
     const fetchCourses = async () => {
       try {
         setLoading(true);
-        const response = await purchasedCourses({ 
-          type: "BOTS", 
-          page: pagination.currentPage, 
-          limit: pagination.itemsPerPage 
+        const response = await purchasedCourses({
+          type: "BOTS",
+          page: pagination.currentPage,
+          limit: pagination.itemsPerPage
         });
         if (response && response.success) {
           setAlgobotCourses(response.payload.BOTS || []);
@@ -105,17 +105,17 @@ export default function MyAlgobots() {
           renderEmptyState()
         ) : (
           algobotCourses?.map((algobotCourse, index) => (
-            <Link href={`/algobot/${algobotCourse?.botId?.strategyId?._id}`} key={algobotCourse?.botId?._id || index}>
-            <div  className={styles.cardgridItems}>
-              <div className={styles.image}>
-                <img src={algobotCourse?.botId?.strategyId.imageUrl} alt='image' />
-              </div>
-              <div className={styles.details}>
-                <h3>{algobotCourse?.botId?.strategyId.title}</h3>
-                <h4>Plans : {algobotCourse?.botId?.planType}</h4>
-                <p>{algobotCourse?.botId?.strategyId.shortDescription}</p>
-              </div>
-              {/* <Button text="Pending Setup" />
+            <Link href={`/my-courses/algobot/${algobotCourse?.botId?.strategyId?._id}`} key={algobotCourse?.botId?._id || index}>
+              <div className={styles.cardgridItems}>
+                <div className={styles.image}>
+                  <img src={algobotCourse?.botId?.strategyId.imageUrl} alt='image' />
+                </div>
+                <div className={styles.details}>
+                  <h3>{algobotCourse?.botId?.strategyId.title}</h3>
+                  <h4>Plans : {algobotCourse?.botId?.planType}</h4>
+                  <p>{algobotCourse?.botId?.strategyId.shortDescription}</p>
+                </div>
+                {/* <Button text="Pending Setup" />
               <div className={styles.twoContentAlignment}>
               <div>
                 <p>{algobotCourse?.botId?.botName}</p>
@@ -144,11 +144,11 @@ export default function MyAlgobots() {
                 <span>145</span>
               </div>
               </div> */}
-              {/* <div className={styles.downloadContent}>
+                {/* <div className={styles.downloadContent}>
               <DownloadIcon />
               <span>Download Now</span>
               </div> */}
-            </div>
+              </div>
             </Link>
           ))
         )}

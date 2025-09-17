@@ -9,7 +9,7 @@ import { useEffect } from "react";
 export default function Breadcumbs() {
   const router = useRouter();
   const pathname = usePathname();
-  const pathSegments = pathname.split('/').filter(segment => segment);
+  const pathSegments = pathname.split('/').filter(segment => segment).slice(0,2);
 
   const redirect = () => {
     const pathSegments = pathname.split('/').filter(Boolean);
@@ -22,6 +22,9 @@ export default function Breadcumbs() {
     }
     else if(pathSegments[0] === 'telegram'){
       router.push('/telegram');
+    }
+    else if(pathSegments[0] === 'my-courses'){
+      router.push('/my-courses');
     }
     else{
       router.back()

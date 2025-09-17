@@ -7,7 +7,7 @@ import Modal from "@/compoents/modal/Modal";
 import { getCoupon, getOneBot, getPlan } from "@/compoents/api/algobot";
 import OutlineButton from "@/compoents/outlineButton";
 import toast from "react-hot-toast";
-import { getPaymentUrl, getTelegramChannels } from "@/compoents/api/dashboard";
+import { getPaymentUrl, getTelegramChannels, getTelegramFordashboard } from "@/compoents/api/dashboard";
 import { useRouter, useSearchParams } from "next/navigation";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
@@ -48,7 +48,7 @@ function TelegramInformation({ id }) {
     const fetchTelegramData = async () => {
         try {
             setIsLoading(true);
-            const response = await getTelegramChannels(id);
+            const response = await getTelegramFordashboard(id);
             setTelegramData(response.payload.data[0]);
             setPlans(response.payload.data[0].telegramPlan);
 

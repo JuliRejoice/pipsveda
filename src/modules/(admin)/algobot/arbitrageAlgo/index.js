@@ -9,9 +9,11 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import Slider from 'react-slick/lib/slider';
 import Arrowicon from '@/icons/arrowicon';
+import Button from '@/compoents/button';
 
 const RightBlackIcon = '/assets/icons/right-black.svg';
 const CardImage = '/assets/images/crypto.png';
+const RightIcon = '/assets/icons/right.svg';
 
 const ITEMS_PER_PAGE = 8;
 
@@ -276,11 +278,19 @@ export default function ArbitrageAlgo({ bot, setBot, searchQuery, setSearchQuery
                                         </div>
                                     </div>
                                 ) : null}
+                                {strategy.strategyPlan?.some(plan => plan.isPayment) ? 
+                                 <Button
+                                 text={ "See Details" }
+                                 icon={RightIcon}
+                                 onClick={() => router.push(`/my-courses/algobot/${strategy._id}`)}
+                             />
+                                :
                                 <OutlineButton
-                                    text="Buy Now"
+                                    text={"Buy Now"}
                                     icon={RightBlackIcon}
                                     onClick={() => router.push(`/algobot/${strategy._id}`)}
                                 />
+}
                             </div>
                         </div>
                     ))

@@ -9,6 +9,28 @@ import { purchasedCourses } from '@/compoents/api/algobot';
 import Link from 'next/link';
 
 const ITEMS_PER_PAGE = 8;
+
+const calculateExpiryDate = (createdAt, planType) => {
+  if (!createdAt) return 'N/A';
+  
+  const purchaseDate = new Date(createdAt);
+  const expiryDate = new Date(purchaseDate);
+  
+  // Map plan types to their respective durations in months
+  const planDurations = {
+    'MONTHLY': 1,
+    'QUARTERLY': 3,
+    'HALF_YEARLY': 6,
+    'YEARLY': 12,
+    'LIFETIME': 1200, 
+  };
+  
+  const monthsToAdd = planDurations[planType] || 1; // Default to 1 month if plan type not found
+  expiryDate.setMonth(expiryDate.getMonth() + monthsToAdd);
+  
+  return expiryDate.toLocaleDateString();
+};
+
 function MyTelegram() {
     const [telegramCourses, setTelegramCourses] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -95,32 +117,46 @@ function MyTelegram() {
                     renderEmptyState()
                 ) : (
                     telegramCourses?.map((telegramCourse, index) => (
-                    <Link href={`/telegram/${telegramCourse?.telegramId?.telegramId?._id}` }  key={telegramCourse?.telegramId?._id || index}>
-                        <div className={styles.cardgridItems}>
-                            {/* <div className={styles.image}>
-                <img src={telegramCourse?.telegramId?.imageUrl} alt='image' />
-              </div> */}
-                            <div className={styles.details}>
-                                {/* <h3>{telegramCourse?.telegramId?.telegramId.channelName}</h3>
-                 */}
-                                <div className={styles.title}>
-                                    <div className={styles.textStyle}>
-                                        <h3>{telegramCourse?.telegramId?.telegramId.channelName}</h3>
+                        <Link href={`/my-courses/telegram/${telegramCourse?.telegramId?.telegramId?._id}`} key={telegramCourse?.telegramId?._id || index}>
+                            <div className={styles.cardgridItems}>
+                                <div className={styles.details}>
+                                    <div className={styles.title}>
+                                        <div className={styles.textStyle}>
+                                            <h3>{telegramCourse?.telegramId?.telegramId.channelName}</h3>
 
+                                        </div>
+                                        <ArrowVec />
                                     </div>
-                                    <ArrowVec />
+                                    <h4>Plan: {telegramCourse?.telegramId?.planType?.replace(/_/g, ' ')}</h4>
+                                    <p>{telegramCourse?.telegramId?.telegramId.description}</p>
                                 </div>
-                                <h4>Plans : {telegramCourse?.telegramId?.planType}</h4>
-                                <p>{telegramCourse?.telegramId?.telegramId.description}</p>
-                            </div>
 
-                        </div>
-                    </Link>
+                                <div className={styles.infoCard}>
+
+
+                                    <div className={styles.infoRow}>
+                                        <span className={styles.infoLabel}>Purchased On:</span>
+                                        <span className={styles.infoValue}>{new Date(telegramCourse.createdAt).toLocaleDateString()}</span>
+                                    </div>
+                                    <div className={styles.infoRow}>
+                                        <span className={styles.infoLabel}>Expires On:</span>
+                                        <span className={styles.infoValue}>
+                                            {calculateExpiryDate(
+                                                telegramCourse.createdAt, 
+                                                telegramCourse?.telegramId?.planType
+                                            )}
+                                        </span>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </Link>
                     )
-                    
+
                     )
-                    
-                    )}
+
+                )}
             </div>
             <Pagination
                 currentPage={pagination.currentPage}

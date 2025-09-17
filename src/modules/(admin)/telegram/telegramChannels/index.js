@@ -8,9 +8,11 @@ import { useRouter } from 'next/navigation';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { getTelegramChannels } from '@/compoents/api/dashboard';
+import Button from '@/compoents/button';
 
 const RightBlackIcon = '/assets/icons/right-black.svg';
 const CardImage = '/assets/images/crypto.png';
+const RightIcon = '/assets/icons/right.svg';
 
 // Skeleton component to match the card layout
 const CardSkeleton = () => (
@@ -148,11 +150,18 @@ export default function TelegramChannels({ channels, setChannels, searchQuery, s
                                     ))}
                                 </div>
                             </div>
-                            <OutlineButton
-                                text="Join Channel"
-                                icon={RightBlackIcon}
-                                onClick={() => router.push(`/telegram/${channel._id}`)}
+                            { channel.telegramPlan?.some(plan => plan.isPayment) ? 
+                             <Button
+                                text={ "Subscribed"}
+                                onClick={() => router.push(`/my-courses/telegram/${channel._id}`)}
+                                icon={RightIcon}
                             />
+                             :
+                            <OutlineButton
+                                text={"Join Channel"}
+                                onClick={() => router.push(`/telegram/${channel._id}`)}
+                                icon={RightBlackIcon}
+                            />}
                         </div>
                     </div>
                 ))}

@@ -10,9 +10,11 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import { getBots } from '@/compoents/api/dashboard';
 import Slider from 'react-slick/lib/slider';
 import Arrowicon from '@/icons/arrowicon';
+import Button from '@/compoents/button';
 
 const RightBlackIcon = '/assets/icons/right-black.svg';
 const CardImage = '/assets/images/crypto.png';
+const RightIcon = '/assets/icons/right.svg';
 
 // Skeleton component to match the card layout
 const CardSkeleton = () => (
@@ -271,11 +273,18 @@ export default function RecentBots({ id, category }) {
                                     ) : null}
                                 </div>
 
-                                <OutlineButton
+                                {
+                                    item.strategyPlan.some((plan) => plan.isPayment) ?
+                                    <Button
+                                    text="View Details"
+                                    icon={RightIcon}
+                                    onClick={() => router.push(`/my-courses/algobot/${item._id}`)}
+                                />:
+                                    <OutlineButton
                                     text="Buy Now"
                                     icon={RightBlackIcon}
-                                    onClick={() => { pathname.split('/')[1] === 'algobot' ? router.push(`/algobot/${item._id}`) : router.push(`/algobot-details?id=${item._id}`) }}
-                                />
+                                    onClick={() => router.push(`/algobot/${item._id}`)}
+                                />}
                             </div>
                         </div>
                     ))}
