@@ -328,8 +328,7 @@
 
   .planGridItems {
     background-color: #f7f8fa;
-    @include first-clip-path;
-    border-radius: 12px;
+    border-radius: 16px;
     padding: 35px 30px;
     position: relative;
     transition: all 0.3s ease;
@@ -538,7 +537,7 @@
     line-height: 1.5;
   }
 
-  > button {
+  >button {
     margin: 0 auto;
     min-width: 180px;
   }
