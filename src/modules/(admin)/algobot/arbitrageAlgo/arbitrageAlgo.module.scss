@@ -104,9 +104,8 @@
 
   .griditems {
     background-color: var(--bg-white);
-    @include first-clip-path;
     padding: 20px;
-    border-radius: 12px;
+    border-radius: 16px;
 
     .image {
       img {
@@ -114,7 +113,7 @@
         height: 220px;
         object-fit: cover;
         display: block;
-        @include first-clip-path;
+        border-radius: 16px;
       }
     }
 

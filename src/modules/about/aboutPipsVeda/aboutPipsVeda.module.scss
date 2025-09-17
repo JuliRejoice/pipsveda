@@ -29,8 +29,7 @@
             img {
                 display: block;
                 width: 100%;
-                border-radius: 12px;
-                clip-path: polygon(0 70px, 65px 0, 100% 0, 100% calc(100% - 70px), calc(100% - 70px) 100%, 0 100%, 0 70px);
+                border-radius: 16px;
 
                 @include respond-to("sm") {
                     @include first-clip-path;

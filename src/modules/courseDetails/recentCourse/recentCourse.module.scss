@@ -40,7 +40,6 @@
         .griditems {
             background: var(--bg-light-700);
             padding: 30px;
-            clip-path: polygon(0 70px, 65px 0, 100% 0, 100% calc(100% - 70px), calc(100% - 70px) 100%, 0 100%, 0 70px);
             border-radius: 12px;
 
             @include respond-to("sm") {
@@ -105,7 +104,7 @@
 
             .image {
                 img {
-                    clip-path: polygon(0 70px, 65px 0, 100% 0, 100% calc(100% - 70px), calc(100% - 70px) 100%, 0 100%, 0 70px);
+                    border-radius: 16px;
                     width: 100%;
                     height: 220px;
                     display: block;
