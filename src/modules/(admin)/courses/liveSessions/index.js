@@ -108,13 +108,7 @@ export default function LiveSessions() {
                 ) : (
                     liveCourses?.map((liveCourse, index) => (
                         <Link 
-                            href={{
-                                pathname: `/my-courses/course/${liveCourse.courseId._id}`,
-                                query: { 
-                                    purchasedDate: new Date(liveCourse.createdAt).toISOString() 
-                                },
-                            }}
-                            as={`/my-courses/course/${liveCourse.courseId._id}?purchasedDate=${encodeURIComponent(new Date(liveCourse.createdAt).toISOString())}`}
+                            href={ `/my-courses/course/${liveCourse.courseId._id}`}
                             key={index}
                         >
                             <div className={styles.cardgridItems} key={index}>
@@ -167,15 +161,6 @@ export default function LiveSessions() {
                                     <span>Get Meeting Link</span>
                                 </div> */}
                                 </div>
-                                <div className={styles.infoCard}>
-                                                    
-
-                                                    <div className={styles.infoRow}>
-                                                        <span className={styles.infoLabel}>Purchased On:</span>
-                                                        <span className={styles.infoValue}>{new Date(liveCourse.createdAt).toLocaleDateString()}</span>
-                                                    </div>
-                                                    
-                                                </div>
                             </div>
                         </Link>
                     ))

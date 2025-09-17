@@ -118,7 +118,7 @@ const SessionSkeleton = () => (
   </div>
 );
 
-export default function CourseDetails({ params, purchasedDate }) {
+export default function CourseDetails({ params }) {
   const [user, setUser] = useState(null);
   const [chapters, setChapters] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -132,7 +132,7 @@ export default function CourseDetails({ params, purchasedDate }) {
   const [isLiveOnline, setIsLiveOnline] = useState(false);
   const [isInPerson, setIsInPerson] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
-  const [coursePurchasedDate, setCoursePurchasedDate] = useState(purchasedDate ? new Date(purchasedDate) : null);
+  
 
   const id = params;
   const router = useRouter();

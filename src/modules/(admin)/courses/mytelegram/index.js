@@ -130,26 +130,6 @@ function MyTelegram() {
                                     <h4>Plan: {telegramCourse?.telegramId?.planType?.replace(/_/g, ' ')}</h4>
                                     <p>{telegramCourse?.telegramId?.telegramId.description}</p>
                                 </div>
-
-                                <div className={styles.infoCard}>
-
-
-                                    <div className={styles.infoRow}>
-                                        <span className={styles.infoLabel}>Purchased On:</span>
-                                        <span className={styles.infoValue}>{new Date(telegramCourse.createdAt).toLocaleDateString()}</span>
-                                    </div>
-                                    <div className={styles.infoRow}>
-                                        <span className={styles.infoLabel}>Expires On:</span>
-                                        <span className={styles.infoValue}>
-                                            {calculateExpiryDate(
-                                                telegramCourse.createdAt, 
-                                                telegramCourse?.telegramId?.planType
-                                            )}
-                                        </span>
-                                    </div>
-
-                                </div>
-
                             </div>
                         </Link>
                     )

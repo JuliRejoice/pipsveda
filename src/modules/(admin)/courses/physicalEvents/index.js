@@ -137,15 +137,6 @@ export default function PhysicalEvents() {
                                         </div>
                                     </div>
                                 </div>
-                                    <div className={styles.infoCard}>
-
-
-                                        <div className={styles.infoRow}>
-                                            <span className={styles.infoLabel}>Purchased On:</span>
-                                            <span className={styles.infoValue}>{new Date(event?.createdAt).toLocaleDateString()}</span>
-                                        </div>
-
-                                    </div>
                             </div>
                         </Link>
                     ))}

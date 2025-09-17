@@ -148,16 +148,6 @@ export default function Courses() {
                                                 <span>8/12 Lessons</span> */}
                                                     <p>{recordedCourse?.courseId?.description}</p>
                                                 </div>
-                                                <div className={styles.infoCard}>
-                                                   
-
-                                                    <div className={styles.infoRow}>
-                                                        <span className={styles.infoLabel}>Purchased On:</span>
-                                                        <span className={styles.infoValue}>{new Date(recordedCourse.createdAt).toLocaleDateString()}</span>
-                                                    </div>
-                                                  
-
-                                                </div>
                                             </div>
 
                                         </div>
