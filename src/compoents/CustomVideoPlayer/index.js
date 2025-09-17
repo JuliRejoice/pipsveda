@@ -225,7 +225,14 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = '', ...props })
                 className={styles.videoCanvas}
                 onClick={togglePlay}
             />
-
+            <video
+                ref={videoRef}
+                className={styles.videoElement}
+                src={src}
+                {...props}
+                style={{ display: 'none' }}
+            />
+            <Watermark isPlaying={isPlaying} />
             <div className={styles.controls}>
                 <div className={styles.timelineflx}>
                     <div className={styles.timer}>
@@ -277,8 +284,6 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = '', ...props })
                     </div>
                 </div>
             </div>
-
-            <Watermark />
         </div>
     );
 });

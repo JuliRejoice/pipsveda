@@ -35,9 +35,9 @@ export default function Profile() {
 
     const countryRef = useRef(null);
     const genderRef = useRef(null);
-    
+
     useEffect(() => {
-        fetchProfile(); 
+        fetchProfile();
     }, []);
 
     const fetchProfile = async () => {
@@ -89,7 +89,6 @@ export default function Profile() {
     };
 
     const handleEditProfile = async () => {
-
         setPhoneError('');
         setDateError('');
 
@@ -116,15 +115,22 @@ export default function Profile() {
 
         setIsLoading(true);
         try {
-            const payload = {
-                ...user,
-                phone: user.phone.trim(), // Trim phone number
-                countryCode: selectedCountryCode,
-                gender: selectedGender || user.gender,
-                birthday: birthDate ? birthDate.toISOString().split('T')[0] : ''
-            };
+            const formData = new FormData();
 
-            const res = await editProfile(user._id, payload);
+            // Append all user data to formData
+            formData.append('name', user.name?.trim() || '');
+            formData.append('phone', user.phone?.trim() || '');
+            formData.append('location', user.location || '');
+            formData.append('gender', selectedGender || user.gender || '');
+            formData.append('countryCode', selectedCountryCode);
+            formData.append('birthday', birthDate ? birthDate.toISOString().split('T')[0] : '');
+
+            // If you have a file input for profile picture, you can append it like this:
+            // if (profilePicture) {
+            //     formData.append('profilePicture', profilePicture);
+            // }
+
+            const res = await editProfile(user._id, formData);
 
             if (res.success) {
                 setCookie("user", JSON.stringify(res.payload));
@@ -139,17 +145,17 @@ export default function Profile() {
         }
     };
 
-  
+
     const hasChanges = () => {
         if (!initialUserData || !user) return false;
-    
+
         return (
             user.name !== initialUserData.name ||
             user.phone !== initialUserData.phone ||
             user.location !== initialUserData.location ||
             user.gender !== initialUserData.gender ||
-            (birthDate && initialUserData.birthday && 
-             new Date(birthDate).toISOString().split('T')[0] !== initialUserData.birthday)
+            (birthDate && initialUserData.birthday &&
+                new Date(birthDate).toISOString().split('T')[0] !== initialUserData.birthday)
         );
     };
 

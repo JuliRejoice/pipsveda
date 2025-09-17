@@ -79,7 +79,7 @@ export const loginWithGoogle = async () => {
       accessToken: result.user.stsTokenManager.accessToken,
     }
     // const response = await fetch(`/user/signinWithGoogle`, {
-    const response = await api.post(`/user/signinWithGoogle`, 
+    const response = await api.post(`/user/signinWithGoogle`,
       user,
     );
     return response.data;
@@ -89,28 +89,31 @@ export const loginWithGoogle = async () => {
   }
 };
 
-export const editProfile = async (id, data) => {
-   
+export const editProfile = async (userId, formData) => {
   try {
-    const response = await api.put(`/user/update?id=${id}`, {
-      data,
-    });
-
+    const response = await api.put(
+      `/user/update?id=${userId}`,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        }
+      }
+    );
     return response.data;
   } catch (error) {
-    console.error('Error during profile update:', error);
     throw error;
   }
 };
 
 export const getProfile = async (id) => {
 
-    try {
-        const response = await api.get(`/user/get?id=${id}`)
-        return response.data;
-    } catch (error) {
-        console.log("error", error)
-        throw error;
-    }
+  try {
+    const response = await api.get(`/user/get?id=${id}`)
+    return response.data;
+  } catch (error) {
+    console.log("error", error)
+    throw error;
+  }
 }
 
