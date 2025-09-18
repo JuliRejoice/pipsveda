@@ -82,7 +82,7 @@
 
                 .cardmiddlecontent {
                     @include respond-to("md") {
-                        width: calc(100% - 235px);
+                        width: 100%;
                     }
 
                     h3 {

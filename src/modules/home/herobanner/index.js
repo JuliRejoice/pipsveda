@@ -76,6 +76,72 @@ const scaleUp = {
     }
   }
 };
+
+// Updated Section Animation variants
+const updatedSectionContainer = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.15,
+      delayChildren: 0.5,
+    },
+  },
+};
+
+const cardVariants = {
+  hidden: { 
+    y: 60, 
+    opacity: 0,
+    scale: 0.8
+  },
+  visible: {
+    y: 0,
+    opacity: 1,
+    scale: 1,
+    transition: {
+      type: 'spring',
+      stiffness: 100,
+      damping: 15,
+      duration: 0.8,
+    },
+  },
+};
+
+const imageVariants = {
+  hidden: { 
+    scale: 0.8, 
+    opacity: 0,
+    rotate: -5
+  },
+  visible: {
+    scale: 1,
+    opacity: 1,
+    rotate: 0,
+    transition: {
+      type: 'spring',
+      stiffness: 120,
+      damping: 20,
+      duration: 0.6,
+    },
+  },
+};
+
+const textVariants = {
+  hidden: { 
+    y: 20, 
+    opacity: 0 
+  },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      duration: 0.5,
+      ease: [0.25, 0.1, 0.25, 1]
+    },
+  },
+};
+
 const AnimatedText = ({ text, className = '' }) => {
   const words = text.split(' ');
   const containerRef = useRef(null);
@@ -215,65 +281,150 @@ export default function Herobanner() {
               </motion.div>
             </div>
           </div>
-          <div className={styles.updatedSection}>
-            <div>
-              <div className={styles.singleCard}>
-                <div className={styles.header}>
+          <motion.div 
+            className={styles.updatedSection}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={updatedSectionContainer}
+          >
+            <motion.div variants={cardVariants}>
+              <motion.div 
+                className={styles.singleCard}
+                whileHover={{ 
+                  scale: 1.05, 
+                  rotateY: 5,
+                  transition: { duration: 0.3 }
+                }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <motion.div className={styles.header} variants={textVariants}>
                   <p>
                     Real-world Trading Simulations
                   </p>
-                </div>
-                <div className={styles.image}>
-                  <img src={LineImage} alt='LineImage' />
-                </div>
-              </div>
-            </div>
-            <div>
-              <div className={styles.imageSection}>
-                <img src={Banner1} alt='Banner1' />
-              </div>
-              <div className={styles.detailsBox}>
-                <p>
+                </motion.div>
+                <motion.div className={styles.image} variants={imageVariants}>
+                  <motion.img 
+                    src={LineImage} 
+                    alt='LineImage'
+                    whileHover={{ scale: 1.1, rotate: 2 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                </motion.div>
+              </motion.div>
+            </motion.div>
+            <motion.div variants={cardVariants}>
+              <motion.div 
+                className={styles.imageSection}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+              >
+                <motion.img 
+                  src={Banner1} 
+                  alt='Banner1'
+                  variants={imageVariants}
+                  whileHover={{ scale: 1.05 }}
+                />
+              </motion.div>
+              <motion.div 
+                className={styles.detailsBox}
+                whileHover={{ 
+                  scale: 1.02,
+                  backgroundColor: 'rgba(20, 20, 20, 0.9)',
+                  transition: { duration: 0.3 }
+                }}
+              >
+                <motion.p variants={textVariants}>
                   Telegram & Discord Support
                   Channels
-                </p>
-              </div>
-            </div>
-            <div>
-              <div className={styles.lifetimeBox}>
-                <p>Lifetime Access to Resources</p>
-                <div className={styles.image}>
-                  <img src={RowBanner} alt='RowBanner' />
-                </div>
-              </div>
-              <div className={styles.systemImage}>
-                <img src={SystemBanner} alt='SystemBanner' />
-              </div>
-            </div>
-            <div>
-              <div className={styles.imageSection}>
-                <img src={Banner2} alt='Banner2' />
-              </div>
-              <div className={styles.detailsBox}>
-                <p>
+                </motion.p>
+              </motion.div>
+            </motion.div>
+            <motion.div variants={cardVariants}>
+              <motion.div 
+                className={styles.lifetimeBox}
+                whileHover={{ 
+                  scale: 1.03,
+                  rotateX: 2,
+                  transition: { duration: 0.3 }
+                }}
+              >
+                <motion.p variants={textVariants}>Lifetime Access to Resources</motion.p>
+                <motion.div className={styles.image} variants={imageVariants}>
+                  <motion.img 
+                    src={RowBanner} 
+                    alt='RowBanner'
+                    whileHover={{ scale: 1.1 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                </motion.div>
+              </motion.div>
+              <motion.div 
+                className={styles.systemImage}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+              >
+                <motion.img 
+                  src={SystemBanner} 
+                  alt='SystemBanner'
+                  variants={imageVariants}
+                  whileHover={{ scale: 1.05, rotateY: 3 }}
+                />
+              </motion.div>
+            </motion.div>
+            <motion.div variants={cardVariants}>
+              <motion.div 
+                className={styles.imageSection}
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.3 }}
+              >
+                <motion.img 
+                  src={Banner2} 
+                  alt='Banner2'
+                  variants={imageVariants}
+                  whileHover={{ scale: 1.05 }}
+                />
+              </motion.div>
+              <motion.div 
+                className={styles.detailsBox}
+                whileHover={{ 
+                  scale: 1.02,
+                  backgroundColor: 'rgba(20, 20, 20, 0.9)',
+                  transition: { duration: 0.3 }
+                }}
+              >
+                <motion.p variants={textVariants}>
                   Mentor Feedback & Portfolio
                   Reviews
-                </p>
-              </div>
-            </div>
-            <div>
-              <div className={styles.singleCard}>
-                <div className={styles.header}>
+                </motion.p>
+              </motion.div>
+            </motion.div>
+            <motion.div variants={cardVariants}>
+              <motion.div 
+                className={styles.singleCard}
+                whileHover={{ 
+                  scale: 1.05, 
+                  rotateY: -5,
+                  transition: { duration: 0.3 }
+                }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <motion.div className={styles.header} variants={textVariants}>
                   <p>
                     Certificate of Completion
                   </p>
-                </div>
-                <div className={styles.image}>
-                  <img src={CrossLineImage} alt='CrossLineImage' />
-                </div>
-              </div>
-            </div>
-          </div>
+                </motion.div>
+                <motion.div className={styles.image} variants={imageVariants}>
+                  <motion.img 
+                    src={CrossLineImage} 
+                    alt='CrossLineImage'
+                    whileHover={{ scale: 1.1, rotate: -2 }}
+                    transition={{ duration: 0.3 }}
+                  />
+                </motion.div>
+              </motion.div>
+            </motion.div>
+          </motion.div>
         </motion.div>
 
       </motion.div>
