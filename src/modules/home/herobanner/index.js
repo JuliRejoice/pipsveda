@@ -10,11 +10,12 @@ import { useRouter } from 'next/navigation';
 import { getCookie } from '../../../../cookie';
 
 const RightIcon = '/assets/icons/right.svg';
-const RightBlackIcon = '/assets/icons/right-black.svg';
-const LineImage = '/assets/icons/line.svg';
-const VideoPoster = '/assets/images/video-poster.jpg';
-const CardImage = '/assets/images/card1.png';
-const IconLogo = '/assets/logo/icon-logo.svg';
+const LineImage = '/assets/images/line-img.png';
+const Banner1 = '/assets/images/banner1.png';
+const Banner2 = '/assets/images/banner2.png';
+const RowBanner = '/assets/images/row.png';
+const SystemBanner = '/assets/images/system-img.png';
+const CrossLineImage = '/assets/images/cross-line.png';
 
 // Animation variants
 const container = {
@@ -212,6 +213,65 @@ export default function Herobanner() {
                 <Button text="Explore Courses" icon={RightIcon} onClick={() => { getCookie("userToken") ? router.push(`/course?search=${searchParams}`) : router.push('/signin') }} />
 
               </motion.div>
+            </div>
+          </div>
+          <div className={styles.updatedSection}>
+            <div>
+              <div className={styles.singleCard}>
+                <div className={styles.header}>
+                  <p>
+                    Real-world Trading Simulations
+                  </p>
+                </div>
+                <div className={styles.image}>
+                  <img src={LineImage} alt='LineImage' />
+                </div>
+              </div>
+            </div>
+            <div>
+              <div className={styles.imageSection}>
+                <img src={Banner1} alt='Banner1' />
+              </div>
+              <div className={styles.detailsBox}>
+                <p>
+                  Telegram & Discord Support
+                  Channels
+                </p>
+              </div>
+            </div>
+            <div>
+              <div className={styles.lifetimeBox}>
+                <p>Lifetime Access to Resources</p>
+                <div className={styles.image}>
+                  <img src={RowBanner} alt='RowBanner' />
+                </div>
+              </div>
+              <div className={styles.systemImage}>
+                <img src={SystemBanner} alt='SystemBanner' />
+              </div>
+            </div>
+            <div>
+              <div className={styles.imageSection}>
+                <img src={Banner2} alt='Banner2' />
+              </div>
+              <div className={styles.detailsBox}>
+                <p>
+                  Mentor Feedback & Portfolio
+                  Reviews
+                </p>
+              </div>
+            </div>
+            <div>
+              <div className={styles.singleCard}>
+                <div className={styles.header}>
+                  <p>
+                    Certificate of Completion
+                  </p>
+                </div>
+                <div className={styles.image}>
+                  <img src={CrossLineImage} alt='CrossLineImage' />
+                </div>
+              </div>
             </div>
           </div>
         </motion.div>

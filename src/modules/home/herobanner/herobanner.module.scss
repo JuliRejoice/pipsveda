@@ -448,3 +448,100 @@
         }
     }
 }
+
+.updatedSection {
+    padding: 0 40px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+    padding: 80px 0 0 0;
+    align-items: flex-end;
+
+    .systemImage {
+        img {
+            width: 100%;
+            display: block;
+            border-radius: 34px 34px 0 0;
+            object-fit: cover;
+            height: 253px;
+        }
+    }
+
+    .lifetimeBox {
+        border-radius: 34px;
+        opacity: 0.8;
+        background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
+        padding: 30px;
+        margin: 0 0 20px 0;
+
+        p {
+            color: #FFF;
+            font-size: 18px;
+            font-style: normal;
+            margin: 0 0 30px 0;
+            font-weight: 600;
+            line-height: 28px;
+        }
+
+        .image {
+            img {
+                display: block;
+                width: 100%;
+            }
+        }
+    }
+
+    .singleCard {
+        border-radius: 34px 34px 0 0;
+        border: 1px solid #2A303C;
+        background: #141414;
+        overflow: hidden;
+
+        .header {
+            padding: 27px;
+
+            p {
+                color: #FFF;
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: 28px;
+            }
+        }
+
+        .image {
+            img {
+                width: 100%;
+                display: block;
+                height: 100%;
+                object-fit: cover;
+            }
+        }
+    }
+
+    .imageSection {
+        padding: 0 0 20px 0;
+
+        img {
+            width: 100%;
+            height: 460px;
+            border-radius: 34px;
+            display: block;
+            object-fit: cover;
+        }
+    }
+
+    .detailsBox {
+        border-radius: 34px 34px 0 0;
+        background: #141414;
+        padding: 40px 30px;
+
+        p {
+            color: #FFF;
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 600;
+            line-height: 28px;
+        }
+    }
+}
