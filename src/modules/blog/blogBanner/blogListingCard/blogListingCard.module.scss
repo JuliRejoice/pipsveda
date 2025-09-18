@@ -93,7 +93,10 @@
 
                     @include respond-to("md") {
                         height: 220px;
-                        @include first-clip-path;
+                    }
+
+                    @include respond-to("sm") {
+                        height: 190px;
                     }
                 }
             }
@@ -125,6 +128,7 @@
                     @include respond-to("sm") {
                         @include font14;
                         margin: 0 0 10px 0;
+                        line-height: 23px;
                     }
                 }
 
