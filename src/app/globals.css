@@ -150,9 +150,6 @@ img {
   white-space: nowrap;
 } */
 
-
-
-
 /* <---- React date picker css starts here ----> */
 .react-datepicker__header {
   background: #fff !important;
@@ -184,7 +181,7 @@ img {
   font-style: normal;
   font-weight: 500;
   line-height: normal;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 
 .blocker {
@@ -197,4 +194,8 @@ img {
   z-index: 9999;
   pointer-events: none;
   transition: opacity 0.3s;
+}
+
+textarea {
+  resize: none;
 }

@@ -98,14 +98,14 @@ export default function AutomateTrades() {
         >
           {algobotData.map((strategy, i) => (
             <motion.div
-              className={styles.mainCard}
+              className={styles.card}
               key={strategy._id}
               variants={cardVariants}
               onMouseMove={handleTilt}
               onMouseLeave={resetTilt}
               style={{ willChange: 'transform' }}
             >
-              <div className={styles.card}>
+              <div>
                 <div className={styles.textstyle}>
                   <div style={{ display: "flex", justifyContent: "space-between" }}>
                     <div className={styles.titleText}>
@@ -133,14 +133,14 @@ export default function AutomateTrades() {
                     </span>
                   </div>
                 </div>
-                <div className={styles.buttonGrid}>
-                  <Button
-                    text="Buy Now"
-                    onClick={() => {
-                      router.push(`algobot-details?id=${strategy._id}`)
-                    }}
-                  />
-                </div>
+              </div>
+              <div className={styles.buttonGrid}>
+                <Button
+                  text="Buy Now"
+                  onClick={() => {
+                    router.push(`algobot-details?id=${strategy._id}`)
+                  }}
+                />
               </div>
             </motion.div>
           ))}

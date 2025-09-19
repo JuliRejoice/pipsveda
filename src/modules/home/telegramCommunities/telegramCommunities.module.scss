@@ -54,23 +54,23 @@
     }
 
     .grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
+        display: flex;
+        flex-wrap: wrap;
         gap: 22px;
+        justify-content: center;
 
         @include respond-to("md") {
-            grid-template-columns: 1fr 1fr;
             gap: 20px;
         }
 
         @include respond-to("sm") {
-            grid-template-columns: 1fr;
             gap: 16px;
         }
 
         .griditems {
             background-color: var(--bg-white);
             padding: 50px;
+            width: calc(33.33% - 22px);
             border-radius: 16px;
 
             @include respond-to("md") {
@@ -109,6 +109,10 @@
 
                 @include respond-to("sm") {
                     padding: 0 0 20px 0;
+                }
+
+                p:last-child {
+                    margin: 0;
                 }
 
                 p {

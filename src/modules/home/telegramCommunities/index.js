@@ -32,10 +32,10 @@ const textVariants = {
 export default function TelegramCommunities() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
-  const [telegramChannels,setTelegramChannels] = useState([]);
+  const [telegramChannels, setTelegramChannels] = useState([]);
   const router = useRouter()
 
-  useEffect(()=>{
+  useEffect(() => {
     const fetchTelegramChannels = async () => {
       try {
         const response = await getTelegramFordashboard();
@@ -91,7 +91,7 @@ export default function TelegramCommunities() {
       return next;
     });
   };
-console.log(telegramChannels)
+  console.log(telegramChannels)
   return (
     <div className={styles.telegramCommunities}>
       <div className="container" ref={ref}>
@@ -111,7 +111,7 @@ console.log(telegramChannels)
 
         {/* Cards Animation */}
         <motion.div
-          className={telegramChannels?.length > 2 ? styles.grid : styles.flex}
+          className={telegramChannels?.length > 2 ? styles.grid : styles.grid}
           variants={containerVariants}
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
