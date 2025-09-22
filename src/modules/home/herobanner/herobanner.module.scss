@@ -182,10 +182,12 @@
     }
 
     @include respond-to("md") {
-        display: flex;
-        gap: 16px;
-        overflow: auto;
-        scrollbar-width: none;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+    }
+
+    @include respond-to("sm") {
+        padding: 40px 0 0 0;
     }
 
     *::-webkit-scrollbar {
@@ -194,6 +196,12 @@
 
     &::-webkit-scrollbar {
         display: none;
+    }
+
+    .hidenSection {
+        @include respond-to("md") {
+            display: none;
+        }
     }
 
     .systemImage {
@@ -205,9 +213,6 @@
         }
 
         @include respond-to("md") {
-            width: 250px;
-            min-width: 250px;
-            max-width: 250px;
             border-radius: 12px 12px 0 0;
         }
 
@@ -226,6 +231,10 @@
             @include respond-to("md") {
                 border-radius: 12px 12px 0 0;
             }
+
+            @include respond-to("sm") {
+                height: 95px;
+            }
         }
     }
 
@@ -242,11 +251,13 @@
         }
 
         @include respond-to("md") {
-            width: 250px;
-            min-width: 250px;
-            max-width: 250px;
             border-radius: 12px;
             padding: 16px;
+        }
+
+        @include respond-to("sm") {
+            padding: 10px;
+            margin: 0 0 5px 0;
         }
 
         p {
@@ -261,6 +272,13 @@
                 font-size: 14px;
                 margin: 0 0 20px 0;
             }
+
+            @include respond-to("sm") {
+                font-size: 10px;
+                line-height: 14px;
+                margin: 0 0 10px 0;
+            }
+
         }
 
         .image {
@@ -282,11 +300,10 @@
         }
 
         @include respond-to("md") {
-            width: 250px;
-            min-width: 250px;
-            max-width: 250px;
             border-radius: 12px 12px 0 0;
         }
+
+
 
         .header {
             padding: 27px;
@@ -297,6 +314,10 @@
 
             @include respond-to("md") {
                 padding: 16px;
+            }
+
+            @include respond-to("sm") {
+                padding: 10px;
             }
 
             p {
@@ -310,15 +331,15 @@
                     font-size: 14px;
                     line-height: 20px;
                 }
+
+                @include respond-to("sm") {
+                    font-size: 10px;
+                    line-height: 16px;
+                }
             }
         }
 
         .image {
-            @include respond-to("md") {
-                width: 250px;
-                min-width: 250px;
-                max-width: 250px;
-            }
 
             img {
                 width: 100%;
@@ -337,16 +358,14 @@
         @media (max-width:1500px) {
             border-radius: 24px;
             padding: 0 0 14px 0;
-
         }
 
-        @include respond-to("md") {
-            width: 250px;
-            min-width: 250px;
-            max-width: 250px;
+        @media (max-width:1500px) {
             border-radius: 12px;
-
+            padding: 0 0 5px 0;
         }
+
+
 
         img {
             width: 100%;
@@ -356,9 +375,12 @@
             object-fit: cover;
 
             @media (max-width:1500px) {
-                border-radius: 24px;
                 height: 310px;
                 border-radius: 12px;
+            }
+
+            @include respond-to("sm") {
+                height: 140px;
             }
 
 
@@ -380,6 +402,11 @@
             border-radius: 12px 12px 0 0;
         }
 
+
+        @include respond-to("sm") {
+            padding: 10px;
+        }
+
         p {
             color: #FFF;
             font-size: 18px;
@@ -390,6 +417,11 @@
             @media (max-width:1500px) {
                 font-size: 14px;
                 line-height: 24px;
+            }
+
+            @include respond-to("sm") {
+                font-size: 10px;
+                line-height: 14px;
             }
         }
     }

@@ -90,8 +90,8 @@ const updatedSectionContainer = {
 };
 
 const cardVariants = {
-  hidden: { 
-    y: 60, 
+  hidden: {
+    y: 60,
     opacity: 0,
     scale: 0.8
   },
@@ -109,8 +109,8 @@ const cardVariants = {
 };
 
 const imageVariants = {
-  hidden: { 
-    scale: 0.8, 
+  hidden: {
+    scale: 0.8,
     opacity: 0,
     rotate: -5
   },
@@ -128,9 +128,9 @@ const imageVariants = {
 };
 
 const textVariants = {
-  hidden: { 
-    y: 20, 
-    opacity: 0 
+  hidden: {
+    y: 20,
+    opacity: 0
   },
   visible: {
     y: 0,
@@ -281,7 +281,7 @@ export default function Herobanner() {
               </motion.div>
             </div>
           </div>
-          <motion.div 
+          <motion.div
             className={styles.updatedSection}
             initial="hidden"
             whileInView="visible"
@@ -289,10 +289,10 @@ export default function Herobanner() {
             variants={updatedSectionContainer}
           >
             <motion.div variants={cardVariants}>
-              <motion.div 
+              <motion.div
                 className={styles.singleCard}
-                whileHover={{ 
-                  scale: 1.05, 
+                whileHover={{
+                  scale: 1.05,
                   rotateY: 5,
                   transition: { duration: 0.3 }
                 }}
@@ -304,8 +304,8 @@ export default function Herobanner() {
                   </p>
                 </motion.div>
                 <motion.div className={styles.image} variants={imageVariants}>
-                  <motion.img 
-                    src={LineImage} 
+                  <motion.img
+                    src={LineImage}
                     alt='LineImage'
                     whileHover={{ scale: 1.1, rotate: 2 }}
                     transition={{ duration: 0.3 }}
@@ -314,21 +314,21 @@ export default function Herobanner() {
               </motion.div>
             </motion.div>
             <motion.div variants={cardVariants}>
-              <motion.div 
+              <motion.div
                 className={styles.imageSection}
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
-                <motion.img 
-                  src={Banner1} 
+                <motion.img
+                  src={Banner1}
                   alt='Banner1'
                   variants={imageVariants}
                   whileHover={{ scale: 1.05 }}
                 />
               </motion.div>
-              <motion.div 
+              <motion.div
                 className={styles.detailsBox}
-                whileHover={{ 
+                whileHover={{
                   scale: 1.02,
                   backgroundColor: 'rgba(20, 20, 20, 0.9)',
                   transition: { duration: 0.3 }
@@ -341,9 +341,9 @@ export default function Herobanner() {
               </motion.div>
             </motion.div>
             <motion.div variants={cardVariants}>
-              <motion.div 
+              <motion.div
                 className={styles.lifetimeBox}
-                whileHover={{ 
+                whileHover={{
                   scale: 1.03,
                   rotateX: 2,
                   transition: { duration: 0.3 }
@@ -351,43 +351,43 @@ export default function Herobanner() {
               >
                 <motion.p variants={textVariants}>Lifetime Access to Resources</motion.p>
                 <motion.div className={styles.image} variants={imageVariants}>
-                  <motion.img 
-                    src={RowBanner} 
+                  <motion.img
+                    src={RowBanner}
                     alt='RowBanner'
                     whileHover={{ scale: 1.1 }}
                     transition={{ duration: 0.3 }}
                   />
                 </motion.div>
               </motion.div>
-              <motion.div 
+              <motion.div
                 className={styles.systemImage}
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
-                <motion.img 
-                  src={SystemBanner} 
+                <motion.img
+                  src={SystemBanner}
                   alt='SystemBanner'
                   variants={imageVariants}
                   whileHover={{ scale: 1.05, rotateY: 3 }}
                 />
               </motion.div>
             </motion.div>
-            <motion.div variants={cardVariants}>
-              <motion.div 
+            <motion.div className={styles.hidenSection} variants={cardVariants}>
+              <motion.div
                 className={styles.imageSection}
                 whileHover={{ scale: 1.02 }}
                 transition={{ duration: 0.3 }}
               >
-                <motion.img 
-                  src={Banner2} 
+                <motion.img
+                  src={Banner2}
                   alt='Banner2'
                   variants={imageVariants}
                   whileHover={{ scale: 1.05 }}
                 />
               </motion.div>
-              <motion.div 
+              <motion.div
                 className={styles.detailsBox}
-                whileHover={{ 
+                whileHover={{
                   scale: 1.02,
                   backgroundColor: 'rgba(20, 20, 20, 0.9)',
                   transition: { duration: 0.3 }
@@ -399,11 +399,11 @@ export default function Herobanner() {
                 </motion.p>
               </motion.div>
             </motion.div>
-            <motion.div variants={cardVariants}>
-              <motion.div 
+            <motion.div className={styles.hidenSection} variants={cardVariants}>
+              <motion.div
                 className={styles.singleCard}
-                whileHover={{ 
-                  scale: 1.05, 
+                whileHover={{
+                  scale: 1.05,
                   rotateY: -5,
                   transition: { duration: 0.3 }
                 }}
@@ -415,8 +415,8 @@ export default function Herobanner() {
                   </p>
                 </motion.div>
                 <motion.div className={styles.image} variants={imageVariants}>
-                  <motion.img 
-                    src={CrossLineImage} 
+                  <motion.img
+                    src={CrossLineImage}
                     alt='CrossLineImage'
                     whileHover={{ scale: 1.1, rotate: -2 }}
                     transition={{ duration: 0.3 }}
