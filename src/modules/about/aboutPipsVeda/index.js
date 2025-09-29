@@ -38,7 +38,12 @@ export default function AboutPipsVeda() {
     };
 
     return (
-        <div className={styles.aboutPipsVeda}>
+        <motion.div
+            initial={{ opacity: 0, backgroundColor: "transparent" }}
+            whileInView={{ opacity: 1, backgroundColor: "#000" }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+            className={styles.aboutPipsVeda}>
             <div className='container'>
                 <motion.div
                     className={styles.grid}
@@ -62,7 +67,7 @@ export default function AboutPipsVeda() {
                             About Pips Veda
                         </motion.h2>
                         <motion.p variants={fadeInUp}>
-                        PipsVeda is your one-stop solution for forex success. We offer an advanced AlgoBot, expert-led forex courses (recorded, live, or in-person), and a premium Telegram channel. Learn, automate, and grow your trading skills—all in one place. Easy online purchases make it simple to get started today.
+                            PipsVeda is your one-stop solution for forex success. We offer an advanced AlgoBot, expert-led forex courses (recorded, live, or in-person), and a premium Telegram channel. Learn, automate, and grow your trading skills—all in one place. Easy online purchases make it simple to get started today.
                         </motion.p>
                         {aboutPoints.map((point, index) => (
                             <motion.div
@@ -77,6 +82,6 @@ export default function AboutPipsVeda() {
                     </motion.div>
                 </motion.div>
             </div>
-        </div>
+        </motion.div>
     )
 }

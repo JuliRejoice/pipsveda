@@ -32,7 +32,12 @@ export default function GetCertified() {
   const isInView = useInView(ref, { once: true });
 
   return (
-    <div className={styles.getCertified}>
+    <motion.div ref={ref}
+      initial={{ opacity: 0, backgroundColor: "transparent" }}
+      whileInView={{ opacity: 1, backgroundColor: "#000" }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 1.2, ease: "easeOut" }}
+      className={styles.getCertified}>
       <div className="container" ref={ref}>
         {/* Section Title */}
         <motion.div
@@ -108,6 +113,6 @@ export default function GetCertified() {
           ))}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }

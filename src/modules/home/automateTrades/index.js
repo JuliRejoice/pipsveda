@@ -4,11 +4,8 @@ import { motion, useInView } from 'framer-motion';
 import styles from './automateTrades.module.scss';
 import FlashIcon from '@/icons/flashIcon';
 import Button from '@/compoents/button';
-import OutlineButton from '@/compoents/outlineButton';
-import { getAlgobot } from '@/compoents/api/algobot';
-import { useRouter } from 'next/navigation';
-import { getCookie } from '../../../../cookie';
 import { getBots } from '@/compoents/api/dashboard';
+import { useRouter } from 'next/navigation';
 
 const containerVariants = {
   hidden: {},
@@ -47,9 +44,8 @@ export default function AutomateTrades() {
     const fetchAlgobotData = async () => {
       try {
         const response = await getBots();
-        // Flatten the strategies array from all categories
         const allStrategies = response.payload.data;
-        setAlgobotData(allStrategies); // Get first 3 strategies
+        setAlgobotData(allStrategies);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -62,8 +58,8 @@ export default function AutomateTrades() {
     const rect = card.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width;
     const y = (e.clientY - rect.top) / rect.height;
-    const rotateY = (x - 0.5) * 18; // left/right
-    const rotateX = (0.5 - y) * 18; // up/down
+    const rotateY = (x - 0.5) * 18;
+    const rotateX = (0.5 - y) * 18;
     card.style.transition = 'transform 60ms ease-out';
     card.style.transformStyle = 'preserve-3d';
     card.style.transform = `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
@@ -76,8 +72,15 @@ export default function AutomateTrades() {
   };
 
   return (
-    <div className={styles.automateTrades}>
-      <div className="container" ref={ref}>
+    <motion.div
+      className={styles.automateTrades}
+      ref={ref}
+      initial={{ opacity: 0, backgroundColor: "transparent" }}
+      whileInView={{ opacity: 1, backgroundColor: "#000" }}
+      viewport={{ once: true, margin: "-100px" }}
+      transition={{ duration: 1.2, ease: "easeOut" }}
+    >
+      <div className="container">
         {/* Text Section */}
         <motion.div
           className={styles.text}
@@ -96,7 +99,7 @@ export default function AutomateTrades() {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          {algobotData.map((strategy, i) => (
+          {algobotData.map((strategy) => (
             <motion.div
               className={styles.card}
               key={strategy._id}
@@ -116,7 +119,7 @@ export default function AutomateTrades() {
                   </div>
                   <div className={styles.planplangrdmain}>
                     <div className={styles.planplangrd}>
-                      {strategy.strategyPlan?.slice(0, 2).map((plan, idx) => (
+                      {strategy.strategyPlan?.slice(0, 2).map((plan) => (
                         <div className={styles.planitem} key={plan._id}>
                           <h4>
                             ${plan.price}<sub>/{plan.planType}</sub>
@@ -146,6 +149,6 @@ export default function AutomateTrades() {
           ))}
         </motion.div>
       </div>
-    </div>
+    </motion.div>
   );
 }

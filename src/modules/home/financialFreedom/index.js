@@ -1,6 +1,6 @@
 'use client'
 import Slider from "react-slick";
-import { motion, useInView, useAnimation, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import React, { useEffect, useRef, useState } from 'react'
 import styles from './financialFreedom.module.scss';
 import StarIcon from "@/icons/starIcon";
@@ -16,7 +16,7 @@ const Card4 = '/assets/images/card4.png';
 const VecImage = '/assets/images/vec.png';
 
 function SampleNextArrow(props) {
-    const { className, style, onClick } = props;
+    const { onClick } = props;
     return (
         <div
             className={classNames(styles.arrow, styles.rightIcon)}
@@ -28,7 +28,7 @@ function SampleNextArrow(props) {
 }
 
 function SamplePrevArrow(props) {
-    const { className, style, onClick } = props;
+    const { onClick } = props;
     return (
         <div
             className={classNames(styles.arrow, styles.leftIcon)}
@@ -144,7 +144,13 @@ export default function FinancialFreedom() {
 
     const currentCourses = courses[activeType] || [];
     return (
-        <div className={styles.financialFreedom}>
+        <motion.div
+            className={styles.financialFreedom}
+            initial={{ opacity: 0, backgroundColor: "transparent" }}
+            whileInView={{ opacity: 1, backgroundColor: "#000" }}
+            viewport={{ once: true, margin: "-100px" }}
+            transition={{ duration: 1.2, ease: "easeOut" }}
+        >
             <div className={styles.vecImage}>
                 <img src={VecImage} alt="VecImage" />
             </div>
@@ -277,6 +283,6 @@ export default function FinancialFreedom() {
                     </motion.div>
                 </div>
             </div>
-        </div>
+        </motion.div>
     );
 }
