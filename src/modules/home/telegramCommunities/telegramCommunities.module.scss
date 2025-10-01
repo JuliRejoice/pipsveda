@@ -7,7 +7,7 @@
     width: 100%;
     background-size: cover;
     width: 100%;
-    padding: 120px 0;
+    padding: 100px 0;
 
     @include respond-to("md") {
         padding: 80px 0;
@@ -69,9 +69,13 @@
 
         .griditems {
             background-color: var(--bg-white);
-            padding: 50px;
+            padding: 20px;
             width: calc(33.33% - 22px);
-            border-radius: 16px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-start;
 
             @include respond-to("md") {
                 padding: 20px;
@@ -84,7 +88,8 @@
             }
 
             .btn {
-                max-width: 180px;
+                max-width: 140px;
+                width: 100%;
 
                 button {
                     width: 100%;
@@ -111,11 +116,8 @@
             }
 
             .listAlignment {
-                padding: 0 0 28px 0;
+                padding: 0 0 0 0;
 
-                @include respond-to("sm") {
-                    padding: 0 0 15px 0;
-                }
 
                 p:last-child {
                     margin: 0;
@@ -123,9 +125,11 @@
 
                 p {
                     @include font16;
-                    color: var(--black-500);
+                    font-weight: 400;
+                    color: var(--grey-650);
                     display: -webkit-box;
-                    -webkit-line-clamp: 3;
+                    -webkit-line-clamp: 4;
+                    line-height: 25px;
                     margin: 0 0 12px 0;
                     -webkit-box-orient: vertical;
                     overflow: hidden;
@@ -166,7 +170,7 @@
             .textStyle {
                 h3 {
                     @include heading20;
-                    margin: 0 0 12px 0;
+                    margin: 0 0 0 0;
                     color: var(--black-500);
                     -webkit-text-fill-color: transparent;
                     background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
@@ -222,6 +226,11 @@
                 align-items: center;
                 justify-content: space-between;
                 padding: 0 0 16px 0;
+
+                svg {
+                    max-width: 30px;
+                    max-height: 30px;
+                }
 
                 button {
                     background-color: transparent;
@@ -325,6 +334,7 @@
             background-color: var(--bg-white);
             padding: 50px;
             border-radius: 16px;
+
 
             @include respond-to("md") {
                 padding: 20px;

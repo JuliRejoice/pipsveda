@@ -173,22 +173,8 @@ export default function FinancialFreedom() {
                         Live Classes. Recorded Lessons. Offline Seminars.
                     </motion.p>
                 </div>
-                <div className={styles.flex}>
-                    <motion.div
-                        className={styles.flexItems}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, margin: "-50px" }}
-                        variants={{
-                            visible: {
-                                opacity: 1,
-                                transition: {
-                                    staggerChildren: 0.1
-                                }
-                            },
-                            hidden: { opacity: 0 }
-                        }}
-                    >
+                <div className={styles.tabCenter}>
+                    <div className={styles.tabDesign}>
                         {courseTypes.map((type) => (
                             <motion.div
                                 key={type.id}
@@ -214,73 +200,65 @@ export default function FinancialFreedom() {
                                 </button>
                             </motion.div>
                         ))}
-                    </motion.div>
-                    <motion.div
-                        className={styles.flexItems}
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true, margin: "-50px" }}
-                        transition={{ duration: 0.7, delay: 0.3 }}
-                    >
-                        <Slider {...settings}>
-                            {currentCourses.map((course, index) => (
-                                <div key={index}>
-                                    <CardTilt>
-                                        <div className={styles.mainCard}>
-                                            <div className={styles.card}>
-                                                <div className={styles.grid}>
-                                                    <div className={styles.griditems}>
-                                                        <div className={styles.img}>
-                                                            <img
-                                                                src={course.courseVideo || Card4}
-                                                                alt={course.CourseName || 'Course Image'}
-                                                                onError={(e) => {
-                                                                    e.target.onerror = null;
-                                                                    e.target.src = Card4;
-                                                                }}
-                                                            />
+                    </div>
+                </div>
+                <div className={styles.mainCardgrid}>
+                    {currentCourses.map((course, index) => (
+                        <div key={index}>
+                            <CardTilt>
+                                <div className={styles.mainCard}>
+                                    <div className={styles.card}>
+                                        <div className={styles.grid}>
+                                            <div className={styles.griditems}>
+                                                <div className={styles.img}>
+                                                    <img
+                                                        src={course.courseVideo || Card4}
+                                                        alt={course.CourseName || 'Course Image'}
+                                                        onError={(e) => {
+                                                            e.target.onerror = null;
+                                                            e.target.src = Card4;
+                                                        }}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <div className={styles.griditems}>
+                                                <div>
+                                                    <h3>{course.CourseName || 'Course Title'}</h3>
+                                                    <div className={styles.allIconText}>
+                                                        <div className={styles.icontext}>
+                                                            <StarIcon />
+                                                            <span>{course.rating || '4.8'}</span>
+                                                        </div>
+                                                        <div className={styles.icontext}>
+                                                            <ProfileIcon />
+                                                            <span>{course.students || '123'}</span>
+                                                        </div>
+                                                        <div className={styles.icontext}>
+                                                            <ClockIcon />
+                                                            <span>{`${course?.hours} hours` || '12 hours'}</span>
                                                         </div>
                                                     </div>
-                                                    <div className={styles.griditems}>
-                                                        <div>
-                                                            <h3>{course.CourseName || 'Course Title'}</h3>
-                                                            <div className={styles.allIconText}>
-                                                                <div className={styles.icontext}>
-                                                                    <StarIcon />
-                                                                    <span>{course.rating || '4.8'}</span>
-                                                                </div>
-                                                                <div className={styles.icontext}>
-                                                                    <ProfileIcon />
-                                                                    <span>{course.students || '123'}</span>
-                                                                </div>
-                                                                <div className={styles.icontext}>
-                                                                    <ClockIcon />
-                                                                    <span>{`${course?.hours} hours` || '12 hours'}</span>
-                                                                </div>
-                                                            </div>
-                                                            <div className={styles.textAlignment}>
-                                                                <h4>${course.price || '0'}</h4>
-                                                                <button>{course.level || 'Beginner Level'}</button>
-                                                            </div>
-                                                        </div>
-                                                        <div className={styles.btnWidthfull}>
-                                                            <Button
-                                                                text="Enroll Now"
-                                                                onClick={() => {
-                                                                    const courseType = courseTypes.find(t => t.id === activeType)?.course || 'pre-recorded';
-                                                                    { getCookie('userToken') ? router.push(`/course/${course._id}`) : router.push('/signin'); }
-                                                                }}
-                                                            />
-                                                        </div>
+                                                    <div className={styles.textAlignment}>
+                                                        <h4>${course.price || '0'}</h4>
+                                                        <button>{course.level || 'Beginner Level'}</button>
                                                     </div>
+                                                </div>
+                                                <div className={styles.btnWidthfull}>
+                                                    <Button
+                                                        text="Enroll Now"
+                                                        onClick={() => {
+                                                            const courseType = courseTypes.find(t => t.id === activeType)?.course || 'pre-recorded';
+                                                            { getCookie('userToken') ? router.push(`/course/${course._id}`) : router.push('/signin'); }
+                                                        }}
+                                                    />
                                                 </div>
                                             </div>
                                         </div>
-                                    </CardTilt>
+                                    </div>
                                 </div>
-                            ))}
-                        </Slider>
-                    </motion.div>
+                            </CardTilt>
+                        </div>
+                    ))}
                 </div>
             </div>
         </motion.div>

@@ -3,7 +3,7 @@
 @use '../../../scss/breakpoints/breakpoints.scss' as *;
 
 .whypips {
-    padding: 120px 0;
+    padding: 100px 0;
     position: relative;
 
     @include respond-to("md") {

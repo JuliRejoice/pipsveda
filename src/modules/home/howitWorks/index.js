@@ -5,6 +5,7 @@ import styles from './howitWorks.module.scss';
 
 const ProcessOne = '/assets/images/process1.png';
 const BottomVec = '/assets/images/bottomvec.png';
+const FirstJson = '/assets/json/1-Signup.json';
 
 const textVariants = {
   hidden: { opacity: 0, y: 30 },
@@ -139,7 +140,7 @@ export default function HowitWorks() {
                 Sign Up & Choose a Course
               </h3>
               <p>
-                Create your account and select from our comprehensive course catalog tailored to your 
+                Create your account and select from our comprehensive course catalog tailored to your
                 skill level.
               </p>
               <motion.img
@@ -157,7 +158,7 @@ export default function HowitWorks() {
                 Attend Live or On-Demand Courses
               </h3>
               <p>
-                Create your account and select from our comprehensive course catalog tailored to your 
+                Create your account and select from our comprehensive course catalog tailored to your
                 skill level.
               </p>
               <motion.img
@@ -175,7 +176,7 @@ export default function HowitWorks() {
                 Join Community & Get Certified
               </h3>
               <p>
-                Create your account and select from our comprehensive course catalog tailored to your 
+                Create your account and select from our comprehensive course catalog tailored to your
                 skill level.
               </p>
               <motion.img

@@ -139,27 +139,28 @@ export default function TelegramCommunities() {
               }}
               transition={{ type: 'spring', stiffness: 250, damping: 20, mass: 0.6 }}
             >
-              <div className={styles.cardHeader}>
-                <div className={styles.textStyle}>
-                  <h3>{channel.channelName}</h3>
+              <div>
+                <div className={styles.cardHeader}>
+                  <div className={styles.textStyle}>
+                    <h3>{channel.channelName}</h3>
+                  </div>
+                  <ArrowVec />
                 </div>
-                <ArrowVec />
-              </div>
 
-              <div className={styles.listAlignment}>
-                <p>{channel.description || 'Join our community for updates and insights'}</p>
-              </div>
+                <div className={styles.listAlignment}>
+                  <p>{channel.description || 'Join our community for updates and insights'}</p>
+                </div>
 
-              <div className={styles.priceSection}>
-                {channel.telegramPlan?.length > 0 &&
-                  channel.telegramPlan.map((plan) => (
-                    <div className={styles.priceContainer} key={plan._id}>
-                      <span className={styles.price}>${plan.initialPrice}</span>
-                      <span className={styles.priceLabel}>/{plan.planType}</span>
-                    </div>
-                  ))}
+                <div className={styles.priceSection}>
+                  {channel.telegramPlan?.length > 0 &&
+                    channel.telegramPlan.map((plan) => (
+                      <div className={styles.priceContainer} key={plan._id}>
+                        <span className={styles.price}>${plan.initialPrice}</span>
+                        <span className={styles.priceLabel}>/{plan.planType}</span>
+                      </div>
+                    ))}
+                </div>
               </div>
-
               <div className={styles.btn}>
                 <Button
                   text={'Join Now'}

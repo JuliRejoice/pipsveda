@@ -3,7 +3,7 @@
 @use '../../../scss/breakpoints/breakpoints.scss' as *;
 
 .insights {
-    padding: 120px 0;
+    padding: 100px 0;
     position: relative;
 
     @include respond-to("md") {
@@ -124,8 +124,9 @@
                 img {
                     display: block;
                     width: 100%;
-                    height: 260px;
                     border-radius: 16px 16px 0 0;
+                    aspect-ratio: 16 / 9;
+
 
                     @include respond-to("md") {
                         height: 190px;

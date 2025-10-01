@@ -252,7 +252,7 @@ export default function Herobanner() {
                   improve efficiency,
                 </motion.p>
               </div>
-              <div className={styles.searchButtonalignment}>
+              {/* <div className={styles.searchButtonalignment}>
                 <motion.div
                   className={styles.searchbar}
                   variants={item}
@@ -280,6 +280,10 @@ export default function Herobanner() {
                   <Button text="Explore Courses" icon={RightIcon} onClick={() => { getCookie("userToken") ? router.push(`/course?search=${searchParams}`) : router.push('/signin') }} />
 
                 </motion.div>
+              </div> */}
+              <div className={styles.heroSectionTwoButton}>
+                <Button text="Explore Courses" icon={RightIcon} />
+                <Button text="Join Free Community" black icon={RightIcon} />
               </div>
             </div>
             <motion.div
