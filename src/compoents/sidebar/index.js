@@ -71,73 +71,15 @@ export default function Sidebar({ setToogle, toogle }) {
         </div>
         <div className={styles.sidebarBody}>
           <div
-            className={`${styles.menu} ${pathname === "/dashboard" ? styles.active : ""
+            className={`${styles.menu} ${pathname === "/my-courses" ? styles.active : ""
               }`}
             onClick={() => {
-              handleTabClick("dashboard");
+              handleTabClick("my-courses");
             }}
           >
-            <DashboardIcon />
-            <span>Dashboard</span>
+            <CourseIcon />
+            <span>My Courses</span>
           </div>
-          {/* <div className={styles.relative}>
-            <Link href="#">
-              <div
-                className={`${styles.menu} ${pathname.includes("/courses") ? styles.active : ""
-                  }`}
-                onClick={() => setDropdown(!dropdown)}
-              >
-                <CourseIcon />
-                <div className={styles.contentAlignment}>
-                  <span>Course</span>
-                  <div
-                    className={dropdown ? styles.toogle : ""}
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      setDropdown(!dropdown);
-                    }}
-                  >
-                    <DownArrow />
-                  </div>
-                </div>
-              </div>
-            </Link>
-            <div
-              className={classNames(
-                styles.dropdown,
-                dropdown ? styles.show : styles.hide
-              )}
-            >
-              <div className={styles.dropdownAlignment}>
-                <span
-                  className={
-                    pathname.includes("/pre-recorded")
-                      ? styles.activeSubTab
-                      : ""
-                  }
-                  onClick={() => handleTabClick("courses/pre-recorded")}
-                >
-                  Pre-Recorded
-                </span>
-                <span
-                  className={
-                    pathname.includes("/live-online") ? styles.activeSubTab : ""
-                  }
-                  onClick={() => handleTabClick("courses/live-online")}
-                >
-                  Live Online
-                </span>
-                <span
-                  className={
-                    pathname.includes("/in-person") ? styles.activeSubTab : ""
-                  }
-                  onClick={() => handleTabClick("courses/in-person")}
-                >
-                  In-Person
-                </span>
-              </div>
-            </div>
-          </div> */}
           <div
             className={`${styles.menu} ${pathname === "/course" ? styles.active : ""
               }`}
@@ -165,16 +107,7 @@ export default function Sidebar({ setToogle, toogle }) {
             <TelegramIcon />
             Telegram Channels
           </div>
-          <div
-            className={`${styles.menu} ${pathname === "/my-courses" ? styles.active : ""
-              }`}
-            onClick={() => {
-              handleTabClick("my-courses");
-            }}
-          >
-            <CourseIcon />
-            <span>My Courses</span>
-          </div>
+
           {/* <div
               className={`${styles.menu} ${
                 pathname === "/notification" ? styles.active : ""

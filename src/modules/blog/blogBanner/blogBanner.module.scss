@@ -5,15 +5,17 @@
 .blogBanner {
     background-image: url('/assets/images/herobanner.png');
     background-size: cover;
-    padding: 239px 0 80px 0;
+    padding: 80px 0 80px 0;
     width: 100%;
+    border-radius: 30px;
 
     @include respond-to("md") {
-        padding: 180px 0 80px 0;
+        padding: 80px 0 80px 0;
     }
 
     @include respond-to("sm") {
-        padding: 140px 0 60px 0;
+        padding: 60px 0 60px 0;
+        border-radius: 12px;
     }
 
     .text {
@@ -98,5 +100,14 @@
             display: flex;
             align-items: center;
         }
+    }
+}
+
+.leftrightSpacing {
+    padding: 20px 30px;
+    border-radius: 30px;
+
+    @include respond-to("sm") {
+        padding: 10px 0 0 0;
     }
 }

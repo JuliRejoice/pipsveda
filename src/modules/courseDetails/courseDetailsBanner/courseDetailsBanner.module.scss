@@ -6,15 +6,17 @@
     background-image: url('/assets/images/herobanner.png');
     background-repeat: no-repeat;
     background-size: cover;
-    padding: 266px 0 135px 0;
+    padding: 80px 0 80px 0;
     width: 100%;
+    border-radius: 30px;
 
     @include respond-to("md") {
-        padding: 180px 0 80px 0;
+        padding: 80px 0 80px 0;
     }
 
     @include respond-to("sm") {
-        padding: 140px 0 60px 0;
+        border-radius: 12px;
+        padding: 60px 0;
     }
 
     h1 {
@@ -37,5 +39,16 @@
         @include respond-to("sm") {
             @include font16normal;
         }
+    }
+}
+
+
+.leftrightSpacing {
+    padding: 20px 30px;
+    border-radius: 30px;
+
+    @include respond-to("sm") {
+        padding: 10px 0 0 0;
+
     }
 }

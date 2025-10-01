@@ -47,7 +47,7 @@ export default function Header() {
   const [showDropdown, setShowDropdown] = useState(false);
   const dropdownRef = useRef(null);
   const [user, setUser] = useState(null);
-  
+
 
 
 
@@ -71,10 +71,10 @@ export default function Header() {
   useEffect(() => {
     const handleClickOutside = (event) => {
       // Check if click is outside both dropdown button and dropdown menu
-      const isClickInside = 
-        event.target.closest(`.${styles.userDropdown}`) || 
+      const isClickInside =
+        event.target.closest(`.${styles.userDropdown}`) ||
         (dropdownRef.current && dropdownRef.current.contains(event.target));
-      
+
       if (!isClickInside) {
         setShowDropdown(false);
       }
@@ -99,63 +99,64 @@ export default function Header() {
             ? null
             : styles.hide
       )}>
-        <div className='container'>
-          <div className={styles.headerDesign}>
-            <a href='/'><Logo /></a>
-            <div className={styles.menu}>
-              <a
-                className={course === 'recorded' ? styles.active : ''}
-                href="/our-course?course=recorded"
-                aria-label="Courses"
-              >
-                Courses
-              </a>
-              <a
-                className={course === 'live' ? styles.active : ''}
-                href="/our-course?course=live"
-                aria-label="Live Online Classes"
-              >
-                Live Online Classes
-              </a>
-              <a
-                className={course === 'physical' ? styles.active : ''}
-                href="/our-course?course=physical"
-                aria-label="Offline Sessions"
-              >
-                Offline Sessions
-              </a>
-              <a href="/algobots" className={pathname === ('/algobots' || '/algobot-details') ? styles.active : ''} aria-label='Community'>AlgoBots</a>
-              <a href="/blog" className={pathname === '/blog' ? styles.active : ''} aria-label='Blog'>Blogs</a>
-              <a href="/about"aria-label='About Us'>About Us</a>
-            </div>
-
-            <div className={styles.buttonDesign}>
-              {user ? (
-                <div className={styles.userDropdown}>
-                  <button
-                    className={styles.userButton}
-                    onClick={() => setShowDropdown(!showDropdown)}
-                    aria-label="User menu"
-                  >
-                    <UserIcon />
-                    <span>{user.displayName?.split(' ')[0] || 'User'}</span>
-                    <img src={DownIcon} alt="DownIcon" />
-                  </button>
-                </div>
-              ) : (
-                <Link href="/signin">
-                  <Button text="Login" icon={RightIcon} />
+        <div className={styles.bg}>
+          <div className='container'>
+            <div className={styles.headerDesign}>
+              <a href='/'><Logo /></a>
+              <div className={styles.menu}>
+                <Link
+                  className={course === 'recorded' ? styles.active : ''}
+                  href="/our-course?course=recorded"
+                  aria-label="Courses"
+                >
+                  Courses
                 </Link>
-              )}
-            </div>
+                <Link
+                  className={course === 'live' ? styles.active : ''}
+                  href="/our-course?course=live"
+                  aria-label="Live Online Classes"
+                >
+                  Live Online Classes
+                </Link>
+                <Link
+                  className={course === 'physical' ? styles.active : ''}
+                  href="/our-course?course=physical"
+                  aria-label="Offline Sessions"
+                >
+                  Offline Sessions
+                </Link>
+                <Link href="/algobots" className={pathname === ('/algobots' || '/algobot-details') ? styles.active : ''} aria-label='algobots'>AlgoBots</Link>
+                <Link href="/blog" className={pathname === '/blog' ? styles.active : ''} aria-label='Blog'>Blogs</Link>
+                <Link href="/about" aria-label='About Us'>About Us</Link>
+              </div>
 
-            <div className={styles.menuIcon} onClick={() => setHeader(!header)}>
-              <MenuIcon />
+              <div className={styles.buttonDesign}>
+                {user ? (
+                  <div className={styles.userDropdown}>
+                    <button
+                      className={styles.userButton}
+                      onClick={() => setShowDropdown(!showDropdown)}
+                      aria-label="User menu"
+                    >
+                      <UserIcon />
+                      <span>{user.displayName?.split(' ')[0] || 'User'}</span>
+                      <img src={DownIcon} alt="DownIcon" />
+                    </button>
+                  </div>
+                ) : (
+                  <Link href="/signin">
+                    <Button text="Login" icon={RightIcon} />
+                  </Link>
+                )}
+              </div>
+
+              <div className={styles.menuIcon} onClick={() => setHeader(!header)}>
+                <MenuIcon />
+              </div>
             </div>
           </div>
         </div>
       </header>
-
       {/* {dropdown wrapper} */}
       <div className={classNames(
         styles.dropdownwrapper,
@@ -193,12 +194,12 @@ export default function Header() {
           </div>
         </div>
         <div className={styles.mobileBody}>
-          <a href="/our-course?course=recorded">Courses</a>
-          <a href="/our-course?course=live">Live Online Classes</a>
-          <a href="/our-course?course=physical">Offline Sessions</a>
-          <a href="/algotbots">AlgoBots</a>
-          <a href="/blog">Blogs</a>
-          <a href="#">About Us</a>
+          <Link href="/our-course?course=recorded">Courses</Link>
+          <Link href="/our-course?course=live">Live Online Classes</Link>
+          <Link href="/our-course?course=physical">Offline Sessions</Link>
+          <Link href="/algobots">AlgoBots</Link>
+          <Link href="/blog">Blogs</Link>
+          <Link href="/about">About Us</Link>
         </div>
         <div className={styles.mobileFooter}>
           {user ? (

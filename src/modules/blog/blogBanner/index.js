@@ -56,41 +56,43 @@ export default function BlogBanner({ searchQuery, setSearchQuery }) {
     };
 
     return (
-        <div className={styles.blogBanner}>
-            <div className='container'>
-                <div className={styles.text}>
-                    <h2>
-                        Discover Our Latest Blogs
-                    </h2>
-                    <p>
-                        Lorem Ipsum is simply dummy text of the printing and
-                        typesetting industry.
-                    </p>
-                </div>
-                <motion.div
-                    className={styles.searchbar}
-                    variants={item}
-                >
+        <div className={styles.leftrightSpacing}>
+            <div className={styles.blogBanner}>
+                <div className='container'>
+                    <div className={styles.text}>
+                        <h2>
+                            Discover Our Latest Blogs
+                        </h2>
+                        <p>
+                            Lorem Ipsum is simply dummy text of the printing and
+                            typesetting industry.
+                        </p>
+                    </div>
                     <motion.div
-                        className={styles.inputwrapper}
-                        whileHover={{ scale: 1.02 }}
-                        whileTap={{ scale: 0.98 }}
+                        className={styles.searchbar}
+                        variants={item}
                     >
-                        <input 
-                            type='text' 
-                            placeholder='Search for blogs...' 
-                            value={inputValue} 
-                            onChange={handleInputChange} 
-                        />
                         <motion.div
-                            className={styles.searchIcon}
-                            whileHover={{ scale: 1.1 }}
-                            whileTap={{ scale: 0.9 }}
+                            className={styles.inputwrapper}
+                            whileHover={{ scale: 1.02 }}
+                            whileTap={{ scale: 0.98 }}
                         >
-                            <SearchIcon />
+                            <input
+                                type='text'
+                                placeholder='Search for blogs...'
+                                value={inputValue}
+                                onChange={handleInputChange}
+                            />
+                            <motion.div
+                                className={styles.searchIcon}
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.9 }}
+                            >
+                                <SearchIcon />
+                            </motion.div>
                         </motion.div>
                     </motion.div>
-                </motion.div>
+                </div>
             </div>
         </div>
     );

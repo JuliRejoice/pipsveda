@@ -7,7 +7,17 @@
     background-size: cover;
     width: 100%;
     background-repeat: no-repeat;
-    padding: 200px 0 130px 0;
+    padding: 80px 0 80px 0;
+    border-radius: 30px;
+
+    @include respond-to("md") {
+        padding: 80px 0 80px 0;
+    }
+
+    @include respond-to("sm") {
+        border-radius: 12px;
+        padding: 60px 0;
+    }
 
     h2 {
         @include heading40;
@@ -30,5 +40,15 @@
                 color: var(--grey-555);
             }
         }
+    }
+}
+
+.leftrightSpacing {
+    padding: 20px 30px;
+    border-radius: 30px;
+
+    @include respond-to("sm") {
+        padding: 10px 0 0 0;
+
     }
 }

@@ -215,7 +215,7 @@
                 .cardImageskl {
                     object-fit: cover;
                     width: 100%;
-                    height: 220px;
+                    aspect-ratio: 16 / 9;
                     border-radius: 16px;
                     display: block;
                 }

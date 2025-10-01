@@ -6,11 +6,16 @@
     background-image: url('/assets/images/herobanner.png');
     background-size: cover;
     width: 100%;
-    padding: 180px 0 0 0;
+    padding: 80px 0 0 0;
     background-repeat: no-repeat;
+    border-radius: 30px;
 
     @include respond-to("md") {
-        padding: 140px 0 0 0;
+        padding: 60px 0 0 0;
+    }
+
+    @include respond-to("sm") {
+        border-radius: 12px;
     }
 
     .grid {
@@ -55,5 +60,14 @@
                 display: block;
             }
         }
+    }
+}
+
+.leftrightSpacing {
+    padding: 20px 30px;
+    border-radius: 30px;
+
+    @include respond-to("sm") {
+        padding: 10px 0 0 0;
     }
 }

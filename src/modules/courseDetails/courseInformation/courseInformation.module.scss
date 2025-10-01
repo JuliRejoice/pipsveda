@@ -3,7 +3,7 @@
 @use '../../../scss/typography/typography.scss' as *;
 
 .courseInformation {
-    padding: 120px 0 70px 0;
+    padding: 60px 0 70px 0;
 
     @include respond-to("md") {
         padding: 80px 0;

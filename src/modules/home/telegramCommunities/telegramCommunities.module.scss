@@ -75,6 +75,12 @@
 
             @include respond-to("md") {
                 padding: 20px;
+                width: calc(50% - 20px);
+            }
+
+            @include respond-to("sm") {
+                padding: 20px;
+                width: 100%;
             }
 
             .btn {
@@ -108,7 +114,7 @@
                 padding: 0 0 28px 0;
 
                 @include respond-to("sm") {
-                    padding: 0 0 20px 0;
+                    padding: 0 0 15px 0;
                 }
 
                 p:last-child {
@@ -123,6 +129,10 @@
                     margin: 0 0 12px 0;
                     -webkit-box-orient: vertical;
                     overflow: hidden;
+
+                    @include respond-to("sm") {
+                        font-size: 14px;
+                    }
                 }
 
                 ul {
@@ -237,6 +247,10 @@
                 display: flex;
                 gap: 20px;
 
+                @include respond-to("sm") {
+                    padding: 15px 0;
+                }
+
                 .priceContainer {
                     display: flex;
                     align-items: baseline;
@@ -263,11 +277,21 @@
                         @include heading20;
                         color: var(--button-gradient);
                         line-height: 1;
+
+                        @include respond-to("sm") {
+                            font-size: 14px;
+                            font-weight: 500;
+                        }
                     }
 
                     .priceLabel {
                         @include font16;
                         color: var(--black-500);
+
+                        @include respond-to("sm") {
+                            font-size: 14px;
+                            font-weight: 500;
+                        }
                     }
                 }
 

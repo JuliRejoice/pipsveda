@@ -229,203 +229,205 @@ export default function Herobanner() {
         variants={container}
         ref={ref}
       >
-        <motion.div
-          className={styles.herobannerDesign}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className='container-md'>
-            <div className={styles.text}>
-              <h1>
-                Pips Veda the Markets Build a Financial Future That Lasts
-              </h1>
+        <div className={styles.leftrightSpacing}>
+          <motion.div
+            className={styles.herobannerDesign}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+          >
+            <div className='container-md'>
+              <div className={styles.text}>
+                <h1>
+                  Pips Veda the Markets Build a Financial Future That Lasts
+                </h1>
 
-              <motion.p
-                variants={item}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.6 }}
-              >
-                AI technology services aim to provide intelligent solutions that help businesses
-                improve efficiency,
-              </motion.p>
-            </div>
-            <div className={styles.searchButtonalignment}>
-              <motion.div
-                className={styles.searchbar}
-                variants={item}
-              >
+                <motion.p
+                  variants={item}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.4, duration: 0.6 }}
+                >
+                  AI technology services aim to provide intelligent solutions that help businesses
+                  improve efficiency,
+                </motion.p>
+              </div>
+              <div className={styles.searchButtonalignment}>
                 <motion.div
-                  className={styles.inputwrapper}
-                  whileHover={{ scale: 1.02 }}
+                  className={styles.searchbar}
+                  variants={item}
+                >
+                  <motion.div
+                    className={styles.inputwrapper}
+                    whileHover={{ scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <input type='text' placeholder='Search for Course...' onChange={(e) => setSearchParams(e.target.value)} />
+                    <motion.div
+                      className={styles.searchIcon}
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.9 }}
+                    >
+                      <SearchIcon />
+                    </motion.div>
+                  </motion.div>
+                </motion.div>
+
+                <motion.div
+                  className={styles.buttonAlignment}
+                  variants={item}
+                >
+                  <Button text="Explore Courses" icon={RightIcon} onClick={() => { getCookie("userToken") ? router.push(`/course?search=${searchParams}`) : router.push('/signin') }} />
+
+                </motion.div>
+              </div>
+            </div>
+            <motion.div
+              className={styles.updatedSection}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, amount: 0.2 }}
+              variants={updatedSectionContainer}
+            >
+              <motion.div variants={cardVariants}>
+                <motion.div
+                  className={styles.singleCard}
+                  whileHover={{
+                    scale: 1.05,
+                    rotateY: 5,
+                    transition: { duration: 0.3 }
+                  }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <input type='text' placeholder='Search for Course...' onChange={(e) => setSearchParams(e.target.value)} />
-                  <motion.div
-                    className={styles.searchIcon}
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.9 }}
-                  >
-                    <SearchIcon />
+                  <motion.div className={styles.header} variants={textVariants}>
+                    <p>
+                      Real-world Trading Simulations
+                    </p>
+                  </motion.div>
+                  <motion.div className={styles.image} variants={imageVariants}>
+                    <motion.img
+                      src={LineImage}
+                      alt='LineImage'
+                      whileHover={{ scale: 1.1, rotate: 2 }}
+                      transition={{ duration: 0.3 }}
+                    />
                   </motion.div>
                 </motion.div>
               </motion.div>
-
-              <motion.div
-                className={styles.buttonAlignment}
-                variants={item}
-              >
-                <Button text="Explore Courses" icon={RightIcon} onClick={() => { getCookie("userToken") ? router.push(`/course?search=${searchParams}`) : router.push('/signin') }} />
-
-              </motion.div>
-            </div>
-          </div>
-          <motion.div
-            className={styles.updatedSection}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
-            variants={updatedSectionContainer}
-          >
-            <motion.div variants={cardVariants}>
-              <motion.div
-                className={styles.singleCard}
-                whileHover={{
-                  scale: 1.05,
-                  rotateY: 5,
-                  transition: { duration: 0.3 }
-                }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <motion.div className={styles.header} variants={textVariants}>
-                  <p>
-                    Real-world Trading Simulations
-                  </p>
-                </motion.div>
-                <motion.div className={styles.image} variants={imageVariants}>
+              <motion.div variants={cardVariants}>
+                <motion.div
+                  className={styles.imageSection}
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                >
                   <motion.img
-                    src={LineImage}
-                    alt='LineImage'
-                    whileHover={{ scale: 1.1, rotate: 2 }}
-                    transition={{ duration: 0.3 }}
+                    src={Banner1}
+                    alt='Banner1'
+                    variants={imageVariants}
+                    whileHover={{ scale: 1.05 }}
+                  />
+                </motion.div>
+                <motion.div
+                  className={styles.detailsBox}
+                  whileHover={{
+                    scale: 1.02,
+                    backgroundColor: 'rgba(20, 20, 20, 0.9)',
+                    transition: { duration: 0.3 }
+                  }}
+                >
+                  <motion.p variants={textVariants}>
+                    Telegram & Discord Support
+                    Channels
+                  </motion.p>
+                </motion.div>
+              </motion.div>
+              <motion.div variants={cardVariants}>
+                <motion.div
+                  className={styles.lifetimeBox}
+                  whileHover={{
+                    scale: 1.03,
+                    rotateX: 2,
+                    transition: { duration: 0.3 }
+                  }}
+                >
+                  <motion.p variants={textVariants}>Lifetime Access to Resources</motion.p>
+                  <motion.div className={styles.image} variants={imageVariants}>
+                    <motion.img
+                      src={RowBanner}
+                      alt='RowBanner'
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  </motion.div>
+                </motion.div>
+                <motion.div
+                  className={styles.systemImage}
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <motion.img
+                    src={SystemBanner}
+                    alt='SystemBanner'
+                    variants={imageVariants}
+                    whileHover={{ scale: 1.05, rotateY: 3 }}
                   />
                 </motion.div>
               </motion.div>
-            </motion.div>
-            <motion.div variants={cardVariants}>
-              <motion.div
-                className={styles.imageSection}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-              >
-                <motion.img
-                  src={Banner1}
-                  alt='Banner1'
-                  variants={imageVariants}
-                  whileHover={{ scale: 1.05 }}
-                />
-              </motion.div>
-              <motion.div
-                className={styles.detailsBox}
-                whileHover={{
-                  scale: 1.02,
-                  backgroundColor: 'rgba(20, 20, 20, 0.9)',
-                  transition: { duration: 0.3 }
-                }}
-              >
-                <motion.p variants={textVariants}>
-                  Telegram & Discord Support
-                  Channels
-                </motion.p>
-              </motion.div>
-            </motion.div>
-            <motion.div variants={cardVariants}>
-              <motion.div
-                className={styles.lifetimeBox}
-                whileHover={{
-                  scale: 1.03,
-                  rotateX: 2,
-                  transition: { duration: 0.3 }
-                }}
-              >
-                <motion.p variants={textVariants}>Lifetime Access to Resources</motion.p>
-                <motion.div className={styles.image} variants={imageVariants}>
+              <motion.div className={styles.hidenSection} variants={cardVariants}>
+                <motion.div
+                  className={styles.imageSection}
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                >
                   <motion.img
-                    src={RowBanner}
-                    alt='RowBanner'
-                    whileHover={{ scale: 1.1 }}
-                    transition={{ duration: 0.3 }}
+                    src={Banner2}
+                    alt='Banner2'
+                    variants={imageVariants}
+                    whileHover={{ scale: 1.05 }}
                   />
                 </motion.div>
-              </motion.div>
-              <motion.div
-                className={styles.systemImage}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-              >
-                <motion.img
-                  src={SystemBanner}
-                  alt='SystemBanner'
-                  variants={imageVariants}
-                  whileHover={{ scale: 1.05, rotateY: 3 }}
-                />
-              </motion.div>
-            </motion.div>
-            <motion.div className={styles.hidenSection} variants={cardVariants}>
-              <motion.div
-                className={styles.imageSection}
-                whileHover={{ scale: 1.02 }}
-                transition={{ duration: 0.3 }}
-              >
-                <motion.img
-                  src={Banner2}
-                  alt='Banner2'
-                  variants={imageVariants}
-                  whileHover={{ scale: 1.05 }}
-                />
-              </motion.div>
-              <motion.div
-                className={styles.detailsBox}
-                whileHover={{
-                  scale: 1.02,
-                  backgroundColor: 'rgba(20, 20, 20, 0.9)',
-                  transition: { duration: 0.3 }
-                }}
-              >
-                <motion.p variants={textVariants}>
-                  Mentor Feedback & Portfolio
-                  Reviews
-                </motion.p>
-              </motion.div>
-            </motion.div>
-            <motion.div className={styles.hidenSection} variants={cardVariants}>
-              <motion.div
-                className={styles.singleCard}
-                whileHover={{
-                  scale: 1.05,
-                  rotateY: -5,
-                  transition: { duration: 0.3 }
-                }}
-                whileTap={{ scale: 0.98 }}
-              >
-                <motion.div className={styles.header} variants={textVariants}>
-                  <p>
-                    Certificate of Completion
-                  </p>
+                <motion.div
+                  className={styles.detailsBox}
+                  whileHover={{
+                    scale: 1.02,
+                    backgroundColor: 'rgba(20, 20, 20, 0.9)',
+                    transition: { duration: 0.3 }
+                  }}
+                >
+                  <motion.p variants={textVariants}>
+                    Mentor Feedback & Portfolio
+                    Reviews
+                  </motion.p>
                 </motion.div>
-                <motion.div className={styles.image} variants={imageVariants}>
-                  <motion.img
-                    src={CrossLineImage}
-                    alt='CrossLineImage'
-                    whileHover={{ scale: 1.1, rotate: -2 }}
-                    transition={{ duration: 0.3 }}
-                  />
+              </motion.div>
+              <motion.div className={styles.hidenSection} variants={cardVariants}>
+                <motion.div
+                  className={styles.singleCard}
+                  whileHover={{
+                    scale: 1.05,
+                    rotateY: -5,
+                    transition: { duration: 0.3 }
+                  }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <motion.div className={styles.header} variants={textVariants}>
+                    <p>
+                      Certificate of Completion
+                    </p>
+                  </motion.div>
+                  <motion.div className={styles.image} variants={imageVariants}>
+                    <motion.img
+                      src={CrossLineImage}
+                      alt='CrossLineImage'
+                      whileHover={{ scale: 1.1, rotate: -2 }}
+                      transition={{ duration: 0.3 }}
+                    />
+                  </motion.div>
                 </motion.div>
               </motion.div>
             </motion.div>
           </motion.div>
-        </motion.div>
+        </div>
 
       </motion.div>
     </AnimatePresence>
