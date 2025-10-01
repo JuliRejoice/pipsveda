@@ -162,20 +162,20 @@ export default function Insights() {
                 initial="hidden"
                 animate={isInView ? 'visible' : 'hidden'}
                 onMouseMove={handleMouseMove}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              style={{
-                transform:
-                  'perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(var(--s, 1))',
-                transformStyle: 'preserve-3d',
-                transition: 'transform 150ms ease',
-                willChange: 'transform',
-              }}
-            >
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                style={{
+                  transform:
+                    'perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(var(--s, 1))',
+                  transformStyle: 'preserve-3d',
+                  transition: 'transform 150ms ease',
+                  willChange: 'transform',
+                }}
+              >
                 <div className={styles.image}>
-                  <img 
-                    src={process.env.NEXT_PUBLIC_NEXT_GRAPHQL_IMAGE_URL + blog?.coverImage?.url} 
-                    alt={blog.title} 
+                  <img
+                    src={process.env.NEXT_PUBLIC_NEXT_GRAPHQL_IMAGE_URL + blog?.coverImage?.url}
+                    alt={blog.title}
                     onError={(e) => {
                       e.target.onerror = null;
                       e.target.src = BlogImage;
@@ -199,10 +199,7 @@ export default function Insights() {
                   </div>
                   <h3>{blog.title}</h3>
                   <p>{blog.shortDescription}</p>
-                  <OutlineButton 
-                    text="Read More" 
-                    onClick={() => router.push(`/blog/${blog.slug}`)}
-                  />
+                  <Button onClick={() => router.push(`/blog/${blog.slug}`)} text="Read More" />
                 </div>
               </motion.div>
             ))

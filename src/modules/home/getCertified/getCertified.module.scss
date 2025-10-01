@@ -60,7 +60,7 @@
 
         .griditems {
             background-color: var(--black-100);
-            border-radius: 16px;
+            border-radius: 12px;
             height: 100%;
             padding: 1px;
             transition: .3s ease-in-out;
@@ -114,7 +114,8 @@
             }
 
             .card {
-                padding: 48px 40px 29px 40px;
+                padding: 20px;
+                height: 100%;
 
                 @include respond-to("sm") {
                     padding: 20px;

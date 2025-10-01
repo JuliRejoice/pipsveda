@@ -65,7 +65,7 @@
 
         .card {
             width: 100%;
-            padding: 50px;
+            padding: 20px;
             border-radius: 16px;
             border: 1px solid #2A303C;
             background-color: var(--black-100);
@@ -118,7 +118,7 @@
 
         .details {
             height: 132px;
-            padding: 22px 0 30px 0;
+            padding: 20px 0;
 
             @include respond-to("md") {
                 padding: 20px 0;
@@ -133,7 +133,8 @@
                     @include font16;
                     font-weight: 400;
                     color: var(--text-white);
-                    margin: 0 0 20px 0;
+                    line-height: 24px;
+                    opacity: .5;
                     display: -webkit-box;
                     -webkit-line-clamp: 3;
                     -webkit-box-orient: vertical;
@@ -231,22 +232,16 @@
                 font-family: "Funnel Display";
                 font-size: 28px;
                 font-style: normal;
+                color: #fff;
                 font-weight: 600;
                 line-height: 33px;
-                background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
-                background-clip: text;
-                -webkit-background-clip: text;
-                -webkit-text-fill-color: transparent;
 
                 sub {
                     position: relative;
+                    opacity: .5;
                     top: -5px;
-                    background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
-                    background-clip: text;
-                    -webkit-background-clip: text;
                     @include font18;
                     font-weight: 400;
-                    -webkit-text-fill-color: transparent;
                 }
             }
         }
