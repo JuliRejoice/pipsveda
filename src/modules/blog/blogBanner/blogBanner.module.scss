@@ -61,9 +61,6 @@
             position: relative;
             padding: 1px;
             background: var(--border-color);
-            clip-path: polygon(0 30px, 28px 0, 100% 0,
-                    100% calc(100% - 30px),
-                    calc(100% - 30px) 100%, 0 100%, 0 30px);
             border-radius: 8px;
 
             input {
@@ -76,9 +73,6 @@
                 @include font16-light;
                 color: var(--black-500);
                 border-radius: 8px;
-                clip-path: polygon(0 30px, 28px 0, 100% 0,
-                        100% calc(100% - 30px),
-                        calc(100% - 30px) 100%, 0 100%, 0 30px);
 
                 &:focus {
                     outline: none;

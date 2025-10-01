@@ -211,7 +211,6 @@
 
     .planGridItems {
         background-color: #f7f8fa;
-        @include first-clip-path;
         border-radius: 12px;
         padding: 35px 30px;
         position: relative;
@@ -230,10 +229,11 @@
             }
 
         }
-        
+
         .buttonAlignment {
-           padding-top: 20px;
+            padding-top: 20px;
         }
+
         .overlay {
             position: absolute;
             top: 0;
@@ -346,149 +346,150 @@
     .telegramIdSection {
         margin-bottom: 20px;
     }
-  
-    .planInfo {
-      background: #f8f9fa;
-      border-radius: 12px;
-      padding: 20px;
-      margin-bottom: 20px;
-  
-      h3 {
-        @include heading18;
-        color: var(--black-500);
-        margin: 0 0 16px 0;
-        padding-bottom: 12px;
-        border-bottom: 1px solid var(--border-color5);
-      }
-  
-      p {
-        @include font16normal;
-        color: var(--grey-600);
-        margin: 0 0 8px 0;
-        display: flex;
-        justify-content: space-between;
-  
-        &:last-child {
-          margin-bottom: 0;
-        }
-      }
-  
-      .discountText {
-        color: #CE4553;
-        font-weight: 500;
-      }
-  
-      h4 {
-        @include heading20;
-        color: var(--black-500);
-        margin: 16px 0 0 0;
-        padding-top: 12px;
-        border-top: 1px solid var(--border-color5);
-        display: flex;
-        justify-content: space-between;
-      }
-    }
-  
-  
-  
-    .errorText {
-      color: #CE4553;
-      @include font16normal;
-      margin: -10px 0 16px 0;
-    }
-  
-  }
 
-  .modalActions {
+    .planInfo {
+        background: #f8f9fa;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 20px;
+
+        h3 {
+            @include heading18;
+            color: var(--black-500);
+            margin: 0 0 16px 0;
+            padding-bottom: 12px;
+            border-bottom: 1px solid var(--border-color5);
+        }
+
+        p {
+            @include font16normal;
+            color: var(--grey-600);
+            margin: 0 0 8px 0;
+            display: flex;
+            justify-content: space-between;
+
+            &:last-child {
+                margin-bottom: 0;
+            }
+        }
+
+        .discountText {
+            color: #CE4553;
+            font-weight: 500;
+        }
+
+        h4 {
+            @include heading20;
+            color: var(--black-500);
+            margin: 16px 0 0 0;
+            padding-top: 12px;
+            border-top: 1px solid var(--border-color5);
+            display: flex;
+            justify-content: space-between;
+        }
+    }
+
+
+
+    .errorText {
+        color: #CE4553;
+        @include font16normal;
+        margin: -10px 0 16px 0;
+    }
+
+}
+
+.modalActions {
     display: flex;
     justify-content: flex-end;
     gap: 12px;
     padding-top: 16px;
     border-top: 1px solid var(--border-color5);
-  
+
     button {
-      min-width: 140px;
-      justify-content: center;
+        min-width: 140px;
+        justify-content: center;
     }
-  }
-  
-  .couponSection {
+}
+
+.couponSection {
     display: flex;
     justify-content: space-between;
     gap: 12px;
     margin-bottom: 20px;
     align-items: center;
     width: 100%;
-  
-  
-    input {
-      flex: 1;
-      padding: 12px 16px;
-      border: 1px solid var(--border-color5);
-      border-radius: 8px;
-      @include font16normal;
-  
-      &:focus {
-        outline: none;
-        border-color: var(--primary-color);
-      }
-  
-      &:disabled {
-        background-color: #f8f9fa;
-        cursor: not-allowed;
-      }
-    }
-  
-    button {
-      flex-shrink: 0;
-      height: 100%;
-      flex: 0 0 auto;
-      white-space: nowrap;
-      padding: 0 24px;
-    }
-  }
 
-  
+
+    input {
+        flex: 1;
+        padding: 12px 16px;
+        border: 1px solid var(--border-color5);
+        border-radius: 8px;
+        @include font16normal;
+
+        &:focus {
+            outline: none;
+            border-color: var(--primary-color);
+        }
+
+        &:disabled {
+            background-color: #f8f9fa;
+            cursor: not-allowed;
+        }
+    }
+
+    button {
+        flex-shrink: 0;
+        height: 100%;
+        flex: 0 0 auto;
+        white-space: nowrap;
+        padding: 0 24px;
+    }
+}
+
+
 .telegramDetails {
 
 
     .telegramDetailsContainer {
         background-color: var(--bg-white);
-    border: 1px solid var(--border-color5);
-    border-radius: 16px;
-    padding: 30px;
-   
-    .telegramDetailstitle {
-        padding-bottom: 30px;
-        // display: flex;
-        // justify-content: center;
-        // align-items: center;
-        // flex-direction: column;
-        // text-align: center;
+        border: 1px solid var(--border-color5);
+        border-radius: 16px;
+        padding: 30px;
 
-        h1 {
-            margin: 0px 0 20px 0;
-            font-family: var(--font-funneldisplay);
-            columns: var(--black-500);
-            font-size: 24px;
-            font-style: normal;
-            font-weight: 600;
-            line-height: 24px;
-        }
+        .telegramDetailstitle {
+            padding-bottom: 30px;
+            // display: flex;
+            // justify-content: center;
+            // align-items: center;
+            // flex-direction: column;
+            // text-align: center;
 
-        p {
-            font-size: 18px;
-            font-style: normal;
-            font-weight: 400;
-            font-family: var(--font-lexend);
-            color: var(--grey-600);
-            opacity: .9;
-            margin: 10px 0 0;
-            line-height: normal;
-            // max-width: 1024px;
+            h1 {
+                margin: 0px 0 20px 0;
+                font-family: var(--font-funneldisplay);
+                columns: var(--black-500);
+                font-size: 24px;
+                font-style: normal;
+                font-weight: 600;
+                line-height: 24px;
+            }
+
+            p {
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 400;
+                font-family: var(--font-lexend);
+                color: var(--grey-600);
+                opacity: .9;
+                margin: 10px 0 0;
+                line-height: normal;
+                // max-width: 1024px;
+            }
         }
     }
-    }
+
     .plansSection {
 
         .plansTitle {
@@ -508,7 +509,6 @@
             margin-top: 20px;
 
             .planCard {
-                clip-path: polygon(0 30px, 25px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);
                 background-color: #f7f8fa;
                 border-radius: 12px;
                 padding: 35px 30px;
@@ -574,59 +574,59 @@
     .modalContent {
         max-width: 500px;
         margin: 0 auto;
-      
+
         .planInfo {
-          background: #f8f9fa;
-          border-radius: 12px;
-          padding: 20px;
-          margin-bottom: 20px;
-      
-          h3 {
-            @include heading18;
-            color: var(--black-500);
-            margin: 0 0 16px 0;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border-color5);
-          }
-      
-          p {
-            @include font16normal;
-            color: var(--grey-600);
-            margin: 0 0 8px 0;
-            display: flex;
-            justify-content: space-between;
-      
-            &:last-child {
-              margin-bottom: 0;
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+
+            h3 {
+                @include heading18;
+                color: var(--black-500);
+                margin: 0 0 16px 0;
+                padding-bottom: 12px;
+                border-bottom: 1px solid var(--border-color5);
             }
-          }
-      
-          .discountText {
-            color: #CE4553;
-            font-weight: 500;
-          }
-      
-          h4 {
-            @include heading20;
-            color: var(--black-500);
-            margin: 16px 0 0 0;
-            padding-top: 12px;
-            border-top: 1px solid var(--border-color5);
-            display: flex;
-            justify-content: space-between;
-          }
+
+            p {
+                @include font16normal;
+                color: var(--grey-600);
+                margin: 0 0 8px 0;
+                display: flex;
+                justify-content: space-between;
+
+                &:last-child {
+                    margin-bottom: 0;
+                }
+            }
+
+            .discountText {
+                color: #CE4553;
+                font-weight: 500;
+            }
+
+            h4 {
+                @include heading20;
+                color: var(--black-500);
+                margin: 16px 0 0 0;
+                padding-top: 12px;
+                border-top: 1px solid var(--border-color5);
+                display: flex;
+                justify-content: space-between;
+            }
         }
-      
-      
-      
+
+
+
         .errorText {
-          color: #CE4553;
-          @include font16normal;
-          margin: -10px 0 16px 0;
+            color: #CE4553;
+            @include font16normal;
+            margin: -10px 0 16px 0;
         }
-      
-      }
-      
+
+    }
+
     @include respond-to('md') {
         padding: 1.5rem;
 

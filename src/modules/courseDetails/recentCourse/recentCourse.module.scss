@@ -44,7 +44,6 @@
 
             @include respond-to("sm") {
                 padding: 16px;
-                @include first-clip-path;
             }
 
             .details {
@@ -109,10 +108,6 @@
                     height: 220px;
                     display: block;
                     object-fit: cover;
-
-                    @include respond-to("sm") {
-                        @include first-clip-path;
-                    }
                 }
             }
 

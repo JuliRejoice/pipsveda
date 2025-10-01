@@ -45,12 +45,14 @@
 
   .logo {
     padding: 30px;
+
     @include respond-to("md") {
       padding: 10px 20px;
     }
 
     img {
       max-width: 177px;
+
       @include respond-to("md") {
         max-width: 80px;
       }
@@ -77,21 +79,13 @@
         color: var(--text-white);
         border-radius: 7px;
         @include font16;
-        clip-path: polygon(
-          0 22px,
-          20px 0,
-          100% 0,
-          100% calc(100% - 22px),
-          calc(100% - 22px) 100%,
-          0 100%,
-          0 22px
-        );
         cursor: pointer;
         border: none;
         display: flex;
         align-items: center;
         gap: 10px;
         justify-content: space-between;
+
         img {
           transition: 0.3s ease-in-out;
         }
@@ -120,32 +114,33 @@
 
       .dropdownSpacing {
         padding: 16px;
-          .iconText:last-child {
-            padding: 0;
-          }
 
-          .iconText {
-            display: flex;
-            align-items: center;
-            padding: 0 0 25px 0;
-            gap: 10px;
-            transition: 0.3s ease-in-out;
+        .iconText:last-child {
+          padding: 0;
+        }
 
-            &:hover {
-              transform: translateY(-3px);
+        .iconText {
+          display: flex;
+          align-items: center;
+          padding: 0 0 25px 0;
+          gap: 10px;
+          transition: 0.3s ease-in-out;
 
-              span {
-                color: var(--primary);
-              }
-            }
+          &:hover {
+            transform: translateY(-3px);
 
             span {
-              display: block;
-              @include font16;
-              color: #051600cc;
-              cursor: pointer;
+              color: var(--primary);
             }
           }
+
+          span {
+            display: block;
+            @include font16;
+            color: #051600cc;
+            cursor: pointer;
+          }
+        }
       }
     }
   }
@@ -154,6 +149,7 @@
     padding: 0 30px 14px 14px;
     position: relative;
     z-index: 9;
+
     @include respond-to("sm") {
       padding: 20px;
     }
@@ -170,10 +166,12 @@
     overflow: auto;
     position: relative;
     z-index: 9;
+
     @include respond-to("md") {
       padding: 20px;
       height: calc(100dvh - 176px);
     }
+
     .menu {
       display: flex;
       align-items: center;
@@ -261,6 +259,7 @@
             display: block;
             color: var(--grey-600);
             cursor: pointer;
+
             &.activeSubTab {
               color: var(--primary);
             }

@@ -228,7 +228,6 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            @include first-clip-path;
 
             .content {
                 h3 {

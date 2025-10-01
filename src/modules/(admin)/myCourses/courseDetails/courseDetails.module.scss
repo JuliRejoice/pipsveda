@@ -21,6 +21,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+
             h3 {
                 @include heading20;
                 margin: 0 0 10px 0;
@@ -172,7 +173,6 @@
             border: none;
             padding: 16px 30px;
             cursor: pointer;
-            clip-path: polygon(0 22px, 20px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px);
             @include heading18;
             background: rgba(218, 218, 218, 0.80);
             color: var(--black-500);
@@ -570,7 +570,6 @@
             overflow: hidden;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             padding: 20px;
-            @include first-clip-path;
 
             &:hover {
                 transform: translateY(-4px);
@@ -584,7 +583,6 @@
                 height: 220px;
                 object-fit: cover;
                 display: block;
-                @include first-clip-path;
             }
         }
 

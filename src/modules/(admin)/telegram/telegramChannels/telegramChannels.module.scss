@@ -15,7 +15,7 @@
   //   border-radius: 50px;
   // }
 
-  
+
   .algotabsmain {
     border-bottom: 1px solid var(--border-color2);
     overflow-x: auto;
@@ -151,7 +151,6 @@
 
 .griditems {
   background-color: var(--bg-white);
-  @include first-clip-path;
   padding: 20px;
   border-radius: 12px;
 
@@ -161,17 +160,18 @@
       height: 220px;
       object-fit: cover;
       display: block;
-      @include first-clip-path;
     }
   }
-  
+
 
   .details {
     padding: 15px 0 0 0;
+
     button {
-     
+
       padding: 11px 26px;
     }
+
     p {
       display: -webkit-box;
       -webkit-line-clamp: 2;
@@ -280,47 +280,45 @@
 
 .nextarrow,
 .prevarrow {
-    position: absolute;
-    bottom: -20px;
-    z-index: 9;
+  position: absolute;
+  bottom: -20px;
+  z-index: 9;
 
-    &.disabled {
-        cursor: not-allowed;
-        opacity: 0.5;
-
-        .arrow {
-            cursor: not-allowed;
-            opacity: 0.5;
-        }
-    }
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
 
     .arrow {
-        width: 30px;
-        height: 30px;
-        border-radius: 50%;
-        border: 1px solid #111;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-
-        svg {
-            width: 15px;
-            height: 15px;
-        }
+      cursor: not-allowed;
+      opacity: 0.5;
     }
+  }
+
+  .arrow {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 1px solid #111;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+
+    svg {
+      width: 15px;
+      height: 15px;
+    }
+  }
 }
 
 .nextarrow {
-    right: 17px;
+  right: 17px;
 
-    svg {
-        rotate: 180deg;
-    }
+  svg {
+    rotate: 180deg;
+  }
 }
 
 .prevarrow {
-    right: 57px;
+  right: 57px;
 }
-
-

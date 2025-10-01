@@ -91,9 +91,6 @@
         .btnwrapper {
             padding: 1px;
             background: var(--border-200);
-            clip-path: polygon(0 22px, 20px 0, 100% 0,
-                    100% calc(100% - 22px),
-                    calc(100% - 22px) 100%, 0 100%, 0 22px);
             width: 100%;
             border-radius: 8px;
             transition: .3s ease-in-out;
@@ -123,9 +120,6 @@
                 cursor: pointer;
                 border: none;
                 border-radius: 8px;
-                clip-path: polygon(0 22px, 20px 0, 100% 0,
-                        100% calc(100% - 22px),
-                        calc(100% - 22px) 100%, 0 100%, 0 22px);
                 color: var(--text-white);
                 @include font16;
                 background-color: var(--black);

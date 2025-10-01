@@ -104,7 +104,6 @@
 
   .griditems {
     background-color: var(--bg-white);
-    @include first-clip-path;
     padding: 20px;
     border-radius: 12px;
     min-width: 0;

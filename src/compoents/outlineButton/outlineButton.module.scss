@@ -7,9 +7,6 @@
     .btnwrapper {
         padding: 1px;
         background: var(--button-gradient-border);
-        clip-path: polygon(0 22px, 20px 0, 100% 0,
-                100% calc(100% - 22px),
-                calc(100% - 22px) 100%, 0 100%, 0 22px);
         border-radius: 8px;
         transition: .3s ease-in-out;
 
@@ -37,12 +34,7 @@
             justify-content: center;
             cursor: pointer;
             border: none;
-            // border-radius: 8px;
-            // clip-path: polygon(0 22px, 20px 0, 100% 0,
-            //         100% calc(100% - 22px),
-            //         calc(100% - 22px) 100%, 0 100%, 0 22px);
             border-radius: 7px;
-            clip-path: polygon(0 21.5px, 19.5px 0, 100% 0, 100% calc(100% - 21.5px), calc(100% - 21.5px) 100%, 0 100%, 0 21.5px);
             color: var(--black-500);
             @include font16;
             background-color: var(--bg-white);

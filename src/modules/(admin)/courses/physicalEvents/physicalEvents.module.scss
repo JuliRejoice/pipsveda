@@ -96,7 +96,6 @@
             button {
                 padding: 9px 24px;
                 @include font14;
-                clip-path: polygon(0 15px, 14px 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%, 0 15px);
             }
 
             .content {

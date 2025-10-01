@@ -14,7 +14,6 @@
         gap: 9px;
         transition: .3s ease-in-out;
         border-radius: 8px;
-        clip-path: polygon(0 22px, 20px 0, 100% 0, 100% calc(100% - 22px), calc(100% - 22px) 100%, 0 100%, 0 22px);
 
         @media (max-width:576px) {
             padding: 12px 24px;
