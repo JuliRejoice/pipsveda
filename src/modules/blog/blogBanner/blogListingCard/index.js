@@ -9,11 +9,12 @@ import { useQuery } from '@apollo/client/react';
 import { GET_ALL_BLOG_DATA, GET_BLOG_CATEGORIES } from '@/graphql/getBlogData';
 import { useRouter } from 'next/navigation';
 import EmptyState from '@/modules/(admin)/chapter/recentCourse/EmptyState';
+import Button from '@/compoents/button';
 
 const BlogcardImage = '/assets/images/blog-card.png';
 const ProfileIcon = '/assets/icons/profile-primary.svg';
 const DateIcon = '/assets/icons/date-primary.svg';
-const RightIcon = '/assets/icons/right-black.svg';
+const RightIcon = '/assets/icons/right.svg';
 
 // Loading Skeleton Component
 const BlogCardSkeleton = ({ count = 3, showTabs = true }) => {
@@ -30,15 +31,15 @@ const BlogCardSkeleton = ({ count = 3, showTabs = true }) => {
 
     // Blog card skeleton
     const blogCardSkeleton = Array(count).fill(0).map((_, index) => (
-        <motion.div 
-            key={index} 
+        <motion.div
+            key={index}
             className={styles.griditems}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
         >
             <div className={styles.image}>
-                <Skeleton height={200}/>
+                <Skeleton height={200} />
             </div>
             <div className={styles.details}>
                 <div className={styles.allIconTextAlignment}>
@@ -76,22 +77,22 @@ export default function BlogListingCard({ searchQuery }) {
     const [selectedCategory, setSelectedCategory] = useState('all');
     const [filters, setFilters] = useState({});
     const [currentPage, setCurrentPage] = useState(1);
-    const itemsPerPage = 3; 
+    const itemsPerPage = 3;
     const router = useRouter();
 
     useEffect(() => {
         const newFilters = {};
-        
+
         if (searchQuery && searchQuery.trim() !== '') {
             newFilters.title = { contains: searchQuery };
         }
-        
+
         if (selectedCategory !== 'all') {
             newFilters.categories = {
                 slug: { eq: selectedCategory }
             };
         }
-        
+
         setFilters(newFilters);
         setCurrentPage(1);
     }, [searchQuery, selectedCategory]);
@@ -140,7 +141,7 @@ export default function BlogListingCard({ searchQuery }) {
 
     const categories = categoriesData?.categories || [];
     const blogs = blogData?.blogs_connection?.nodes || [];
-    const totalItems = blogData?.blogs_connection?.pageInfo?.total|| 0;
+    const totalItems = blogData?.blogs_connection?.pageInfo?.total || 0;
 
     if (loading) {
         return (
@@ -171,7 +172,7 @@ export default function BlogListingCard({ searchQuery }) {
             <div className={styles.blogListingCard}>
                 <div className='container'>
                     <div className={styles.emptyState}>
-                        <EmptyState title={'No Blog Found'} description={'We couldn\'t find any blog posts matching your criteria.'}/>
+                        <EmptyState title={'No Blog Found'} description={'We couldn\'t find any blog posts matching your criteria.'} />
                     </div>
                 </div>
             </div>
@@ -181,28 +182,30 @@ export default function BlogListingCard({ searchQuery }) {
     return (
         <div className={styles.blogListingCard}>
             <div className='container'>
-                <motion.div
-                    className={styles.tabAlignment}
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                >
-                    <button 
-                        className={selectedCategory === 'all' ? styles.activeTab : ''}
-                        onClick={() => handleCategorySelect('all')}
+                <div className={styles.tabDesign}>
+                    <motion.div
+                        className={styles.tabAlignment}
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.5 }}
                     >
-                        All
-                    </button>
-                    {categories.map((category) => (
                         <button
-                            key={category.slug}
-                            className={selectedCategory === category.slug ? styles.activeTab : ''}
-                            onClick={() => handleCategorySelect(category.slug)}
+                            className={selectedCategory === 'all' ? styles.activeTab : ''}
+                            onClick={() => handleCategorySelect('all')}
                         >
-                            {category.name}
+                            All
                         </button>
-                    ))}
-                </motion.div>
+                        {categories.map((category) => (
+                            <button
+                                key={category.slug}
+                                className={selectedCategory === category.slug ? styles.activeTab : ''}
+                                onClick={() => handleCategorySelect(category.slug)}
+                            >
+                                {category.name}
+                            </button>
+                        ))}
+                    </motion.div>
+                </div>
 
                 <motion.div
                     className={styles.grid}
@@ -256,7 +259,7 @@ export default function BlogListingCard({ searchQuery }) {
                                         whileHover={{ x: 5 }}
                                         transition={{ duration: 0.2 }}
                                     >
-                                        <OutlineButton text="Read More" icon={RightIcon} onClick={() => router.push(`/blog/${blog.slug}`)}/>
+                                        <Button text="Read More" icon={RightIcon} onClick={() => router.push(`/blog/${blog.slug}`)} />
                                     </motion.div>
                                 </div>
                             </motion.div>

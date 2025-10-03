@@ -60,7 +60,7 @@
         padding: 0 0 60px 0;
 
         @include respond-to("sm") {
-            padding: 0 0 40px 0;
+            padding: 0 0 0 0;
         }
 
         h2 {
@@ -111,7 +111,7 @@
 
     .textStyle {
         h3 {
-            @include heading30;
+            @include heading20;
             text-transform: capitalize;
             color: var(--black-500);
             max-width: 286px;
@@ -188,7 +188,7 @@
     }
 
     .firstTimeline {
-        padding: 60px 0 50px 0;
+        padding: 40px 0;
         display: flex;
         align-items: flex-end;
         justify-content: space-between;
@@ -238,8 +238,8 @@
 
             .mainGridItems {
                 background-color: var(--light-bg);
-                padding: 40px 20px;
-                border-radius: 16px;
+                padding: 20px 20px;
+                border-radius: 12px;
 
                 h4 {
                     @include heading40;

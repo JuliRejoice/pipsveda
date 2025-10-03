@@ -7,7 +7,7 @@
         background-color: var(--bg-white);
         border: 1px solid var(--border-color5);
         padding: 30px;
-        border-radius: 16px;
+        border-radius: 12px;
 
         .cardHeader {
             padding: 0 0 14px 0;
@@ -372,7 +372,7 @@
             :global(.react-datepicker-wrapper) {
                 width: 100%;
                 padding: 12px 0px;
-                
+
             }
 
             :global(.react-datepicker__input-container input) {

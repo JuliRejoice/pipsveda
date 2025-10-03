@@ -1,5 +1,5 @@
 import React from 'react'
-impo
+import styles from './'
 export default function Categories() {
     return (
         <div>

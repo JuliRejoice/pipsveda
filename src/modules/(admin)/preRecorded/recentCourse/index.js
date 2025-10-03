@@ -27,60 +27,60 @@ export default function RecentCourse({ selectedTab, courseType, setCourseType, s
 
     const fetchCourses = async (page = 1) => {
         try {
-          setCourseLoading(true);
-      
-          if (selectedTab === "trending" || selectedTab === "popular") {
-            setCourseType(selectedTab);
-          
-            const response = await getTrendingOrPopularCourses({
-              type: selectedTab,
-              searchQuery: searchQuery || "",
-            });
-          
-            if (response.success) {
-              setAllCourses(response.payload.data || []);
-              setPagination((prev) => ({
-                ...prev,
-                currentPage: 1,
-                totalItems: response.payload.data?.length || 0,
-              }));
-            } else {
-              console.error("Failed to fetch courses:", response.message);
-              setAllCourses([]);
+            setCourseLoading(true);
+
+            if (selectedTab === "trending" || selectedTab === "popular") {
+                setCourseType(selectedTab);
+
+                const response = await getTrendingOrPopularCourses({
+                    type: selectedTab,
+                    searchQuery: searchQuery || "",
+                });
+
+                if (response.success) {
+                    setAllCourses(response.payload.data || []);
+                    setPagination((prev) => ({
+                        ...prev,
+                        currentPage: 1,
+                        totalItems: response.payload.data?.length || 0,
+                    }));
+                } else {
+                    console.error("Failed to fetch courses:", response.message);
+                    setAllCourses([]);
+                }
             }
-          }
-          else {
-            // ✅ Always send both searchQuery & courseType
-            const params = {
-              searchQuery: searchQuery || "",
-              page,
-              limit: ITEMS_PER_PAGE,
-              courseType: selectedTab || "recorded",
-            };
-      
-            const data = await getCourses(params);
-      
-            if (data?.success) {
-              setAllCourses(data?.payload?.data || []);
+            else {
+                // ✅ Always send both searchQuery & courseType
+                const params = {
+                    searchQuery: searchQuery || "",
+                    page,
+                    limit: ITEMS_PER_PAGE,
+                    courseType: selectedTab || "recorded",
+                };
+
+                const data = await getCourses(params);
+
+                if (data?.success) {
+                    setAllCourses(data?.payload?.data || []);
+                }
+
+                setPagination((prev) => ({
+                    ...prev,
+                    currentPage: page,
+                    totalItems: data?.payload?.count || 0,
+                }));
             }
-      
-            setPagination((prev) => ({
-              ...prev,
-              currentPage: page,
-              totalItems: data?.payload?.count || 0,
-            }));
-          }
-      
-          setError(null);
+
+            setError(null);
         } catch (error) {
-          console.error("Error fetching courses:", error);
-          setError("Failed to load courses. Please try again later.");
-          setAllCourses([]);
+            console.error("Error fetching courses:", error);
+            setError("Failed to load courses. Please try again later.");
+            setAllCourses([]);
         } finally {
-          setCourseLoading(false);
+            setCourseLoading(false);
         }
-      };
-      
+    };
+
     useEffect(() => {
         fetchCourses(1);
     }, [searchQuery, selectedTab]);
@@ -166,23 +166,23 @@ export default function RecentCourse({ selectedTab, courseType, setCourseType, s
                                     </div>
                                 </div>
                                 {
-                                   course.isPayment ? (
-                                    <Button
-                                    text="Enrolled"
-                                    icon={RightIcon}
-                                    onClick={() =>
-                                        router.push(`/my-courses/course/${course._id}`)
-                                    }
-                                />
-                                   ) : (
-                                <OutlineButton
-                                    text="Enroll Now"
-                                    icon={RightBlackIcon}
-                                    onClick={() =>
-                                        router.push(`/course/${course._id}`)
-                                    }
-                                />
-                                   )
+                                    course.isPayment ? (
+                                        <Button
+                                            text="Enrolled"
+                                            icon={RightIcon}
+                                            onClick={() =>
+                                                router.push(`/my-courses/course/${course._id}`)
+                                            }
+                                        />
+                                    ) : (
+                                        <Button
+                                            text="Enroll Now"
+                                            icon={RightIcon}
+                                            onClick={() =>
+                                                router.push(`/course/${course._id}`)
+                                            }
+                                        />
+                                    )
                                 }
                             </div>
                         </div>

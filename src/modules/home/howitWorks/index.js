@@ -1,11 +1,14 @@
 'use client'
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useInView } from 'framer-motion';
 import styles from './howitWorks.module.scss';
-
+import Lottie from "lottie-react";
+import Lottie1 from './Lottie/Lottie1';
+import CourseAnimation from './Lottie/courseAnimation';
+import SertifiedAnimation from './Lottie/Lottie1';
 const ProcessOne = '/assets/images/process1.png';
 const BottomVec = '/assets/images/bottomvec.png';
-const FirstJson = '/assets/json/1-Signup.json';
+const firstJson = '/assets/json/1-Signup.json';
 
 const textVariants = {
   hidden: { opacity: 0, y: 30 },
@@ -29,6 +32,14 @@ const itemVariants = {
 export default function HowitWorks() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const [animationData, setAnimationData] = useState(null);
+  useEffect(() => {
+    fetch(firstJson)
+      .then((response) => response.json())
+      .then((data) => setAnimationData(data))
+      .catch((error) => console.error('Error loading animation data:', error));
+  }, []);
+
 
   return (
     <div className={styles.howitWorks}>
@@ -65,14 +76,15 @@ export default function HowitWorks() {
           </motion.div>
 
           <motion.div className={styles.image} variants={itemVariants} style={{ perspective: 1000 }}>
-            <motion.img
+            {/* <motion.img
               src={ProcessOne}
               alt="ProcessOne"
               style={{ transformPerspective: 800, transformStyle: 'preserve-3d', willChange: 'transform' }}
               whileHover={{ rotateX: -6, rotateY: 8, scale: 1.03 }}
               whileTap={{ scale: 0.98 }}
               transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-            />
+            /> */}
+            <CourseAnimation />
             <h5>2</h5>
           </motion.div>
 
@@ -95,14 +107,15 @@ export default function HowitWorks() {
             <div className={styles.dot}></div>
             <div className={styles.image} style={{ perspective: 1000 }}>
               <h5>1</h5>
-              <motion.img
+              {/* <motion.img
                 src={ProcessOne}
                 alt="ProcessOne"
                 style={{ transformPerspective: 800, transformStyle: 'preserve-3d', willChange: 'transform' }}
                 whileHover={{ rotateX: -6, rotateY: 8, scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              />
+              /> */}
+              <Lottie animationData={animationData} loop={true} />
             </div>
           </motion.div>
 
@@ -121,14 +134,15 @@ export default function HowitWorks() {
             <div className={styles.dot}></div>
             <div className={styles.image} style={{ perspective: 1000 }}>
               <h5>3</h5>
-              <motion.img
+              {/* <motion.img
                 src={ProcessOne}
                 alt="ProcessOne"
                 style={{ transformPerspective: 800, transformStyle: 'preserve-3d', willChange: 'transform' }}
                 whileHover={{ rotateX: -6, rotateY: 8, scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              />
+              /> */}
+              <SertifiedAnimation />
             </div>
           </motion.div>
         </motion.div>
@@ -143,14 +157,7 @@ export default function HowitWorks() {
                 Create your account and select from our comprehensive course catalog tailored to your
                 skill level.
               </p>
-              <motion.img
-                src={ProcessOne}
-                alt='ProcessOne'
-                style={{ transformPerspective: 800, transformStyle: 'preserve-3d', willChange: 'transform' }}
-                whileHover={{ rotateX: -6, rotateY: 8, scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              />
+              <Lottie animationData={animationData} loop={true} />
             </div>
             <div className={styles.mainGridItems}>
               <h4>2</h4>
@@ -161,14 +168,7 @@ export default function HowitWorks() {
                 Create your account and select from our comprehensive course catalog tailored to your
                 skill level.
               </p>
-              <motion.img
-                src={ProcessOne}
-                alt='ProcessOne'
-                style={{ transformPerspective: 800, transformStyle: 'preserve-3d', willChange: 'transform' }}
-                whileHover={{ rotateX: -6, rotateY: 8, scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              />
+              <CourseAnimation />
             </div>
             <div className={styles.mainGridItems}>
               <h4>3</h4>
@@ -179,14 +179,7 @@ export default function HowitWorks() {
                 Create your account and select from our comprehensive course catalog tailored to your
                 skill level.
               </p>
-              <motion.img
-                src={ProcessOne}
-                alt='ProcessOne'
-                style={{ transformPerspective: 800, transformStyle: 'preserve-3d', willChange: 'transform' }}
-                whileHover={{ rotateX: -6, rotateY: 8, scale: 1.03 }}
-                whileTap={{ scale: 0.98 }}
-                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-              />
+              <SertifiedAnimation />
             </div>
           </div>
         </div>

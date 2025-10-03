@@ -82,7 +82,7 @@ export default function CourseBanner({
     }
     getAllCourses();
   }, [params]);
- 
+
   useEffect(() => {
     setInputValue(searchQuery);
   }, [searchQuery]);
@@ -130,10 +130,10 @@ export default function CourseBanner({
         <div className={styles.griditems}>
           <div className={styles.text}>
             <h2>
-            Learn to trade crypto CFDs at Pips Veda no need to hold the coins, just trade the opportunities.
+              Learn to trade crypto CFDs at Pips Veda no need to hold the coins, just trade the opportunities.
             </h2>
             <p>
-            Pips Veda Trading Academy helps you unlock the world of crypto CFD trading. Learn to trade Bitcoin, Ether, and Ripple CFDs with flexible strategies go long or short, understand spreads, and trade without needing a digital wallet.
+              Pips Veda Trading Academy helps you unlock the world of crypto CFD trading. Learn to trade Bitcoin, Ether, and Ripple CFDs with flexible strategies go long or short, understand spreads, and trade without needing a digital wallet.
             </p>
             <motion.div className={styles.searchbar} variants={item}>
               <motion.div
@@ -179,7 +179,10 @@ export default function CourseBanner({
             <CourseCardSkeleton count={3} />
           ) : (
             courses.map((course, i) => (
-              <div className={styles.card} key={i}>
+              <motion.div
+                className={styles.card}
+
+              >
                 <div className={styles.image}>
                   <img src={course.courseVideo} alt="CardImage" />
                 </div>
@@ -193,16 +196,14 @@ export default function CourseBanner({
                     <h4>${course.price || 199}</h4>
                     <div
                       className={styles.iconText}
-                      onClick={() =>
-                        router.push(`/course/${course._id}`)
-                      }
+                      onClick={() => router.push(`/course/${course._id}`)}
                     >
                       <p>Enroll Now</p>
                       <RightLgIcon />
                     </div>
                   </div>
                 </div>
-              </div>
+              </motion.div>
             ))
           )}
         </div>

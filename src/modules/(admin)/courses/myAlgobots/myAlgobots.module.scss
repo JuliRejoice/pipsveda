@@ -13,7 +13,7 @@
         text-align: center;
         padding: 3rem 1rem;
         background: #f9fafb; // light gray background
-        border-radius: 16px;
+        border-radius: 12px;
         box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
         margin: 2rem auto;
         max-width: 600px;
@@ -40,14 +40,14 @@
         .cardgridItems {
             background-color: var(--bg-light-700);
             padding: 20px;
-            border-radius: 16px;
+            border-radius: 12px;
 
             .image {
 
                 img,
                 .imageSkeleton {
                     object-fit: cover;
-                    border-radius: 16px;
+                    border-radius: 12px;
                     width: 100%;
                     height: 220px;
                     display: block;

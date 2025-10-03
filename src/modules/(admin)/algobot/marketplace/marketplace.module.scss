@@ -6,6 +6,7 @@
     background-image: url('/assets/images/herobanner.png');
     width: 100%;
     padding: 60px;
+    border-radius: 20px;
 
     @include respond-to("sm") {
         padding: 40px 20px 40px 20px;

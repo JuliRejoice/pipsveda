@@ -8,10 +8,11 @@ import OutlineButton from '@/compoents/outlineButton';
 import { useRouter } from 'next/navigation';
 import RenderSkeleton from '@/modules/(admin)/chapter/recentCourse/RenderSkeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import Button from '@/compoents/button';
 
 const CardImage = '/assets/images/crypto.png';
 const BathIcon = '/assets/icons/bath.svg';
-const RightBlackIcon = '/assets/icons/right-black.svg';
+const RightBlackIcon = '/assets/icons/right.svg';
 
 const containerVariants = {
     hidden: { opacity: 0 },
@@ -87,10 +88,10 @@ function TiltCard({ className, children, variants, style }) {
     );
 }
 
-export default function DifferentCourses({course}) {
+export default function DifferentCourses({ course }) {
     const [courses, setCourses] = useState({ recorded: [], live: [], physical: [] });
     const [activeTab, setActiveTab] = useState(course ?? 'recorded');
-    const [activeCourse,setActiveCourse] = useState([]);
+    const [activeCourse, setActiveCourse] = useState([]);
     const [loading, setLoading] = useState(true);
     const controls = useAnimation();
     const ref = useRef(null);
@@ -111,7 +112,7 @@ export default function DifferentCourses({course}) {
                 if (response?.payload?.courses) {
                     setCourses(response.payload.courses);
                     // Set initial active courses
-                    setActiveCourse(response.payload.courses[activeTab || course]  ||[]);
+                    setActiveCourse(response.payload.courses[activeTab || course] || []);
                 }
             } catch (error) {
                 console.error('Error fetching courses:', error);
@@ -133,7 +134,7 @@ export default function DifferentCourses({course}) {
         return price === '0' || price === '0.00' ? 'Free' : `$${parseFloat(price).toFixed(2)}`;
     };
 
-    
+
 
     return (
         <div className={styles.differentCourses} ref={ref}>
@@ -145,33 +146,35 @@ export default function DifferentCourses({course}) {
                         across various markets and instruments.
                     </p>
                 </div>
-                <div className={styles.tabAlignment}>
-                    <button 
-                        className={activeTab === 'recorded' ? styles.activeTab : ''}
-                        onClick={() => setActiveTab('recorded')}
-                    >
-                        Recorded Courses
-                    </button>
-                    <button 
-                        className={activeTab === 'live' ? styles.activeTab : ''}
-                        onClick={() => setActiveTab('live')}
-                    >
-                        Live Courses
-                    </button>
-                    <button 
-                        className={activeTab === 'physical' ? styles.activeTab : ''}
-                        onClick={() => setActiveTab('physical')}
-                    >
-                        In-Person Courses
-                    </button>
+                <div className={styles.tabDesign}>
+                    <div className={styles.tabAlignment}>
+                        <button
+                            className={activeTab === 'recorded' ? styles.activeTab : ''}
+                            onClick={() => setActiveTab('recorded')}
+                        >
+                            Recorded Courses
+                        </button>
+                        <button
+                            className={activeTab === 'live' ? styles.activeTab : ''}
+                            onClick={() => setActiveTab('live')}
+                        >
+                            Live Courses
+                        </button>
+                        <button
+                            className={activeTab === 'physical' ? styles.activeTab : ''}
+                            onClick={() => setActiveTab('physical')}
+                        >
+                            In-Person Courses
+                        </button>
+                    </div>
                 </div>
-                
+
                 {loading ? (
                     <div className={styles.courseGrid}>
-                    <RenderSkeleton count={4}/>
+                        <RenderSkeleton count={4} />
                     </div>
                 ) : activeCourse?.length > 0 ? (
-                    <div 
+                    <div
                         className={styles.courseGrid}
                         variants={containerVariants}
                         initial="hidden"
@@ -179,15 +182,15 @@ export default function DifferentCourses({course}) {
                         style={{ overflow: 'visible' }}
                     >
                         {activeCourse?.map((course, index) => (
-                            <TiltCard 
-                                className={styles.griditems} 
+                            <TiltCard
+                                className={styles.griditems}
                                 key={course?._id || index}
                                 variants={itemVariants}
                             >
                                 <div className={styles.image}>
-                                    <img 
-                                        src={course.courseVideo || CardImage} 
-                                        alt={course.CourseName || 'Course'} 
+                                    <img
+                                        src={course.courseVideo || CardImage}
+                                        alt={course.CourseName || 'Course'}
                                         onError={(e) => {
                                             e.target.onerror = null;
                                             e.target.src = CardImage;
@@ -206,11 +209,9 @@ export default function DifferentCourses({course}) {
                                             <span>{course?.instructor || 'John Doe'}</span>
                                         </div>
                                     </div>
-                                    <OutlineButton  
-                                        text="Enroll Now" 
-                                        icon={RightBlackIcon} 
-                                        onClick={() => router.push(`/course-details?id=${course?._id}`)}
-                                    />
+                                    <Button text="Enroll Now"
+                                        icon={RightBlackIcon}
+                                        onClick={() => router.push(`/course-details?id=${course?._id}`)} />
                                 </div>
                             </TiltCard>
                         ))}

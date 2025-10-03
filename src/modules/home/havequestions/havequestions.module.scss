@@ -93,7 +93,7 @@
         .blockBox {
             background-color: var(--bg-black-70);
             padding: 50px;
-            border-radius: 16px;
+            border-radius: 12px;
 
             @include respond-to("sm") {
                 padding: 30px 16px;

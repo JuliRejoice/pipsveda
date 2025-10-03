@@ -6,7 +6,7 @@
     background-color: var(--bg-white);
     border: 1px solid var(--border-color5);
     padding: 30px;
-    border-radius: 16px;
+    border-radius: 12px;
 
     .title {
         padding: 0 0 24px 0;
@@ -157,7 +157,7 @@
             text-align: center;
             padding: 3rem 1rem;
             background: #f9fafb; // light gray background
-            border-radius: 16px;
+            border-radius: 12px;
             box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
             margin: 2rem auto;
             max-width: 600px;
@@ -167,7 +167,7 @@
             cursor: pointer;
             background-color: var(--bg-light-700);
             padding: 20px;
-            border-radius: 16px;
+            border-radius: 12px;
 
 
             .infoCard {
@@ -215,7 +215,7 @@
                     object-fit: cover;
                     width: 100%;
                     aspect-ratio: 16 / 9;
-                    border-radius: 16px;
+                    border-radius: 12px;
                     display: block;
                 }
             }

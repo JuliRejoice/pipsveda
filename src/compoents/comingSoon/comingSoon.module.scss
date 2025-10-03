@@ -6,12 +6,13 @@
     border: 1px solid #E9E9E9;
     background-color: var(--bg-white);
     height: calc(100dvh - 141px);
-    border-radius: 16px;
+    border-radius: 12px;
     display: flex;
     justify-content: center;
     align-items: center;
     padding: 40px 20px;
+
     @include respond-to("md") {
-            height: calc(100dvh - 220px);
+        height: calc(100dvh - 220px);
     }
 }
