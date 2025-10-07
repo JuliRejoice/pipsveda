@@ -117,12 +117,12 @@
 
     .card {
         background-color: var(--light-bg);
-        padding: 20px;
+        padding: 16px;
         border-radius: 12px;
         transition: .3s ease-in-out;
 
         @include respond-to("md") {
-            padding: 20px;
+            padding: 16px;
         }
 
         @include respond-to("sm") {

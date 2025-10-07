@@ -97,7 +97,7 @@
 
     .whiteBox {
         background-color: var(--bg-white);
-        padding: 20px;
+        padding: 16px;
         border-radius: 12px;
 
         @include respond-to("md") {

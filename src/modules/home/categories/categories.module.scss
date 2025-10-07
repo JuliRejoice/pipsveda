@@ -1,0 +1,107 @@
+@use '../../../scss/main.scss' as *;
+@use '../../../scss/typography/typography.scss' as *;
+@use '../../../scss/breakpoints/breakpoints.scss' as *;
+
+.categoriesSectionAlignment {
+    padding: 100px 0;
+
+    @include respond-to("sm") {
+        padding: 60px 0 80px 0;
+    }
+
+    .title {
+        padding: 0 0 60px 0;
+
+        @include respond-to("sm") {
+            padding: 0 0 40px 0;
+        }
+
+        h2 {
+            @include heading2;
+            color: var(--black-500);
+            text-transform: capitalize;
+            margin: 0 0 16px 0;
+            text-align: center;
+
+            @include respond-to("md") {
+                @include heading40;
+            }
+
+            @include respond-to("sm") {
+                @include heading32;
+            }
+        }
+
+        p {
+            @include font18;
+            color: var(--black-500);
+            opacity: 0.9;
+            text-align: center;
+
+            @include respond-to("sm") {
+                @include font16normal;
+            }
+        }
+    }
+
+    :global(.slick-dots) {
+        bottom: -40px;
+
+        ul {
+            li {
+                margin: 0;
+
+
+            }
+        }
+    }
+
+    :global(.slick-dots li button) {
+        padding: 0;
+    }
+
+    :global(.slick-dots li button:before) {
+        font-size: 7px;
+    }
+
+    :global(.slick-slide) {
+        padding: 0 10px;
+    }
+
+
+    :global(.slick-list) {
+        margin: 0 -10px;
+    }
+
+    .box {
+        background-color: #FFF5F1;
+        padding: 15px;
+        border-radius: 12px;
+
+        .details {
+            padding: 12px 0 0 0;
+
+            p {
+                @include font20;
+                margin: 0 0 0 0;
+                color: var(--black-500);
+            }
+
+            span {
+                display: block;
+                @include font16normal;
+                color: #6F756D;
+            }
+        }
+
+        .image {
+            img {
+                display: block;
+                border-radius: 12px;
+                width: 100%;
+                aspect-ratio: 16 / 9;
+                object-fit: cover;
+            }
+        }
+    }
+}

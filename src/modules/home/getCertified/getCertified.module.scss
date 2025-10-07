@@ -69,7 +69,7 @@
                 height: 100%;
                 border: 1px dashed #6E30F9;
                 border-radius: 12px;
-                padding: 20px;
+                padding: 16px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -114,11 +114,11 @@
             }
 
             .card {
-                padding: 20px;
+                padding: 16px;
                 height: 100%;
 
                 @include respond-to("sm") {
-                    padding: 20px;
+                    padding: 16px;
                 }
 
                 .allIconText {

@@ -130,7 +130,7 @@
             }
 
             @include respond-to("md") {
-                padding: 20px;
+                padding: 16px;
             }
 
             @include respond-to("sm") {
@@ -259,7 +259,7 @@
     .image {
         img {
             width: 100%;
-            height: 220px;
+            aspect-ratio: 16 / 9;
             object-fit: cover;
             border-radius: 12px;
             display: block;
