@@ -12,6 +12,7 @@ import { usePathname, useSearchParams, useRouter } from 'next/navigation';
 import { getCookie, removeCookie } from '../../../cookie';
 import ProfileIcon from '@/icons/profileIcon';
 import toast from 'react-hot-toast';
+import Image from 'next/image';
 const DownIcon = "/assets/icons/down-white.svg";
 const RightIcon = '/assets/icons/right.svg';
 const LogoutIcon = "/assets/icons/logout.svg";
