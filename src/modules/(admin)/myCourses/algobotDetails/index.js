@@ -44,6 +44,7 @@ function AlgobotDetails({ id }) {
   const [selectedLanguageIndex, setSelectedLanguageIndex] = useState(0);
   const [availableLanguages, setAvailableLanguages] = useState([]);
 
+
   const handleLanguageChange = (index) => {
     setSelectedLanguageIndex(index);
     setIsOpen(false);
@@ -170,6 +171,7 @@ function AlgobotDetails({ id }) {
       setIsValidating(false);
     }
   };
+  console.log("🚀 ~ plans:", plans)
 
   const handlePurchase = async () => {
     if (!selectedPlan) return;
@@ -516,6 +518,47 @@ function AlgobotDetails({ id }) {
                   <p>No plans available</p>
                 )}
               </div>
+            </div>
+
+            
+            <div className={styles.paymenyhistorytable}>
+            <div className={styles.sbutitle}>
+                <h2>Payment History</h2>
+              </div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Meta Account No.</th>
+                           
+                            <th>Plan</th>
+                            <th>Purchased Date</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {plans
+        .flatMap(plan => 
+          plan.payment?.map((payment, index) => ({
+            ...payment,
+            planType: payment.planType || plan.planType
+          })) || []
+        )
+        .map((payment, index) => (
+          <tr key={`${payment._id}-${index}`}>
+            <td>{index + 1}</td>
+            <td>{payment.metaAccountNo?.join(', ') || 'N/A'}</td>
+            <td>{payment.planType}</td>
+          
+            <td>{payment.createdAt ? new Date(payment.createdAt).toLocaleDateString('en-GB') : 'N/A'}</td>
+            <td>{payment.startDate ? new Date(payment.startDate).toLocaleDateString('en-GB') : 'N/A'}</td>
+            <td>{payment.endDate ? new Date(payment.endDate).toLocaleDateString('en-GB') : 'N/A'}</td>
+          </tr>
+        ))
+      }
+                    </tbody>
+                </table>
             </div>
           
           </>

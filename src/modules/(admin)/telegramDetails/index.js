@@ -245,19 +245,11 @@ function TelegramDetails({ id }) {
                                 </div>
                             </div>
                             <div className={styles.buttonAlignment}>
-                                {isPurchased ? 
                                 <Button
-                                    text={ "Subscribed" }
-                                   
-                                    className={styles.disabledButton}
-                                    disabled={isPurchased}
-                                />
-                                :
-                                <OutlineButton
                                     text={"Subscribe Now"}
                                     onClick={() => !isPurchased && handleBuyNow(plan)}
                                     disabled={isPurchased}
-                                />}
+                               />
                             </div>
                         </div>
                     );

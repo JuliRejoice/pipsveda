@@ -13,7 +13,7 @@ import Pagination from '@/compoents/pagination';
 import DownloadIcon from '@/icons/downloadIcon';
 const ITEMS_PER_PAGE = 7;
 
-const PaymenyHistory = () => {
+const PaymentHistory = () => {
     const [paymentHistory, setPaymentHistory] = useState({});
     const [filteredPayments, setFilteredPayments] = useState([]);
     const [activeTab, setActiveTab] = useState('all');
@@ -24,6 +24,7 @@ const PaymenyHistory = () => {
     const [isSaving, setIsSaving] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [loadingInvoices, setLoadingInvoices] = useState({});
+    const [submittedAccounts, setSubmittedAccounts] = useState({});
 
     const [pagination, setPagination] = useState({
         currentPage: 1,
@@ -162,6 +163,8 @@ const PaymenyHistory = () => {
         );
     }
 
+    console.log("🚀 ~ metaAccounts:", metaAccounts)
+
     const handleOpenModal = (payment, viewMode = false) => {
         setCurrentPayment(payment);
         setIsViewMode(viewMode);
@@ -171,12 +174,29 @@ const PaymenyHistory = () => {
             setMetaAccounts(payment.metaAccountNo || []);
         } else {
             // If adding new accounts, create empty inputs based on noOfBots
-            const initialAccounts = Array(payment.noOfBots || 1).fill('');
-            setMetaAccounts(initialAccounts);
+            // Fill existing accounts and add empty slots for remaining bots
+            const existingAccounts = payment.metaAccountNo || [];
+            const remainingSlots = Math.max(0, (payment.noOfBots || 1) - existingAccounts.length);
+            const emptyAccounts = Array(remainingSlots).fill('');
+            setMetaAccounts([...existingAccounts, ...emptyAccounts]);
         }
 
         setIsModalOpen(true);
     };
+
+    // const handleAccountChange = (index, e) => {
+    //     const newAccounts = [...metaAccounts];
+    //     newAccounts[index] = e.target.value;
+    //     setMetaAccounts(newAccounts);
+    // };
+    //         const existingAccounts = payment.metaAccountNo || [];
+    //         const remainingSlots = Math.max(0, (payment.noOfBots || 1) - existingAccounts.length);
+    //         const emptyAccounts = Array(remainingSlots).fill('');
+    //         setMetaAccounts([...existingAccounts, ...emptyAccounts]);
+    //     }
+
+    //     setIsModalOpen(true);
+    // };
 
     const handleAccountChange = (index, e) => {
         const newAccounts = [...metaAccounts];
@@ -184,13 +204,60 @@ const PaymenyHistory = () => {
         setMetaAccounts(newAccounts);
     };
 
-    const handleSaveAccounts = async () => {
+    const handleSaveAccount = async (index) => {
+        if (isSaving || !metaAccounts[index]?.trim()) return;
+
+        try {
+            setIsSaving(true);
+            const accountToSave = metaAccounts[index].trim();
+            const existingAccounts = currentPayment.metaAccountNo || [];
+            const updatedAccounts = [...existingAccounts];
+            
+            // Add or update the account at the specified index
+            if (index < updatedAccounts.length) {
+                updatedAccounts[index] = accountToSave;
+            } else {
+                updatedAccounts.push(accountToSave);
+            }
+
+            // Save to API
+            const response = await addmetaAccountNo(currentPayment._id, updatedAccounts);
+            
+            if (response.success) {
+                // Update local state
+                const updatedPayments = paymentHistory.map(payment =>
+                    payment._id === currentPayment._id
+                        ? { ...payment, metaAccountNo: updatedAccounts }
+                        : payment
+                );
+
+                setPaymentHistory(updatedPayments);
+                setCurrentPayment(prev => ({ ...prev, metaAccountNo: updatedAccounts }));
+                toast.success('Account number saved successfully');
+                
+                // If all accounts are filled, close the modal
+                if (updatedAccounts.length >= (currentPayment.noOfBots || 1)) {
+                    setIsModalOpen(false);
+                }
+            } else {
+                throw new Error(response.message || 'Failed to save account');
+            }
+        } catch (error) {
+            console.error('Error saving account:', error);
+            toast.error(error.message || 'Failed to save account. Please try again.');
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+    const handleSaveAllAccounts = async () => {
         if (isSaving) return;
 
         try {
             setIsSaving(true);
-            // Filter out empty account numbers
-            const validAccounts = metaAccounts.filter(account => account.trim() !== '');
+            const validAccounts = metaAccounts
+                .map(acc => acc?.trim())
+                .filter(acc => acc);
 
             if (validAccounts.length === 0) {
                 toast.error('Please enter at least one valid account number');
@@ -198,21 +265,25 @@ const PaymenyHistory = () => {
             }
 
             const response = await addmetaAccountNo(currentPayment._id, validAccounts);
-            // TODO: Call your API to save the meta accounts
-            // await saveMetaAccounts(currentPayment._id, validAccounts);
+            
+            if (response.success) {
+                // Update local state
+                const updatedPayments = paymentHistory.map(payment =>
+                    payment._id === currentPayment._id
+                        ? { ...payment, metaAccountNo: validAccounts }
+                        : payment
+                );
 
-            // Update the local state to reflect the changes
-            const updatedPayments = paymentHistory.map(payment =>
-                payment._id === currentPayment._id
-                    ? { ...payment, metaAccountNo: validAccounts }
-                    : payment
-            );
-
-            setPaymentHistory(updatedPayments);
-            setIsModalOpen(false);
+                setPaymentHistory(updatedPayments);
+                setCurrentPayment(prev => ({ ...prev, metaAccountNo: validAccounts }));
+                setIsModalOpen(false);
+                toast.success('All account numbers saved successfully');
+            } else {
+                throw new Error(response.message || 'Failed to save accounts');
+            }
         } catch (error) {
-            console.error('Error saving meta accounts:', error);
-            toast.error('Failed to save accounts. Please try again.');
+            console.error('Error saving accounts:', error);
+            toast.error(error.message || 'Failed to save accounts. Please try again.');
         } finally {
             setIsSaving(false);
         }
@@ -433,9 +504,7 @@ const PaymenyHistory = () => {
                                         ) : (
                                             <DownloadIcon />
                                         )}
-
                                     </button>
-
                                 </td>
                             </tr>
                         ))}
@@ -452,57 +521,119 @@ const PaymenyHistory = () => {
                 />
             </div>
 
-            <Modal
-                isOpen={isModalOpen}
-                onClose={() => !isSaving && setIsModalOpen(false)}
-                title={isViewMode ? 'Meta Account Numbers' : 'Add Meta Account Numbers'}
-            >
-                <div className={styles.modalContent}>
-                    {isViewMode ? (
-                        <div className={styles.accountsList}>
+            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title={isViewMode ? 'Meta Account Numbers' : 'Add Meta Account Numbers'}>
+                <div className={styles.modalContainer}>
+
+                
+
+                    <div className={styles.modalBody}>
+                        {/* {isViewMode ? (
+                    <div className={styles.accountsList}>
+                        {metaAccounts.map((account, index) => (
+                            <div key={index} className={`${styles.accountItem} ${styles.accountCard}`}>
+                                <div className={styles.accountHeader}>
+                                    <span className={styles.accountLabel}>Account {index + 1} : {account || 'N/A'}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : ( */}
+                        <div className={styles.accountInputs}>
                             {metaAccounts.map((account, index) => (
-                                <div key={index} className={styles.accountItem}>
-                                    {account}
+                                <div
+                                    key={index}
+                                    className={`${styles.inputCard} ${submittedAccounts[index] ? styles.submitted : ''}`}
+                                >
+                                    <div className={styles.inputHeader}>
+                                        <label>Account {index + 1}</label>
+                                        {submittedAccounts[index] && (
+                                            <span className={`${styles.statusBadge} ${styles.success}`}>
+                                                Saved
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className={styles.inputRow}>
+                                        <input
+                                            type="text"
+                                            value={account}
+                                            disabled={submittedAccounts[index]}
+                                            onChange={(e) => {
+                                                const value = e.target.value;
+                                                
+                                                // Allow any number of digits, but validate on save
+                                                if (value === '' || /^\d*$/.test(value)) {
+                                                    const newAccounts = [...metaAccounts];
+                                                    newAccounts[index] = value;
+                                                    setMetaAccounts(newAccounts);
+
+                                                    if (submittedAccounts[index]) {
+                                                        setSubmittedAccounts(prev => ({
+                                                            ...prev,
+                                                            [index]: false
+                                                        }));
+                                                    }
+                                                }
+                                            }}
+                                            minLength={6}
+                                            maxLength={12}
+                                            placeholder="Enter at least 6 digits"
+                                            className={`${styles.accountInput} ${account.length > 0 && account.length < 6 ? styles.errorInput : ''} ${submittedAccounts[index] ? styles.submittedInput : ''}`}
+                                        />
+                                        <Button
+                                            className={`${styles.saveButton} ${
+                                                !account || 
+                                                account.length !== 6 || 
+                                                submittedAccounts[index] ||
+                                                metaAccounts.every(acc => acc.trim().length >= 6)
+                                                    ? styles.disabled : ''
+                                            }`}
+                                            onClick={() => handleSaveAccount(index)}
+                                            disabled={
+                                                isSaving ||
+                                                !account ||
+                                                account.length !== 6 ||
+                                                submittedAccounts[index] ||
+                                                metaAccounts.every(acc => acc.trim().length >= 6)
+                                            }
+                                            text={isSaving ? 'Saving...' : submittedAccounts[index] ? 'Saved' : 'Save'}
+                                        />
+                                       
+                                    </div>
+                                    {account.length > 0 && account.length < 6 && (
+                                        <span className={styles.errorText}>Must be at least 6 digits</span>
+                                    )}
                                 </div>
                             ))}
                         </div>
-                    ) : (
-                        <div className={styles.metaAccountInputs}>
-                            {metaAccounts.map((account, index) => (
-                                <Input
-                                    key={index}
-                                    type="text"
-                                    name={`metaAccount-${index}`}
+                        {/* )} */}
+                    </div>
 
-                                    value={account}
-                                    onChange={(e) => handleAccountChange(index, e)}
-                                    placeholder={`Enter account #${index + 1}`}
-                                />
-                            ))}
-                        </div>
-                    )}
-
+                    {/* {!isViewMode && ( */}
                     <div className={styles.modalActions}>
                         <Button
+                            className={`${styles.cancelButton} ${styles.secondaryButton}`}
+                            onClick={() => setIsModalOpen(false)}
                             text="Close"
-                            className={styles.cancelButton}
-                            onClick={() => !isSaving && setIsModalOpen(false)}
-                            disabled={isSaving}
                         />
-
-
-                        {!isViewMode && (
-                            <Button
-                                text={isSaving ? 'Saving...' : 'Save Accounts'}
-                                onClick={handleSaveAccounts}
-                                disabled={isSaving}
-                            />
-                        )}
+                        <Button
+                            className={`${styles.saveButton} ${
+                                metaAccounts.every(acc => acc.trim().length >= 6) ? '' : styles.disabled
+                            }`}
+                            onClick={handleSaveAllAccounts}
+                            disabled={
+                                isSaving ||
+                                !metaAccounts.every(acc => acc.trim().length >= 6)
+                            }
+                            text={isSaving ? 'Saving...' : 'Save All'}
+                        />
                     </div>
+                    {/* )} */}
                 </div>
             </Modal>
-        </div>
+            </div>
+      
     );
-};
+}
 
-export default PaymenyHistory;
+export default PaymentHistory;
+
