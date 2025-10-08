@@ -197,3 +197,13 @@ export const getTelegramChannels = async (id, searchQuery) => {
     throw error;
   }
 }
+
+export const getAllCourseCategory = async () => {
+    try {
+      const response = await api.get(`/courseCategory/getAllCourseCategory`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching algo bots:', error);
+      throw error;
+    }
+  };

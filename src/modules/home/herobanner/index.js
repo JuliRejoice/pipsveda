@@ -282,8 +282,8 @@ export default function Herobanner() {
                 </motion.div>
               </div> */}
               <div className={styles.heroSectionTwoButton}>
-                <Button text="Explore Courses" icon={RightIcon} />
-                <Button text="Join Free Community" black icon={RightIcon} />
+                <Button text="Explore Courses" onClick={() => { getCookie("userToken") ? router.push(`/course`) : router.push('/signin') }} icon={RightIcon} />
+                <Button text="Join Free Community" onClick={() => { getCookie("userToken") ? router.push(`/telegram`) : router.push('/signin') }} black icon={RightIcon} />
               </div>
             </div>
             <motion.div

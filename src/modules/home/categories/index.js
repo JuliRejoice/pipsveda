@@ -1,7 +1,8 @@
 'use client'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './categories.module.scss'
 import Slider from "react-slick";
+import { getAllCourseCategory } from '@/compoents/api/dashboard';
 
 
 export default function Categories() {
@@ -33,6 +34,23 @@ export default function Categories() {
         ]
 
     };
+
+
+    const [categories, setCategories] = useState([]);
+
+    const fetchCategories = async () => {
+        try {
+            const response = await getAllCourseCategory();
+            setCategories(response.payload.data || []);
+        } catch (error) {
+            console.error("Error fetching categories:", error);
+        }
+    }
+
+    useEffect(() => {
+        fetchCategories();
+    }, []);
+
     return (
         <div className={styles.categoriesSectionAlignment}>
             <div className='container'>
@@ -45,16 +63,15 @@ export default function Categories() {
                     </p>
                 </div>
                 <Slider {...settings}>
-                    {
-                        [...Array(7)].map(() => {
+                    {categories.map((cat) => {
                             return (
                                 <div className={styles.box}>
                                     <div className={styles.image}>
-                                        <img src="https://pips-veda.netlify.app/assets/images/blog-img.png" />
+                                        <img src={cat?.image} />
                                     </div>
                                     <div className={styles.details}>
                                         <p>
-                                            Forex Trading
+                                            {cat?.name}
                                         </p>
                                         <span>112 Courses</span>
                                     </div>

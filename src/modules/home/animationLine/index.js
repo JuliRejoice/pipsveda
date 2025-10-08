@@ -14,7 +14,15 @@ export default function AnimationLine() {
                                 return (
                                     <div className={styles.iconText}>
                                         <img src={WhiteStarIcon} alt='WhiteStarIcon' />
-                                        <span>Pips Veda Forex Trading</span>
+                                        <span>Forex Trading</span>
+                                        <img src={WhiteStarIcon} alt='WhiteStarIcon' />
+                                        <span>Stock Trading</span>
+                                        <img src={WhiteStarIcon} alt='WhiteStarIcon' />
+                                        <span>Commodity Trading</span>
+                                        <img src={WhiteStarIcon} alt='WhiteStarIcon' />
+                                        <span>Futures Trading</span>
+                                        <img src={WhiteStarIcon} alt='WhiteStarIcon' />
+                                        <span>Options Trading</span>
                                     </div>
                                 )
                             })
@@ -28,7 +36,15 @@ export default function AnimationLine() {
                                 return (
                                     <div className={styles.iconText}>
                                         <img src={StarIcon} alt='StarIcon' />
-                                        <span>Pips Veda Forex Trading</span>
+                                        <span>Forex Trading</span>
+                                        <img src={StarIcon} alt='StarIcon' />
+                                        <span>Stock Trading</span>
+                                        <img src={StarIcon} alt='StarIcon' />
+                                        <span>Commodity Trading</span>
+                                        <img src={StarIcon} alt='StarIcon' />
+                                        <span>Futures Trading</span>
+                                        <img src={StarIcon} alt='StarIcon' />
+                                        <span>Options Trading</span>
                                     </div>
                                 )
                             })
