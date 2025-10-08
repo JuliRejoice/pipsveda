@@ -10,6 +10,7 @@ import Arrowicon from '@/icons/arrowicon';
 import classNames from 'classnames';
 import { getCourseByType, getCourses } from '@/compoents/api/dashboard';
 import Link from 'next/link';
+import Button from '@/compoents/button';
 const BookIcon = '/assets/icons/book.svg'
 const RightIcon = '/assets/icons/right-black.svg'
 function SampleNextArrow(props) {
@@ -327,6 +328,10 @@ export default function ExploreDifferent() {
                                                     />
                                                     <span>{card.courses}</span>
                                                 </motion.button>
+                                                {/* <Button
+                                                                  text={card.courses}
+                                                                  onClick={() => router.push(`/telegramDetails?id=${channel._id}`)}
+                                                                  /> */}
                                             </div>
                                         </motion.div>
                                     </motion.div>
