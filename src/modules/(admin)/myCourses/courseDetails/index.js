@@ -396,10 +396,10 @@ export default function CourseDetails({ params }) {
             <div className={styles.title}>
             <h3>{selectedCourse?.CourseName || 'Course Name Not Available'}</h3>
         
-              <div className={styles.infoRow} style={{ margin: '10px 0' }}>
+              {/* <div className={styles.infoRow} style={{ margin: '10px 0' }}>
                 <span style={{ fontWeight: 'bold' }}>Purchased On: </span>
                 <span>{formatPurchasedDate(coursePurchasedDate)}</span>
-              </div>
+              </div> */}
            
             </div>
             <p>{selectedCourse?.description || 'No description available'}</p>
@@ -494,10 +494,10 @@ export default function CourseDetails({ params }) {
           <div className={styles.title}>
             <h3>{selectedCourse?.CourseName || 'Course Name Not Available'}</h3>
            
-              <div className={styles.infoRow} style={{ margin: '10px 0' }}>
+            {/*  <div className={styles.infoRow} style={{ margin: '10px 0' }}>
                 <span style={{ fontWeight: 'bold' }}>Purchased On: </span>
                 <span>{formatPurchasedDate(coursePurchasedDate)}</span>
-              </div>
+              </div> */}
          
           </div>
             <p>{selectedCourse?.description || 'No description available'}</p>

@@ -157,10 +157,10 @@ export default function TelegramChannels({ channels, setChannels, searchQuery, s
                                 icon={RightIcon}
                             />
                              :
-                            <OutlineButton
+                            <Button
                                 text={"Join Channel"}
                                 onClick={() => router.push(`/telegram/${channel._id}`)}
-                                icon={RightBlackIcon}
+                                icon={RightIcon}
                             />}
                         </div>
                     </div>

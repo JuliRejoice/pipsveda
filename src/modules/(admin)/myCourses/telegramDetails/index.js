@@ -34,14 +34,14 @@ function    TelegramDetails({ id }) {
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
     const [showPaymentModal, setShowPaymentModal] = useState(false);
     const [paymentStatus, setPaymentStatus] = useState('');
-    const [commonDiscount, setCommonDiscount] = useState(0); // 10% common discount
+    const [commonDiscount, setCommonDiscount] = useState(0); 
     const [appliedCoupon, setAppliedCoupon] = useState(null);
     const [telegramId, setTelegramId] = useState('');
     const router = useRouter();
     const searchParams = useSearchParams();
 
     const [selectedLanguageIndex, setSelectedLanguageIndex] = useState(0);
-    const [availableLanguages, setAvailableLanguages] = useState([]);
+
 
     const handleLanguageChange = (e) => {
         setSelectedLanguageIndex(Number(e.target.value));
@@ -213,6 +213,7 @@ function    TelegramDetails({ id }) {
         ));
     };
 
+    console.log("🚀 ~ plans:", plans)
     const renderPlanCards = () => {
         if (isLoading) {
             return renderSkeletonCards(3);
@@ -230,9 +231,9 @@ function    TelegramDetails({ id }) {
                     return (
                         <div 
                             key={plan._id} 
-                            className={`${styles.planGridItems} ${isDisabled || isPurchased ? styles.disabledCard : ''}`}
+                            className={`${styles.planGridItems}`}
                         >
-                            {(isDisabled || isPurchased) && <div className={styles.overlay}></div>}
+                    
                             <div className={styles.cardHeaderAlignment}>
                                 <h3>{plan.planType}</h3>
                                 <h4>${plan.price.toFixed(2)}</h4>
@@ -250,20 +251,12 @@ function    TelegramDetails({ id }) {
                                 </div>
                             </div>
                             <div className={styles.buttonAlignment}>
-                                {isPurchased ? (
-                                    <Button
-                                        text="Subscribed"
-                                        className={styles.disabledButton}
-                                        disabled={true}
-                                    />
-                                ) : (
+                                
                                     <Button
                                         text="Subscribe Now"
-                                        onClick={() => !isDisabled && handleBuyNow(plan)}
-                                        className={isDisabled ? styles.disabledButton : ''}
-                                        disabled={isDisabled}
+                                        onClick={() => handleBuyNow(plan)}  
                                     />
-                                )}
+                               
                             </div>
                         </div>
                     );
