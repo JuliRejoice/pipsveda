@@ -1,0 +1,269 @@
+@use '../../../scss/main.scss' as *;
+@use '../../../scss/breakpoints/breakpoints.scss' as *;
+@use '../../../scss/typography/typography.scss' as *;
+
+.instructorContainer {
+  padding: 2rem 0;
+  border-radius: 12px;
+  background-color: #f5f5f5;
+  border: 1px solid var(--border-color5);
+
+  
+  .header {
+    text-align: center;
+    margin-bottom: 3rem;
+    
+    .title {
+      @include heading20;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+    }
+    
+    .subtitle {
+      color: var(--text-secondary);
+      max-width: 600px;
+      margin: 0 auto;
+      @include font14;
+    }
+  }
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 0 1.5rem;
+  
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+  
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+    padding: 0 1rem;
+  }
+}
+
+.card {
+  background: var(--surface-1);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  border: 1px solid var(--border-color);
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.imageWrapper {
+  width: 100%;
+  height: 240px;
+  position: relative;
+  overflow: hidden;
+  
+  .image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+  }
+  
+  .card:hover & .image {
+    transform: scale(1.05);
+  }
+}
+
+.content {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.details {
+    
+  
+  .name {
+    @include heading20;
+    color: var(--text-primary);
+    margin: 0 0 0.5rem;
+  }
+  
+  .title {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin: 0 0 1rem;
+    @include font14;
+  }
+  
+  .ratingContainer {
+    display: flex;
+    align-items: center;
+    margin: 0.5rem 0 1rem;
+    
+    .starIcon {
+      width: 18px;
+      height: 18px;
+      margin-right: 4px;
+      
+      &:last-child {
+        margin-right: 8px;
+      }
+    }
+    
+    .ratingText {
+      color: var(--text-tertiary);
+      font-size: 0.875rem;
+    }
+  }
+  
+  .bio {
+    color: var(--text-secondary);
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.5;
+    font-size: 0.9375rem;
+  }
+}
+
+.footer {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+
+.socialLinks {
+  display: flex;
+  gap: 0.75rem;
+  
+  .socialLink {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--surface-2);
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background: var(--surface-3);
+      transform: translateY(-2px);
+    }
+    
+    img {
+      width: 18px;
+      height: 18px;
+      object-fit: contain;
+    }
+  }
+}
+
+.profileButton {
+  padding: 0.5rem 1.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  min-width: 120px;
+  
+  @media (max-width: 640px) {
+    min-width: 100px;
+    padding: 0.5rem 1rem;
+  }
+}
+
+// Loading, Error, and Empty States
+.loadingContainer,
+.errorContainer,
+.noInstructors {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  text-align: center;
+  padding: 2rem;
+  
+  p {
+    color: var(--text-secondary);
+    margin: 1rem 0 1.5rem;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+  
+  .retryButton {
+    min-width: 140px;
+  }
+}
+
+.loadingContainer {
+  .loader {
+    width: 48px;
+    height: 48px;
+    border: 3px solid var(--surface-3);
+    border-top-color: var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+  
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+}
+
+.errorContainer {
+  p {
+    color: var(--error-color);
+  }
+}
+
+// Responsive Adjustments
+@media (max-width: 1024px) {
+  .instructorContainer {
+    .header {
+      margin-bottom: 2rem;
+      padding: 0 1.5rem;
+      
+      .title {
+        font-size: 1.5rem;
+      }
+    }
+  }
+}
+
+@media (max-width: 640px) {
+  .instructorContainer {
+    padding: 1.5rem 0;
+    
+    .header {
+      padding: 0 1rem;
+      margin-bottom: 1.5rem;
+      
+      .title {
+        font-size: 1.25rem;
+      }
+      
+      .subtitle {
+        font-size: 0.875rem;
+      }
+    }
+  }
+  
+  .card {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}

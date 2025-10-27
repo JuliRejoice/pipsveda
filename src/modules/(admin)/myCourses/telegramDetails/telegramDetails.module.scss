@@ -461,6 +461,83 @@
         border-radius: 12px;
         padding: 30px;
 
+        .paymenyhistorytable {
+            overflow-x: auto;
+
+            table {
+                white-space: nowrap;
+                width: 100%;
+                border-collapse: collapse;
+                text-align: left;
+
+                thead {
+                    background-color: #F7F8FA;
+                    // border: 1px solid #DADADACC;
+                    border-radius: 6px;
+                    clip-path: polygon(0 30px, 25px 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 0 100%, 0 30px);
+
+                    tr {
+                        th {
+                            padding: 19px 30px 18px 30px;
+                            @include font18;
+                            line-height: 23px;
+                            font-weight: 600;
+                            color: #051600;
+                            text-transform: capitalize;
+                        }
+                    }
+                }
+
+                tbody {
+
+                    tr {
+                        border-bottom: 1px solid #DFE0E0;
+                        background-color: #fff;
+                        transition: .3s ease-in-out;
+
+                        &:hover {
+                            background-color: #f7f8fa;
+                        }
+
+                        td {
+                            padding: 21px 30px;
+                            @include font16;
+                            line-height: 20px;
+                            font-weight: 400;
+                            color: #6F756D;
+                            text-transform: capitalize;
+
+                            button {
+                                border-radius: 50px;
+                                padding: 4px 14px;
+                                @include font14;
+                                line-height: 18px;
+                                color: #000;
+                                cursor: pointer;
+                            }
+
+                            .viewmorebutton {
+                                background-color: #FFF5F1;
+                                border: 1px solid #F8E3D8;
+                            }
+
+                            .paidbutton {
+                                background-color: #DCFCE7;
+                                border: 1px solid #22C55E;
+                                min-width: 90px;
+                            }
+
+                            .pendingbutton {
+                                background-color: #FEE2E2;
+                                border: 1px solid #DC2626;
+                                min-width: 90px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         .telegramDetailstitle {
             padding-bottom: 30px;
             // display: flex;

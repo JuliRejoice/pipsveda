@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@apollo/client": "^4.0.0",
+    "@apollo/client": "^4.0.7",
     "axios": "^1.11.0",
     "classnames": "^2.5.1",
     "date-fns": "^4.1.0",

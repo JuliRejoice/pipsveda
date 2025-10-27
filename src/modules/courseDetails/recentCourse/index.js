@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import styles from './recentCourse.module.scss';
 import Button from '@/compoents/button';
 import OutlineButton from '@/compoents/outlineButton';
-import { getCourseByType, getCourses } from '@/compoents/api/dashboard';
+import { getCourseById, getCourseByType, getCourses } from '@/compoents/api/dashboard';
 import RenderSkeleton from '@/modules/(admin)/chapter/recentCourse/RenderSkeleton';
 const CardImage = '/assets/images/course-details-card.png';
 import 'react-loading-skeleton/dist/skeleton.css';
@@ -18,9 +18,11 @@ export default function RecentCourse({id}) {
         const fetchCourses = async () => {
             try {
                 setLoading(true);
-                const response = await getCourses({ id });
-                const res = await getCourses({courseType: response.payload.data[0].courseType});
-                setCourses(res.payload.data);
+                const response = await getCourseById({id});
+                const res = await getCourseById({courseType:response.payload.data[0].courseType});
+                const responseCourses = res.payload.data;
+                const filterCourses = responseCourses.filter((course) => course._id !== id);
+                setCourses(filterCourses);
             } catch (error) {
                 console.error('Error fetching course:', error);
             }
@@ -62,7 +64,7 @@ export default function RecentCourse({id}) {
                                             </h4>
                                             <div className={styles.iconText}>
                                                 <img src={BathIcon} alt="BathIcon" />
-                                                <span>{course?.instructor}</span>
+                                                <span>{course?.instructor?.name}</span>
                                             </div>
                                         </div>
                                         <OutlineButton text="Enroll Now" icon={RightIcon} onClick={() => router.push(`/course-details?id=${course?._id}`)}/>

@@ -127,9 +127,10 @@ export default function LiveSessions() {
                                 )}
                                 <div className={styles.content}>
                                     <h3>{liveCourse?.courseId?.CourseName || 'Course Name Not Available'}</h3>
+                                    <h4>Category : {liveCourse?.courseId?.courseCategory?.name}</h4>
                                     <div className={styles.icontext}>
                                         <MenIcon />
-                                        <span>{liveCourse?.courseId?.instructor || 'Instructor Name'}</span>
+                                        <span>{liveCourse?.courseId?.instructor?.name || 'Instructor Name'}</span>
                                     </div>
                                     <p className={styles.courseDescription}>
                                         {liveCourse?.courseId?.description || 'No description available'}

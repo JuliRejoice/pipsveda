@@ -81,7 +81,7 @@ function LiveCourse() {
                   <h4>${course?.price || 299}</h4>
                   <div className={styles.iconText}>
                     <img src={BathIcon} alt="Instructor" />
-                    <span>{course?.instructor || "John Doe"}</span>
+                    <span>{course?.instructor?.name || "John Doe"}</span>
                   </div>
                 </div>
                 <OutlineButton

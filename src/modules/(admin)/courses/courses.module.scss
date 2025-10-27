@@ -226,6 +226,14 @@
                 h3 {
                     @include heading18;
                     color: var(--black-500);
+                    
+                }
+
+                h4 {
+                    @include font17;
+                    color: var(--black-500);
+                    font-family: var(--font-funneldisplay);
+                    padding-top: 10px;
                 }
 
                 .iconText {

@@ -20,6 +20,7 @@ import Algobot from "@/icons/algobot";
 import toast from "react-hot-toast";
 import PaymentIcon from "@/icons/paymentIcon";
 import TelegramIcon from "@/icons/telegramIcon";
+import InstructorIcon from "@/icons/instructorIcon";
 const SidebarLayer = "/assets/images/sidebar-layer.png";
 const LogoutIcon = "/assets/icons/logout.svg";
 const DownIcon = "/assets/icons/down-white.svg";
@@ -78,7 +79,7 @@ export default function Sidebar({ setToogle, toogle }) {
             }}
           >
             <CourseIcon />
-            <span>My Courses</span>
+            <span>My Library</span>
           </div>
           <div
             className={`${styles.menu} ${pathname === "/course" ? styles.active : ""
@@ -106,6 +107,17 @@ export default function Sidebar({ setToogle, toogle }) {
           >
             <TelegramIcon />
             Telegram Channels
+          </div>
+
+          <div
+            className={`${styles.menu} ${pathname === "/instructor" ? styles.active : ""
+              }`}
+            onClick={() => {
+              handleTabClick("instructor");
+            }}
+          >
+             <InstructorIcon />
+            <span>Instructor</span>
           </div>
 
           {/* <div

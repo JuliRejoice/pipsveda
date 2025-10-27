@@ -6,6 +6,8 @@ export const getCourses = async ({
   searchQuery = "",
   courseType = "",
   id = "",
+  categoryId = "",
+  instructorId = ""
 }) => {
   try {
     const params = new URLSearchParams({
@@ -21,6 +23,12 @@ export const getCourses = async ({
     }
     if (id) {
       params.append("id", id);
+    }
+    if(categoryId){
+        params.append("categoryId", categoryId);
+    }
+    if(instructorId){
+        params.append("instructorId", instructorId);
     }
 
     const response = await api.get(`/course/getAllCourse?${params.toString()}`);
@@ -186,6 +194,17 @@ export const getSessionData = async (id) => {
   }
 }
 
+export const updateVideoProgress = async (data) => {
+  try {
+    const res = await api.get(`/sesstion/getSessionByCourse?courseId=${data.courseId}`, data);
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching dashboard data", error);
+    throw error;
+  }
+}
+
 
 export const getTelegramChannels = async (id, searchQuery) => {
   try {
@@ -198,12 +217,85 @@ export const getTelegramChannels = async (id, searchQuery) => {
   }
 }
 
-export const getAllCourseCategory = async () => {
+export const getCourseById = async (data) => {
+    const params = new URLSearchParams();
+    if(data.id){
+        params.append('id', data.id);
+    }
+    if(data.courseType){
+        params.append('courseType', data.courseType);
+    }
     try {
-      const response = await api.get(`/courseCategory/getAllCourseCategory`);
+      const response = await api.get(`/course/getAllCourseDashboard?${params.toString()}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching course by id:', error);
+      throw error;
+    }
+  };
+
+export const getAllCourseCategory = async ({id,searchQuery}) => {
+
+  const params = new URLSearchParams();
+  if(id){
+    params.append('id', id);
+  }
+  if(searchQuery){
+    params.append('search', searchQuery);
+  }
+    try {
+      const response = await api.get(`/courseCategory/getAllCourseCategory?${params.toString()}`);
       return response.data;
     } catch (error) {
       console.error('Error fetching algo bots:', error);
       throw error;
     }
   };
+
+  export const getCourseCategoryById = async ({id,courseType}) => {
+    const params = new URLSearchParams();
+    if(id){
+      params.append('id', id);
+    }
+    if(courseType){
+      params.append('courseType', courseType);
+    }
+    try {
+      const response = await api.get(`/courseCategory/getAllCourseCategory?${params.toString()}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching course category by id:', error);
+      throw error;
+    }
+  };
+
+  export const submitReview = async (data) => {
+    console.log("data", data);
+  try {
+    const response = await api.post('/api/courses/reviews', data);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
+
+// Get course reviews
+export const getCourseReviews = async (courseId) => {
+  try {
+    const response = await api.get(`/api/courses/${courseId}/reviews`);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error.message;
+  }
+};
+
+export const getBatches = async (data) => {
+
+  try {
+    const response = await api.get(`/batch/getBatchByCourse?courseId=${data.courseId}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching batches:', error);
+    throw error;
+  }
+};

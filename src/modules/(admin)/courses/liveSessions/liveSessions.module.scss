@@ -98,7 +98,6 @@
 
                 h3 {
                     @include heading18;
-                    margin: 0 0 12px 0;
                     color: var(--black-500);
                     line-height: 1.4;
                     margin-top: 10px;
@@ -106,6 +105,13 @@
                     -webkit-line-clamp: 2;
                     -webkit-box-orient: vertical;
                     overflow: hidden;
+                }
+
+                h4 {
+                    @include font17;
+                    color: var(--black-500);
+                    font-family: var(--font-funneldisplay);
+                    padding: 10px 0px;
                 }
 
                 .icontext {

@@ -17,6 +17,7 @@ import Arrowicon from "@/icons/arrowicon";
 import Slider from "react-slick/lib/slider";
 import { getCookie } from "../../../../../cookie";
 import CustomVideoPlayer from "@/compoents/CustomVideoPlayer";
+import ReviewSystem from "@/compoents/reviewSystem";
 
 
 const LockIcon = '/assets/icons/lock.svg';
@@ -132,7 +133,7 @@ export default function CourseDetails({ params }) {
   const [isLiveOnline, setIsLiveOnline] = useState(false);
   const [isInPerson, setIsInPerson] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
-  
+
 
   const id = params;
   const router = useRouter();
@@ -193,6 +194,15 @@ export default function CourseDetails({ params }) {
     }
   }, [id, isLiveOnline]);
 
+  // Ensure first chapter is selected when chapters change
+  useEffect(() => {
+    if (chapters.length > 0 && !selectedChapter) {
+      setSelectedChapter(chapters[0]);
+    }
+  }, [chapters, selectedChapter]);
+
+  console.log("selectedChapter", selectedChapter);
+  console.log("chapters", chapters)
 
   useEffect(() => {
     const isPayment = searchParams.get('isPayment');
@@ -338,7 +348,7 @@ export default function CourseDetails({ params }) {
       year: 'numeric',
       month: 'long',
       day: 'numeric',
-     
+
     });
   };
 
@@ -394,13 +404,13 @@ export default function CourseDetails({ params }) {
         <div className={styles.sessionContainer}>
           <div className={styles.textStyle}>
             <div className={styles.title}>
-            <h3>{selectedCourse?.CourseName || 'Course Name Not Available'}</h3>
-        
+              <h3>{selectedCourse?.CourseName || 'Course Name Not Available'}</h3>
+
               {/* <div className={styles.infoRow} style={{ margin: '10px 0' }}>
                 <span style={{ fontWeight: 'bold' }}>Purchased On: </span>
                 <span>{formatPurchasedDate(coursePurchasedDate)}</span>
               </div> */}
-           
+
             </div>
             <p>{selectedCourse?.description || 'No description available'}</p>
             <div className={styles.alignments}>
@@ -411,7 +421,7 @@ export default function CourseDetails({ params }) {
                 </div>
                 <div className={styles.iconText}>
                   <BathIcon />
-                  <span>{selectedCourse?.instructor || 'Instructor'}</span>
+                  <span>{selectedCourse?.instructor?.name || 'Instructor'}</span>
                 </div>
                 {/* <div className={styles.iconText}>
                   <StarIcon />
@@ -459,7 +469,7 @@ export default function CourseDetails({ params }) {
                               <span><strong>Date:</strong> {new Date(session.date).toLocaleDateString()}</span>
                               <span><strong>Time:</strong> {session.time}</span>
                             </div>
-                            <span><strong>Instructor:</strong> {session.courseId?.instructor}</span>
+                            <span><strong>Instructor:</strong> {session.courseId?.instructor?.name}</span>
                           </div>
                           {session.meetingLink && (
                             <Button
@@ -493,14 +503,14 @@ export default function CourseDetails({ params }) {
         <div className={styles.textStyle}>
           <div className={styles.title}>
             <h3>{selectedCourse?.CourseName || 'Course Name Not Available'}</h3>
-           
+
             {/*  <div className={styles.infoRow} style={{ margin: '10px 0' }}>
                 <span style={{ fontWeight: 'bold' }}>Purchased On: </span>
                 <span>{formatPurchasedDate(coursePurchasedDate)}</span>
               </div> */}
-         
+
           </div>
-            <p>{selectedCourse?.description || 'No description available'}</p>
+          <p>{selectedCourse?.description || 'No description available'}</p>
           <div className={styles.alignments}>
             <div className={styles.allIconTextAlignment}>
               <div className={styles.iconText}>
@@ -509,7 +519,7 @@ export default function CourseDetails({ params }) {
               </div>
               <div className={styles.iconText}>
                 <BathIcon />
-                <span>{selectedCourse?.instructor || 'Instructor'}</span>
+                <span>{selectedCourse?.instructor?.name || 'Instructor'}</span>
               </div>
               {/* <div className={styles.iconText}>
                 <StarIcon />
@@ -542,13 +552,12 @@ export default function CourseDetails({ params }) {
           <div className={styles.mainrelative}>
             <div className={styles.tabAlignment}>
               {chapters.map((chapter, index) => (
-                <button
+                <Button
                   key={chapter._id}
-                  className={selectedChapter?._id === chapter._id ? styles.activeTab : ''}
+                  className={selectedChapter?._id == chapter._id ? styles.activeTab : ''}
                   onClick={() => setSelectedChapter(chapter)}
-                >
-                  Chapter {chapter.chapterNo || index + 1}
-                </button>
+                  text={`Chapter ${chapter.chapterNo || index + 1}`}
+                />
               ))}
             </div>
             {selectedChapter && chapters.length > 0 ? (
@@ -628,6 +637,15 @@ export default function CourseDetails({ params }) {
                   </div>
                 </div>
               </div>
+            )}
+
+
+            {isPaid && (
+              <ReviewSystem
+                courseId={id}
+                isPaid={isPaid}
+                userId={user?._id}
+              />
             )}
 
             {!isPaid && <div className={styles.locksystem}>

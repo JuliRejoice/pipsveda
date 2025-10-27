@@ -5,7 +5,7 @@ import ClockIcon from "@/icons/clockIcon";
 import BathIcon from "@/icons/bathIcon";
 import StarIcon from "@/icons/starIcon";
 import ProfileGroupIcon from "@/icons/profileGroupIcon";
-import { getChapters, getCourses, getPaymentUrl, getSessionData } from "@/compoents/api/dashboard";
+import { getBatches, getChapters, getCourses, getPaymentUrl, getSessionData } from "@/compoents/api/dashboard";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import OutlineButton from "@/compoents/outlineButton";
@@ -17,6 +17,7 @@ import Arrowicon from "@/icons/arrowicon";
 import Slider from "react-slick/lib/slider";
 import { getCookie } from "../../../../../cookie";
 import CustomVideoPlayer from "@/compoents/CustomVideoPlayer";
+import BatchSelectionModal from "@/compoents/modal/BatchSelectionModal";
 
 
 const LockIcon = '/assets/icons/lock.svg';
@@ -131,6 +132,9 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
   const [sessions, setSessions] = useState([]);
   const [isLiveOnline, setIsLiveOnline] = useState(false);
   const [isInPerson, setIsInPerson] = useState(false);
+  const [isBeforepaymentModal, setIsBeforepaymentModal] = useState(false);
+  const [batches, setBatches] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   const id = params;
   const router = useRouter();
@@ -276,6 +280,46 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     }
   };
 
+  const fetchbatches = async (courseId) => {
+    try {
+      setIsBeforepaymentModal(true)
+      setIsLoading(true);
+      const response = await getBatches({ courseId });
+      console.log(response)
+        setBatches(response?.payload?.data);
+    } catch (error) {
+      console.error("Error fetching batches:", error);
+      toast.error("Failed to fetch batches");
+    } finally {
+      setIsLoading(false);
+      // setIsBeforepaymentModal(false)
+    }
+  };
+
+  const handleBatchSelect = async (batch) => {
+    console.log("batch", batch)
+     try {
+      setIsProcessingPayment(true);
+      const response = await getPaymentUrl({
+        success_url: window.location.href,
+        cancel_url: window.location.href,
+        courseId: id,
+        batchId: batch
+      });
+      if (response?.payload?.code !== "00000") {
+        toast.error("A payment session is already active and will expire in 10 minutes. Please complete the current payment or try again after it expires.");
+      } else {
+        router.replace(response?.payload?.data?.checkout_url);
+      }
+
+    } catch (error) {
+      console.error("Payment error:", error);
+      // Handle error appropriately
+    } finally {
+      setIsProcessingPayment(false);
+    }
+  }
+
   const renderPaymentModal = () => {
     if (!showPaymentModal) return null;
 
@@ -393,7 +437,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                 </div>
                 <div className={styles.iconText}>
                   <BathIcon />
-                  <span>{selectedCourse?.instructor || 'Instructor'}</span>
+                  <span>{selectedCourse?.instructor?.name || 'Instructor'}</span>
                 </div>
                 {/* <div className={styles.iconText}>
                   <StarIcon />
@@ -412,7 +456,8 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                   fill
                   text={isProcessingPayment ? 'Enrolling...' : 'Enroll Now'}
                   icon={isProcessingPayment ? null : RightBlackIcon}
-                  onClick={handlePayment}
+                  // onClick={handlePayment}
+                  onClick={()=>fetchbatches(selectedCourse._id)}
                   disabled={isProcessingPayment}
                 />
               </div>}
@@ -438,10 +483,10 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                           <p>{session.description}</p>
                           <div className={styles.sessionMeta}>
                             <div style={{ display: 'flex', gap: '30px' }}>
-                              <span><strong>Date:</strong> {new Date(session.date).toLocaleDateString()}</span>
+                              <span><strong>Date:</strong> {new Date(session.date).toLocaleDateString('en-GB')}</span>
                               <span><strong>Time:</strong> {session.time}</span>
                             </div>
-                            <span><strong>Instructor:</strong> {session.courseId?.instructor}</span>
+                            <span><strong>Instructor:</strong> {session.courseId?.instructor?.name}</span>
                           </div>
                           {session.meetingLink && (
                             <Button
@@ -487,7 +532,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                 </div>
                 <div className={styles.iconText}>
                   <BathIcon />
-                  <span>{selectedCourse?.instructor || 'Instructor'}</span>
+                  <span>{selectedCourse?.instructor?.name || 'Instructor'}</span>
                 </div>
                 {/* <div className={styles.iconText}>
                 <StarIcon />
@@ -507,7 +552,8 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
               <Button
                 text={isProcessingPayment ? 'Enrolling...' : 'Enroll Now'}
                 icon={isProcessingPayment ? null : RightBlackIcon}
-                onClick={handlePayment}
+                // onClick={handlePayment}
+                onClick={() => fetchbatches(selectedCourse._id)}
                 disabled={isProcessingPayment}
               />
             </div>}
@@ -621,6 +667,14 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
           </div>
         </div>
       )}
+
+      <BatchSelectionModal
+        isOpen={isBeforepaymentModal}
+        onClose={() => setIsBeforepaymentModal(false)}
+        batches={batches}
+        onBatchSelect={handleBatchSelect}
+        courseTitle={selectedCourse?.CourseName || 'Course'}
+      />
     </div>
   );
 }

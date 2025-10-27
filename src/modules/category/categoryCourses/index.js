@@ -1,10 +1,8 @@
 'use client'
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useInView, useAnimation, useMotionValue, useSpring } from 'framer-motion';
-import { getCourseByType } from '@/compoents/api/dashboard';
-import Link from 'next/link';
-import styles from './differentCourses.module.scss';
-import OutlineButton from '@/compoents/outlineButton';
+import { getCourseByType, getCourseCategoryById } from '@/compoents/api/dashboard';
+import styles from './categoryCourses.module.scss';
 import { useRouter } from 'next/navigation';
 import RenderSkeleton from '@/modules/(admin)/chapter/recentCourse/RenderSkeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
@@ -88,17 +86,16 @@ function TiltCard({ className, children, variants, style }) {
     );
 }
 
-export default function DifferentCourses({ course }) {
+export default function CategoryCourses({ course }) {
     const [courses, setCourses] = useState({ recorded: [], live: [], physical: [] });
-    const [activeTab, setActiveTab] = useState(course);
+    const [activeTab, setActiveTab] = useState('recorded');
     const [activeCourse, setActiveCourse] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [categoryName, setCategoryName] = useState('');
     const controls = useAnimation();
     const ref = useRef(null);
     const isInView = useInView(ref, { once: true, amount: 0.1 });
     const router = useRouter();
-
-    console.log(activeTab)
 
     useEffect(() => {
         if (isInView) {
@@ -107,18 +104,31 @@ export default function DifferentCourses({ course }) {
     }, [isInView, controls]);
 
     useEffect(() => {
-        setActiveTab(course);
-    }, [course]);
-
-    useEffect(() => {
         const fetchCourses = async () => {
             try {
                 setLoading(true);
-                const response = await getCourseByType();
-                if (response?.payload?.courses) {
-                    setCourses(response.payload.courses);
-                    // Set initial active courses
-                    setActiveCourse(response.payload.courses[activeTab || course] || []);
+                const response = await getCourseCategoryById({id:course,courseType:activeTab});
+                
+                if (response?.payload?.data?.length > 0) {
+                    const categoryData = response.payload.data[0];
+                    setCategoryName(categoryData.name);
+                    
+                    // Transform the data to match the expected structure
+                    const formattedData = {
+                        recorded: categoryData.courseCategory?.recorded?.map(course => ({
+                            ...course,
+                            courseImage: categoryData.image // Add category image to each course
+                        })) || [],
+                        live: categoryData.courseCategory?.live?.map(course => ({
+                            ...course,
+                            courseImage: categoryData.image // Add category image to each course
+                        })) || [],
+                        physical: []
+                    };
+                    
+                    setCourses(formattedData);
+                    // Set active courses based on the tab, default to recorded
+                    setActiveCourse(formattedData[activeTab] || []);
                 }
             } catch (error) {
                 console.error('Error fetching courses:', error);
@@ -127,14 +137,15 @@ export default function DifferentCourses({ course }) {
             }
         };
         fetchCourses();
-    }, [course]);
+    }, [course, activeTab]);
 
     // Update activeCourse when activeTab changes
     useEffect(() => {
-        if (courses[activeTab]) {
-            setActiveCourse(courses[activeTab] || []);
+        if (courses[activeTab] && courses[activeTab].length > 0) {
+            setActiveCourse(courses[activeTab]);
+        } else {
+            setActiveCourse([]);
         }
-
     }, [activeTab, courses]);
 
     const formatPrice = (price) => {
@@ -147,10 +158,12 @@ export default function DifferentCourses({ course }) {
         <div className={styles.differentCourses} ref={ref}>
             <div className='container'>
                 <div className={styles.text}>
-                    <h2>Explore Different Types of Courses</h2>
+                    <h2>{categoryName || 'Explore Our Courses'}</h2>
                     <p>
-                        Browse through our collection of courses designed to enhance your trading and investment skills
-                        across various markets and instruments.
+                        {categoryName 
+                            ? `Browse our collection of ${categoryName.toLowerCase()} courses designed to enhance your trading and investment skills.`
+                            : 'Browse through our collection of courses designed to enhance your trading and investment skills across various markets and instruments.'
+                        }
                     </p>
                 </div>
                 <div className={styles.tabDesign}>
@@ -188,19 +201,20 @@ export default function DifferentCourses({ course }) {
                         animate={controls}
                         style={{ overflow: 'visible' }}
                     >
-                        {activeCourse?.map((course, index) => (
+                        {activeCourse.map((course, index) => (
                             <TiltCard
                                 className={styles.griditems}
                                 key={course?._id || index}
                                 variants={itemVariants}
+                                onClick={() => router.push(`/course-details?id=${course?._id}`)}
                             >
                                 <div className={styles.image}>
                                     <img
-                                        src={course.courseVideo || CardImage}
+                                        src={course.courseVideo || course.courseImage || CardImage}
                                         alt={course.CourseName || 'Course'}
                                         onError={(e) => {
                                             e.target.onerror = null;
-                                            e.target.src = CardImage;
+                                            e.target.src = course.courseImage || CardImage;
                                         }}
                                     />
                                 </div>
@@ -210,10 +224,10 @@ export default function DifferentCourses({ course }) {
                                         {course?.description || 'No description available.'}
                                     </p>
                                     <div className={styles.twoContentAlignment}>
-                                        <h4>${course?.price || '299'}</h4>
+                                        <h4>{formatPrice(course?.price) || 'Free'}</h4>
                                         <div className={styles.iconText}>
                                             <img src={BathIcon} alt='Instructor' />
-                                            <span>{course?.instructor?.name || 'John Doe'}</span>
+                                            <span>{course?.instructor?.name}</span>
                                         </div>
                                     </div>
                                     <Button text="Enroll Now"

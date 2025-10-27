@@ -79,6 +79,15 @@
         }
     }
 
+    .tabs {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        padding: 0 0 40px 0;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
     .grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);

@@ -20,7 +20,7 @@ const RightIcon = '/assets/icons/right.svg';
 const BlogCardSkeleton = ({ count = 3, showTabs = true }) => {
     // Tab skeleton with animation
     const tabSkeleton = (
-        <div className={styles.tabAlignment}>
+        <div className={styles.tabs}>
             {[1, 2, 3, 4].map((i) => (
                 <div key={i} className={`${styles.skeletonTab} ${i === 1 ? styles.active : ''}`}>
                     <Skeleton width={80} height={40} style={{ borderRadius: '20px' }} />
@@ -45,11 +45,11 @@ const BlogCardSkeleton = ({ count = 3, showTabs = true }) => {
                 <div className={styles.allIconTextAlignment}>
                     <div className={styles.iconText}>
                         <Skeleton circle width={20} height={20} style={{ marginRight: '8px' }} />
-                        <Skeleton width={100} />
+                        <Skeleton width={100} height={20} />
                     </div>
                     <div className={styles.iconText}>
                         <Skeleton circle width={20} height={20} style={{ marginRight: '8px' }} />
-                        <Skeleton width={80} />
+                        <Skeleton width={80} height={20} />
                     </div>
                 </div>
                 <h3><Skeleton /></h3>

@@ -156,7 +156,7 @@ export default function CourseBanner({
                 </motion.div>
               </motion.div>
             </motion.div>
-            <div className={styles.footerButtonalignment}>
+            {/* <div className={styles.footerButtonalignment}>
               <div
                 className={styles.iconText}
                 onClick={() => handleTypeChange("trending")}
@@ -171,7 +171,7 @@ export default function CourseBanner({
                 <span>Popular</span>
                 <TopIcon />
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <div className={styles.griditems}>
@@ -181,7 +181,7 @@ export default function CourseBanner({
             courses.map((course, i) => (
               <motion.div
                 className={styles.card}
-
+                key={i}
               >
                 <div className={styles.image}>
                   <img src={course.courseVideo} alt="CardImage" />
@@ -190,7 +190,7 @@ export default function CourseBanner({
                   <h3>{course.CourseName}</h3>
                   <div className={styles.iconText}>
                     <BathIcon />
-                    <span>{course.instructor || "John Doe"}</span>
+                    <span>{course.instructor?.name}</span>
                   </div>
                   <div className={styles.lastContentAlignment}>
                     <h4>${course.price || 199}</h4>

@@ -7,7 +7,7 @@ import BathIcon from '@/icons/bathIcon';
 import StarIcon from '@/icons/starIcon';
 import ProfileGroupIcon from '@/icons/profileGroupIcon';
 import Button from '@/compoents/button';
-import { getChapters, getCourses, getPaymentUrl } from '@/compoents/api/dashboard';
+import { getChapters, getCourseById, getCourses, getPaymentUrl } from '@/compoents/api/dashboard';
 import { getCookie } from '../../../../cookie';
 import { useRouter } from 'next/navigation';
 const RightIcon = '/assets/icons/right.svg';
@@ -19,7 +19,7 @@ export default function CourseInformation({ id }) {
   useEffect(() => {
     const fetchChapter = async () => {
       try {
-        const response = await getChapters(id);
+        const response = await getChapters({id});
       } catch (error) {
         console.error('Error fetching course:', error);
       }
@@ -27,7 +27,7 @@ export default function CourseInformation({ id }) {
 
     const fetchCourse = async () => {
       try {
-        const response = await getCourses({ id });
+        const response = await getCourseById({id});
         setCourse(response.payload.data[0]);
       } catch (error) {
         console.error('Error fetching course:', error);
@@ -69,6 +69,8 @@ export default function CourseInformation({ id }) {
       router.push('/signin')
     }
   }
+
+  console.log(course)
   return (
     <div className={styles.courseInformation}>
       <div className='container'>
@@ -87,7 +89,7 @@ export default function CourseInformation({ id }) {
               </div>
               <div className={styles.iconText}>
                 <BathIcon />
-                <span>{course?.instructor}</span>
+                <span>{course?.instructor?.name}</span>
               </div>
               <div className={styles.iconText}>
                 {/* <StarIcon />

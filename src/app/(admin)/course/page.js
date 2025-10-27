@@ -7,7 +7,7 @@ import LiveCourse from '@/modules/(admin)/liveonline/liveCourse';
 import CourseBanner from '@/modules/(admin)/preRecorded/courseBanner';
 import RecentCourse from "@/modules/(admin)/preRecorded/recentCourse";
 import React, { Suspense, useState } from 'react'
-
+import Category from '@/modules/(admin)/preRecorded/category';
 export default function Course() {
     const [searchQuery, setSearchQuery] = useState("");
     const [allCourse, setAllCourse] = useState([]);
@@ -28,10 +28,11 @@ export default function Course() {
                 setCourseLoading={setCourseLoading}
                 setSelectedTab={setSelectedTab}
             />
-            {/* <---- Tabs ----> */}
-            <Coursecards onSelect={(tabName) => setSelectedTab(tabName)} selectedTab={selectedTab} />
-            {/* <-- Trending,popular,pre courses */}
-            <RecentCourse
+        
+        <Category searchQuery={searchQuery}/>
+            {/* <Coursecards onSelect={(tabName) => setSelectedTab(tabName)} selectedTab={selectedTab} /> */}
+      
+            {/* <RecentCourse
                 searchQuery={searchQuery}
                 allCourse={allCourse}
                 setAllCourses={setAllCourse}
@@ -40,11 +41,8 @@ export default function Course() {
                 courseLoading={courseLoading}
                 setCourseLoading={setCourseLoading}
                 selectedTab={selectedTab}
-            />
-            {/* <-- live courses */}
-            {/* <LiveCourse /> */}
-            {/* <-- inperson courses */}
-            {/* <InPersonCourse /> */}
+            /> */}
+          
         </Suspense>
     )
 }

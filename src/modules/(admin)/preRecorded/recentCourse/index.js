@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { getCourses, getTrendingOrPopularCourses } from '@/compoents/api/dashboard';
+import { getCourses, getTrendingOrPopularCourses, getCourseCategoryById } from '@/compoents/api/dashboard';
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import styles from './recentCourse.module.scss';
@@ -16,7 +16,7 @@ const CardImage = '/assets/images/crypto.png';
 
 const ITEMS_PER_PAGE = 8; // Adjust based on your layout
 
-export default function RecentCourse({ selectedTab, courseType, setCourseType, searchQuery, allCourse, setAllCourses, courseLoading, setCourseLoading }) {
+export default function RecentCourse({ selectedTab, courseType, setCourseType, searchQuery, allCourse, setAllCourses, courseLoading, setCourseLoading, id , instructorId }) {
     const [error, setError] = useState(null);
     const [pagination, setPagination] = useState({
         currentPage: 1,
@@ -50,16 +50,16 @@ export default function RecentCourse({ selectedTab, courseType, setCourseType, s
                 }
             }
             else {
-                // ✅ Always send both searchQuery & courseType
                 const params = {
-                    searchQuery: searchQuery || "",
                     page,
                     limit: ITEMS_PER_PAGE,
+                    categoryId:id,
                     courseType: selectedTab || "recorded",
+                    instructorId: instructorId
                 };
 
                 const data = await getCourses(params);
-
+                console.log(data,'-----------');
                 if (data?.success) {
                     setAllCourses(data?.payload?.data || []);
                 }
@@ -162,7 +162,7 @@ export default function RecentCourse({ selectedTab, courseType, setCourseType, s
                                     <h4>${course?.price || 299}</h4>
                                     <div className={styles.iconText}>
                                         <img src={BathIcon} alt='Instructor' />
-                                        <span>{course?.instructor || 'John Doe'}</span>
+                                        <span>{course?.instructor?.name || 'John Doe'}</span>
                                     </div>
                                 </div>
                                 {

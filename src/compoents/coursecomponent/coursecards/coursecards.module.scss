@@ -3,8 +3,18 @@
 @use "../../../scss/typography/typography.scss" as *;
 
 .recentCourse {
-    padding: 35px 0 0;
+    // padding: 35px 0 0;
 
+    h2{
+        font-family: var(--font-funneldisplay);
+        color: var(--black-500);
+        opacity: .9;
+        max-width: 592px;
+        margin: 0 0 16px;
+        font-style: normal;
+        font-weight: 700;
+        line-height: normal;
+    }
     .tabsmain {
         border-bottom: 1px solid var(--border-color2);
         overflow-x: auto;

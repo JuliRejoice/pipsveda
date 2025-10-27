@@ -523,7 +523,7 @@ function AlgobotDetails({ id }) {
             
             <div className={styles.paymenyhistorytable}>
             <div className={styles.sbutitle}>
-                <h2>Payment History</h2>
+                <h2>Purchased Bots</h2>
               </div>
                 <table>
                     <thead>

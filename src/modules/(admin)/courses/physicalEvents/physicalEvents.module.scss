@@ -104,8 +104,14 @@
 
                 h3 {
                     @include heading18;
-                    margin: 0 0 4px 0;
                     color: var(--black-500);
+                }
+
+                h4 {
+                    @include font17;
+                    color: var(--black-500);
+                    font-family: var(--font-funneldisplay);
+                    padding: 10px 0px;
                 }
 
                 .icontext {

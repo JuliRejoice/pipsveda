@@ -116,9 +116,10 @@ export default function PhysicalEvents() {
                                 </div>
                                 <div className={styles.content}>
                                     <h3>{event?.courseId?.CourseName || 'Event Name'}</h3>
+                                    <h4>Category: {event?.courseId?.courseCategory?.name}</h4>
                                     <div className={styles.icontext}>
                                         <MenIcon />
-                                        <span>{event?.courseId?.instructor || 'Instructor Name'}</span>
+                                        <span>{event?.courseId?.instructor?.name || 'Instructor Name'}</span>
                                     </div>
                                 </div>
                                 <div className={styles.textgrid}>

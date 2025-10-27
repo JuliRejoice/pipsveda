@@ -18,7 +18,7 @@ const PlusIcon = "/assets/icons/plus.svg";
 const SuccessIcon = "/assets/icons/success.svg";
 const ErrorIcon = "/assets/icons/error.svg";
 
-function    TelegramDetails({ id }) {
+function TelegramDetails({ id }) {
     const [telegramData, setTelegramData] = useState({});
     const [plans, setPlans] = useState([]);
     const [hasPurchasedPlan, setHasPurchasedPlan] = useState(false);
@@ -34,7 +34,7 @@ function    TelegramDetails({ id }) {
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
     const [showPaymentModal, setShowPaymentModal] = useState(false);
     const [paymentStatus, setPaymentStatus] = useState('');
-    const [commonDiscount, setCommonDiscount] = useState(0); 
+    const [commonDiscount, setCommonDiscount] = useState(0);
     const [appliedCoupon, setAppliedCoupon] = useState(null);
     const [telegramId, setTelegramId] = useState('');
     const router = useRouter();
@@ -87,7 +87,7 @@ function    TelegramDetails({ id }) {
         const originalPrice = plan.initialPrice * quantity;
         const commonDiscountAmount = (originalPrice * (plan.discount || 0)) / 100;
         const priceAfterCommonDiscount = originalPrice - commonDiscountAmount;
-        
+
         setSelectedPlan({
             ...plan,
             originalPrice: originalPrice,
@@ -97,7 +97,7 @@ function    TelegramDetails({ id }) {
             discountType: 'common',
             priceAfterCommonDiscount: priceAfterCommonDiscount
         });
-        
+
         setTelegramId('');
         setCoupon('');
         setDiscount(commonDiscountAmount);
@@ -112,7 +112,7 @@ function    TelegramDetails({ id }) {
         try {
             setIsValidating(true);
             setError('');
-            
+
             const response = await getCoupon(coupon);
 
             if (response.success) {
@@ -120,7 +120,7 @@ function    TelegramDetails({ id }) {
                 const couponDiscountAmount = (selectedPlan.originalPrice * couponDiscountPercentage) / 100;
                 const totalDiscount = (((selectedPlan.commonDiscount * selectedPlan.originalPrice) / 100) || 0) + couponDiscountAmount;
                 const finalPrice = selectedPlan.originalPrice - totalDiscount;
-                
+
                 setCouponId(response.payload._id);
                 setAppliedCoupon({
                     code: coupon,
@@ -199,6 +199,16 @@ function    TelegramDetails({ id }) {
         }
     };
 
+    const calculateEndDate = (startDate, durationMonths) => {
+        if (!startDate || !durationMonths) return 'N/A';
+        
+        const date = new Date(startDate);
+        date.setMonth(date.getMonth() + parseInt(durationMonths));
+        
+        // Format date in 'DD/MM/YYYY' format to match other dates
+        return date.toLocaleDateString('en-GB');
+    };
+
     const renderSkeletonCards = (count = 3) => {
         return Array(count).fill(0).map((_, index) => (
             <div className={styles.planCard} key={`skeleton-${index}`}>
@@ -227,13 +237,13 @@ function    TelegramDetails({ id }) {
                 {plans.map((plan) => {
                     const isPurchased = plan.isPayment;
                     const isDisabled = hasPurchasedPlan && !isPurchased; // Disable if any plan is purchased and this one isn't
-                    
+
                     return (
-                        <div 
-                            key={plan._id} 
+                        <div
+                            key={plan._id}
                             className={`${styles.planGridItems}`}
                         >
-                    
+
                             <div className={styles.cardHeaderAlignment}>
                                 <h3>{plan.planType}</h3>
                                 <h4>${plan.price.toFixed(2)}</h4>
@@ -251,12 +261,12 @@ function    TelegramDetails({ id }) {
                                 </div>
                             </div>
                             <div className={styles.buttonAlignment}>
-                                
-                                    <Button
-                                        text="Subscribe Now"
-                                        onClick={() => handleBuyNow(plan)}  
-                                    />
-                               
+
+                                <Button
+                                    text="Subscribe Now"
+                                    onClick={() => handleBuyNow(plan)}
+                                />
+
                             </div>
                         </div>
                     );
@@ -283,17 +293,17 @@ function    TelegramDetails({ id }) {
         const modalContent = paymentStatus === 'success' ? (
             <div className={styles.paymentModalContent}>
                 <div className={styles.paymentModaltitlecontent}>
-                <img src={SuccessIcon} alt="Success" className={styles.paymentIcon} />
-                <h3>Payment Successful!</h3>
-                <p>Thank you for your purchase. Please check your email for the download link.</p>
+                    <img src={SuccessIcon} alt="Success" className={styles.paymentIcon} />
+                    <h3>Payment Successful!</h3>
+                    <p>Thank you for your purchase. Please check your email for the download link.</p>
                 </div>
             </div>
         ) : (
             <div className={styles.paymentModalContent}>
                 <div className={styles.paymentModaltitlecontent}>
-                <img src={ErrorIcon} alt="Cancelled" className={styles.paymentIcon} />
-                <h3>Payment Cancelled</h3>
-                <p>Your payment was not completed. Please try again to purchase.</p>
+                    <img src={ErrorIcon} alt="Cancelled" className={styles.paymentIcon} />
+                    <h3>Payment Cancelled</h3>
+                    <p>Your payment was not completed. Please try again to purchase.</p>
                 </div>
                 <div className={styles.modalButtons}>
                     <OutlineButton
@@ -325,102 +335,140 @@ function    TelegramDetails({ id }) {
             <Breadcumbs />
             {/* Header Section */}
             <div className={styles.telegramDetailsContainer}>
-            <div className={styles.telegramDetailstitle}>
-                <h1>{telegramData?.channelName || <Skeleton width="100%" height={24} />}</h1>
-                <p>{telegramData?.description || <Skeleton width="100%" height={24} count={2} />}</p>
-            </div>
-
-            {/* Plans Section */}
-            <div className={styles.plansSection}>
-                <div className={styles.plansTitle}>
-                    <h2>Available Plans</h2>
+                <div className={styles.telegramDetailstitle}>
+                    <h1>{telegramData?.channelName || <Skeleton width="100%" height={24} />}</h1>
+                    <p>{telegramData?.description || <Skeleton width="100%" height={24} count={2} />}</p>
                 </div>
-                {renderPlanCards()}
-            </div>
 
-            {/* Purchase Modal */}
-            <Modal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                title="Complete Your Subscription"
-            >
-                {selectedPlan && (
-                    <div className={styles.modalContent}>
-                           <div className={styles.telegramIdSection}>
-                            <Input
-                                type="text"
-                                placeholder="Enter your Telegram ID"
-                                value={telegramId}
-                                onChange={(e) => setTelegramId(e.target.value)}
-                                className={styles.couponInput}
-                                required
-                            />
-                        </div>
-                        <div className={styles.planInfo}>
-                            <h3>{selectedPlan.planType} Plan</h3>
-                            <p>
-                                <span>Original Price:</span>
-                                <span>${selectedPlan.originalPrice?.toFixed(2) || '0.00'}</span>
-                            </p>
-
-                            {selectedPlan.commonDiscount > 0 && (
-                                <p className={styles.discountText}>
-                                    <span>Common Discount ({selectedPlan.commonDiscount}%):</span>
-                                    <span>-${((selectedPlan.originalPrice * selectedPlan.commonDiscount) / 100).toFixed(2)}</span>
-                                </p>
-                            )}
-
-                            {appliedCoupon && (
-                                <p className={styles.discountText}>
-                                    <span>Coupon Discount ({appliedCoupon.discount}%):</span>
-                                    <span>-${(( selectedPlan.originalPrice) * (appliedCoupon.discount / 100)).toFixed(2)}</span>
-                                </p>
-                            )}
-
-                            <h4 className={styles.totalPrice}>
-                                <span>Total Amount:</span>
-                                <span>${selectedPlan.totalPrice?.toFixed(2) || '0.00'}</span>
-                            </h4>
-                        </div>
-
-                    
-
-                        <div className={styles.couponSection}>
-                            <Input
-                                type="text"
-                                placeholder="Enter coupon code"
-                                value={coupon}
-                                onChange={(e) => setCoupon(e.target.value)}
-                                disabled={!!appliedCoupon}
-                                className={styles.couponInput}
-                            />
-                            <OutlineButton
-                                text={appliedCoupon ? 'Applied' : 'Apply'}
-                                onClick={handleApplyCoupon}
-                                disabled={isValidating || !!appliedCoupon || !coupon.trim()}
-                                isLoading={isValidating}
-                                variant={appliedCoupon ? 'secondary' : 'primary'}
-                            />
-                        </div>
-
-                        {error && <p className={styles.errorText}>{error}</p>}
-
-                        <div className={styles.modalActions}>
-                            <Button
-                                text="Cancel"
-                                variant="outline"
-                                onClick={() => setIsModalOpen(false)}
-                            />
-                            <Button
-                                text={`Pay $${selectedPlan.totalPrice?.toFixed(2) || '0.00'}`}
-                                onClick={handlePurchase}
-                                disabled={isProcessingPayment}
-                                isLoading={isProcessingPayment}
-                            />
-                        </div>
+                {/* Plans Section */}
+                <div className={styles.plansSection}>
+                    <div className={styles.plansTitle}>
+                        <h2>Available Plans</h2>
                     </div>
-                )}
-            </Modal>
+                    {renderPlanCards()}
+                </div>
+
+                <div className={styles.paymenyhistorytable}>
+                    <div className={styles.sbutitle}>
+                        <h2>Subscribed channels</h2>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>User TelegramId</th>
+
+                                <th>Plan</th>
+                              
+                                <th>Start Date</th>
+                                <th>End Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {plans
+                                .flatMap(plan =>
+                                    plan.payment?.map((payment, index) => ({
+                                        ...payment,
+                                        planType: payment.planType || plan.planType
+                                    })) || []
+                                )
+                                .map((payment, index) => (
+                                    <tr key={`${payment._id}-${index}`}>
+                                        <td>{index + 1}</td>
+                                        <td>{payment.telegramAccountNo || 'N/A'}</td>
+                                        <td>{payment.planType}</td>
+                                        <td>{payment.createdAt ? new Date(payment.createdAt).toLocaleDateString('en-GB') : 'N/A'}</td>
+                                        <td>{calculateEndDate(payment.createdAt, payment.planType)}</td>
+                                    </tr>
+                                ))
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                {/* Purchase Modal */}
+                <Modal
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    title="Complete Your Subscription"
+                >
+                    {selectedPlan && (
+                        <div className={styles.modalContent}>
+                            <div className={styles.telegramIdSection}>
+                                <Input
+                                    type="text"
+                                    placeholder="Enter your Telegram ID"
+                                    value={telegramId}
+                                    onChange={(e) => setTelegramId(e.target.value)}
+                                    className={styles.couponInput}
+                                    required
+                                />
+                            </div>
+                            <div className={styles.planInfo}>
+                                <h3>{selectedPlan.planType} Plan</h3>
+                                <p>
+                                    <span>Original Price:</span>
+                                    <span>${selectedPlan.originalPrice?.toFixed(2) || '0.00'}</span>
+                                </p>
+
+                                {selectedPlan.commonDiscount > 0 && (
+                                    <p className={styles.discountText}>
+                                        <span>Common Discount ({selectedPlan.commonDiscount}%):</span>
+                                        <span>-${((selectedPlan.originalPrice * selectedPlan.commonDiscount) / 100).toFixed(2)}</span>
+                                    </p>
+                                )}
+
+                                {appliedCoupon && (
+                                    <p className={styles.discountText}>
+                                        <span>Coupon Discount ({appliedCoupon.discount}%):</span>
+                                        <span>-${((selectedPlan.originalPrice) * (appliedCoupon.discount / 100)).toFixed(2)}</span>
+                                    </p>
+                                )}
+
+                                <h4 className={styles.totalPrice}>
+                                    <span>Total Amount:</span>
+                                    <span>${selectedPlan.totalPrice?.toFixed(2) || '0.00'}</span>
+                                </h4>
+                            </div>
+
+
+
+                            <div className={styles.couponSection}>
+                                <Input
+                                    type="text"
+                                    placeholder="Enter coupon code"
+                                    value={coupon}
+                                    onChange={(e) => setCoupon(e.target.value)}
+                                    disabled={!!appliedCoupon}
+                                    className={styles.couponInput}
+                                />
+                                <OutlineButton
+                                    text={appliedCoupon ? 'Applied' : 'Apply'}
+                                    onClick={handleApplyCoupon}
+                                    disabled={isValidating || !!appliedCoupon || !coupon.trim()}
+                                    isLoading={isValidating}
+                                    variant={appliedCoupon ? 'secondary' : 'primary'}
+                                />
+                            </div>
+
+                            {error && <p className={styles.errorText}>{error}</p>}
+
+                            <div className={styles.modalActions}>
+                                <Button
+                                    text="Cancel"
+                                    variant="outline"
+                                    onClick={() => setIsModalOpen(false)}
+                                />
+                                <Button
+                                    text={`Pay $${selectedPlan.totalPrice?.toFixed(2) || '0.00'}`}
+                                    onClick={handlePurchase}
+                                    disabled={isProcessingPayment}
+                                    isLoading={isProcessingPayment}
+                                />
+                            </div>
+                        </div>
+                    )}
+                </Modal>
             </div>
         </div>
     );

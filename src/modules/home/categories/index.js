@@ -3,9 +3,11 @@ import React, { useEffect, useState } from 'react'
 import styles from './categories.module.scss'
 import Slider from "react-slick";
 import { getAllCourseCategory } from '@/compoents/api/dashboard';
+import { useRouter } from 'next/navigation';
 
 
 export default function Categories() {
+    const router = useRouter();
     const settings = {
         dots: true,
         infinite: true,
@@ -40,7 +42,7 @@ export default function Categories() {
 
     const fetchCategories = async () => {
         try {
-            const response = await getAllCourseCategory();
+            const response = await getAllCourseCategory({});
             setCategories(response.payload.data || []);
         } catch (error) {
             console.error("Error fetching categories:", error);
@@ -63,9 +65,9 @@ export default function Categories() {
                     </p>
                 </div>
                 <Slider {...settings}>
-                    {categories.map((cat) => {
+                    {categories?.map((cat) => {
                             return (
-                                <div className={styles.box}>
+                                <div className={styles.box} key={cat?._id} onClick={() => router.push(`/category/${cat?._id}`)}>
                                     <div className={styles.image}>
                                         <img src={cat?.image} />
                                     </div>
@@ -73,7 +75,7 @@ export default function Categories() {
                                         <p>
                                             {cat?.name}
                                         </p>
-                                        <span>112 Courses</span>
+                                        <span>{cat?.courseCount} {cat?.courseCount <= 1 ? 'Course' : 'Courses'}</span>
                                     </div>
                                 </div>
                             )
