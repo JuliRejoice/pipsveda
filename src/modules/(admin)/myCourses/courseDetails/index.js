@@ -855,13 +855,13 @@ export default function CourseDetails({ params }) {
             )}
 
 
-            {isPaid && (
+            {/* {isPaid && (
               <ReviewSystem
                 courseId={id}
                 isPaid={isPaid}
                 userId={user?._id}
               />
-            )}
+            )} */}
 
             {!isPaid && <div className={styles.locksystem}>
               <div>
