@@ -68,6 +68,9 @@
         }
 
         .griditems {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
             background-color: var(--bg-white);
             padding: 16px;
             width: calc(33.33% - 22px);

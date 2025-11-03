@@ -117,7 +117,7 @@ export default function AutomateTrades() {
                     </div>
                     <FlashIcon />
                   </div>
-                  <div className={styles.planplangrdmain}>
+                  {/* <div className={styles.planplangrdmain}>
                     <div className={styles.planplangrd}>
                       {strategy.strategyPlan?.slice(0, 2).map((plan) => (
                         <div className={styles.planitem} key={plan._id}>
@@ -127,7 +127,7 @@ export default function AutomateTrades() {
                         </div>
                       ))}
                     </div>
-                  </div>
+                  </div> */}
                 </div>
                 <div className={styles.details}>
                   <div className={styles.listAlignment}>
