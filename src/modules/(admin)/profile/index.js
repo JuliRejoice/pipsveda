@@ -5,7 +5,8 @@ import Breadcumbs from '../breadcumbs';
 import Input from '@/compoents/input';
 import Button from '@/compoents/button';
 import { getCookie, setCookie } from '../../../../cookie';
-import { editProfile, getProfile } from '@/compoents/api/auth';
+import { editProfile, getProfile, uploadImage } from '@/compoents/api/auth';
+import UserIcon from '@/icons/userIcon';
 import toast from 'react-hot-toast';
 import Dropdownarrow from '@/icons/dropdownarrow';
 import { regions } from '@/regions';
@@ -32,9 +33,13 @@ export default function Profile() {
     const [dateError, setDateError] = useState('');
     const [phoneError, setPhoneError] = useState('');
     const [initialUserData, setInitialUserData] = useState(null);
+    const [profileImage, setProfileImage] = useState(null);
+    const [previewImage, setPreviewImage] = useState('');
 
     const countryRef = useRef(null);
     const genderRef = useRef(null);
+
+    console.log(profileImage)
 
     useEffect(() => {
         fetchProfile();
@@ -45,8 +50,12 @@ export default function Profile() {
         const parsedUser = JSON.parse(userData)._id;
         const response = await getProfile(parsedUser);
         const user = response.payload.data[0];
+        console.log(user)
         setUser(user);
         setInitialUserData(user);
+        if (user.profileImage) {
+            setPreviewImage(user.profileImage);
+        }
 
         // Set birthdate if available
         if (user?.birthday) {
@@ -82,7 +91,7 @@ export default function Profile() {
     }, []);
 
     const validateUser = () => {
-        if (!user.name || !user.phone || !user.location || !user.gender || !birthDate) {
+        if (!user.name || !user.phone  || !user.gender || !birthDate) {
             return false;
         }
         return true;
@@ -121,14 +130,19 @@ export default function Profile() {
             formData.append('name', user.name?.trim() || '');
             formData.append('phone', user.phone?.trim() || '');
             formData.append('location', user.location || '');
+            formData.append('city', user.city || '');
+            formData.append('state', user.state || '');
+            formData.append('country', user.country || '');
             formData.append('gender', selectedGender || user.gender || '');
             formData.append('countryCode', selectedCountryCode);
             formData.append('birthday', birthDate ? birthDate.toISOString().split('T')[0] : '');
 
-            // If you have a file input for profile picture, you can append it like this:
-            // if (profilePicture) {
-            //     formData.append('profilePicture', profilePicture);
-            // }
+            // Append profile image if selected
+            console.log(profileImage)
+            if (profileImage) {
+                const imageRes = await uploadImage(profileImage);
+                formData.append('profileImage', imageRes.payload);
+            }
 
             const res = await editProfile(user._id, formData);
 
@@ -149,25 +163,74 @@ export default function Profile() {
     const hasChanges = () => {
         if (!initialUserData || !user) return false;
 
-        return (
+        // Check if any profile field has changed
+        const profileFieldsChanged = (
             user.name !== initialUserData.name ||
             user.phone !== initialUserData.phone ||
-            user.location !== initialUserData.location ||
             user.gender !== initialUserData.gender ||
+            user.location !== initialUserData.location ||
+            user.city !== initialUserData.city ||
+            user.state !== initialUserData.state ||
+            user.country !== initialUserData.country ||
             (birthDate && initialUserData.birthday &&
                 new Date(birthDate).toISOString().split('T')[0] !== initialUserData.birthday)
         );
+
+        // Check if profile image has changed
+        const imageChanged = (
+            profileImage !== null || // New image selected
+            (previewImage && previewImage !== initialUserData.profileImage) // Preview URL changed
+        );
+
+        return profileFieldsChanged || imageChanged;
     };
 
     return (
         <div className={styles.profilePageAlignment}>
             <Breadcumbs />
             <div className={styles.profileBox}>
+                {/* Profile Image Upload */}
+              
                 <div className={styles.cardHeader}>
                     <h2>Edit Profile</h2>
                     <p>
                         Update your personal information, contact details, and preferences to keep your profile up to date.
                     </p>
+                </div>
+
+                  <div className={styles.profileImageContainer}>
+                    <div className={styles.profileImageWrapper}>
+                        {previewImage ? (
+                            <img 
+                                src={previewImage} 
+                                alt="Profile" 
+                                className={styles.profileImage}
+                                onError={(e) => {
+                                    e.target.style.display = 'none';
+                                    e.target.nextElementSibling.style.display = 'block';
+                                }}
+                            />
+                        ) : (
+                            <div className={styles.userIconWrapper}>
+                                <UserIcon />
+                            </div>
+                        )}
+                        <label className={styles.profileImageUpload}>
+                            <input 
+                                type="file" 
+                                accept="image/*" 
+                                style={{ display: 'none' }} 
+                                onChange={(e) => {
+                                    const file = e.target.files[0];
+                                    if (file) {
+                                        setProfileImage(file);
+                                        setPreviewImage(URL.createObjectURL(file));
+                                    }
+                                }}
+                            />
+                            <span>Edit Photo</span>
+                        </label>
+                    </div>
                 </div>
 
                 <div className={styles.subbox}>
@@ -241,9 +304,42 @@ export default function Profile() {
                             </div>
                         </div>
 
-                        <Input type="text" name="location" label='Address' placeholder='Enter your location'
-                            value={user?.location}
-                            onChange={(e) => setUser({ ...user, location: e.target.value })} />
+                            
+                        <Input 
+                            type="text" 
+                            name="location" 
+                            label='Location' 
+                            placeholder='Enter your full address'
+                            value={user?.location || ''}
+                            onChange={(e) => setUser({ ...user, location: e.target.value })} 
+                        />
+
+                        <Input 
+                            type="text" 
+                            name="city" 
+                            label='City' 
+                            placeholder='Enter your city'
+                            value={user?.city || ''}
+                            onChange={(e) => setUser({ ...user, city: e.target.value })} 
+                        />
+
+                        <Input 
+                            type="text" 
+                            name="state" 
+                            label='State/Province' 
+                            placeholder='Enter your state or province'
+                            value={user?.state || ''}
+                            onChange={(e) => setUser({ ...user, state: e.target.value })} 
+                        />
+
+                        <Input 
+                            type="text" 
+                            name="country" 
+                            label='Country' 
+                            placeholder='Enter your country'
+                            value={user?.country || ''}
+                            onChange={(e) => setUser({ ...user, country: e.target.value })} 
+                        />
 
                         {/* Gender dropdown */}
                         <div className={styles.dropdownrelative} ref={genderRef}>

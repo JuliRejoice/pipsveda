@@ -5,7 +5,7 @@ import ClockIcon from "@/icons/clockIcon";
 import BathIcon from "@/icons/bathIcon";
 import StarIcon from "@/icons/starIcon";
 import ProfileGroupIcon from "@/icons/profileGroupIcon";
-import { getChapters, getCourses, getPaymentUrl, getSessionData } from "@/compoents/api/dashboard";
+import { getChapters, getCourses, getPaymentUrl, getSessionData, getBatches, getCourseSyllabus } from "@/compoents/api/dashboard";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import OutlineButton from "@/compoents/outlineButton";
@@ -18,6 +18,7 @@ import Slider from "react-slick/lib/slider";
 import { getCookie } from "../../../../../cookie";
 import CustomVideoPlayer from "@/compoents/CustomVideoPlayer";
 import ReviewSystem from "@/compoents/reviewSystem";
+import { getOneBatch } from "@/compoents/api/dashboard";
 
 
 const LockIcon = '/assets/icons/lock.svg';
@@ -133,6 +134,11 @@ export default function CourseDetails({ params }) {
   const [isLiveOnline, setIsLiveOnline] = useState(false);
   const [isInPerson, setIsInPerson] = useState(false);
   const [selectedCourse, setSelectedCourse] = useState(null);
+  const [isCertificateAvailable, setIsCertificateAvailable] = useState(false);
+  const [batchDetails, setBatchDetails] = useState(null);
+  const [syllabus, setSyllabus] = useState([]);
+  const [isLoadingBatch, setIsLoadingBatch] = useState(false);
+  const [expandedSyllabus, setExpandedSyllabus] = useState(null);
 
 
   const id = params;
@@ -144,6 +150,13 @@ export default function CourseDetails({ params }) {
     if (selectedCourse) {
       setIsLiveOnline(selectedCourse?.courseType === 'live');
       setIsInPerson(selectedCourse?.courseType === 'physical');
+
+      // Check if certificate is available (course has ended and user has paid)
+      if (selectedCourse.courseEnd && selectedCourse.isPayment) {
+        const courseEndDate = new Date(selectedCourse.courseEnd);
+        const today = new Date();
+        setIsCertificateAvailable(courseEndDate < today);
+      }
     }
   }, [selectedCourse])
 
@@ -168,6 +181,8 @@ export default function CourseDetails({ params }) {
     }
   };
 
+  console.log("isPaid", isPaid);
+
   const fetchSessions = async () => {
     try {
       setLoading(true);
@@ -185,14 +200,49 @@ export default function CourseDetails({ params }) {
     }
   };
 
+  const fetchBatchDetails = async (batchId) => {
+    try {
+      setIsLoadingBatch(true);
+      // Use getOneBatch to fetch a specific batch by ID
+      const response = await getOneBatch(batchId);
+      // The API returns the batch data directly in the response
+      setBatchDetails(response.payload?.data[0] || null);
+    } catch (error) {
+      console.error('Error fetching batch details:', error);
+      setBatchDetails(null);
+    } finally {
+      setIsLoadingBatch(false);
+    }
+  };
+
+  const fetchSyllabusData = async (courseId) => {
+    try {
+      // The getCourseSyllabus function is already using the correct endpoint
+      const response = await getCourseSyllabus(courseId);
+      // The API returns the syllabus data in the payload.data array
+      setSyllabus(response.payload?.data || []);
+    } catch (error) {
+      console.error('Error fetching syllabus:', error);
+      setSyllabus([]);
+    }
+  };
+
   useEffect(() => {
     if (!id) return;
-    if (isLiveOnline) {
+    if (isLiveOnline || isInPerson) {
+      // For live/online courses, fetch batch details and syllabus
+      const userBatchId = selectedCourse?.payment?.[0]?.batchId;
+      console.log(userBatchId)
+      if (userBatchId) {
+        fetchBatchDetails(userBatchId);
+      }
+      fetchSyllabusData(id);
       fetchSessions();
     } else {
+      // For self-paced courses
       fetchChapters();
     }
-  }, [id, isLiveOnline]);
+  }, [id, isLiveOnline, isInPerson, selectedCourse?.payment?.[0]?.batchId]);
 
   // Ensure first chapter is selected when chapters change
   useEffect(() => {
@@ -277,12 +327,40 @@ export default function CourseDetails({ params }) {
       } else {
         router.replace(response?.payload?.data?.checkout_url);
       }
-
     } catch (error) {
       console.error("Payment error:", error);
       // Handle error appropriately
     } finally {
       setIsProcessingPayment(false);
+    }
+  };
+
+  const handleDownloadCertificate = async () => {
+    try {
+      // Replace this with your actual certificate download logic
+      const response = await fetch(`/api/certificate/${selectedCourse._id}`, {
+        headers: {
+          'Authorization': `Bearer ${getCookie('token')}`
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to download certificate');
+      }
+
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `certificate-${selectedCourse.CourseName.replace(/\s+/g, '-').toLowerCase()}.pdf`;
+      document.body.appendChild(a);
+      a.click();
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+
+    } catch (error) {
+      console.error('Error downloading certificate:', error);
+      toast.error('Failed to download certificate. Please try again.');
     }
   };
 
@@ -297,14 +375,14 @@ export default function CourseDetails({ params }) {
           <h3>Payment Successful!</h3>
           <p>Thank you for your purchase. You now have full access to this course.</p>
         </div>
-        {isInPerson &&
+        {isInPerson && (
           <div className={styles.paymentmodaldetails}>
             <p>Please Contact for extra Information.</p>
             <p><span>Address</span> : {selectedCourse?.location && `${selectedCourse?.location}`}</p>
             <p><span>Email</span> : {selectedCourse?.email && `${selectedCourse?.email}`}</p>
             <p><span>Phone</span> : {selectedCourse?.phone && `${selectedCourse?.phone}`}</p>
           </div>
-        }
+        )}
         <Button
           text="Start Learning"
           onClick={() => {
@@ -314,10 +392,33 @@ export default function CourseDetails({ params }) {
         />
       </div>
     ) : (
+      // <div className={styles.paymentModalContent}>
+      //   <div className={styles.paymentModaltitlecontent}>
+      //     <img src={ErrorIcon} alt="Cancelled" className={styles.paymentIcon} />
+      //     <h3>Payment Cancelled</h3>
+      //     <p>Your payment was not completed. Please try again to access the course.</p>
+      //   </div>
+      //   <div className={styles.modalButtons}>
+      //     <OutlineButton
+      //       text="Try Again"
+      //       onClick={() => {
+      //         setShowPaymentModal(false);
+      //         handlePayment();
+      //       }}
+      //     />
+      //     <Button
+      //       text="Close"
+      //       onClick={() => setShowPaymentModal(false)}
+      //       style={{ marginLeft: '10px' }}
+      //     />
+      //   </div>
+      // </div>
       <div className={styles.paymentModalContent}>
-        <img src={ErrorIcon} alt="Cancelled" className={styles.paymentIcon} />
-        <h3>Payment Cancelled</h3>
-        <p>Your payment was not completed. Please try again to access the course.</p>
+        <div className={styles.paymentModaltitlecontent}>
+          <img src={ErrorIcon} alt="Cancelled" className={styles.paymentIcon} />
+          <h3>Payment Cancelled</h3>
+          <p>Your payment was not completed. Please try again to access the course.</p>
+        </div>
         <div className={styles.modalButtons}>
           <OutlineButton
             text="Try Again"
@@ -400,7 +501,7 @@ export default function CourseDetails({ params }) {
   return (
     <div className={styles.courseDetailsBox}>
       {renderPaymentModal()}
-      {isLiveOnline ? (
+      {(isLiveOnline || isInPerson) ? (
         <div className={styles.sessionContainer}>
           <div className={styles.textStyle}>
             <div className={styles.title}>
@@ -423,10 +524,6 @@ export default function CourseDetails({ params }) {
                   <BathIcon />
                   <span>{selectedCourse?.instructor?.name || 'Instructor'}</span>
                 </div>
-                {/* <div className={styles.iconText}>
-                  <StarIcon />
-                  <span>4.8</span>
-                </div> */}
                 <div className={styles.iconText}>
                   <ProfileGroupIcon />
                   <span>{selectedCourse?.subscribed || '0'}</span>
@@ -434,70 +531,179 @@ export default function CourseDetails({ params }) {
                 <div className={styles.iconText}>
                   <span>Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString('en-GB')} | English</span>
                 </div>
+                {selectedCourse?.courseEnd && (
+                  <div className={styles.iconText}>
+                    <span>Course Ends: {new Date(selectedCourse.courseEnd).toLocaleDateString('en-GB')}</span>
+                  </div>
+                )}
               </div>
-              {!isPaid && <div>
-                <Button
-                  fill
-                  text={isProcessingPayment ? 'Enrolling...' : 'Enroll Now'}
-                  icon={isProcessingPayment ? null : RightBlackIcon}
-                  onClick={handlePayment}
-                  disabled={isProcessingPayment}
-                />
-              </div>}
+              <div style={{ display: 'flex', gap: '12px' }}>
+                {isPaid && (
+                  <Button
+                    fill
+                    text="Download Certificate"
+                    onClick={handleDownloadCertificate}
+                    style={{ background: isCertificateAvailable ? '#10B981' : '#9CA3AF' }}
+                    disabled={!isCertificateAvailable}
+                  />
+                )}
+                {!isPaid && (
+                  <Button
+                    fill
+                    text={isProcessingPayment ? 'Enrolling...' : 'Enroll Now'}
+                    icon={isProcessingPayment ? null : RightBlackIcon}
+                    onClick={handlePayment}
+                    disabled={isProcessingPayment}
+                  />
+                )}
+              </div>
             </div>
           </div>
-          <h2>Upcoming Sessions</h2>
-          <div className={`${styles.sessionListmain} ${!isPaid ? styles.lockedSession : ''}`}>
-            <div className={styles.sessionListslider}>
-              {(upcomingSessions.length > 0 && !loading) ? (
-                <Slider {...settings}>
-                  {upcomingSessions.map((session) => (
-                    <div key={session._id}>
-                      <div className={styles.sessionCard}>
-                        <div className={styles.sessionVideo}>
-                          <img
-                            src={session.sessionVideo}
-                            alt={session.sessionName}
-                            className={styles.videoThumbnail}
+          {(isLiveOnline || isInPerson) ? (
+            <>
+              {/* Batch Details Section */}
+              <h3 className={styles.sectionTitle}>Batch Details</h3>
+              <div className={styles.batchDetails}>
+                {isLoadingBatch ? (
+                  <div className={styles.skeletonLoader}>
+                    <Skeleton height={100} />
+                  </div>
+                ) : batchDetails ? (
+                  <div className={styles.batchInfo}>
+                    <div className={styles.batchMeta}>
+                      <div className={styles.metaItem}>
+                        <strong>Start Date:</strong> {new Date(batchDetails.startDate).toLocaleDateString()}
+                      </div>
+                      <div className={styles.metaItem}>
+                        <strong>End Date:</strong> {new Date(batchDetails.endDate).toLocaleDateString()}
+                      </div>
+                      {batchDetails.meetingLink && (
+                        <div className={styles.meetingLink}>
+                          <Button
+                            onClick={() => window.open(batchDetails.meetingLink, '_blank')}
+                            text="Join Live Class"
+                            disabled={!isPaid}
                           />
                         </div>
-                        <div className={styles.sessionDetails}>
-                          <h3>{session.sessionName}</h3>
-                          <p>{session.description}</p>
-                          <div className={styles.sessionMeta}>
-                            <div style={{ display: 'flex', gap: '30px' }}>
-                              <span><strong>Date:</strong> {new Date(session.date).toLocaleDateString()}</span>
-                              <span><strong>Time:</strong> {session.time}</span>
-                            </div>
-                            <span><strong>Instructor:</strong> {session.courseId?.instructor?.name}</span>
+                      )}
+                    </div>
+                  </div>
+                ) : (
+                  <div className={styles.emptyState}>
+                    <svg className={styles.emptyIcon} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M12 8V12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M12 16H12.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    <h4>No Batch Details Available</h4>
+                    <p>There are no batch details to display at the moment. Please check back later or contact support for assistance.</p>
+                  </div>
+                )}
+              </div>
+
+              {/* Course Syllabus Section */}
+              <h3 className={styles.sectionTitle}>Course Syllabus</h3>
+              <div className={styles.syllabusContainer}>
+                {syllabus.length > 0 ? (
+                  <div className={styles.accordion}>
+                    {syllabus.map((item, index) => (
+                      <div key={item._id} className={styles.accordionItem}>
+                        <div
+                          className={`${styles.accordionHeader} ${expandedSyllabus === index ? styles.active : ''}`}
+                          onClick={() => setExpandedSyllabus(expandedSyllabus === index ? null : index)}
+                        >
+                          <h3>Chapter {index + 1}: {item.title}</h3>
+                          <span>{expandedSyllabus === index ? '−' : '+'}</span>
+                        </div>
+                        <div className={`${styles.accordionContent} ${expandedSyllabus === index ? styles.active : ''}`}>
+                          <div className={styles.syllabusContent}>
+                            <p>{item.description || 'No description available.'}</p>
+                            {item.topics && item.topics.length > 0 && (
+                              <div className={styles.topicsList}>
+                                <h4>Topics:</h4>
+                                <ul>
+                                  {item.topics.map((topic, i) => (
+                                    <li key={i}>{topic}</li>
+                                  ))}
+                                </ul>
+                              </div>
+                            )}
                           </div>
-                          {session.meetingLink && (
-                            <Button
-                              onClick={() => isPaid && window.open(session.meetingLink, '_blank')}
-                              text="Join Meeting"
-                              disabled={!isPaid}
-                            />
-                          )}
                         </div>
                       </div>
-                    </div>
-                  ))}
-                </Slider>
-              ) : (
-                <div className={styles.noSessions}>
-                  <p>No upcoming sessions available. Please check back later for new schedules.</p>
-                </div>
-              )}
-            </div>
-            {!isPaid && (
-              <div className={styles.sessionLockOverlay}>
-                <div className={styles.lockContent}>
-                  <img src={LockIcon} alt="Locked" className={styles.lockIcon} />
-                  <p>Enroll to unlock this session</p>
-                </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className={`${styles.emptyState} ${styles.withMargin}`}>
+                    <svg className={styles.emptyIcon} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M14 2V8H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M16 13H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M16 17H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M10 9H9H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                    <h4>No Syllabus Available</h4>
+                    <p>This course doesn't have a syllabus yet. Please check back later or contact the course instructor for more information.</p>
+                  </div>
+                )}
               </div>
-            )}
-          </div>
+            </>
+          ) : (
+            <>
+              <h2>Upcoming Sessions</h2>
+              <div className={`${styles.sessionListmain} ${!isPaid ? styles.lockedSession : ''}`}>
+                <div className={styles.sessionListslider}>
+                  {(upcomingSessions.length > 0 && !loading) ? (
+                    <Slider {...settings}>
+                      {upcomingSessions.map((session) => (
+                        <div key={session._id}>
+                          <div className={styles.sessionCard}>
+                            <div className={styles.sessionVideo}>
+                              <img
+                                src={session.sessionVideo}
+                                alt={session.sessionName}
+                                className={styles.videoThumbnail}
+                              />
+                            </div>
+                            <div className={styles.sessionDetails}>
+                              <h3>{session.sessionName}</h3>
+                              <p>{session.description}</p>
+                              <div className={styles.sessionMeta}>
+                                <div style={{ display: 'flex', gap: '30px' }}>
+                                  <span><strong>Date:</strong> {new Date(session.date).toLocaleDateString()}</span>
+                                  <span><strong>Time:</strong> {session.time}</span>
+                                </div>
+                                <span><strong>Instructor:</strong> {session.courseId?.instructor?.name}</span>
+                              </div>
+                              {session.meetingLink && (
+                                <Button
+                                  onClick={() => isPaid && window.open(session.meetingLink, '_blank')}
+                                  text="Join Meeting"
+                                  disabled={!isPaid}
+                                />
+                              )}
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </Slider>
+                  ) : (
+                    <div className={styles.noSessions}>
+                      <p>No upcoming sessions available. Please check back later for new schedules.</p>
+                    </div>
+                  )}
+                </div>
+                {!isPaid && (
+                  <div className={styles.sessionLockOverlay}>
+                    <div className={styles.lockContent}>
+                      <img src={LockIcon} alt="Locked" className={styles.lockIcon} />
+                      <p>Enroll to unlock this session</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
         </div>
       ) : (
         <div className={styles.textStyle}>
@@ -533,6 +739,15 @@ export default function CourseDetails({ params }) {
                 <span>Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString('en-GB')} | English</span>
               </div>
             </div>
+            {isPaid && (
+              <Button
+                fill
+                text="Download Certificate"
+                onClick={handleDownloadCertificate}
+                style={{ background: isCertificateAvailable ? '#10B981' : '#9CA3AF' }}
+                disabled={!isCertificateAvailable}
+              />
+            )}
             {!isPaid && <div>
               <Button
                 text={isProcessingPayment ? 'Enrolling...' : 'Enroll Now'}
@@ -561,7 +776,7 @@ export default function CourseDetails({ params }) {
               ))}
             </div>
             {selectedChapter && chapters.length > 0 ? (
-              <div className={`${styles.mainGrid} ${!isPaid ? styles.locked : ''}`}>
+              <div className={`${!isPaid ? styles.locked : ''}`}>
                 <div className={styles.items}>
                   <div className={styles.image}>
                     {selectedChapter.chapterVideo ? (
@@ -599,7 +814,7 @@ export default function CourseDetails({ params }) {
                             controlsList="nodownload"
                             disablePictureInPicture
                             noremoteplayback
-                            className={styles.videoPlayer}
+                          // className={styles.videoPlayer}
                           />
                         </div>
                       )
@@ -609,7 +824,7 @@ export default function CourseDetails({ params }) {
                   </div>
                 </div>
                 <div className={styles.items}>
-                  <div className={styles.details}>
+                  <div className={styles.details} style={{ marginLeft: '20px' }}>
                     <h4>Chapter {selectedChapter.chapterNo} : {selectedChapter.chapterName || 'Untitled Chapter'}</h4>
                     <p>{selectedChapter.description || 'No description available for this chapter.'}
                       {!selectedChapter.description && (

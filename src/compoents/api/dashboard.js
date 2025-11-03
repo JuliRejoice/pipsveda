@@ -299,3 +299,24 @@ export const getBatches = async (data) => {
     throw error;
   }
 };
+
+export const getOneBatch = async (id) => {
+
+  try {
+    const response = await api.get(`/batch/getAllBatch?id=${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching batches:', error);
+    throw error;
+  }
+};
+
+export const getCourseSyllabus = async (id) => {
+  try {
+    const response = await api.get(`/syllabus/getAllSyllabus?courseId=${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching course syllabus:', error);
+    throw error;
+  }
+};

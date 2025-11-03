@@ -103,9 +103,9 @@ export default function FinancialFreedom() {
                 const response = await getCourseByType();
                 if (response && response.payload && response.payload.courses) {
                     setCourses({
-                        recorded: response.payload.courses.recorded.slice(0, 5) || [],
-                        live: response.payload.courses.live.slice(0, 5) || [],
-                        physical: response.payload.courses.physical.slice(0, 5) || []
+                        recorded: response.payload.courses.recorded.slice(0, 3) || [],
+                        live: response.payload.courses.live.slice(0, 3) || [],
+                        physical: response.payload.courses.physical.slice(0, 3) || []
                     });
                 }
             } catch (error) {

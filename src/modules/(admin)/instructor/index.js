@@ -126,54 +126,20 @@ function Instructor() {
                                 <p className={styles.bio}>
                                     {instructor.bio || 'Passionate educator dedicated to student success.'}
                                 </p>
-                                {renderRating(instructor.rating || 0)}
+                                <div className={styles.footerContainer}>
+                                    {renderRating(instructor.rating || 0)}
+                                    <span 
+                                        className={styles.viewProfileLink}
+                                        onClick={() => {
+                                            router.push(`/instructor/${instructor._id}?name=${instructor.name}`);   
+                                        }}
+                                    >
+                                        View Profile
+                                    </span>
+                                </div>
                             </div>
                             
-                            <div className={styles.footer}>
-                                {/* <div className={styles.socialLinks}>
-                                    {instructor.linkedin && (
-                                        <a 
-                                            href={`https://linkedin.com/in/${instructor.linkedin}`} 
-                                            target="_blank" 
-                                            rel="noopener noreferrer"
-                                            aria-label="LinkedIn"
-                                            className={styles.socialLink}
-                                        >
-                                            <img src={LinkedinIcon} alt="LinkedIn" />
-                                        </a>
-                                    )}
-                                    {instructor.twitter && (
-                                        <a 
-                                            href={`https://twitter.com/${instructor.twitter}`} 
-                                            target="_blank" 
-                                            rel="noopener noreferrer"
-                                            aria-label="Twitter"
-                                            className={styles.socialLink}
-                                        >
-                                            <img src={TwitterIcon} alt="Twitter" />
-                                        </a>
-                                    )}
-                                    {instructor.website && (
-                                        <a 
-                                            href={instructor.website} 
-                                            target="_blank" 
-                                            rel="noopener noreferrer"
-                                            aria-label="Website"
-                                            className={styles.socialLink}
-                                        >
-                                            <img src={GlobeIcon} alt="Website" />
-                                        </a>
-                                    )}
-                                </div> */}
-                                
-                                <Button 
-                                   text="View Profile" 
-                                    onClick={() => {
-                                        router.push(`/instructor/${instructor._id}?name=${instructor.name}`);   
-                                    }}
-                                />
-                               
-                            </div>
+                            
                         </div>
                     </div>
                 ))}

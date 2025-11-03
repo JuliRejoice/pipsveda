@@ -26,11 +26,59 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", ...props })
   const [isMuted, setIsMuted] = useState(true);
   const [showVolumeSlider, setShowVolumeSlider] = useState(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [isInView, setIsInView] = useState(true);
+  const [wasPlaying, setWasPlaying] = useState(false);
 
   // --- Watch Tracking ---
   const [maxWatchedTime, setMaxWatchedTime] = useState(0);
   const [totalWatched, setTotalWatched] = useState(0);
   const watchedSetRef = useRef(new Set());
+
+  // Handle scroll visibility
+  useEffect(() => {
+    if (!containerRef.current || !videoRef.current) return;
+
+    const handleIntersection = (entries) => {
+      const [entry] = entries;
+      const video = videoRef.current;
+
+      if (entry.isIntersecting) {
+        // When coming back into view
+        setIsInView(true);
+        if (wasPlaying) {
+          const playPromise = video.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(error => {
+              console.log('Playback failed:', error);
+              setWasPlaying(false);
+            });
+          }
+        }
+      } else {
+        // When going out of view
+        setIsInView(false);
+        if (!video.paused) {
+          setWasPlaying(true);
+          video.pause();
+        }
+      }
+    };
+
+    const observer = new IntersectionObserver(handleIntersection, {
+      root: null,
+      threshold: 0.5,
+      rootMargin: '0px'
+    });
+
+    const currentContainer = containerRef.current;
+    observer.observe(currentContainer);
+
+    return () => {
+      if (currentContainer) {
+        observer.unobserve(currentContainer);
+      }
+    };
+  }, [wasPlaying]);
 
   useEffect(() => {
     if (!src) {
@@ -111,8 +159,21 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", ...props })
     };
 
     const handlePlay = () => {
-      setIsPlaying(true);
-      renderFrame();
+      const video = videoRef.current;
+      if (!video) return;
+
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          setIsPlaying(true);
+          setWasPlaying(true);
+          renderFrame();
+        }).catch(error => {
+          console.log('Playback failed:', error);
+          setIsPlaying(false);
+          setWasPlaying(false);
+        });
+      }
     };
 
     const handlePause = () => {
@@ -163,9 +224,26 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", ...props })
   }, [isFullscreen]);
 
   const togglePlay = () => {
-    if (!videoRef.current) return;
-    if (isPlaying) videoRef.current.pause();
-    else videoRef.current.play().catch((err) => console.error("Play failed:", err));
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (isPlaying) {
+      video.pause();
+      setIsPlaying(false);
+      setWasPlaying(false);
+    } else {
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          setIsPlaying(true);
+          setWasPlaying(true);
+        }).catch(error => {
+          console.log('Playback failed:', error);
+          setIsPlaying(false);
+          setWasPlaying(false);
+        });
+      }
+    }
   };
 
   const toggleMute = () => setIsMuted(!isMuted);

@@ -5,7 +5,7 @@ import ClockIcon from "@/icons/clockIcon";
 import BathIcon from "@/icons/bathIcon";
 import StarIcon from "@/icons/starIcon";
 import ProfileGroupIcon from "@/icons/profileGroupIcon";
-import { getBatches, getChapters, getCourses, getPaymentUrl, getSessionData } from "@/compoents/api/dashboard";
+import { getBatches, getChapters, getCourses, getPaymentUrl, getSessionData, getCourseSyllabus } from "@/compoents/api/dashboard";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import OutlineButton from "@/compoents/outlineButton";
@@ -18,6 +18,7 @@ import Slider from "react-slick/lib/slider";
 import { getCookie } from "../../../../../cookie";
 import CustomVideoPlayer from "@/compoents/CustomVideoPlayer";
 import BatchSelectionModal from "@/compoents/modal/BatchSelectionModal";
+import BeforePaymentModal from "./beforePaymentModal";
 
 
 const LockIcon = '/assets/icons/lock.svg';
@@ -132,9 +133,14 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
   const [sessions, setSessions] = useState([]);
   const [isLiveOnline, setIsLiveOnline] = useState(false);
   const [isInPerson, setIsInPerson] = useState(false);
+  const [isRecorded, setIsRecorded] = useState(false);
   const [isBeforepaymentModal, setIsBeforepaymentModal] = useState(false);
   const [batches, setBatches] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [selectedBatch, setSelectedBatch] = useState(null);
+  const [showBeforePayment, setShowBeforePayment] = useState(false);
+  const [syllabus, setSyllabus] = useState([]);
+  const [expandedSection, setExpandedSection] = useState(null);
 
   const id = params;
   const router = useRouter();
@@ -147,6 +153,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     if (selectedCourse) {
       setIsLiveOnline(selectedCourse?.courseType === 'live');
       setIsInPerson(selectedCourse?.courseType === 'physical');
+      setIsRecorded(selectedCourse?.courseType === 'recorded');
     }
   }, [selectedCourse])
 
@@ -188,6 +195,18 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     }
   };
 
+  const fetchSyllabus = async () => {
+    try {
+      const data = await getCourseSyllabus(id);
+      // The API returns an array of syllabus items, we'll take the first one as the main syllabus
+      const syllabusData = data?.payload?.data;
+      setSyllabus(syllabusData);
+    } catch (err) {
+      console.error("Error fetching syllabus:", err);
+      setError("Failed to load course syllabus. Please try again later.");
+    }
+  };
+
   useEffect(() => {
     if (!id) return;
     if (isLiveOnline) {
@@ -195,7 +214,8 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     } else {
       fetchChapters();
     }
-  }, [id, isLiveOnline]);
+    fetchSyllabus();
+  }, [id]);
 
 
   useEffect(() => {
@@ -281,44 +301,68 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
   };
 
   const fetchbatches = async (courseId) => {
-    try {
-      setIsBeforepaymentModal(true)
-      setIsLoading(true);
-      const response = await getBatches({ courseId });
-      console.log(response)
+    if (isInPerson || isLiveOnline) {
+
+
+      try {
+        setIsBeforepaymentModal(true)
+        setIsLoading(true);
+        const response = await getBatches({ courseId });
+        console.log(response)
         setBatches(response?.payload?.data);
-    } catch (error) {
-      console.error("Error fetching batches:", error);
-      toast.error("Failed to fetch batches");
-    } finally {
-      setIsLoading(false);
-      // setIsBeforepaymentModal(false)
+      } catch (error) {
+        console.error("Error fetching batches:", error);
+        toast.error("Failed to fetch batches");
+      } finally {
+        setIsLoading(false);
+        // setIsBeforepaymentModal(false)
+      }
+    }
+    else {
+      setShowBeforePayment(true);
     }
   };
 
-  const handleBatchSelect = async (batch) => {
-    console.log("batch", batch)
-     try {
+  const handleBatchSelect = (batch) => {
+    console.log("Selected batch:", batch);
+    const batchDetails = batches.find(b => b._id === batch);
+    setSelectedBatch(batchDetails);
+    setShowBeforePayment(true);
+    setIsBeforepaymentModal(false);
+  };
+
+  const handleConfirmPayment = async () => {
+    try {
       setIsProcessingPayment(true);
-      const response = await getPaymentUrl({
+
+      const paymentData = {
         success_url: window.location.href,
         cancel_url: window.location.href,
-        courseId: id,
-        batchId: batch
-      });
+        courseId: id
+      };
+
+      // Only add batchId for non-recorded courses
+      if (!isRecorded && selectedBatch?._id) {
+        paymentData.batchId = selectedBatch._id;
+      }
+
+      const response = await getPaymentUrl(paymentData);
+
       if (response?.payload?.code !== "00000") {
         toast.error("A payment session is already active and will expire in 10 minutes. Please complete the current payment or try again after it expires.");
       } else {
         router.replace(response?.payload?.data?.checkout_url);
       }
-
     } catch (error) {
       console.error("Payment error:", error);
-      // Handle error appropriately
+      toast.error("Failed to process payment. Please try again.");
     } finally {
       setIsProcessingPayment(false);
+      setShowBeforePayment(false);
     }
-  }
+  };
+
+  console.log(syllabus,'syllabus')
 
   const renderPaymentModal = () => {
     if (!showPaymentModal) return null;
@@ -348,25 +392,28 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
         />
       </div>
     ) : (
+
       <div className={styles.paymentModalContent}>
+      <div className={styles.paymentModaltitlecontent}>
         <img src={ErrorIcon} alt="Cancelled" className={styles.paymentIcon} />
         <h3>Payment Cancelled</h3>
         <p>Your payment was not completed. Please try again to access the course.</p>
-        <div className={styles.modalButtons}>
-          <OutlineButton
-            text="Try Again"
-            onClick={() => {
-              setShowPaymentModal(false);
-              handlePayment();
-            }}
-          />
-          <Button
-            text="Close"
-            onClick={() => setShowPaymentModal(false)}
-            style={{ marginLeft: '10px' }}
-          />
-        </div>
       </div>
+      <div className={styles.modalButtons}>
+        <OutlineButton
+          text="Try Again"
+          onClick={() => {
+            setShowPaymentModal(false);
+            handlePayment();
+          }}
+        />
+        <Button
+          text="Close"
+          onClick={() => setShowPaymentModal(false)}
+          style={{ marginLeft: '10px' }}
+        />
+      </div>
+    </div>
     );
 
     return (
@@ -376,6 +423,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     );
   };
 
+  console.log(expandedSection,'expandedSection')
   if (loading) {
     return isLiveOnline ? (
       <div className={styles.sessionContainer}>
@@ -421,6 +469,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     );
   }
 
+
   return (
     <div className={styles.courseDetailsBox}>
       {renderPaymentModal()}
@@ -457,13 +506,53 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                   text={isProcessingPayment ? 'Enrolling...' : 'Enroll Now'}
                   icon={isProcessingPayment ? null : RightBlackIcon}
                   // onClick={handlePayment}
-                  onClick={()=>fetchbatches(selectedCourse._id)}
+                  onClick={() => fetchbatches(selectedCourse._id)}
                   disabled={isProcessingPayment}
                 />
               </div>}
             </div>
           </div>
-          <h2>Upcoming Sessions</h2>
+
+          {/* Intro Video */}
+         <div>
+            <h2>
+              <CustomVideoPlayer
+                src={selectedCourse.introVideo}
+                userId={user?._id}
+                controls
+                controlsList="nodownload"
+                disablePictureInPicture
+                noremoteplayback
+              />
+            </h2>
+          </div>
+
+          {/* Course Syllabus */}
+          {syllabus.length > 0 && (
+            <div className={styles.syllabusContainer}>
+              <h2>Course Syllabus</h2>
+              <div className={styles.accordion}>
+                {syllabus.map((item, index) => (
+                  <div key={index} className={styles.accordionItem}>
+                    <div 
+                      className={`${styles.accordionHeader} ${expandedSection === index ? styles.active : ''}`}
+                      onClick={() => setExpandedSection(expandedSection === index ? null : index)}
+                    >
+                      <h2>Chapter {index + 1} : {item.title}</h2>
+                      <span>{expandedSection === index ? '−' : '+'}</span>
+                    </div>
+                    <div className={`${styles.accordionContent} ${expandedSection === index ? styles.active : ''}`}>
+                      <div className={styles.chapterContent}>
+                        <p>{item.description || 'No description available for this chapter.'}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* <h2>Upcoming Sessions</h2>
           <div className={`${styles.sessionListmain} ${!isPaid ? styles.lockedSession : ''}`}>
             <div className={styles.sessionListslider}>
               {(upcomingSessions.length > 0 && !loading) ? (
@@ -514,15 +603,15 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                 </div>
               </div>
             )}
-          </div>
+          </div> */}
         </div>
       ) : (
         <div className={styles.textStyle}>
           <h3>{selectedCourse?.CourseName || 'Course Name Not Available'}</h3>
           <p>{selectedCourse?.description || 'No description available'}</p>
           {!isPaid && <div className={styles.price}>
-              <h4 className={styles.priceText}>${selectedCourse.price}</h4>
-            </div>}
+            <h4 className={styles.priceText}>${selectedCourse.price}</h4>
+          </div>}
           <div className={styles.alignments}>
             <div>
               <div className={styles.allIconTextAlignment}>
@@ -547,7 +636,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                 </div>
               </div>
             </div>
-           
+
             {!isPaid && <div>
               <Button
                 text={isProcessingPayment ? 'Enrolling...' : 'Enroll Now'}
@@ -565,7 +654,20 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
               {selectedCourse?.phone && <div className={styles.physicaldetail}><img src={CallIcon} alt='ChatIcon' /><p>{selectedCourse?.phone}</p></div>}
             </div>
           </div>}
-          <div className={styles.mainrelative}>
+
+          <div>
+            <h2>
+              <CustomVideoPlayer
+                src={selectedCourse.introVideo}
+                userId={user?._id}
+                controls
+                controlsList="nodownload"
+                disablePictureInPicture
+                noremoteplayback
+              />
+            </h2>
+          </div>
+          {/* <div className={styles.mainrelative}>
             <div className={styles.tabAlignment}>
               {chapters.map((chapter, index) => (
                 <button
@@ -596,21 +698,10 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                         </div>
                       ) : (
                         <div className={styles.videoWrapper}>
-                          {/* <VideoPlayer
-                            src={selectedChapter.chapterVideo}
-                            userId={user?._id}
-                            controls
-                            controlsList="nodownload"
-                            disablePictureInPicture
-                            noremoteplayback
-                            className={styles.videoPlayer}
-                          /> */}
                           {console.log("selectedChapter.chapterVideo", selectedChapter.chapterVideo)}
 
                           <CustomVideoPlayer
                             src={selectedChapter.chapterVideo}
-                            // src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
-                            // src="https://pipsveda.s3.us-east-1.azonaws.com/pipsveda/blob-1757418874956new%20latest.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAVJSBBJ5XMZUEA2XW%2F20250913%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250913T063038Z&X-Amz-Expires=3600&X-Amz-Signature=e0ed6c6d43a4038201fd1206007456c1387457b7cb86fb7335d92417d65ba51b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject"
                             userId={user?._id}
                             controls
                             controlsList="nodownload"
@@ -664,16 +755,58 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                 <span>Enroll Now to unlock</span>
               </div>
             </div>}
-          </div>
+          </div> */}
+
+          {syllabus.length > 0 && (
+            <div className={styles.syllabusContainer}>
+              <h2>Course Syllabus</h2>
+              <div className={styles.accordion}>
+                {syllabus.map((item, index) => (
+                  <div key={index} className={styles.accordionItem}>
+                    <div 
+                      className={`${styles.accordionHeader} ${expandedSection === index ? styles.active : ''}`}
+                      onClick={() => setExpandedSection(expandedSection === index ? null : index)}
+                    >
+                      <h2>Chapter {index + 1} : {item.title}</h2>
+                      <span>{expandedSection === index ? '−' : '+'}</span>
+                    </div>
+                    <div className={`${styles.accordionContent} ${expandedSection === index ? styles.active : ''}`}>
+                      <div className={styles.chapterContent}>
+                       
+                        <p>{item.description || 'No description available for this chapter.'}</p>
+                      </div>
+                      
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
       )}
+      {/* 
+{
+  isBeforepaymentModal && <BeforePaymentModal
+      {/* Batch Selection Modal - Only for live/in-person courses */}
+      {(isInPerson || isLiveOnline) && (
+        <BatchSelectionModal
+          isOpen={isBeforepaymentModal}
+          onClose={() => setIsBeforepaymentModal(false)}
+          batches={batches}
+          onBatchSelect={handleBatchSelect}
+          courseTitle={selectedCourse?.CourseName || 'Course'}
+        />
+      )}
 
-      <BatchSelectionModal
-        isOpen={isBeforepaymentModal}
-        onClose={() => setIsBeforepaymentModal(false)}
-        batches={batches}
-        onBatchSelect={handleBatchSelect}
-        courseTitle={selectedCourse?.CourseName || 'Course'}
+      {/* Before Payment Confirmation Modal - For all course types */}
+      <BeforePaymentModal
+        isOpen={showBeforePayment}
+        onClose={() => setShowBeforePayment(false)}
+        onConfirm={handleConfirmPayment}
+        selectedBatch={selectedBatch}
+        courseName={selectedCourse?.CourseName || 'Course'}
+        isProcessing={isProcessingPayment}
+        isRecorded={isRecorded}
       />
     </div>
   );

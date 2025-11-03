@@ -1,19 +1,15 @@
 'use client'
-import React, { useState } from 'react'
-import AdminHeader from '@/compoents/adminHeader';
+import AdminHeader from '@/compoents/adminHeader'
 import Coursecards from '@/compoents/coursecomponent/coursecards';
+import React, { useState } from 'react'
 import RecentCourse from '@/modules/(admin)/preRecorded/recentCourse';
-import { useSearchParams } from 'next/navigation';
-import InstructorProfile from '@/modules/(admin)/instructor/instructorProfile';
 
-
-function CoursesOfferedByInstructor({ params }) {
+function CategoryDetails({id}) {
     const [selectedTab, setSelectedTab] = useState('');
     const [searchQuery, setSearchQuery] = useState("");
     const [allCourse, setAllCourse] = useState([]);
     const [courseType, setCourseType] = useState("preRecorded");
     const [courseLoading, setCourseLoading] = useState(true);
-    const id = params.id;
 
     return (
         <div>
@@ -24,12 +20,13 @@ function CoursesOfferedByInstructor({ params }) {
                 borderRadius: '12px',
                 padding: '30px'
             }}>
-                <InstructorProfile id={id}/>
-                
-                <Coursecards onSelect={(tabName) => setSelectedTab(tabName)} selectedTab={selectedTab} />
-                
-
-                <RecentCourse
+                <Coursecards 
+                    onSelect={(tabName) => setSelectedTab(tabName)} 
+                    selectedTab={selectedTab} 
+                    id={id}
+                />
+            
+                <RecentCourse 
                     searchQuery={searchQuery}
                     allCourse={allCourse}
                     setAllCourses={setAllCourse}
@@ -38,11 +35,11 @@ function CoursesOfferedByInstructor({ params }) {
                     courseLoading={courseLoading}
                     setCourseLoading={setCourseLoading}
                     selectedTab={selectedTab}
-                    instructorId={id}
+                    id={id}
                 />
             </div>
         </div>
-    )
+    );
 }
 
-export default CoursesOfferedByInstructor
+export default CategoryDetails;

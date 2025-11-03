@@ -20,9 +20,18 @@ export const signIn = async (email, password) => {
 };
 
 export const signUp = async (data) => {
+  const fromdata = new FormData();
+  fromdata.append("name", data.name);
+  fromdata.append("email", data.email);
+  fromdata.append("password", data.password);
+  fromdata.append("country", data.country);
+  fromdata.append("state", data.state);
+  fromdata.append("city", data.city);
   try {
-    const response = await api.post(`/user/signup`, {
-      data,
+    const response = await api.post(`/user/signup`, fromdata, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
     });
 
     return response.data; // axios auto-parses JSON
@@ -116,4 +125,30 @@ export const getProfile = async (id) => {
     throw error;
   }
 }
+
+export const uploadImage = async (file) => {
+  try {
+    const formData = new FormData();
+    formData.append('image', file, file.name || 'profile-image.jpg');
+    
+    const response = await api.post(`/user/upload-image`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+      transformRequest: [(data, headers) => {
+        delete headers['Content-Type'];
+        return data;
+      }]
+    });
+    
+    return response.data;
+  } catch (error) {
+    console.error('Error during image upload:', {
+      message: error.message,
+      response: error.response?.data,
+      status: error.response?.status
+    });
+    throw error;
+  }
+};
 

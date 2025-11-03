@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./coursecards.module.scss";
 import { getAllCourseCategory, getCourses } from "@/compoents/api/dashboard";
 
-export default function Coursecards({ onSelect , selectedTab, id, instructorId, name}) {
+export default function Coursecards({ onSelect , selectedTab, id}) {
     const [activeTab, setActiveTab] = useState(selectedTab || 'recorded');
     const [title, setTitle] = useState('');
 
@@ -12,25 +12,21 @@ export default function Coursecards({ onSelect , selectedTab, id, instructorId, 
 
 
     const getTitle = async () => {
-        if(instructorId){
-            const response = await getCourses({instructorId});
-            if (response.success) {
-                setTitle(response.payload.data[0].instructor?.name);
-            }
-        }else{
+        if(id){
             const response = await getAllCourseCategory({id});
             if (response.success) {
                 setTitle(response.payload.data[0].name);
             }
         }
+        
     }
     useEffect(() => {
        getTitle();
-    }, [id, instructorId]);
+    }, [id]);
     const handleClick = (tab) => {
         setActiveTab(tab.value || selectedTab);
         if (onSelect) {
-            onSelect(tab.value); // ✅ send value instead of label
+            onSelect(tab.value); 
         }
     };
 
@@ -45,12 +41,12 @@ export default function Coursecards({ onSelect , selectedTab, id, instructorId, 
 
     return (
         <div className={styles.recentCourse}>
-            <h2>{name?.slice(0,1).toUpperCase() + name?.slice(1) || title.slice(0,1).toUpperCase() + title.slice(1)}</h2>            
+            <h2>{title.slice(0,1).toUpperCase() + title.slice(1)}</h2>            
             <div className={styles.tabsmain}>
                 <div className={styles.tabs}>
-                    {tabs.map((tab) => (
+                    {tabs.map((tab,index) => (
                         <button
-                            key={tab}
+                            key={index}
                             type="button"
                             onClick={() => handleClick(tab)}
                             className={`${styles.tabsbutton} ${activeTab === tab.value ? styles.active : ""

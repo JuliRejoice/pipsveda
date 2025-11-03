@@ -416,7 +416,6 @@
 
     button {
         margin: 0 auto;
-        min-width: 180px;
     }
 }
 
@@ -642,6 +641,219 @@
             }
         }
     }
+}
+
+/* Video Container Styles */
+.videoContainer {
+  margin: 40px 0;
+  
+  h2 {
+    @include heading20;
+    color: var(--black-500);
+    margin-bottom: 20px;
+    font-family: var(--font-funneldisplay);
+    font-weight: 600;
+  }
+
+  .videoWrapper {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%; 
+    border-radius: 12px;
+    overflow: hidden;
+    background-color: #000;
+    margin-bottom: 30px;
+    
+    video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+/* Syllabus Accordion Styles */
+.syllabusContainer {
+  margin-top: 40px;
+  
+  h2 {
+    @include heading20;
+    color: var(--black-500);
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    font-family: var(--font-funneldisplay);
+    font-weight: 600;
+  }
+  
+  .courseMeta {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+    padding: 16px;
+    background-color: var(--grey-50);
+    border-radius: 8px;
+    
+    .metaItem {
+      @include font16normal;
+      color: var(--grey-700);
+      
+      strong {
+        color: var(--black-500);
+        margin-right: 8px;
+      }
+    }
+  }
+  
+  .courseDescription, .courseFullDescription {
+    margin-bottom: 24px;
+    
+    h4 {
+      @include font16;
+      color: var(--black-500);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-color5);
+    }
+    
+    p {
+      @include font16;
+      color: var(--grey-700);
+      line-height: 1.6;
+    }
+  }
+
+  .chapterContent {
+    padding: 16px;
+    background-color: var(--grey-50);
+    border-radius: 8px;
+    
+    h4 {
+      @include font16;
+      color: var(--black-500);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border-color5);
+    }
+    
+    p {
+      @include font16;
+      color: var(--grey-700);
+      line-height: 1.6;
+      margin: 0;
+    }
+  }
+  
+  .chapterMeta {
+    display: flex;
+    gap: 24px;
+    padding: 12px 0;
+    
+    .metaItem {
+      @include font14;
+      color: var(--grey-600);
+      
+      strong {
+        color: var(--black-500);
+        margin-right: 6px;
+      }
+    }
+  }
+
+  .accordion {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+
+  .accordionItem {
+    border-bottom: 1px solid var(--border-color5);
+    
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+
+  .accordionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 24px;
+    background-color: var(--bg-white);
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+        h3{
+        @include font16;
+        color: var(--black-500);
+        font-weight: 500;
+    }
+
+    &:hover {
+      background-color: var(--grey-100);
+    }
+
+    &.active {
+      background-color: var(--primary-50);
+    }
+
+    h2 {
+      @include font16;
+      margin: 0;
+      color: var(--black-500);
+      
+    }
+
+    span {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--primary-500);
+      transition: transform 0.3s ease;
+    }
+  }
+
+  .accordionContent {
+    background-color: var(--bg-white);
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    padding: 0 24px;
+
+    &.active {
+      padding: 0 24px 24px;
+      max-height: 2000px; /* Increased to accommodate more content */
+      overflow: visible;
+    }
+
+    p {
+      @include font16normal;
+      color: var(--grey-700);
+     
+    }
+
+    ul {
+      margin: 0 0 16px 0;
+      padding-left: 20px;
+
+      li {
+        @include font16normal;
+        color: var(--grey-600);
+        margin-bottom: 8px;
+        position: relative;
+        padding-left: 16px;
+
+        &::before {
+          content: '•';
+          position: absolute;
+          left: 0;
+          color: var(--primary-500);
+        }
+      }
+    }
+  }
 }
 
 /* Session Skeleton Styles */

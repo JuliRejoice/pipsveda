@@ -199,3 +199,37 @@ img {
 textarea {
   resize: none;
 }
+
+.stdropdown-item{
+    padding: 5px;
+}
+
+.stdropdown-menu{
+    background-color: white;
+    padding: 20px;
+    border: black;
+    border-radius: 10px;
+    margin-top: 10px;
+}
+
+.stdropdown-container{
+    position: relative;
+  }
+  
+  .stdropdown-container input{
+      width: 100%;
+      padding: 12px 16px;
+      border: 1px solid grey;
+      border-color: var(--border-color2);
+      border-radius: 10px;
+      color: var(--black-500);
+      font-size: 16px;
+      line-height: 1.5;
+      height: 48px;
+      font-family: var(--font-lexend);
+  }
+.stdropdown-tools{
+    position: absolute;
+    top: 12px;
+    right: 10px;
+}

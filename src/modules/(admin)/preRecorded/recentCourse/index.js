@@ -14,7 +14,7 @@ const RightBlackIcon = '/assets/icons/right-black.svg';
 const RightIcon = '/assets/icons/right.svg';
 const CardImage = '/assets/images/crypto.png';
 
-const ITEMS_PER_PAGE = 8; // Adjust based on your layout
+const ITEMS_PER_PAGE = 8; 
 
 export default function RecentCourse({ selectedTab, courseType, setCourseType, searchQuery, allCourse, setAllCourses, courseLoading, setCourseLoading, id , instructorId }) {
     const [error, setError] = useState(null);
@@ -58,6 +58,7 @@ export default function RecentCourse({ selectedTab, courseType, setCourseType, s
                     instructorId: instructorId
                 };
 
+                console.log(params,'----------------')
                 const data = await getCourses(params);
                 console.log(data,'-----------');
                 if (data?.success) {

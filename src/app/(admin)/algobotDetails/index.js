@@ -272,23 +272,25 @@ function AlgobotDetails({ id }) {
         </div>
       ) : (
         <div className={styles.paymentModalContent}>
-          <img src={ErrorIcon} alt="Cancelled" className={styles.paymentIcon} />
-          <h3>Payment Cancelled</h3>
-          <p>Your payment was not completed. Please try again to purchase.</p>
-          <div className={styles.modalButtons}>
-            <OutlineButton
-              text="Try Again"
-              onClick={() => {
-                setShowPaymentModal(false);
-                handlePurchase();
-              }}
-            />
-            <Button
-              text="Close"
-              onClick={() => setShowPaymentModal(false)}
-              style={{ marginLeft: "10px" }}
-            />
+          <div className={styles.paymentModaltitlecontent}>
+            <img src={ErrorIcon} alt="Cancelled" className={styles.paymentIcon} />
+            <h3>Payment Cancelled</h3>
+            <p>Your payment was not completed. Please try again to access the course.</p>
           </div>
+          <div className={styles.modalButtons}>
+          <OutlineButton
+            text="Try Again"
+            onClick={() => {
+              setShowPaymentModal(false);
+              handlePurchase();
+            }}
+          />
+          <Button
+            text="Close"
+            onClick={() => setShowPaymentModal(false)}
+            style={{ marginLeft: "10px" }}
+          />
+        </div>
         </div>
       );
 

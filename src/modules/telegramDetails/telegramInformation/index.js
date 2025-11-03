@@ -253,10 +253,13 @@ function TelegramInformation({ id }) {
       </div>
     ) : (
       <div className={styles.paymentModalContent}>
+      <div className={styles.paymentModaltitlecontent}>
         <img src={ErrorIcon} alt="Cancelled" className={styles.paymentIcon} />
         <h3>Payment Cancelled</h3>
         <p>Your payment was not completed. Please try again to access the course.</p>
-        <div className={styles.modalButtons}>
+      </div>
+      <div className={styles.modalButtons}>
+        
           <OutlineButton
             text="Try Again"
             onClick={() => {

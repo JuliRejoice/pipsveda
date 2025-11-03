@@ -13,6 +13,55 @@
     background-attachment: fixed;
     padding: 40px 0;
 
+    .selectWrapper {
+        position: relative;
+        width: 100%;
+        margin-top: 8px;
+
+        &::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            right: 16px;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 5px solid transparent;
+            border-right: 5px solid transparent;
+            border-top: 5px solid var(--grey-600);
+            pointer-events: none;
+        }
+    }
+
+    select {
+        width: 100%;
+        padding: 12px 16px;
+        border: 1px solid var(--grey-200);
+        border-radius: 8px;
+        background-color: var(--white);
+        color: var(--black-500);
+        font-size: 16px;
+        line-height: 1.5;
+        appearance: none;
+        transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+        &:focus {
+            outline: none;
+            border-color: var(--orange);
+            box-shadow: 0 0 0 2px rgba(255, 102, 0, 0.2);
+        }
+
+        &:disabled {
+            background-color: var(--grey-100);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+    }
+
+    .errorBorder {
+        border-color: #ff4d4f !important;
+    }
+
     @include respond-to("sm") {
         padding: 20px 0;
     }
@@ -22,26 +71,34 @@
             width: 100%;
         }
     }
-        .logoCenter {
+
+    .logoCenter {
         display: flex;
         justify-content: center;
         padding:  0 0 20px 0;
     }
-   .error {
-      @include font14;
-      color: red;
-      
+
+    .error {
+        @include font14;
+        color: red;
     }
+
     .signinBox {
         max-width: 580px;
         margin: 0 auto;
 
-        @include respond-to("sm") {
-            width: 100%;
+        .label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: var(--black-500);
+            @include font16;
         }
 
         .inputAlignment {
             padding: 0 0 24px 0;
+
+           
         }
 
         .leftRightAlignment {
