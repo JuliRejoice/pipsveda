@@ -108,14 +108,15 @@ function Instructor() {
                     <div key={instructor._id} className={styles.card}>
                         <div className={styles.imageWrapper}>
                             <Image
-                                src={instructor.image || '/assets/images/default-avatar.png'}
+                                src={instructor.image}
                                 alt={instructor.name}
                                 width={200}
                                 height={200}
                                 className={styles.image}
                                 onError={(e) => {
+                                    console.log("e+++++++++++++++++++++++", e)
                                     e.target.onerror = null;
-                                    e.target.src = '/assets/images/default-avatar.png';
+                                    // e.target.src = '/assets/images/default-avatar.png';
                                 }}
                             />
                         </div>
@@ -146,6 +147,6 @@ function Instructor() {
             </div>
         </div>
     );
-}
+}   
 
 export default Instructor;

@@ -194,9 +194,9 @@ export const getSessionData = async (id) => {
   }
 }
 
-export const updateVideoProgress = async (data) => {
+export const updateVideoProgress = async (id,chapterId,courseId,percentage) => {
   try {
-    const res = await api.get(`/sesstion/getSessionByCourse?courseId=${data.courseId}`, data);
+    const res = await api.put(`/chapter/updateChapterTracking?id=${id}&chapterId=${chapterId}&courseId=${courseId}`, {percentage});
     const data = await res.data;
     return data;
   } catch (error) {
@@ -320,3 +320,5 @@ export const getCourseSyllabus = async (id) => {
     throw error;
   }
 };
+
+

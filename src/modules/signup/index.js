@@ -286,7 +286,7 @@ export default function Signup() {
               <div className={styles.inputAlignment}>
                 <Input
                   name="confirmPassword"
-                  type={`${showConfirmPassword ? "text" : "password"}`}
+                  type={showConfirmPassword ? "text" : "password"}
                   label="Confirm Password"
                   placeholder="Confirm your password"
                   value={data.confirmPassword}
@@ -301,7 +301,7 @@ export default function Signup() {
                     }));
                   }}
                   icon={showConfirmPassword ? EyeSlashIcon : EyeIcon}
-                  iconClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                  onIconClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 />
                 {errors.confirmPassword && (
                   <div className={styles.error}>{errors.confirmPassword}</div>

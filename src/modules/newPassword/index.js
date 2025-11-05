@@ -36,11 +36,9 @@ export default function NewPassword() {
     
     if (emailFromState) {
       setEmail(emailFromState);
-      setIsLoading(false);
     } else if (emailFromParams) {
       localStorage.setItem("email", emailFromParams);
       setEmail(emailFromParams);
-      setIsLoading(false);
     } else {
       router.replace("/signin");
     }
@@ -87,7 +85,7 @@ export default function NewPassword() {
         // Clear sensitive data from localStorage
         localStorage.removeItem('email');
         // Redirect to signin on success
-        router.push("/login");
+        router.push("/signin");
       } else {
         // Handle API error response
         setErrors({

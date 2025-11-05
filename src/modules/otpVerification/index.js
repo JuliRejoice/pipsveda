@@ -17,6 +17,7 @@ export default function OtpVerification() {
   const [error, setError] = useState(null);
   const [isVerifying, setIsVerifying] = useState(false);
   const [isResending, setIsResending] = useState(false);
+
   const router = useRouter();
 
   const searchParams = useSearchParams();
@@ -28,11 +29,11 @@ export default function OtpVerification() {
     
     if (emailFromState) {
       setEmail(emailFromState);
-      setIsLoading(false);
+    
     } else if (emailFromParams) {
       localStorage.setItem("email", emailFromParams);
       setEmail(emailFromParams);
-      setIsLoading(false);
+    
     } else {
       router.replace("/signin");
     }

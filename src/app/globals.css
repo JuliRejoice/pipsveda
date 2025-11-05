@@ -204,12 +204,18 @@ textarea {
     padding: 5px;
 }
 
-.stdropdown-menu{
-    background-color: white;
-    padding: 20px;
-    border: black;
-    border-radius: 10px;
-    margin-top: 10px;
+.stdropdown-menu {
+  background-color: #fff;
+  padding: 8px 0;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-top: 6px;
+  max-height: 180px;
+  overflow-y: auto;
+  position: absolute; /* helps keep it aligned below the input */
+  width: 100%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  z-index: 9999; /* ensures it's above everything */
 }
 
 .stdropdown-container{
@@ -225,11 +231,12 @@ textarea {
       color: var(--black-500);
       font-size: 16px;
       line-height: 1.5;
-      height: 48px;
+      height: 56px;
       font-family: var(--font-lexend);
   }
 .stdropdown-tools{
     position: absolute;
-    top: 12px;
+    top: 16px;
     right: 10px;
+    
 }

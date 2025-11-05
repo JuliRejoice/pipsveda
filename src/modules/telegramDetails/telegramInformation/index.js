@@ -21,7 +21,6 @@ const ErrorIcon = "/assets/icons/error.svg";
 function TelegramInformation({ id }) {
     const [telegramData, setTelegramData] = useState({});
     const [plans, setPlans] = useState([]);
-    const [planQuantities, setPlanQuantities] = useState({});
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedPlan, setSelectedPlan] = useState(null);
     const [coupon, setCoupon] = useState('');
@@ -33,18 +32,11 @@ function TelegramInformation({ id }) {
     const [isProcessingPayment, setIsProcessingPayment] = useState(false);
     const [showPaymentModal, setShowPaymentModal] = useState(false);
     const [paymentStatus, setPaymentStatus] = useState('');
-    const [commonDiscount, setCommonDiscount] = useState(0); // 10% common discount
     const [appliedCoupon, setAppliedCoupon] = useState(null);
     const router = useRouter();
     const searchParams = useSearchParams();
 
-    const [selectedLanguageIndex, setSelectedLanguageIndex] = useState(0);
-    const [availableLanguages, setAvailableLanguages] = useState([]);
-
-    const handleLanguageChange = (e) => {
-        setSelectedLanguageIndex(Number(e.target.value));
-    };
-
+  
     const fetchTelegramData = async () => {
         try {
             setIsLoading(true);
@@ -59,24 +51,6 @@ function TelegramInformation({ id }) {
         }
     };
 
-    const handleIncrement = (planId) => {
-        setPlanQuantities(prev => ({
-            ...prev,
-            [planId]: (prev[planId] || 1) + 1
-        }));
-    };
-
-    const handleDecrement = (planId) => {
-        setPlanQuantities(prev => {
-            if (prev[planId] > 1) {
-                return {
-                    ...prev,
-                    [planId]: prev[planId] - 1
-                };
-            }
-            return prev;
-        });
-    };
 
     const handleBuyNow =async (plan) => {
         const user = await getCookie('userToken');
@@ -235,14 +209,7 @@ function TelegramInformation({ id }) {
           <h3>Payment Successful!</h3>
           <p>Thank you for your purchase. You now have full access to this course.</p>
         </div>
-        {isInPerson &&
-          <div className={styles.paymentmodaldetails}>
-            <p>Please Contact for extra Information.</p>
-            <p><span>Address</span> : {selectedCourse?.location && `${selectedCourse?.location}`}</p>
-            <p><span>Email</span> : {selectedCourse?.email && `${selectedCourse?.email}`}</p>
-            <p><span>Phone</span> : {selectedCourse?.phone && `${selectedCourse?.phone}`}</p>
-          </div>
-        }
+      
         <Button
           text="Start Learning"
           onClick={() => {

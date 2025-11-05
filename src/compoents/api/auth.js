@@ -44,7 +44,7 @@ export const signUp = async (data) => {
 export const forgetPassword = async (data) => {
   try {
     const response = await api.post(`/user/forgot`, {
-      data,
+      email: data.email,
     });
     return response.data;
   } catch (error) {
@@ -56,7 +56,8 @@ export const forgetPassword = async (data) => {
 export const verifyOtp = async (data) => {
   try {
     const response = await api.post(`/user/verifyOtp`, {
-      data,
+      otp: data.otp,
+      email: data.email,
     });
 
     return response.data;
@@ -68,9 +69,8 @@ export const verifyOtp = async (data) => {
 
 export const updatePassword = async (data) => {
   try {
-    const response = await api.post(`/user/afterOtpVerify`, {
-      data,
-    });
+    const response = await api.post(`/user/afterOtpVerify`,
+      { email: data.email, password: data.password });
 
     return response.data;
   } catch (error) {
@@ -130,7 +130,7 @@ export const uploadImage = async (file) => {
   try {
     const formData = new FormData();
     formData.append('image', file, file.name || 'profile-image.jpg');
-    
+
     const response = await api.post(`/user/upload-image`, formData, {
       headers: {
         'Content-Type': 'multipart/form-data',
@@ -140,7 +140,7 @@ export const uploadImage = async (file) => {
         return data;
       }]
     });
-    
+
     return response.data;
   } catch (error) {
     console.error('Error during image upload:', {

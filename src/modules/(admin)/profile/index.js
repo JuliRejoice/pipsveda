@@ -14,6 +14,7 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import { registerLocale } from 'react-datepicker';
 import { enGB } from 'date-fns/locale';
+import { CitySelect, CountrySelect, StateSelect } from 'react-country-state-city';
 
 // Register the English (GB) locale
 registerLocale('en-GB', enGB);
@@ -35,6 +36,8 @@ export default function Profile() {
     const [initialUserData, setInitialUserData] = useState(null);
     const [profileImage, setProfileImage] = useState(null);
     const [previewImage, setPreviewImage] = useState('');
+    const [countryId, setCountryId] = useState(0);
+    const [stateId, setStateId] = useState(0);
 
     const countryRef = useRef(null);
     const genderRef = useRef(null);
@@ -314,32 +317,67 @@ export default function Profile() {
                             onChange={(e) => setUser({ ...user, location: e.target.value })} 
                         />
 
-                        <Input 
-                            type="text" 
-                            name="city" 
-                            label='City' 
-                            placeholder='Enter your city'
-                            value={user?.city || ''}
-                            onChange={(e) => setUser({ ...user, city: e.target.value })} 
-                        />
+                        <div className={styles.dropdownrelative}>
+                            <label className={styles.label}>Country</label>
+                            <div className={styles.selectWrapper}>
+                                <CountrySelect
+                                    onChange={(val) => {
+                                        setUser(prev => ({
+                                            ...prev,
+                                            country: val.name,
+                                            state: "",
+                                            city: ""
+                                        }));
+                                        setCountryId(val.id);
+                                        setStateId(0);
+                                    }}
+                                    placeHolder="Select Country"
+                                    className={styles.selectInput}
+                                />
+                                {/* <Dropdownarrow className={styles.dropdownIcon} /> */}
+                            </div>
+                        </div>
 
-                        <Input 
-                            type="text" 
-                            name="state" 
-                            label='State/Province' 
-                            placeholder='Enter your state or province'
-                            value={user?.state || ''}
-                            onChange={(e) => setUser({ ...user, state: e.target.value })} 
-                        />
+                        <div className={styles.dropdownrelative}>
+                            <label className={styles.label}>State</label>
+                            <div className={styles.selectWrapper}>
+                                <StateSelect
+                                    countryid={countryId}
+                                    onChange={(val) => {
+                                        setUser(prev => ({
+                                            ...prev,
+                                            state: val.name,
+                                            city: ""
+                                        }));
+                                        setStateId(val.id);
+                                    }}
+                                    placeHolder="Select State"
+                                    className={styles.selectInput}
+                                    disabled={!countryId}
+                                />
+                                {/* <Dropdownarrow className={styles.dropdownIcon} /> */}
+                            </div>
+                        </div>
 
-                        <Input 
-                            type="text" 
-                            name="country" 
-                            label='Country' 
-                            placeholder='Enter your country'
-                            value={user?.country || ''}
-                            onChange={(e) => setUser({ ...user, country: e.target.value })} 
-                        />
+                        <div className={styles.dropdownrelative}>
+                            <label className={styles.label}>City</label>
+                            <div className={styles.selectWrapper}>
+                                <CitySelect
+                                    countryid={countryId}
+                                    stateid={stateId}
+                                    onChange={(val) => {
+                                        setUser(prev => ({
+                                            ...prev,
+                                            city: val.name
+                                        }));
+                                    }}
+                                    placeHolder="Select City"
+                                    className={styles.selectInput}
+                                    disabled={!stateId}
+                                />
+                                {/* <Dropdownarrow className={styles.dropdownIcon} /> */}
+                            </div>
+                        </div>
 
                         {/* Gender dropdown */}
                         <div className={styles.dropdownrelative} ref={genderRef}>

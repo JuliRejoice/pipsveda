@@ -306,9 +306,13 @@
             .dropdownrelative {
                 position: relative;
                 width: 100%;
+                .selectWrapper {
+                        margin-top: 10px;
+                    }
+
 
                 .dropdownhead {
-                    label {
+                    .label {
                         font-size: 18px;
                         font-style: normal;
                         font-weight: 400;
@@ -317,8 +321,10 @@
                         padding: 0 0 8px;
                         line-height: normal;
                         display: block;
+                        margin-bottom: 8px;
                     }
 
+                  
 
                     .dropdowninput {
                         width: 100%;
@@ -328,7 +334,7 @@
                         border: 1px solid var(--border-color2);
                         border-radius: 10px;
                         height: 55px;
-                        padding: 0 16px;
+                        padding: 0px 16px;
                         font-size: 16px;
                         font-style: normal;
                         font-weight: 500;
@@ -339,6 +345,8 @@
                         align-items: center;
                         cursor: pointer;
                         transition: .4s ease-in-out;
+                        margin-top: 8px;
+                        
 
                         &.active {
                             .dropdownarrow {

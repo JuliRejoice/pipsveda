@@ -384,7 +384,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
           </div>
         }
         <Button
-          text="Start Learning"
+          text="Download Student ID"
           onClick={() => {
             setShowPaymentModal(false);
             setIsPaid(false);

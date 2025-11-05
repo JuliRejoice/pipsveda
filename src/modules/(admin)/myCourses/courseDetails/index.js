@@ -1,11 +1,11 @@
 "use client";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import styles from "./courseDetails.module.scss";
 import ClockIcon from "@/icons/clockIcon";
 import BathIcon from "@/icons/bathIcon";
 import StarIcon from "@/icons/starIcon";
 import ProfileGroupIcon from "@/icons/profileGroupIcon";
-import { getChapters, getCourses, getPaymentUrl, getSessionData, getBatches, getCourseSyllabus } from "@/compoents/api/dashboard";
+import { getChapters, getCourses, getPaymentUrl, getSessionData, getBatches, getCourseSyllabus, updateVideoProgress } from "@/compoents/api/dashboard";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import OutlineButton from "@/compoents/outlineButton";
@@ -139,8 +139,10 @@ export default function CourseDetails({ params }) {
   const [syllabus, setSyllabus] = useState([]);
   const [isLoadingBatch, setIsLoadingBatch] = useState(false);
   const [expandedSyllabus, setExpandedSyllabus] = useState(null);
+  const [videoWatchingPercentage, setVideoWatchingPercentage] = useState(0);
 
-
+console.log(selectedCourse,videoWatchingPercentage,'0--------------------------------------')
+console.log(selectedChapter?.courseTracking?.percentage)
   const id = params;
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -150,6 +152,8 @@ export default function CourseDetails({ params }) {
     if (selectedCourse) {
       setIsLiveOnline(selectedCourse?.courseType === 'live');
       setIsInPerson(selectedCourse?.courseType === 'physical');
+      console.log(selectedCourse?.courseType)
+      
 
       // Check if certificate is available (course has ended and user has paid)
       if (selectedCourse.courseEnd && selectedCourse.isPayment) {
@@ -171,6 +175,10 @@ export default function CourseDetails({ params }) {
 
       if (data?.payload?.data?.length > 0) {
         setSelectedChapter(data.payload.data[0]);
+        if (selectedCourse?.courseType === "recorded") {
+        console.log('-------------------',data.payload.data[0]?.courseTracking?.percentage)
+        setVideoWatchingPercentage(data.payload.data[0]?.courseTracking?.percentage);
+      }
       }
       setError(null);
     } catch (err) {
@@ -335,6 +343,16 @@ export default function CourseDetails({ params }) {
     }
   };
 
+    const updateVideoPercentage =async (percentage) => {
+    setVideoWatchingPercentage(percentage);
+    await updateVideoProgress(
+       selectedChapter?.courseTracking?._id,
+       selectedChapter?._id,
+       selectedCourse?._id,
+       percentage.toString() 
+    );
+  } 
+
   const handleDownloadCertificate = async () => {
     try {
       // Replace this with your actual certificate download logic
@@ -384,7 +402,7 @@ export default function CourseDetails({ params }) {
           </div>
         )}
         <Button
-          text="Start Learning"
+          text="Download Student ID"
           onClick={() => {
             setShowPaymentModal(false);
             setIsPaid(false);
@@ -498,6 +516,10 @@ export default function CourseDetails({ params }) {
     );
   }
 
+  console.log(selectedChapter,selectedChapter?.courseTracking?._id)
+
+
+
   return (
     <div className={styles.courseDetailsBox}>
       {renderPaymentModal()}
@@ -591,9 +613,9 @@ export default function CourseDetails({ params }) {
                 ) : (
                   <div className={styles.emptyState}>
                     <svg className={styles.emptyIcon} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M12 8V12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M12 16H12.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M12 8V12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M12 16H12.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                     <h4>No Batch Details Available</h4>
                     <p>There are no batch details to display at the moment. Please check back later or contact support for assistance.</p>
@@ -636,11 +658,11 @@ export default function CourseDetails({ params }) {
                 ) : (
                   <div className={`${styles.emptyState} ${styles.withMargin}`}>
                     <svg className={styles.emptyIcon} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M14 2V8H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M16 13H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M16 17H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                      <path d="M10 9H9H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+                      <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M14 2V8H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M16 13H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M16 17H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M10 9H9H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                     <h4>No Syllabus Available</h4>
                     <p>This course doesn't have a syllabus yet. Please check back later or contact the course instructor for more information.</p>
@@ -803,9 +825,11 @@ export default function CourseDetails({ params }) {
                             noremoteplayback
                             className={styles.videoPlayer}
                           /> */}
-                          {console.log("selectedChapter.chapterVideo", selectedChapter.chapterVideo)}
+                          {console.log("selectedChapter.chapterVideo", selectedChapter.courseTracking.percentage)}
 
                           <CustomVideoPlayer
+                            percentage={videoWatchingPercentage}
+                            onPercentageChange={(percentage) => updateVideoPercentage(percentage)}
                             src={selectedChapter.chapterVideo}
                             // src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
                             // src="https://pipsveda.s3.us-east-1.azonaws.com/pipsveda/blob-1757418874956new%20latest.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAVJSBBJ5XMZUEA2XW%2F20250913%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250913T063038Z&X-Amz-Expires=3600&X-Amz-Signature=e0ed6c6d43a4038201fd1206007456c1387457b7cb86fb7335d92417d65ba51b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject"
