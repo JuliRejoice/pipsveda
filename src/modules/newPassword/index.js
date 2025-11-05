@@ -57,6 +57,11 @@ export default function NewPassword() {
       validationErrors.newPassword = "New password is required";
     } else if (newPassword.length < 6) {
       validationErrors.newPassword = "Password must be at least 6 characters";
+    } else {
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
+      if (!passwordRegex.test(newPassword)) {
+        validationErrors.newPassword = "Password must include uppercase, lowercase, number, and special character (@$!%*?&)";
+      }
     }
   
     // Validate confirm password

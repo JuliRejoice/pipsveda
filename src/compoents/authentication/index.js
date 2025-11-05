@@ -27,8 +27,8 @@ export default function Authentication() {
         );
       }
     } catch (error) {
-      console.error(error);
-      toast.error(errorMessages[error.code] ?? errorMessages["default"]);
+      console.log(error,"pppppppp");
+      toast.error(error?.response?.data?.message ?? "Login Failed.");
     }
   };
   

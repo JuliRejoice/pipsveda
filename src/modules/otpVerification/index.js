@@ -90,7 +90,7 @@ export default function OtpVerification() {
       const data = await verifyOtp({ otp: otpString, email });
       if (data && data.success) {
         toast.success("OTP Verify successfully.");
-        router.push("/new-password");
+        router.replace("/new-password");
       } else {
         setError(data?.message || "Invalid OTP. Please try again.");
       }

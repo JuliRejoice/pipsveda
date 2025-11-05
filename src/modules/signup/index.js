@@ -71,7 +71,7 @@ export default function Signup() {
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,}$/;
     if (!passwordRegex.test(value)) {
-      return "Password must be at least 6 characters, include uppercase, lowercase, number, and special character.Example: Hello@123";
+      return "Password must be at least 6 characters, include uppercase, lowercase, number, and special character.";
     }
     return "";
   };
