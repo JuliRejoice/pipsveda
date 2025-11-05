@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import { getCookie } from "../../../../cookie";
 const Card4 = '/assets/images/card4.png';
 const VecImage = '/assets/images/vec.png';
+const BathIcon = '/assets/icons/bath.svg';
 
 function SampleNextArrow(props) {
     const { onClick } = props;
@@ -103,9 +104,9 @@ export default function FinancialFreedom() {
                 const response = await getCourseByType();
                 if (response && response.payload && response.payload.courses) {
                     setCourses({
-                        recorded: response.payload.courses.recorded.slice(0, 3) || [],
-                        live: response.payload.courses.live.slice(0, 3) || [],
-                        physical: response.payload.courses.physical.slice(0, 3) || []
+                        recorded: response.payload.courses.recorded?.slice(0, 3) || [],
+                        live: response.payload.courses.live?.slice(0, 3) || [],
+                        physical: response.payload.courses.physical?.slice(0, 3) || []
                     });
                 }
             } catch (error) {
@@ -240,7 +241,12 @@ export default function FinancialFreedom() {
                                                     </div>
                                                     <div className={styles.textAlignment}>
                                                         <h4>${course.price || '0'}</h4>
-                                                        <button>{course.level || 'Beginner Level'}</button>
+                                                        <button>{course?.courseLevel?.slice(0, 1).toUpperCase()
+                                                            + course?.courseLevel?.slice(1) || 'Beginner Level'}</button>
+                                                        <div className={styles.iconText}>
+                                                            <img src={BathIcon} alt='Instructor' />
+                                                            <span>{course?.instructor?.name || 'John Doe'}</span>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div className={styles.btnWidthfull}>

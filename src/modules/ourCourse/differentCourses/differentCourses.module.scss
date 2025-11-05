@@ -298,7 +298,19 @@
                 -webkit-text-fill-color: transparent;
                 @include heading20;
             }
+            .level{
+                  @include font16;
+                        display: inline-block;
+                        background-color: #f3f4f6;
+                        color: var(--black-500);
+                        padding: 4px 12px;
+                        border-radius: 16px;
+                        font-weight: 500;
+                        text-transform: capitalize;
+                        align-items: center;
+            }
         }
+
 
         p {
             display: -webkit-box;

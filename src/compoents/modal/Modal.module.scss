@@ -131,7 +131,7 @@
 // Batch Selection Modal Styles
 .batchSelectionContainer {
   padding-top: 16px;
-  max-height: 60vh;
+  height: 50vh;
   overflow-y: auto;
 
   .batchList {
@@ -161,6 +161,22 @@
     }
   }
 
+  .skeletonContainer {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    width: 100%;
+    margin-bottom: 24px;
+  }
+
+  .skeletonItem {
+    padding: 16px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background: var(--bg-white);
+    cursor: progress;
+  }
+
   .batchInfo {
     h4 {
       margin: 0 0 8px 0;
@@ -187,19 +203,19 @@
     font-weight: 500;
   }
 
-  .modalActions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border-color);
-    margin-top: 8px;
-    position: sticky;
-    bottom: 0;
-    background: white;
-    padding-right: 8px;
-    padding-bottom: 4px;
-  }
+}
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border-color);
+  margin-top: 8px;
+  position: sticky;
+  bottom: 0;
+  background: white;
+  padding-right: 8px;
+  padding-bottom: 4px;
 }
 
 @include respond-to('sm') {

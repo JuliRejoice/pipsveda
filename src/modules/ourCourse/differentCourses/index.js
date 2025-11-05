@@ -211,6 +211,9 @@ export default function DifferentCourses({ course }) {
                                     </p>
                                     <div className={styles.twoContentAlignment}>
                                         <h4>${course?.price || '299'}</h4>
+                                        <div className={styles.level}>
+                                            {course?.courseLevel?.slice(0, 1).toUpperCase() + course?.courseLevel?.slice(1) || 'Beginner Level'}
+                                        </div>
                                         <div className={styles.iconText}>
                                             <img src={BathIcon} alt='Instructor' />
                                             <span>{course?.instructor?.name || 'John Doe'}</span>

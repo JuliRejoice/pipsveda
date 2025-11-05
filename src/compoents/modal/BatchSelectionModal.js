@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import Modal from './Modal';
 import styles from './Modal.module.scss';
 import Button from '../button';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 import { toast } from 'react-hot-toast';
 import { getCookie } from '../../../cookie';
@@ -13,10 +15,10 @@ const BatchSelectionModal = ({
   courseId,
   batches,
   onBatchSelect,
-  courseTitle = 'Course'
+  courseTitle = 'Course',
+  isLoading = false,
 }) => {
   const [selectedBatchId, setSelectedBatchId] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   
   console.log("🚀 ~ BatchSelectionModal ~ selectedBatchId:", selectedBatchId)
@@ -40,10 +42,19 @@ const BatchSelectionModal = ({
       title={`Select a Batch for ${courseTitle}`}
     >
       <div className={styles.batchSelectionContainer}>
-        {isLoading ? (
-          <div className={styles.loadingState}>Loading batches...</div>
-        ) : error ? (
+        {error ? (
           <div className={styles.errorState}>{error}</div>
+        ) : isLoading ? (
+          <div className={styles.skeletonContainer}>
+            {[1, 2, 3, 4].map((i) => (
+              <div key={i} className={styles.skeletonItem}>
+                <Skeleton height={90} width="100%"   />
+                {/* <Skeleton height={16} width="60%" style={{ marginBottom: '8px' }} />
+                <Skeleton height={16} width="60%" style={{ marginBottom: '8px' }} />
+                {i % 2 === 0 && <Skeleton height={16} width="50%" />} */}
+              </div>
+            ))}
+          </div>
         ) : batches.length > 0 ? (
           <div className={styles.batchList}>
             {batches.map((batch) => (
@@ -56,7 +67,7 @@ const BatchSelectionModal = ({
                   <h4>{batch.batchName || `Batch ${new Date(batch.startDate).getFullYear()}`}</h4>
                   <p>Starts: {new Date(batch.startDate).toLocaleDateString()}</p>
                   <p>Ends: {new Date(batch.endDate).toLocaleDateString()}</p>
-                  <p>Center: {batch?.centerId?.centerName || 'N/A'}</p>
+                  {batch?.centerId?.centerName && <p>Center: {batch?.centerId?.centerName || 'N/A'}</p>}
                 </div>
                 {selectedBatchId === batch._id && (
                   <div className={styles.selectedBadge}>Selected</div>
@@ -68,6 +79,7 @@ const BatchSelectionModal = ({
           <p>No batches available at the moment. Please check back later.</p>
         )}
         
+      </div>
         <div className={styles.modalActions}>
           <Button 
             text="Cancel" 
@@ -81,7 +93,6 @@ const BatchSelectionModal = ({
             disabled={!selectedBatchId || isLoading}
           />
         </div>
-      </div>
     </Modal>
   );
 };

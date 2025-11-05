@@ -55,7 +55,7 @@ export default function OtpVerification() {
     e.preventDefault();
     const pasteData = e.clipboardData.getData("text").trim();
     if (/^\d+$/.test(pasteData)) {
-      const digits = pasteData.split("").slice(0, otp.length);
+      const digits = pasteData.split("")?.slice(0, otp.length);
       const newOtp = [...otp];
       digits.forEach((digit, i) => {
         newOtp[i] = digit;

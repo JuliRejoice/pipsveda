@@ -76,7 +76,7 @@ export default function Marketplace({searchQuery,setSearchQuery}) {
               >
                 <input
                   type="text"
-                  placeholder="Search for Course..."
+                  placeholder="Search for Algobot..."
                   value={inputValue}
                   onChange={handleSearchChange}
                 />

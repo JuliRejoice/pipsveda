@@ -14,9 +14,9 @@ const RightBlackIcon = '/assets/icons/right-black.svg';
 const RightIcon = '/assets/icons/right.svg';
 const CardImage = '/assets/images/crypto.png';
 
-const ITEMS_PER_PAGE = 8; 
+const ITEMS_PER_PAGE = 8;
 
-export default function RecentCourse({ selectedTab, courseType, setCourseType, searchQuery, allCourse, setAllCourses, courseLoading, setCourseLoading, id , instructorId }) {
+export default function RecentCourse({ selectedTab, courseType, setCourseType, searchQuery, allCourse, setAllCourses, courseLoading, setCourseLoading, id, instructorId }) {
     const [error, setError] = useState(null);
     const [pagination, setPagination] = useState({
         currentPage: 1,
@@ -53,14 +53,14 @@ export default function RecentCourse({ selectedTab, courseType, setCourseType, s
                 const params = {
                     page,
                     limit: ITEMS_PER_PAGE,
-                    categoryId:id,
+                    categoryId: id,
                     courseType: selectedTab || "recorded",
                     instructorId: instructorId
                 };
 
-                console.log(params,'----------------')
+                console.log(params, '----------------')
                 const data = await getCourses(params);
-                console.log(data,'-----------');
+                console.log(data, '-----------');
                 if (data?.success) {
                     setAllCourses(data?.payload?.data || []);
                 }
@@ -159,6 +159,9 @@ export default function RecentCourse({ selectedTab, courseType, setCourseType, s
                             <div className={styles.details}>
                                 <h3>{course?.CourseName || 'Untitled Course'}</h3>
                                 <p>{course?.description || 'No description available.'}</p>
+                                    <div className={styles.levelBadge}>
+                                        {course?.courseLevel?.slice(0, 1).toUpperCase() + course?.courseLevel?.slice(1) || 'Beginner Level'}
+                                    </div>
                                 <div className={styles.twoContentAlignment}>
                                     <h4>${course?.price || 299}</h4>
                                     <div className={styles.iconText}>

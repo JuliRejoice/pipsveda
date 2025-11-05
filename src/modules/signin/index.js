@@ -25,7 +25,7 @@ export default function Signin() {
 
 
   const validateEmail = (value) => {
-    const trimmedValue = value.trim().toLowerCase(); // 👈 force lowercase
+    const trimmedValue = value.trim().toLowerCase(); 
     if (!trimmedValue) return "Email is required.";
     if (trimmedValue.includes(' ')) return "Email cannot contain spaces.";   
     const re = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
@@ -64,6 +64,7 @@ export default function Signin() {
         router.push("/course");
       } else {
         // handle case where API responds with success=false
+        toast.dismiss();
         toast.error(errorMessages[data?.message] ?? "Login failed. Please try again.");
       }
     } catch (error) {
@@ -73,8 +74,10 @@ export default function Signin() {
       const serverMessage = error.response?.data?.message;
     
       if (serverMessage && errorMessages[serverMessage]) {
+        toast.dismiss();
         toast.error(errorMessages[serverMessage]);
       } else {
+        toast.dismiss();
         toast.error("An error occurred. Please try again.");
       }
     } finally {

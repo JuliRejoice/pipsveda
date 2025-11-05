@@ -9,7 +9,7 @@ import { useEffect } from "react";
 export default function Breadcumbs() {
   const router = useRouter();
   const pathname = usePathname();
-  const pathSegments = pathname.split('/').filter(segment => segment).slice(0,2);
+  const pathSegments = pathname.split('/').filter(segment => segment)?.slice(0,2);
 
   const redirect = () => {
     const pathSegments = pathname.split('/').filter(Boolean);
@@ -35,7 +35,7 @@ export default function Breadcumbs() {
   const formatBreadcrumb = (segment) => {
     return segment
       .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+      .map(word => word.charAt(0).toUpperCase() + word?.slice(1))
       .join(' ');
   };
 
@@ -44,7 +44,7 @@ export default function Breadcumbs() {
     if (/^\d+$/.test(segment)) return null; 
     
     const isLast = index === pathSegments.length - 1;
-    const path = `/${pathSegments.slice(0, index + 1).join('/')}`;
+    const path = `/${pathSegments?.slice(0, index + 1).join('/')}`;
     const displayText = formatBreadcrumb(segment);
   
 

@@ -551,7 +551,7 @@ console.log(selectedChapter?.courseTracking?.percentage)
                   <span>{selectedCourse?.subscribed || '0'}</span>
                 </div>
                 <div className={styles.iconText}>
-                  <span>Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString('en-GB')} | English</span>
+                  <span>Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString('en-GB')} | {selectedCourse?.language?.slice(0, 1).toUpperCase()+selectedCourse?.language?.slice(1) || 'English'}</span>
                 </div>
                 {selectedCourse?.courseEnd && (
                   <div className={styles.iconText}>
@@ -758,7 +758,7 @@ console.log(selectedChapter?.courseTracking?.percentage)
                 <span>{selectedCourse?.subscribed || '0'}</span>
               </div>
               <div className={styles.iconText}>
-                <span>Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString('en-GB')} | English</span>
+                <span>Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString('en-GB')} | {selectedCourse?.language?.slice(0, 1).toUpperCase()+selectedCourse?.language?.slice(1) || 'English'}</span>
               </div>
             </div>
             {isPaid && (

@@ -124,6 +124,23 @@
                     border-radius: 99px;
                     padding: 4px 16px;
                 }
+                .iconText {
+                    display: flex;
+                    align-items: center;
+                    gap: 4px;
+
+                    img {
+                        width: 20px;
+                        height: 20px;
+                    }
+
+                    span {
+                        display: block;
+                        @include font16normal;
+                        color: var(--text-white-80);
+                        display: block;
+                    }
+                }
             }
 
             .allIconText {

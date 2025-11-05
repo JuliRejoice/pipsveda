@@ -10,6 +10,8 @@ function BeforePaymentModal({
   selectedBatch,
   courseName,
   isProcessing,
+  isInPerson = false,
+  isLiveOnline = false,
   isRecorded = false
 }) {
 
@@ -62,7 +64,7 @@ function BeforePaymentModal({
       <>
         <div className={styles.modalBody}>
           {/* Only show location section for in-person courses */}
-          {!isRecorded && selectedBatch && (
+          {isInPerson && selectedBatch && (
             <div className={styles.locationSection}>
               <h4>Location Details</h4>
               <div className={styles.locationGrid}>

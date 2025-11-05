@@ -37,69 +37,63 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
   const watchedSetRef = useRef(new Set());
 
   // Set initial video position based on percentage
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+useEffect(() => {
+  const video = videoRef.current;
+  if (!video) return;
 
-    const seekToPercentage = () => {
-      if (video.duration > 0 && percentage > 0) {
-        const seekTime = (percentage / 100) * video.duration;
-        if (seekTime < video.duration) {
-          video.currentTime = seekTime;
-          setCurrentTime(seekTime);
-          setProgress(percentage);
-          
-          // If video is not playing, force a frame update to show the correct frame
-          if (!isPlaying) {
-            const renderFrame = () => {
-              if (!video || !canvasRef.current) return;
-              const canvas = canvasRef.current;
-              const ctx = canvas.getContext('2d');
-              ctx.clearRect(0, 0, canvas.width, canvas.height);
-              
-              if (video.readyState >= video.HAVE_CURRENT_DATA) {
-                const videoAspectRatio = video.videoWidth / video.videoHeight;
-                const canvasAspectRatio = canvas.width / canvas.height;
+  const seekToPercentage = () => {
+    if (video.duration > 0 && percentage >= 0) {
+      const seekTime = (percentage / 100) * video.duration;
 
-                let renderWidth, renderHeight, offsetX, offsetY;
-                if (videoAspectRatio > canvasAspectRatio) {
-                  renderHeight = canvas.height;
-                  renderWidth = renderHeight * videoAspectRatio;
-                  offsetX = (canvas.width - renderWidth) / 2;
-                  offsetY = 0;
-                } else {
-                  renderWidth = canvas.width;
-                  renderHeight = renderWidth / videoAspectRatio;
-                  offsetX = 0;
-                  offsetY = (canvas.height - renderHeight) / 2;
-                }
+      // Only seek if this is a meaningful change
+      if (Math.abs(video.currentTime - seekTime) > 0.05) {
+        video.currentTime = seekTime;
+        setCurrentTime(seekTime);
+        setProgress(percentage);
 
-                ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, offsetX, offsetY, renderWidth, renderHeight);
-              }
-            };
-            renderFrame();
+        // If paused, manually render a frame
+        if (video.paused) {
+          const canvas = canvasRef.current;
+          if (canvas) {
+            const ctx = canvas.getContext("2d");
+            const videoAspect = video.videoWidth / video.videoHeight;
+            const canvasAspect = canvas.width / canvas.height;
+            let renderWidth, renderHeight, offsetX, offsetY;
+            if (videoAspect > canvasAspect) {
+              renderHeight = canvas.height;
+              renderWidth = renderHeight * videoAspect;
+              offsetX = (canvas.width - renderWidth) / 2;
+              offsetY = 0;
+            } else {
+              renderWidth = canvas.width;
+              renderHeight = renderWidth / videoAspect;
+              offsetX = 0;
+              offsetY = (canvas.height - renderHeight) / 2;
+            }
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, offsetX, offsetY, renderWidth, renderHeight);
           }
         }
       }
-    };
-
-    const handleLoadedMetadata = () => {
-      seekToPercentage();
-      setDuration(video.duration);
-    };
-
-    if (video.readyState >= 2) { // HAVE_CURRENT_DATA
-      // If metadata is already loaded, seek immediately
-      handleLoadedMetadata();
-    } else {
-      // Otherwise, wait for loadedmetadata event
-      video.addEventListener('loadedmetadata', handleLoadedMetadata);
     }
+  };
 
-    return () => {
-      video.removeEventListener('loadedmetadata', handleLoadedMetadata);
-    };
-  }, [percentage, isPlaying]);
+  const handleLoadedMetadata = () => {
+    seekToPercentage();
+    setDuration(video.duration);
+  };
+
+  if (video.readyState >= 2) {
+    handleLoadedMetadata();
+  } else {
+    video.addEventListener("loadedmetadata", handleLoadedMetadata);
+  }
+
+  return () => {
+    video.removeEventListener("loadedmetadata", handleLoadedMetadata);
+  };
+}, [percentage]); // 🔥 remove isPlaying here
+
 
   // Handle scroll visibility
   useEffect(() => {
@@ -146,6 +140,8 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
       }
     };
   }, [wasPlaying]);
+
+  
 
   useEffect(() => {
     if (!src) {
@@ -236,34 +232,34 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
         });
       }
     };
-    const handlePause = () => {
-      const video = videoRef.current;
-      if (!video) return;
-      
-      // Get current time before any state updates
-      const current = video.currentTime;
-      console.log(current)
-      
-      // Update state
-      setIsPlaying(false);
-      cancelAnimationFrame(animationFrameRef.current);
-      
-      // Update current time in state
-      setCurrentTime(current);
-      
-      // Calculate and update percentage
-      if (video.duration > 0) {
-        const currentPercentage = (current / video.duration) * 100;
-        setProgress(currentPercentage);
-        
-        // Only update parent if we have a valid percentage
-        if (typeof onPercentageChange === 'function') {
-          onPercentageChange(currentPercentage.toFixed(2));
-        }
-        
-        console.log(`Paused at: ${current.toFixed(1)}s (${currentPercentage.toFixed(1)}%)`);
+const handlePause = () => {
+  const video = videoRef.current;
+  if (!video) return;
+
+  // Stop animation frame loop immediately
+  cancelAnimationFrame(animationFrameRef.current);
+  setIsPlaying(false);
+
+  // Wait a microtick to let browser update video.currentTime
+  requestAnimationFrame(() => {
+    const current = video.currentTime;
+
+    setCurrentTime(current);
+
+    if (video.duration > 0) {
+      const currentPercentage = (current / video.duration) * 100;
+      setProgress(currentPercentage);
+
+      if (typeof onPercentageChange === "function") {
+        onPercentageChange(currentPercentage.toFixed(2));
       }
-    };
+
+      console.log(
+        `Paused at: ${current.toFixed(2)}s (${currentPercentage.toFixed(2)}%)`
+      );
+    }
+  });
+};
 
     const handleEnded = () => {
       const video = videoRef.current;
@@ -313,6 +309,9 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
     video.addEventListener("timeupdate", handleTimeUpdate);
     video.addEventListener("play", handlePlay);
     video.addEventListener("pause", handlePause);
+    // video.addEventListener("pause", () => {
+    //   console.log("pause jaaraard", video.currentTime.toFixed(2));
+    // });
     video.addEventListener("ended", handleEnded);
     video.addEventListener("error", handleError);
 

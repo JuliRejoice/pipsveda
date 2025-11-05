@@ -483,7 +483,7 @@ const PaymentHistory = () => {
                                 )}
                                 <td>
                                     <button className={payment.status === 'paid' ? styles.paidbutton : styles.pendingbutton}>
-                                        {payment.status.charAt(0).toUpperCase() + payment.status.slice(1)}
+                                        {payment.status.charAt(0).toUpperCase() + payment?.status?.slice(1)}
                                     </button>
                                 </td>
                                 <td>

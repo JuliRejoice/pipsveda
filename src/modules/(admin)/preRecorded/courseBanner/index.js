@@ -92,7 +92,7 @@ export default function CourseBanner({
       setIsLoading(true);
       const response = await getCourses(searchQuery);
       if (response.success) {
-        setCourses(response.payload.data.slice(0, 3));
+        setCourses(response.payload.data?.slice(0, 3));
       } else {
         console.error("Failed to fetch courses:", response.message);
       }

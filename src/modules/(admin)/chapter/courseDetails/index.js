@@ -148,6 +148,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
 
 
   console.log("user", user);
+  console.log("selectedCourse", selectedCourse?.courseIntroVideo);
 
   useEffect(() => {
     if (selectedCourse) {
@@ -497,7 +498,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                   <span>{selectedCourse?.subscribed || '0'}</span>
                 </div>
                 <div className={styles.iconText}>
-                  <span>Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString('en-GB')} | English</span>
+                  <span>Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString('en-GB')} | {selectedCourse?.language?.slice(0, 1).toUpperCase()+selectedCourse?.language?.slice(1) || 'English'}</span>
                 </div>
               </div>
               {!isPaid && <div>
@@ -517,7 +518,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
          <div>
             <h2>
               <CustomVideoPlayer
-                src={selectedCourse.introVideo}
+                src={selectedCourse?.courseIntroVideo}
                 userId={user?._id}
                 controls
                 controlsList="nodownload"
@@ -632,7 +633,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                   <span>{selectedCourse?.subscribed || '0'}</span>
                 </div>
                 <div className={styles.iconText}>
-                  <span>Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString('en-GB')} | English</span>
+                  <span>Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString('en-GB')} | {selectedCourse?.language?.slice(0, 1).toUpperCase()+selectedCourse?.language?.slice(1) || 'English'}</span>
                 </div>
               </div>
             </div>
@@ -658,7 +659,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
           <div>
             <h2>
               <CustomVideoPlayer
-                src={selectedCourse.introVideo}
+                src={selectedCourse?.courseIntroVideo}
                 userId={user?._id}
                 controls
                 controlsList="nodownload"
@@ -795,6 +796,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
           batches={batches}
           onBatchSelect={handleBatchSelect}
           courseTitle={selectedCourse?.CourseName || 'Course'}
+          isLoading={isLoading}
         />
       )}
 
@@ -806,7 +808,9 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
         selectedBatch={selectedBatch}
         courseName={selectedCourse?.CourseName || 'Course'}
         isProcessing={isProcessingPayment}
-        isRecorded={isRecorded}
+        isInPerson = {isInPerson}
+        isLiveOnline = {isLiveOnline}
+        isRecorded = {isRecorded}
       />
     </div>
   );

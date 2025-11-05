@@ -41,7 +41,7 @@ export default function Coursecards({ onSelect , selectedTab, id}) {
 
     return (
         <div className={styles.recentCourse}>
-            <h2>{title.slice(0,1).toUpperCase() + title.slice(1)}</h2>            
+            <h2>{title?.slice(0,1).toUpperCase() + title?.slice(1)}</h2>            
             <div className={styles.tabsmain}>
                 <div className={styles.tabs}>
                     {tabs.map((tab,index) => (

@@ -75,7 +75,7 @@ export default function Marketplace({searchQuery,setSearchQuery}) {
               >
                 <input
                   type="text"
-                  placeholder="Search for Course..."
+                  placeholder="Search for Telegram Channel..."
                   value={inputValue}
                   onChange={handleSearchChange}
                 />
