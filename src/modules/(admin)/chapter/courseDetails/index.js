@@ -5,7 +5,7 @@ import ClockIcon from "@/icons/clockIcon";
 import BathIcon from "@/icons/bathIcon";
 import StarIcon from "@/icons/starIcon";
 import ProfileGroupIcon from "@/icons/profileGroupIcon";
-import { getBatches, getChapters, getCourses, getPaymentUrl, getSessionData, getCourseSyllabus } from "@/compoents/api/dashboard";
+import { getBatches, getChapters, getCourses, getPaymentUrl, getSessionData, getCourseSyllabus, downloadStudentID } from "@/compoents/api/dashboard";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 import OutlineButton from "@/compoents/outlineButton";
@@ -141,11 +141,11 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
   const [showBeforePayment, setShowBeforePayment] = useState(false);
   const [syllabus, setSyllabus] = useState([]);
   const [expandedSection, setExpandedSection] = useState(null);
+  const [isDownloading, setIsDownloading] = useState(false);
 
   const id = params;
   const router = useRouter();
   const searchParams = useSearchParams();
-
 
   console.log("user", user);
   console.log("selectedCourse", selectedCourse?.courseIntroVideo);
@@ -363,8 +363,58 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     }
   };
 
-  console.log(syllabus,'syllabus')
+  console.log(syllabus, 'syllabus')
 
+  const downloadId = async (id) => {
+    setIsDownloading(true);
+    try {
+      const response = await downloadStudentID(id);
+      if (response.success && response.payload) {
+        const fileUrl = response.payload;
+
+        const fileRes = await fetch(fileUrl);
+        if (!fileRes.ok) throw new Error("File fetch failed");
+
+        const blob = await fileRes.blob();
+
+        const contentType = fileRes.headers.get("content-type") || "application/octet-stream";
+
+        const extensionMap = {
+          "application/pdf": "pdf",
+          "image/jpeg": "jpg",
+          "image/png": "png",
+          "image/webp": "webp",
+          "text/html": "html",
+          "application/json": "json",
+        };
+
+        const extension = extensionMap[contentType] || "bin"; 
+
+    
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `student-${Date.now()}.${extension}`;
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        window.URL.revokeObjectURL(url);
+
+        toast.success("File downloaded successfully!");
+        setShowPaymentModal(false);
+      } else {
+        throw new Error("Failed to generate file URL");
+      }
+    } catch (error) {
+      console.error("Error downloading file:", error);
+      toast.error("Failed to download file");
+    } finally {
+      setIsDownloading(false);
+
+    }
+  }
   const renderPaymentModal = () => {
     if (!showPaymentModal) return null;
 
@@ -385,36 +435,37 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
           </div>
         }
         <Button
-          text="Download Student ID"
+          text={isDownloading ? 'Downloading...' : 'Download Student ID'}
           onClick={() => {
-            setShowPaymentModal(false);
-            setIsPaid(false);
+            downloadId(selectedCourse?._id)
           }}
+          disabled={isDownloading}
+          loading={isDownloading}
         />
       </div>
     ) : (
 
       <div className={styles.paymentModalContent}>
-      <div className={styles.paymentModaltitlecontent}>
-        <img src={ErrorIcon} alt="Cancelled" className={styles.paymentIcon} />
-        <h3>Payment Cancelled</h3>
-        <p>Your payment was not completed. Please try again to access the course.</p>
+        <div className={styles.paymentModaltitlecontent}>
+          <img src={ErrorIcon} alt="Cancelled" className={styles.paymentIcon} />
+          <h3>Payment Cancelled</h3>
+          <p>Your payment was not completed. Please try again to access the course.</p>
+        </div>
+        <div className={styles.modalButtons}>
+          <OutlineButton
+            text="Try Again"
+            onClick={() => {
+              setShowPaymentModal(false);
+              handlePayment();
+            }}
+          />
+          <Button
+            text="Close"
+            onClick={() => setShowPaymentModal(false)}
+            style={{ marginLeft: '10px' }}
+          />
+        </div>
       </div>
-      <div className={styles.modalButtons}>
-        <OutlineButton
-          text="Try Again"
-          onClick={() => {
-            setShowPaymentModal(false);
-            handlePayment();
-          }}
-        />
-        <Button
-          text="Close"
-          onClick={() => setShowPaymentModal(false)}
-          style={{ marginLeft: '10px' }}
-        />
-      </div>
-    </div>
     );
 
     return (
@@ -424,7 +475,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     );
   };
 
-  console.log(expandedSection,'expandedSection')
+  console.log(expandedSection, 'expandedSection')
   if (loading) {
     return isLiveOnline ? (
       <div className={styles.sessionContainer}>
@@ -498,7 +549,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                   <span>{selectedCourse?.subscribed || '0'}</span>
                 </div>
                 <div className={styles.iconText}>
-                  <span>Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString('en-GB')} | {selectedCourse?.language?.slice(0, 1).toUpperCase()+selectedCourse?.language?.slice(1) || 'English'}</span>
+                  <span>Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString('en-GB')} | {selectedCourse?.language?.slice(0, 1).toUpperCase() + selectedCourse?.language?.slice(1) || 'English'}</span>
                 </div>
               </div>
               {!isPaid && <div>
@@ -515,7 +566,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
           </div>
 
           {/* Intro Video */}
-         <div>
+          <div>
             <h2>
               <CustomVideoPlayer
                 src={selectedCourse?.courseIntroVideo}
@@ -535,7 +586,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
               <div className={styles.accordion}>
                 {syllabus.map((item, index) => (
                   <div key={index} className={styles.accordionItem}>
-                    <div 
+                    <div
                       className={`${styles.accordionHeader} ${expandedSection === index ? styles.active : ''}`}
                       onClick={() => setExpandedSection(expandedSection === index ? null : index)}
                     >
@@ -633,7 +684,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                   <span>{selectedCourse?.subscribed || '0'}</span>
                 </div>
                 <div className={styles.iconText}>
-                  <span>Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString('en-GB')} | {selectedCourse?.language?.slice(0, 1).toUpperCase()+selectedCourse?.language?.slice(1) || 'English'}</span>
+                  <span>Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString('en-GB')} | {selectedCourse?.language?.slice(0, 1).toUpperCase() + selectedCourse?.language?.slice(1) || 'English'}</span>
                 </div>
               </div>
             </div>
@@ -764,7 +815,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
               <div className={styles.accordion}>
                 {syllabus.map((item, index) => (
                   <div key={index} className={styles.accordionItem}>
-                    <div 
+                    <div
                       className={`${styles.accordionHeader} ${expandedSection === index ? styles.active : ''}`}
                       onClick={() => setExpandedSection(expandedSection === index ? null : index)}
                     >
@@ -773,10 +824,10 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                     </div>
                     <div className={`${styles.accordionContent} ${expandedSection === index ? styles.active : ''}`}>
                       <div className={styles.chapterContent}>
-                       
+
                         <p>{item.description || 'No description available for this chapter.'}</p>
                       </div>
-                      
+
                     </div>
                   </div>
                 ))}
@@ -808,9 +859,9 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
         selectedBatch={selectedBatch}
         courseName={selectedCourse?.CourseName || 'Course'}
         isProcessing={isProcessingPayment}
-        isInPerson = {isInPerson}
-        isLiveOnline = {isLiveOnline}
-        isRecorded = {isRecorded}
+        isInPerson={isInPerson}
+        isLiveOnline={isLiveOnline}
+        isRecorded={isRecorded}
       />
     </div>
   );

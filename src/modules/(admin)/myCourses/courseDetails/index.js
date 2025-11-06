@@ -131,6 +131,7 @@ export default function CourseDetails({ params }) {
   const [showPaymentModal, setShowPaymentModal] = useState(false);
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
+  const [isDownloadingCertificate, setIsDownloadingCertificate] = useState(false);
   const [sessions, setSessions] = useState([]);
   const [isLiveOnline, setIsLiveOnline] = useState(false);
   const [isInPerson, setIsInPerson] = useState(false);
@@ -365,19 +366,20 @@ export default function CourseDetails({ params }) {
   };
 
   const handleDownloadCertificate = async () => {
+    if (isDownloadingCertificate) return;
+    
+    setIsDownloadingCertificate(true);
     try {
       if (!selectedCourse?._id) {
         throw new Error("No course selected");
       }
 
-      const response = await downloadCourseCertificate(selectedCourse._id);
-      console.log("API Response:", response);
+      const response = await downloadCourseCertificate(selectedCourse?._id);
 
       if (!response) {
         throw new Error("No response received from the server");
       }
 
-      // Handle both direct URL string and object response
       const fileUrl =
         typeof response === "object" ? response.payload : response;
 
@@ -386,16 +388,13 @@ export default function CourseDetails({ params }) {
       }
 
       const fileRes = await fetch(fileUrl);
-      console.log("File Response:", fileRes);
       if (!fileRes.ok) throw new Error("Failed to fetch certificate");
 
       const blob = await fileRes.blob();
 
-      // Detect file type from the response headers
       const contentType =
         fileRes.headers.get("content-type") || "application/octet-stream";
 
-      // Map common content types to extensions
       const extensionMap = {
         "application/pdf": "pdf",
         "image/jpeg": "jpg",
@@ -428,6 +427,8 @@ export default function CourseDetails({ params }) {
     } catch (error) {
       console.error("Download error:", error);
       toast.error(error.message || "Failed to download certificate");
+    } finally {
+      setIsDownloadingCertificate(false);
     }
   };
 
@@ -656,14 +657,15 @@ export default function CourseDetails({ params }) {
                 {isPaid && (
                   <Button
                     fill
-                    text="Download Certificate"
+                    text={isDownloadingCertificate ? 'Downloading...' : 'Download Certificate'}
                     onClick={handleDownloadCertificate}
                     style={{
-                      background: isCertificateAvailable
+                      background: isCertificateAvailable && !isDownloadingCertificate
                         ? "#10B981"
                         : "#9CA3AF",
                     }}
-                    disabled={!isCertificateAvailable}
+                    disabled={!isCertificateAvailable || isDownloadingCertificate}
+                    icon={isDownloadingCertificate ? null : undefined}
                   />
                 )}
                 {!isPaid && (

@@ -341,22 +341,23 @@ export const getCourseSyllabus = async (id) => {
 
 export const downloadCourseCertificate = async (courseId) => {
   try {
-    const response = await api.post(
-      `/payment/courseCertificate?courseId=${courseId}`,
-      {},
-      {
-        responseType: "blob",
-        headers: {
-          "x-auth-token": getCookie("token"),
-        },
-      }
-    );
-
-    const text = await response.data.text();
-    
-    return JSON.parse(text).payload;
+    const response = await api.post(`/payment/courseCertificate?courseId=${courseId}`);
+    return response.data;
   } catch (error) {
-    console.error("Error getting certificate URL:", error);
+    console.error('Error downloading certificate:', error);
     throw error;
   }
 };
+
+export const downloadStudentID = async (id) => {
+  try {
+    const response = await api.post(`/payment/createStudentId?courseId=${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error downloading certificate:', error);
+    throw error;
+  }
+};
+
+
+    
