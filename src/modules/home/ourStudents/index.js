@@ -1,47 +1,51 @@
-'use client';
-import React, { useRef } from 'react';
-import { motion, useInView, useMotionValue, useSpring } from 'framer-motion';
-import styles from './ourStudents.module.scss';
-import Slider from 'react-slick';
-import StarIcon from '@/icons/starIcon';
-import Arrowicon from '@/icons/arrowicon';
-import classNames from 'classnames';
+"use client";
+import React, { useRef } from "react";
+import { motion, useInView, useMotionValue, useSpring } from "framer-motion";
+import styles from "./ourStudents.module.scss";
+import Slider from "react-slick";
+import StarIcon from "@/icons/starIcon";
+import Arrowicon from "@/icons/arrowicon";
+import classNames from "classnames";
 
-const SqureIcon = '/assets/icons/squre.svg';
+const SqureIcon = "/assets/icons/squre.svg";
 
 const testimonials = [
   {
     id: 1,
-    quote: "The strategies taught here transformed my trading completely. I guidance helped me refine my trading went from losing money to consistent profits in just 3 months.",
+    quote:
+      "The strategies taught here transformed my trading completely. I guidance helped me refine my trading went from losing money to consistent profits in just 3 months.",
     name: "Rajesh Kumar",
-    role: "Forex Trading Pips Veda",
+    role: "Forex Trading Five Veda",
     profit: "+₹2.8L in 6 months",
-    rating: 5
+    rating: 5,
   },
   {
     id: 2,
-    quote: "The mentorship program was a game-changer for me. The personalized guidance helped me refine my trading strategy and improve my risk management.",
+    quote:
+      "The mentorship program was a game-changer for me. The personalized guidance helped me refine my trading strategy and improve my risk management.",
     name: "Priya Sharma",
     role: "Swing Trading Student",
     profit: "+₹1.5L in 4 months",
-    rating: 5
+    rating: 5,
   },
   {
     id: 3,
-    quote: "The community support and daily market analysis have been invaluable. I've gained confidence in my trading decisions and seen consistent growth in my portfolio.",
+    quote:
+      "The community support and daily market analysis have been invaluable. I've gained confidence in my trading decisions and seen consistent growth in my portfolio.",
     name: "Amit Patel",
     role: "Intraday Trading Enthusiast",
     profit: "+₹3.2L in 8 months",
-    rating: 4
+    rating: 4,
   },
   {
     id: 4,
-    quote: "The structured learning path made complex concepts easy to understand. I went from a complete beginner to making my first profitable trade in just 6 weeks.",
+    quote:
+      "The structured learning path made complex concepts easy to understand. I went from a complete beginner to making my first profitable trade in just 6 weeks.",
     name: "Neha Gupta",
     role: "Beginner Trader",
     profit: "+₹95K in 3 months",
-    rating: 5
-  }
+    rating: 5,
+  },
 ];
 
 function SampleNextArrow(props) {
@@ -74,7 +78,7 @@ const textVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: 'easeOut' },
+    transition: { duration: 0.6, ease: "easeOut" },
   },
 };
 
@@ -83,7 +87,7 @@ const cardVariants = {
   visible: (i) => ({
     opacity: 1,
     y: 0,
-    transition: { delay: i * 0.2, duration: 0.5, ease: 'easeOut' },
+    transition: { delay: i * 0.2, duration: 0.5, ease: "easeOut" },
   }),
 };
 
@@ -145,7 +149,7 @@ export default function OurStudents() {
           className={styles.text}
           variants={textVariants}
           initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
+          animate={isInView ? "visible" : "hidden"}
         >
           <h2>What Our Students Say</h2>
           <p>Real success stories from our trading community</p>
@@ -158,17 +162,22 @@ export default function OurStudents() {
               custom={i}
               variants={cardVariants}
               initial="hidden"
-              animate={isInView ? 'visible' : 'hidden'}
+              animate={isInView ? "visible" : "hidden"}
               onMouseMove={(e) => handleMouseMove(e, testimonial.id)}
               onMouseLeave={handleMouseLeave}
-              transition={{ type: 'spring', stiffness: 200, damping: 15, mass: 0.5 }}
+              transition={{
+                type: "spring",
+                stiffness: 200,
+                damping: 15,
+                mass: 0.5,
+              }}
               style={{
                 transformPerspective: 800,
-                transformStyle: 'preserve-3d',
+                transformStyle: "preserve-3d",
                 rotateX: hoveredCardId === testimonial.id ? tilt.rotateX : 0,
                 rotateY: hoveredCardId === testimonial.id ? tilt.rotateY : 0,
                 scale: hoveredCardId === testimonial.id ? tilt.scale : 1,
-                willChange: 'transform',
+                willChange: "transform",
               }}
             >
               <div className={styles.whiteBox}>
@@ -184,7 +193,10 @@ export default function OurStudents() {
                 </div>
                 <div className={styles.profilealignment}>
                   <div className={styles.profile}>
-                    {testimonial.name.split(' ').map(n => n[0]).join('')}
+                    {testimonial.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
                   </div>
                   <div>
                     <h4>{testimonial.name}</h4>

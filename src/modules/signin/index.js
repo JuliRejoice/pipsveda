@@ -23,19 +23,18 @@ export default function Signin() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
 
-
   const validateEmail = (value) => {
-    const trimmedValue = value.trim().toLowerCase(); 
+    const trimmedValue = value.trim().toLowerCase();
     if (!trimmedValue) return "Email is required.";
-    if (trimmedValue.includes(' ')) return "Email cannot contain spaces.";   
+    if (trimmedValue.includes(" ")) return "Email cannot contain spaces.";
     const re = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
-    if (!re.test(trimmedValue)) return "Enter a valid email address.";   
+    if (!re.test(trimmedValue)) return "Enter a valid email address.";
     return "";
   };
-  
+
   const validatePassword = (value) => {
     if (!value || !value.trim()) return "Password is required.";
-    if (value.includes(' ')) return "Password cannot contain spaces.";
+    if (value.includes(" ")) return "Password cannot contain spaces.";
     if (value.length < 6) return "Password must be at least 6 characters.";
     return "";
   };
@@ -48,7 +47,7 @@ export default function Signin() {
       setErrors({
         email: emailError,
         password: passwordError,
-        submit: ""
+        submit: "",
       });
       return;
     }
@@ -56,7 +55,7 @@ export default function Signin() {
     setIsSubmitting(true);
     try {
       const data = await signIn(email, password);
-    
+
       if (data.success) {
         toast.success("Login successfully.");
         setCookie("userToken", data.payload.token);
@@ -65,14 +64,16 @@ export default function Signin() {
       } else {
         // handle case where API responds with success=false
         toast.dismiss();
-        toast.error(errorMessages[data?.message] ?? "Login failed. Please try again.");
+        toast.error(
+          errorMessages[data?.message] ?? "Login failed. Please try again."
+        );
       }
     } catch (error) {
       console.error("Login error:", error);
-    
+
       // axios puts the server error here
       const serverMessage = error.response?.data?.message;
-    
+
       if (serverMessage && errorMessages[serverMessage]) {
         toast.dismiss();
         toast.error(errorMessages[serverMessage]);
@@ -94,12 +95,12 @@ export default function Signin() {
           </div>
           <div className={styles.text}>
             <h2>Welcome Back</h2>
-            <p>Continue your journey into the world of financial Pips Veday.</p>
+            <p>Continue your journey into the world of financial Five Veday.</p>
           </div>
           <div className={styles.leftRightAlignment}>
             <form
               onSubmit={(e) => {
-                e.preventDefault(); 
+                e.preventDefault();
                 if (!isSubmitting) handleLogin();
               }}
             >
@@ -118,20 +119,22 @@ export default function Signin() {
                     setEmail(value.toLowerCase());
                     // Only validate on change if there's an existing error
                     if (errors.email) {
-                        setErrors(prev => ({ 
-                            ...prev, 
-                            email: validateEmail(value, false) 
-                        }));
+                      setErrors((prev) => ({
+                        ...prev,
+                        email: validateEmail(value, false),
+                      }));
                     }
-                }}
-                onBlur={(e) => {
-                    setErrors(prev => ({ 
-                        ...prev, 
-                        email: validateEmail(e.target.value, true) 
+                  }}
+                  onBlur={(e) => {
+                    setErrors((prev) => ({
+                      ...prev,
+                      email: validateEmail(e.target.value, true),
                     }));
-                }}
+                  }}
                 />
-                {errors.email && <span className={styles.errormsg}>{errors.email}</span>}
+                {errors.email && (
+                  <span className={styles.errormsg}>{errors.email}</span>
+                )}
               </div>
 
               <Input
@@ -150,14 +153,18 @@ export default function Signin() {
                   setErrors((prev) => ({ ...prev, password: "" }));
                 }}
               />
-              {errors.password && <span className={styles.errormsg}>{errors.password}</span>}
+              {errors.password && (
+                <span className={styles.errormsg}>{errors.password}</span>
+              )}
 
               <div className={styles.forgotPassword}>
                 <Link href="/reset-password" aria-label="reset-password">
                   Forgot password?
                 </Link>
               </div>
-              {errors.submit && <span className={styles.errormsg}>{errors.submit}</span>}
+              {errors.submit && (
+                <span className={styles.errormsg}>{errors.submit}</span>
+              )}
 
               <div className={styles.buttonWidthFull}>
                 <Button

@@ -1,50 +1,50 @@
-'use client'
-import React, { useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
-import styles from './whypips.module.scss';
+"use client";
+import React, { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import styles from "./whypips.module.scss";
 
-const BottomVec = '/assets/images/bottomvec.png';
-const ComputerIcon = '/assets/icons/computer.svg';
-const DiscordIcon = '/assets/icons/Discord.svg';
-const ReviewsIcon = '/assets/icons/Reviews.svg';
-const ResourcesIcon = '/assets/icons/Resources.svg';
-const CertificateIcon = '/assets/icons/Certificate.svg';
+const BottomVec = "/assets/images/bottomvec.png";
+const ComputerIcon = "/assets/icons/computer.svg";
+const DiscordIcon = "/assets/icons/Discord.svg";
+const ReviewsIcon = "/assets/icons/Reviews.svg";
+const ResourcesIcon = "/assets/icons/Resources.svg";
+const CertificateIcon = "/assets/icons/Certificate.svg";
 
 const cardItems = [
   {
     id: 1,
     icon: ComputerIcon,
-    title: 'Real-world Trading Simulations',
+    title: "Real-world Trading Simulations",
     description:
-      'Practice with live market data in a risk-free environment before investing real money.',
+      "Practice with live market data in a risk-free environment before investing real money.",
   },
   {
     id: 2,
     icon: DiscordIcon,
-    title: 'Telegram & Discord Support Channels',
+    title: "Telegram & Discord Support Channels",
     description:
-      '24/7 community support with instant access to mentors and fellow traders.',
+      "24/7 community support with instant access to mentors and fellow traders.",
   },
   {
     id: 3,
     icon: ReviewsIcon,
-    title: 'Mentor Feedback & Portfolio Reviews',
+    title: "Mentor Feedback & Portfolio Reviews",
     description:
-      'Get personalized feedback on your trades and portfolio from experienced professionals.',
+      "Get personalized feedback on your trades and portfolio from experienced professionals.",
   },
   {
     id: 4,
     icon: ResourcesIcon,
-    title: 'Lifetime Access to Resources',
+    title: "Lifetime Access to Resources",
     description:
-      'Once enrolled, enjoy unlimited access to all course materials and future updates.',
+      "Once enrolled, enjoy unlimited access to all course materials and future updates.",
   },
   {
     id: 5,
     icon: CertificateIcon,
-    title: 'Certificate of Completion',
+    title: "Certificate of Completion",
     description:
-      'Earn recognized certificates that validate your trading knowledge and skills.',
+      "Earn recognized certificates that validate your trading knowledge and skills.",
   },
 ];
 
@@ -54,7 +54,7 @@ const textVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: 'easeOut' },
+    transition: { duration: 0.6, ease: "easeOut" },
   },
 };
 
@@ -72,7 +72,7 @@ const cardVariants = {
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.6, ease: 'easeOut' },
+    transition: { duration: 0.6, ease: "easeOut" },
   },
 };
 
@@ -85,11 +85,11 @@ export default function Whypips() {
 
   const handleMouseEnter = (e) => {
     const el = e.currentTarget;
-    el.style.willChange = 'transform';
-    el.style.transition = 'transform 120ms ease-out';
+    el.style.willChange = "transform";
+    el.style.transition = "transform 120ms ease-out";
     // Ensure perspective is applied before move
-    if (!el.style.transform || !el.style.transform.includes('perspective')) {
-      el.style.transform = 'perspective(900px)';
+    if (!el.style.transform || !el.style.transform.includes("perspective")) {
+      el.style.transform = "perspective(900px)";
     }
   };
 
@@ -97,23 +97,26 @@ export default function Whypips() {
     const el = e.currentTarget;
     const rect = el.getBoundingClientRect();
     const x = e.clientX - rect.left; // x within element
-    const y = e.clientY - rect.top;  // y within element
+    const y = e.clientY - rect.top; // y within element
 
-    const px = (x / rect.width) - 0.5;  // -0.5 to 0.5
-    const py = (y / rect.height) - 0.5; // -0.5 to 0.5
+    const px = x / rect.width - 0.5; // -0.5 to 0.5
+    const py = y / rect.height - 0.5; // -0.5 to 0.5
 
-    const rotateY = px * (maxTilt * 2);     // left(-) to right(+)
-    const rotateX = -py * (maxTilt * 2);    // top(+) to bottom(-)
+    const rotateY = px * (maxTilt * 2); // left(-) to right(+)
+    const rotateX = -py * (maxTilt * 2); // top(+) to bottom(-)
 
-    el.style.transition = 'transform 40ms linear';
-    el.style.transform = `perspective(900px) rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.03, 1.03, 1.03)`;
+    el.style.transition = "transform 40ms linear";
+    el.style.transform = `perspective(900px) rotateX(${rotateX.toFixed(
+      2
+    )}deg) rotateY(${rotateY.toFixed(2)}deg) scale3d(1.03, 1.03, 1.03)`;
   };
 
   const handleMouseLeave = (e) => {
     const el = e.currentTarget;
-    el.style.transition = 'transform 180ms ease-out';
-    el.style.transform = 'perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
-    el.style.willChange = 'auto';
+    el.style.transition = "transform 180ms ease-out";
+    el.style.transform =
+      "perspective(900px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)";
+    el.style.willChange = "auto";
   };
 
   return (
@@ -128,12 +131,13 @@ export default function Whypips() {
           className={styles.title}
           variants={textVariants}
           initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
+          animate={isInView ? "visible" : "hidden"}
         >
-          <h2>Why Pips Veda Trading Academy?</h2>
+          <h2>Why Five Veda Trading Academy?</h2>
           <p>
-            Our academy bridges the gap between textbook theory and market reality. Whether
-            you're a curious novice or a seasoned trader, our curriculum adapts to you.
+            Our academy bridges the gap between textbook theory and market
+            reality. Whether you're a curious novice or a seasoned trader, our
+            curriculum adapts to you.
           </p>
         </motion.div>
 
@@ -142,7 +146,7 @@ export default function Whypips() {
           className={styles.grid}
           variants={containerVariants}
           initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
+          animate={isInView ? "visible" : "hidden"}
         >
           {cardItems.map((card) => (
             <motion.div
@@ -152,7 +156,7 @@ export default function Whypips() {
               onMouseEnter={handleMouseEnter}
               onMouseMove={handleMouseMove}
               onMouseLeave={handleMouseLeave}
-              style={{ transformStyle: 'preserve-3d' }}
+              style={{ transformStyle: "preserve-3d" }}
             >
               <div className={styles.griditems}>
                 <div className={styles.iconCenter}>
