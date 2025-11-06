@@ -122,18 +122,20 @@ export default function CourseBanner({
     // }
   };
 
-
-
   return (
     <div className={styles.courseBanner}>
       <div className={styles.grid}>
         <div className={styles.griditems}>
           <div className={styles.text}>
             <h2>
-              Learn to trade crypto CFDs at Pips Veda no need to hold the coins, just trade the opportunities.
+              Learn to trade crypto CFDs at Five Veda no need to hold the coins,
+              just trade the opportunities.
             </h2>
             <p>
-              Pips Veda Trading Academy helps you unlock the world of crypto CFD trading. Learn to trade Bitcoin, Ether, and Ripple CFDs with flexible strategies go long or short, understand spreads, and trade without needing a digital wallet.
+              Five Veda Trading Academy helps you unlock the world of crypto CFD
+              trading. Learn to trade Bitcoin, Ether, and Ripple CFDs with
+              flexible strategies go long or short, understand spreads, and
+              trade without needing a digital wallet.
             </p>
             <motion.div className={styles.searchbar} variants={item}>
               <motion.div
@@ -179,10 +181,7 @@ export default function CourseBanner({
             <CourseCardSkeleton count={3} />
           ) : (
             courses.map((course, i) => (
-              <motion.div
-                className={styles.card}
-                key={i}
-              >
+              <motion.div className={styles.card} key={i}>
                 <div className={styles.image}>
                   <img src={course.courseVideo} alt="CardImage" />
                 </div>

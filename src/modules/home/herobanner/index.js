@@ -1,21 +1,27 @@
-'use client'
-import React, { useEffect, useRef, useState } from 'react';
-import { motion, useAnimation, useInView, AnimatePresence, useTransform } from 'framer-motion';
-import styles from './herobanner.module.scss';
-import SearchIcon from '@/icons/searchIcon';
-import Button from '@/compoents/button';
-import OutlineButton from '@/compoents/outlineButton';
-import CircleAnimation from '@/icons/circleAnimation';
-import { useRouter } from 'next/navigation';
-import { getCookie } from '../../../../cookie';
+"use client";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  motion,
+  useAnimation,
+  useInView,
+  AnimatePresence,
+  useTransform,
+} from "framer-motion";
+import styles from "./herobanner.module.scss";
+import SearchIcon from "@/icons/searchIcon";
+import Button from "@/compoents/button";
+import OutlineButton from "@/compoents/outlineButton";
+import CircleAnimation from "@/icons/circleAnimation";
+import { useRouter } from "next/navigation";
+import { getCookie } from "../../../../cookie";
 
-const RightIcon = '/assets/icons/right.svg';
-const LineImage = '/assets/images/line-img.png';
-const Banner1 = '/assets/images/banner1.png';
-const Banner2 = '/assets/images/banner2.png';
-const RowBanner = '/assets/images/row.png';
-const SystemBanner = '/assets/images/system-img.png';
-const CrossLineImage = '/assets/images/cross-line.png';
+const RightIcon = "/assets/icons/right.svg";
+const LineImage = "/assets/images/line-img.png";
+const Banner1 = "/assets/images/banner1.png";
+const Banner2 = "/assets/images/banner2.png";
+const RowBanner = "/assets/images/row.png";
+const SystemBanner = "/assets/images/system-img.png";
+const CrossLineImage = "/assets/images/cross-line.png";
 
 // Animation variants
 const container = {
@@ -35,7 +41,7 @@ const item = {
     y: 0,
     opacity: 1,
     transition: {
-      type: 'spring',
+      type: "spring",
       stiffness: 100,
       damping: 15,
     },
@@ -48,9 +54,9 @@ const fadeIn = {
     opacity: 1,
     transition: {
       duration: 0.8,
-      ease: "easeOut"
-    }
-  }
+      ease: "easeOut",
+    },
+  },
 };
 
 const fadeInUp = {
@@ -60,9 +66,9 @@ const fadeInUp = {
     opacity: 1,
     transition: {
       duration: 0.8,
-      ease: [0.25, 0.1, 0.25, 1]
-    }
-  }
+      ease: [0.25, 0.1, 0.25, 1],
+    },
+  },
 };
 
 const scaleUp = {
@@ -72,9 +78,9 @@ const scaleUp = {
     opacity: 1,
     transition: {
       duration: 0.6,
-      ease: 'easeOut'
-    }
-  }
+      ease: "easeOut",
+    },
+  },
 };
 
 // Updated Section Animation variants
@@ -93,14 +99,14 @@ const cardVariants = {
   hidden: {
     y: 60,
     opacity: 0,
-    scale: 0.8
+    scale: 0.8,
   },
   visible: {
     y: 0,
     opacity: 1,
     scale: 1,
     transition: {
-      type: 'spring',
+      type: "spring",
       stiffness: 100,
       damping: 15,
       duration: 0.8,
@@ -112,14 +118,14 @@ const imageVariants = {
   hidden: {
     scale: 0.8,
     opacity: 0,
-    rotate: -5
+    rotate: -5,
   },
   visible: {
     scale: 1,
     opacity: 1,
     rotate: 0,
     transition: {
-      type: 'spring',
+      type: "spring",
       stiffness: 120,
       damping: 20,
       duration: 0.6,
@@ -130,38 +136,41 @@ const imageVariants = {
 const textVariants = {
   hidden: {
     y: 20,
-    opacity: 0
+    opacity: 0,
   },
   visible: {
     y: 0,
     opacity: 1,
     transition: {
       duration: 0.5,
-      ease: [0.25, 0.1, 0.25, 1]
+      ease: [0.25, 0.1, 0.25, 1],
     },
   },
 };
 
-const AnimatedText = ({ text, className = '' }) => {
-  const words = text.split(' ');
+const AnimatedText = ({ text, className = "" }) => {
+  const words = text.split(" ");
   const containerRef = useRef(null);
   const isInView = useInView(containerRef, { once: true, amount: 0.5 });
 
   return (
     <span ref={containerRef} className={className}>
       {words.map((word, wordIndex) => (
-        <span key={wordIndex} style={{ display: 'inline-block', overflow: 'hidden' }}>
+        <span
+          key={wordIndex}
+          style={{ display: "inline-block", overflow: "hidden" }}
+        >
           <motion.span
-            style={{ display: 'inline-block' }}
-            initial={{ y: '100%', opacity: 0 }}
+            style={{ display: "inline-block" }}
+            initial={{ y: "100%", opacity: 0 }}
             animate={isInView ? { y: 0, opacity: 1 } : {}}
             transition={{
               duration: 0.5,
               delay: wordIndex * 0.05,
-              ease: [0.2, 0.65, 0.3, 0.9]
+              ease: [0.2, 0.65, 0.3, 0.9],
             }}
           >
-            {word + ' '}
+            {word + " "}
           </motion.span>
         </span>
       ))}
@@ -181,7 +190,7 @@ export default function Herobanner() {
 
   useEffect(() => {
     if (isInView) {
-      controls.start('show');
+      controls.start("show");
     }
   }, [controls, isInView]);
 
@@ -236,10 +245,10 @@ export default function Herobanner() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
           >
-            <div className='container-md'>
+            <div className="container-md">
               <div className={styles.text}>
                 <h1>
-                  Pips Veda the Markets Build a Financial Future That Lasts
+                  Five Veda the Markets Build a Financial Future That Lasts
                 </h1>
 
                 <motion.p
@@ -248,8 +257,8 @@ export default function Herobanner() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.4, duration: 0.6 }}
                 >
-                  AI technology services aim to provide intelligent solutions that help businesses
-                  improve efficiency,
+                  AI technology services aim to provide intelligent solutions
+                  that help businesses improve efficiency,
                 </motion.p>
               </div>
               {/* <div className={styles.searchButtonalignment}>
@@ -282,8 +291,25 @@ export default function Herobanner() {
                 </motion.div>
               </div> */}
               <div className={styles.heroSectionTwoButton}>
-                <Button text="Explore Courses" onClick={() => { getCookie("userToken") ? router.push(`/course`) : router.push('/signin') }} icon={RightIcon} />
-                <Button text="Join Free Community" onClick={() => { getCookie("userToken") ? router.push(`/telegram`) : router.push('/signin') }} black icon={RightIcon} />
+                <Button
+                  text="Explore Courses"
+                  onClick={() => {
+                    getCookie("userToken")
+                      ? router.push(`/course`)
+                      : router.push("/signin");
+                  }}
+                  icon={RightIcon}
+                />
+                <Button
+                  text="Join Free Community"
+                  onClick={() => {
+                    getCookie("userToken")
+                      ? router.push(`/telegram`)
+                      : router.push("/signin");
+                  }}
+                  black
+                  icon={RightIcon}
+                />
               </div>
             </div>
             <motion.div
@@ -299,19 +325,17 @@ export default function Herobanner() {
                   whileHover={{
                     scale: 1.05,
                     rotateY: 5,
-                    transition: { duration: 0.3 }
+                    transition: { duration: 0.3 },
                   }}
                   whileTap={{ scale: 0.98 }}
                 >
                   <motion.div className={styles.header} variants={textVariants}>
-                    <p>
-                      Real-world Trading Simulations
-                    </p>
+                    <p>Real-world Trading Simulations</p>
                   </motion.div>
                   <motion.div className={styles.image} variants={imageVariants}>
                     <motion.img
                       src={LineImage}
-                      alt='LineImage'
+                      alt="LineImage"
                       whileHover={{ scale: 1.1, rotate: 2 }}
                       transition={{ duration: 0.3 }}
                     />
@@ -326,7 +350,7 @@ export default function Herobanner() {
                 >
                   <motion.img
                     src={Banner1}
-                    alt='Banner1'
+                    alt="Banner1"
                     variants={imageVariants}
                     whileHover={{ scale: 1.05 }}
                   />
@@ -335,13 +359,12 @@ export default function Herobanner() {
                   className={styles.detailsBox}
                   whileHover={{
                     scale: 1.02,
-                    backgroundColor: 'rgba(20, 20, 20, 0.9)',
-                    transition: { duration: 0.3 }
+                    backgroundColor: "rgba(20, 20, 20, 0.9)",
+                    transition: { duration: 0.3 },
                   }}
                 >
                   <motion.p variants={textVariants}>
-                    Telegram & Discord Support
-                    Channels
+                    Telegram & Discord Support Channels
                   </motion.p>
                 </motion.div>
               </motion.div>
@@ -351,14 +374,16 @@ export default function Herobanner() {
                   whileHover={{
                     scale: 1.03,
                     rotateX: 2,
-                    transition: { duration: 0.3 }
+                    transition: { duration: 0.3 },
                   }}
                 >
-                  <motion.p variants={textVariants}>Lifetime Access to Resources</motion.p>
+                  <motion.p variants={textVariants}>
+                    Lifetime Access to Resources
+                  </motion.p>
                   <motion.div className={styles.image} variants={imageVariants}>
                     <motion.img
                       src={RowBanner}
-                      alt='RowBanner'
+                      alt="RowBanner"
                       whileHover={{ scale: 1.1 }}
                       transition={{ duration: 0.3 }}
                     />
@@ -371,13 +396,16 @@ export default function Herobanner() {
                 >
                   <motion.img
                     src={SystemBanner}
-                    alt='SystemBanner'
+                    alt="SystemBanner"
                     variants={imageVariants}
                     whileHover={{ scale: 1.05, rotateY: 3 }}
                   />
                 </motion.div>
               </motion.div>
-              <motion.div className={styles.hidenSection} variants={cardVariants}>
+              <motion.div
+                className={styles.hidenSection}
+                variants={cardVariants}
+              >
                 <motion.div
                   className={styles.imageSection}
                   whileHover={{ scale: 1.02 }}
@@ -385,7 +413,7 @@ export default function Herobanner() {
                 >
                   <motion.img
                     src={Banner2}
-                    alt='Banner2'
+                    alt="Banner2"
                     variants={imageVariants}
                     whileHover={{ scale: 1.05 }}
                   />
@@ -394,35 +422,35 @@ export default function Herobanner() {
                   className={styles.detailsBox}
                   whileHover={{
                     scale: 1.02,
-                    backgroundColor: 'rgba(20, 20, 20, 0.9)',
-                    transition: { duration: 0.3 }
+                    backgroundColor: "rgba(20, 20, 20, 0.9)",
+                    transition: { duration: 0.3 },
                   }}
                 >
                   <motion.p variants={textVariants}>
-                    Mentor Feedback & Portfolio
-                    Reviews
+                    Mentor Feedback & Portfolio Reviews
                   </motion.p>
                 </motion.div>
               </motion.div>
-              <motion.div className={styles.hidenSection} variants={cardVariants}>
+              <motion.div
+                className={styles.hidenSection}
+                variants={cardVariants}
+              >
                 <motion.div
                   className={styles.singleCard}
                   whileHover={{
                     scale: 1.05,
                     rotateY: -5,
-                    transition: { duration: 0.3 }
+                    transition: { duration: 0.3 },
                   }}
                   whileTap={{ scale: 0.98 }}
                 >
                   <motion.div className={styles.header} variants={textVariants}>
-                    <p>
-                      Certificate of Completion
-                    </p>
+                    <p>Certificate of Completion</p>
                   </motion.div>
                   <motion.div className={styles.image} variants={imageVariants}>
                     <motion.img
                       src={CrossLineImage}
-                      alt='CrossLineImage'
+                      alt="CrossLineImage"
                       whileHover={{ scale: 1.1, rotate: -2 }}
                       transition={{ duration: 0.3 }}
                     />
@@ -432,7 +460,6 @@ export default function Herobanner() {
             </motion.div>
           </motion.div>
         </div>
-
       </motion.div>
     </AnimatePresence>
   );
