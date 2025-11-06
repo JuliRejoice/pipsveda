@@ -14,6 +14,7 @@ import {
   getCourseSyllabus,
   updateVideoProgress,
   downloadCourseCertificate,
+  downloadStudentID,
 } from "@/compoents/api/dashboard";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -132,6 +133,8 @@ export default function CourseDetails({ params }) {
   const [paymentStatus, setPaymentStatus] = useState(null);
   const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   const [isDownloadingCertificate, setIsDownloadingCertificate] = useState(false);
+  const [isDownloadingStudentId, setIsDownloadingStudentId] = useState(false);
+  const [isDownloading, setIsDownloading] = useState(false);
   const [sessions, setSessions] = useState([]);
   const [isLiveOnline, setIsLiveOnline] = useState(false);
   const [isInPerson, setIsInPerson] = useState(false);
@@ -176,10 +179,14 @@ export default function CourseDetails({ params }) {
       const data = await getChapters(id);
       setChapters(data?.payload?.data || []);
       setIsPaid(data?.payload.isPayment);
+      console.log('--------------gdfg------------')
 
       if (data?.payload?.data?.length > 0) {
+          console.log('--------------gdfg------------')
+
         setSelectedChapter(data.payload.data[0]);
-        if (selectedCourse?.courseType === "recorded") {
+        if (res?.payload?.data?.[0]?.courseType === "recorded") {
+          console.log('--------------gdfg------------')
           console.log(
             "-------------------",
             data.payload.data[0]?.courseTracking?.percentage
@@ -365,9 +372,62 @@ export default function CourseDetails({ params }) {
     );
   };
 
+  console.log(batchDetails,"batchDetails")
+
+  const downloadId = async (id) => {
+    setIsDownloadingStudentId(true);
+    try {
+      const response = await downloadStudentID(id,batchDetails?._id);
+      if (response.success && response.payload) {
+        const fileUrl = response.payload;
+
+        const fileRes = await fetch(fileUrl);
+        if (!fileRes.ok) throw new Error("File fetch failed");
+
+        const blob = await fileRes.blob();
+
+        const contentType = fileRes.headers.get("content-type") || "application/octet-stream";
+
+        const extensionMap = {
+          "application/pdf": "pdf",
+          "image/jpeg": "jpg",
+          "image/png": "png",
+          "image/webp": "webp",
+          "text/html": "html",
+          "application/json": "json",
+        };
+
+        const extension = extensionMap[contentType] || "bin";
+
+
+        const url = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = `student-${Date.now()}.${extension}`;
+
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+
+        window.URL.revokeObjectURL(url);
+
+        toast.success("File downloaded successfully!");
+        setShowPaymentModal(false);
+      } else {
+        throw new Error("Failed to generate file URL");
+      }
+    } catch (error) {
+      console.error("Error downloading file:", error);
+      toast.error("Failed to download file");
+    } finally {
+      setIsDownloadingStudentId(false);
+
+    }
+  }
+
   const handleDownloadCertificate = async () => {
     if (isDownloadingCertificate) return;
-    
+
     setIsDownloadingCertificate(true);
     try {
       if (!selectedCourse?._id) {
@@ -405,10 +465,9 @@ export default function CourseDetails({ params }) {
       };
 
       const extension = extensionMap[contentType] || "bin";
-      const fileName = `certificate-${
-        selectedCourse.CourseName?.replace(/\s+/g, "-").toLowerCase() ||
+      const fileName = `certificate-${selectedCourse.CourseName?.replace(/\s+/g, "-").toLowerCase() ||
         "course"
-      }.${extension}`;
+        }.${extension}`;
 
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -470,10 +529,7 @@ export default function CourseDetails({ params }) {
           )}
           <Button
             text="Download Student ID"
-            onClick={() => {
-              setShowPaymentModal(false);
-              setIsPaid(false);
-            }}
+            onClick={() => downloadId(selectedCourse?._id)}
           />
         </div>
       ) : (
@@ -598,6 +654,8 @@ export default function CourseDetails({ params }) {
 
   console.log(selectedChapter, selectedChapter?.courseTracking?._id);
 
+  console.log(videoWatchingPercentage,'videoWatchingPercentage')
+
   return (
     <div className={styles.courseDetailsBox}>
       {renderPaymentModal()}
@@ -654,7 +712,33 @@ export default function CourseDetails({ params }) {
                 )}
               </div>
               <div style={{ display: "flex", gap: "12px" }}>
-                {isPaid && (
+                {isPaid && selectedCourse?.courseType === 'physical' ? (
+                  <>
+                    <Button
+                      fill
+                      text={isDownloadingStudentId ? 'Downloading...' : 'Download Student ID'}
+                      onClick={() => downloadId(selectedCourse?._id)}
+                      style={{
+                        background: !isDownloadingStudentId ? "#10B981" : "#9CA3AF",
+                        marginBottom: isCertificateAvailable ? '10px' : 0
+                      }}
+                      disabled={isDownloadingStudentId || isDownloadingCertificate}
+                      icon={isDownloadingStudentId ? null : undefined}
+                    />
+                    {isCertificateAvailable && (
+                      <Button
+                        fill
+                        text={isDownloadingCertificate ? 'Downloading...' : 'Download Certificate'}
+                        onClick={handleDownloadCertificate}
+                        style={{
+                          background: !isDownloadingCertificate ? "#10B981" : "#9CA3AF",
+                        }}
+                        disabled={isDownloadingCertificate || isDownloadingStudentId}
+                        icon={isDownloadingCertificate ? null : undefined}
+                      />
+                    )}
+                  </>
+                ) : isPaid && (
                   <Button
                     fill
                     text={isDownloadingCertificate ? 'Downloading...' : 'Download Certificate'}
@@ -760,9 +844,8 @@ export default function CourseDetails({ params }) {
                     {syllabus.map((item, index) => (
                       <div key={item._id} className={styles.accordionItem}>
                         <div
-                          className={`${styles.accordionHeader} ${
-                            expandedSyllabus === index ? styles.active : ""
-                          }`}
+                          className={`${styles.accordionHeader} ${expandedSyllabus === index ? styles.active : ""
+                            }`}
                           onClick={() =>
                             setExpandedSyllabus(
                               expandedSyllabus === index ? null : index
@@ -775,9 +858,8 @@ export default function CourseDetails({ params }) {
                           <span>{expandedSyllabus === index ? "−" : "+"}</span>
                         </div>
                         <div
-                          className={`${styles.accordionContent} ${
-                            expandedSyllabus === index ? styles.active : ""
-                          }`}
+                          className={`${styles.accordionContent} ${expandedSyllabus === index ? styles.active : ""
+                            }`}
                         >
                           <div className={styles.syllabusContent}>
                             <p>
@@ -856,9 +938,8 @@ export default function CourseDetails({ params }) {
             <>
               <h2>Upcoming Sessions</h2>
               <div
-                className={`${styles.sessionListmain} ${
-                  !isPaid ? styles.lockedSession : ""
-                }`}
+                className={`${styles.sessionListmain} ${!isPaid ? styles.lockedSession : ""
+                  }`}
               >
                 <div className={styles.sessionListslider}>
                   {upcomingSessions.length > 0 && !loading ? (
@@ -1045,9 +1126,8 @@ export default function CourseDetails({ params }) {
                             <p>Enroll to unlock this video</p>
                           </div>
                           <img
-                            src={`https://img.youtube.com/vi/${
-                              selectedChapter.chapterVideo.split("v=")[1]
-                            }/hqdefault.jpg`}
+                            src={`https://img.youtube.com/vi/${selectedChapter.chapterVideo.split("v=")[1]
+                              }/hqdefault.jpg`}
                             alt="Video thumbnail"
                             className={styles.videoThumbnail}
                           />
@@ -1081,7 +1161,7 @@ export default function CourseDetails({ params }) {
                             controlsList="nodownload"
                             disablePictureInPicture
                             noremoteplayback
-                            // className={styles.videoPlayer}
+                          // className={styles.videoPlayer}
                           />
                         </div>
                       )
@@ -1095,10 +1175,40 @@ export default function CourseDetails({ params }) {
                     className={styles.details}
                     style={{ marginLeft: "20px" }}
                   >
-                    <h4>
-                      Chapter {selectedChapter.chapterNo} :{" "}
-                      {selectedChapter.chapterName || "Untitled Chapter"}
-                    </h4>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                      <h4>
+                        Chapter {selectedChapter.chapterNo} :{" "}
+                        {selectedChapter.chapterName || "Untitled Chapter"}
+                      </h4>
+                      {selectedChapter.courseTracking?.percentage > 0 && (
+                        <div style={{
+                          width: '36px',
+                          height: '36px',
+                          borderRadius: '50%',
+                          background: `conic-gradient(rgb(106 16 185) 10.49%, rgb(229, 231, 235) ${videoWatchingPercentage}%, #E5E7EB 0)`,
+                          position: 'relative',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          fontSize: '10px',
+                          fontWeight: 'bold',
+                          color: '#1F2937'
+                        }}>
+                          <div style={{
+                            width: '18px',
+                            height: '18px',
+                            background: 'white',
+                            borderRadius: '50%',
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            padding: '15px'
+                          }}>
+                            {Math.round(videoWatchingPercentage)}%
+                          </div>
+                        </div>
+                      )}
+                    </div>
                     <p>
                       {selectedChapter.description ||
                         "No description available for this chapter."}

@@ -92,7 +92,7 @@ export default function ResetPassword() {
                                       e.preventDefault();
                                     }
                                   }}
-                                onChange={(e) =>{ setEmail(e.target.value);
+                                onChange={(e) =>{ setEmail(e.target.value.toLowerCase());
                                     setError(null);
                                 }}
                                 disabled={isLoading}

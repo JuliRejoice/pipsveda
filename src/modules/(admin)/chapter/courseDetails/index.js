@@ -368,7 +368,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
   const downloadId = async (id) => {
     setIsDownloading(true);
     try {
-      const response = await downloadStudentID(id);
+      const response = await downloadStudentID(id,selectedBatch?._id);
       if (response.success && response.payload) {
         const fileUrl = response.payload;
 

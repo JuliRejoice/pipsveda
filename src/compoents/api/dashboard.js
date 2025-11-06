@@ -349,9 +349,9 @@ export const downloadCourseCertificate = async (courseId) => {
   }
 };
 
-export const downloadStudentID = async (id) => {
+export const downloadStudentID = async (id,batchId) => {
   try {
-    const response = await api.post(`/payment/createStudentId?courseId=${id}`);
+    const response = await api.post(`/payment/createStudentId?courseId=${id}&batchId=${batchId}`);
     return response.data;
   } catch (error) {
     console.error('Error downloading certificate:', error);
