@@ -48,6 +48,7 @@ useEffect(() => {
       // Only seek if this is a meaningful change
       if (Math.abs(video.currentTime - seekTime) > 0.05) {
         video.currentTime = seekTime;
+        console.log('seekTime', seekTime);
         setCurrentTime(seekTime);
         setProgress(percentage);
 
@@ -214,12 +215,28 @@ useEffect(() => {
       const video = videoRef.current;
       if (!video) return;
 
-      // Ensure we're at the current time before playing
-      if (currentTime > 0) {
-        video.currentTime = currentTime;
+      // If this is the first play, ensure we're at the correct time
+      if (video.readyState >= 2) { // HAVE_CURRENT_DATA
+        const targetTime = (percentage / 100) * video.duration;
+        if (Math.abs(video.currentTime - targetTime) > 0.1) {
+          video.currentTime = targetTime;
+          // Wait for seek to complete before playing
+          const onSeeked = () => {
+            video.removeEventListener('seeked', onSeeked);
+            const playPromise = video.play();
+            handlePlayPromise(playPromise);
+          };
+          video.addEventListener('seeked', onSeeked, { once: true });
+          return;
+        }
       }
 
+      // If we're already at the right time, just play
       const playPromise = video.play();
+      handlePlayPromise(playPromise);
+    };
+
+    const handlePlayPromise = (playPromise) => {
       if (playPromise !== undefined) {
         playPromise.then(() => {
           setIsPlaying(true);
@@ -261,6 +278,7 @@ const handlePause = () => {
   });
 };
 
+console.log('seek time',currentTime)
     const handleEnded = () => {
       const video = videoRef.current;
       if (!video) return;

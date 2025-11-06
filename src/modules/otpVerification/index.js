@@ -96,7 +96,7 @@ export default function OtpVerification() {
       }
     } catch (error) {
       console.error("OTP verification failed:", error);
-      setError(error.message || "Failed to verify OTP. Please try again.");
+      setError(error.response.data.message || "Failed to verify OTP. Please try again.");
     } finally {
       setIsVerifying(false);
     }
@@ -123,7 +123,7 @@ export default function OtpVerification() {
       })
       .catch((error) => {
         console.error("Password reset error:", error);
-        setError("Failed to resend OTP. Please try again.");
+        setError(error.response.data.message || "Failed to resend OTP. Please try again.");
       })
       .finally(() => {
         setIsResending(false);
