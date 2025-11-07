@@ -5,17 +5,7 @@ import ClockIcon from "@/icons/clockIcon";
 import BathIcon from "@/icons/bathIcon";
 import StarIcon from "@/icons/starIcon";
 import ProfileGroupIcon from "@/icons/profileGroupIcon";
-import {
-  getChapters,
-  getCourses,
-  getPaymentUrl,
-  getSessionData,
-  getBatches,
-  getCourseSyllabus,
-  updateVideoProgress,
-  downloadCourseCertificate,
-  downloadStudentID,
-} from "@/compoents/api/dashboard";
+import { getChapters, getCourses, getPaymentUrl, getSessionData, getBatches, getCourseSyllabus, updateVideoProgress, downloadCourseCertificate, downloadStudentID } from "@/compoents/api/dashboard";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import OutlineButton from "@/compoents/outlineButton";
@@ -73,12 +63,7 @@ const CourseDetailsSkeleton = () => (
 
       <div className={styles.tabAlignment}>
         {[1, 2, 3, 4].map((item) => (
-          <Skeleton
-            key={item}
-            width={120}
-            height={50}
-            style={{ marginRight: "15px" }}
-          />
+          <Skeleton key={item} width={120} height={50} style={{ marginRight: "15px" }} />
         ))}
       </div>
 
@@ -114,10 +99,7 @@ const SessionSkeleton = () => (
         <Skeleton width="40%" style={{ marginRight: "30px" }} />
         <Skeleton width="30%" />
       </div>
-      <Skeleton
-        height={40}
-        style={{ marginTop: "16px", borderRadius: "6px" }}
-      />
+      <Skeleton height={40} style={{ marginTop: "16px", borderRadius: "6px" }} />
     </div>
   </div>
 );
@@ -145,7 +127,6 @@ export default function CourseDetails({ params }) {
   const [isLoadingBatch, setIsLoadingBatch] = useState(false);
   const [expandedSyllabus, setExpandedSyllabus] = useState(null);
   const [videoWatchingPercentage, setVideoWatchingPercentage] = useState(0);
-
 
   const id = params;
   const router = useRouter();
@@ -175,13 +156,9 @@ export default function CourseDetails({ params }) {
       setIsPaid(data?.payload.isPayment);
 
       if (data?.payload?.data?.length > 0) {
-
         setSelectedChapter(data.payload.data[0]);
         if (res?.payload?.data?.[0]?.courseType === "recorded") {
-        
-          setVideoWatchingPercentage(
-            data.payload.data[0]?.courseTracking?.percentage
-          );
+          setVideoWatchingPercentage(data.payload.data[0]?.courseTracking?.percentage);
         }
       }
       setError(null);
@@ -192,7 +169,6 @@ export default function CourseDetails({ params }) {
       setLoading(false);
     }
   };
-
 
   const fetchSessions = async () => {
     try {
@@ -318,9 +294,7 @@ export default function CourseDetails({ params }) {
   };
 
   // Filter out expired sessions
-  const upcomingSessions = sessions.filter(
-    (session) => !isSessionExpired(session)
-  );
+  const upcomingSessions = sessions.filter((session) => !isSessionExpired(session));
 
   const handlePayment = async () => {
     try {
@@ -331,9 +305,7 @@ export default function CourseDetails({ params }) {
         courseId: id,
       });
       if (response?.payload?.code !== "00000") {
-        toast.error(
-          "A payment session is already active and will expire in 10 minutes. Please complete the current payment or try again after it expires."
-        );
+        toast.error("A payment session is already active and will expire in 10 minutes. Please complete the current payment or try again after it expires.");
       } else {
         router.replace(response?.payload?.data?.checkout_url);
       }
@@ -346,20 +318,58 @@ export default function CourseDetails({ params }) {
   };
 
   const updateVideoPercentage = async (percentage) => {
-    setVideoWatchingPercentage(percentage);
-    await updateVideoProgress(
-      selectedChapter?.courseTracking?._id,
-      selectedChapter?._id,
-      selectedCourse?._id,
-      percentage.toString()
-    );
-  };
+    const numericPercentage = typeof percentage === "number" ? percentage : parseFloat(percentage);
 
+    if (!Number.isFinite(numericPercentage)) {
+      return;
+    }
+
+    const currentStatePercentage = Number.isFinite(Number(videoWatchingPercentage)) ? Number(videoWatchingPercentage) : 0;
+    const currentChapterPercentage = Number.isFinite(Number(selectedChapter?.courseTracking?.percentage)) ? Number(selectedChapter?.courseTracking?.percentage) : 0;
+
+    const maxPercentage = Math.max(currentStatePercentage, currentChapterPercentage, numericPercentage);
+
+    const normalizedPercentage = Number(maxPercentage.toFixed(2));
+
+    setVideoWatchingPercentage(normalizedPercentage);
+
+    setSelectedChapter((prev) => {
+      if (!prev) return prev;
+
+      const prevPercentage = Number.isFinite(Number(prev.courseTracking?.percentage)) ? Number(prev.courseTracking?.percentage) : 0;
+
+      if (normalizedPercentage <= prevPercentage) {
+        return prev;
+      }
+
+      return {
+        ...prev,
+        courseTracking: {
+          ...prev.courseTracking,
+          percentage: normalizedPercentage,
+        },
+      };
+    });
+
+    if (!selectedChapter?.courseTracking?._id || !selectedChapter?._id || !selectedCourse?._id) {
+      return;
+    }
+
+    if (normalizedPercentage <= currentChapterPercentage) {
+      return;
+    }
+
+    try {
+      await updateVideoProgress(selectedChapter.courseTracking._id, selectedChapter._id, selectedCourse._id, normalizedPercentage.toString());
+    } catch (error) {
+      console.error("Error updating video progress:", error);
+    }
+  };
 
   const downloadId = async (id) => {
     setIsDownloadingStudentId(true);
     try {
-      const response = await downloadStudentID(id,batchDetails?._id);
+      const response = await downloadStudentID(id, batchDetails?._id);
       if (response.success && response.payload) {
         const fileUrl = response.payload;
 
@@ -380,7 +390,6 @@ export default function CourseDetails({ params }) {
         };
 
         const extension = extensionMap[contentType] || "bin";
-
 
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement("a");
@@ -403,9 +412,8 @@ export default function CourseDetails({ params }) {
       toast.error("Failed to download file");
     } finally {
       setIsDownloadingStudentId(false);
-
     }
-  }
+  };
 
   const handleDownloadCertificate = async () => {
     if (isDownloadingCertificate) return;
@@ -422,8 +430,7 @@ export default function CourseDetails({ params }) {
         throw new Error("No response received from the server");
       }
 
-      const fileUrl =
-        typeof response === "object" ? response.payload : response;
+      const fileUrl = typeof response === "object" ? response.payload : response;
 
       if (!fileUrl) {
         throw new Error("Certificate URL is missing in the response");
@@ -434,8 +441,7 @@ export default function CourseDetails({ params }) {
 
       const blob = await fileRes.blob();
 
-      const contentType =
-        fileRes.headers.get("content-type") || "application/octet-stream";
+      const contentType = fileRes.headers.get("content-type") || "application/octet-stream";
 
       const extensionMap = {
         "application/pdf": "pdf",
@@ -447,9 +453,7 @@ export default function CourseDetails({ params }) {
       };
 
       const extension = extensionMap[contentType] || "bin";
-      const fileName = `certificate-${selectedCourse.CourseName?.replace(/\s+/g, "-").toLowerCase() ||
-        "course"
-        }.${extension}`;
+      const fileName = `certificate-${selectedCourse.CourseName?.replace(/\s+/g, "-").toLowerCase() || "course"}.${extension}`;
 
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -480,39 +484,26 @@ export default function CourseDetails({ params }) {
       paymentStatus === "success" ? (
         <div className={styles.paymentModalContent}>
           <div className={styles.paymentModaltitlecontent}>
-            <img
-              src={SuccessIcon}
-              alt="Success"
-              className={styles.paymentIcon}
-            />
+            <img src={SuccessIcon} alt="Success" className={styles.paymentIcon} />
             {isInPerson && <h3>Congratulations!</h3>}
             <h3>Payment Successful!</h3>
-            <p>
-              Thank you for your purchase. You now have full access to this
-              course.
-            </p>
+            <p>Thank you for your purchase. You now have full access to this course.</p>
           </div>
           {isInPerson && (
             <div className={styles.paymentmodaldetails}>
               <p>Please Contact for extra Information.</p>
               <p>
-                <span>Address</span> :{" "}
-                {selectedCourse?.location && `${selectedCourse?.location}`}
+                <span>Address</span> : {selectedCourse?.location && `${selectedCourse?.location}`}
               </p>
               <p>
-                <span>Email</span> :{" "}
-                {selectedCourse?.email && `${selectedCourse?.email}`}
+                <span>Email</span> : {selectedCourse?.email && `${selectedCourse?.email}`}
               </p>
               <p>
-                <span>Phone</span> :{" "}
-                {selectedCourse?.phone && `${selectedCourse?.phone}`}
+                <span>Phone</span> : {selectedCourse?.phone && `${selectedCourse?.phone}`}
               </p>
             </div>
           )}
-          <Button
-            text="Download Student ID"
-            onClick={() => downloadId(selectedCourse?._id)}
-          />
+          <Button text="Download Student ID" onClick={() => downloadId(selectedCourse?._id)} />
         </div>
       ) : (
         // <div className={styles.paymentModalContent}>
@@ -538,16 +529,9 @@ export default function CourseDetails({ params }) {
         // </div>
         <div className={styles.paymentModalContent}>
           <div className={styles.paymentModaltitlecontent}>
-            <img
-              src={ErrorIcon}
-              alt="Cancelled"
-              className={styles.paymentIcon}
-            />
+            <img src={ErrorIcon} alt="Cancelled" className={styles.paymentIcon} />
             <h3>Payment Cancelled</h3>
-            <p>
-              Your payment was not completed. Please try again to access the
-              course.
-            </p>
+            <p>Your payment was not completed. Please try again to access the course.</p>
           </div>
           <div className={styles.modalButtons}>
             <OutlineButton
@@ -557,20 +541,13 @@ export default function CourseDetails({ params }) {
                 handlePayment();
               }}
             />
-            <Button
-              text="Close"
-              onClick={() => setShowPaymentModal(false)}
-              style={{ marginLeft: "10px" }}
-            />
+            <Button text="Close" onClick={() => setShowPaymentModal(false)} style={{ marginLeft: "10px" }} />
           </div>
         </div>
       );
 
     return (
-      <Modal
-        isOpen={showPaymentModal}
-        onClose={() => setShowPaymentModal(false)}
-      >
+      <Modal isOpen={showPaymentModal} onClose={() => setShowPaymentModal(false)}>
         {modalContent}
       </Modal>
     );
@@ -634,7 +611,6 @@ export default function CourseDetails({ params }) {
     );
   }
 
-
   return (
     <div className={styles.courseDetailsBox}>
       {renderPaymentModal()}
@@ -642,9 +618,7 @@ export default function CourseDetails({ params }) {
         <div className={styles.sessionContainer}>
           <div className={styles.textStyle}>
             <div className={styles.title}>
-              <h3>
-                {selectedCourse?.CourseName || "Course Name Not Available"}
-              </h3>
+              <h3>{selectedCourse?.CourseName || "Course Name Not Available"}</h3>
 
               {/* <div className={styles.infoRow} style={{ margin: '10px 0' }}>
                 <span style={{ fontWeight: 'bold' }}>Purchased On: </span>
@@ -660,9 +634,7 @@ export default function CourseDetails({ params }) {
                 </div>
                 <div className={styles.iconText}>
                   <BathIcon />
-                  <span>
-                    {selectedCourse?.instructor?.name || "Instructor"}
-                  </span>
+                  <span>{selectedCourse?.instructor?.name || "Instructor"}</span>
                 </div>
                 <div className={styles.iconText}>
                   <ProfileGroupIcon />
@@ -670,36 +642,25 @@ export default function CourseDetails({ params }) {
                 </div>
                 <div className={styles.iconText}>
                   <span>
-                    Last-Update:{" "}
-                    {new Date(
-                      selectedCourse?.updatedAt || new Date()
-                    ).toLocaleDateString("en-GB")}{" "}
-                    |{" "}
-                    {selectedCourse?.language?.slice(0, 1).toUpperCase() +
-                      selectedCourse?.language?.slice(1) || "English"}
+                    Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString("en-GB")} | {selectedCourse?.language?.slice(0, 1).toUpperCase() + selectedCourse?.language?.slice(1) || "English"}
                   </span>
                 </div>
                 {selectedCourse?.courseEnd && (
                   <div className={styles.iconText}>
-                    <span>
-                      Course Ends:{" "}
-                      {new Date(selectedCourse.courseEnd).toLocaleDateString(
-                        "en-GB"
-                      )}
-                    </span>
+                    <span>Course Ends: {new Date(selectedCourse.courseEnd).toLocaleDateString("en-GB")}</span>
                   </div>
                 )}
               </div>
               <div style={{ display: "flex", gap: "12px" }}>
-                {isPaid && selectedCourse?.courseType === 'physical' ? (
+                {isPaid && selectedCourse?.courseType === "physical" ? (
                   <>
                     <Button
                       fill
-                      text={isDownloadingStudentId ? 'Downloading...' : 'Download Student ID'}
+                      text={isDownloadingStudentId ? "Downloading..." : "Download Student ID"}
                       onClick={() => downloadId(selectedCourse?._id)}
                       style={{
                         background: !isDownloadingStudentId ? "#10B981" : "#9CA3AF",
-                        marginBottom: isCertificateAvailable ? '10px' : 0
+                        marginBottom: isCertificateAvailable ? "10px" : 0,
                       }}
                       disabled={isDownloadingStudentId || isDownloadingCertificate}
                       icon={isDownloadingStudentId ? null : undefined}
@@ -707,7 +668,7 @@ export default function CourseDetails({ params }) {
                     {isCertificateAvailable && (
                       <Button
                         fill
-                        text={isDownloadingCertificate ? 'Downloading...' : 'Download Certificate'}
+                        text={isDownloadingCertificate ? "Downloading..." : "Download Certificate"}
                         onClick={handleDownloadCertificate}
                         style={{
                           background: !isDownloadingCertificate ? "#10B981" : "#9CA3AF",
@@ -717,29 +678,21 @@ export default function CourseDetails({ params }) {
                       />
                     )}
                   </>
-                ) : isPaid && (
-                  <Button
-                    fill
-                    text={isDownloadingCertificate ? 'Downloading...' : 'Download Certificate'}
-                    onClick={handleDownloadCertificate}
-                    style={{
-                      background: isCertificateAvailable && !isDownloadingCertificate
-                        ? "#10B981"
-                        : "#9CA3AF",
-                    }}
-                    disabled={!isCertificateAvailable || isDownloadingCertificate}
-                    icon={isDownloadingCertificate ? null : undefined}
-                  />
+                ) : (
+                  isPaid && (
+                    <Button
+                      fill
+                      text={isDownloadingCertificate ? "Downloading..." : "Download Certificate"}
+                      onClick={handleDownloadCertificate}
+                      style={{
+                        background: isCertificateAvailable && !isDownloadingCertificate ? "#10B981" : "#9CA3AF",
+                      }}
+                      disabled={!isCertificateAvailable || isDownloadingCertificate}
+                      icon={isDownloadingCertificate ? null : undefined}
+                    />
+                  )
                 )}
-                {!isPaid && (
-                  <Button
-                    fill
-                    text={isProcessingPayment ? "Enrolling..." : "Enroll Now"}
-                    icon={isProcessingPayment ? null : RightBlackIcon}
-                    onClick={handlePayment}
-                    disabled={isProcessingPayment}
-                  />
-                )}
+                {!isPaid && <Button fill text={isProcessingPayment ? "Enrolling..." : "Enroll Now"} icon={isProcessingPayment ? null : RightBlackIcon} onClick={handlePayment} disabled={isProcessingPayment} />}
               </div>
             </div>
           </div>
@@ -756,61 +709,27 @@ export default function CourseDetails({ params }) {
                   <div className={styles.batchInfo}>
                     <div className={styles.batchMeta}>
                       <div className={styles.metaItem}>
-                        <strong>Start Date:</strong>{" "}
-                        {new Date(batchDetails.startDate).toLocaleDateString()}
+                        <strong>Start Date:</strong> {new Date(batchDetails.startDate).toLocaleDateString()}
                       </div>
                       <div className={styles.metaItem}>
-                        <strong>End Date:</strong>{" "}
-                        {new Date(batchDetails.endDate).toLocaleDateString()}
+                        <strong>End Date:</strong> {new Date(batchDetails.endDate).toLocaleDateString()}
                       </div>
                       {batchDetails.meetingLink && (
                         <div className={styles.meetingLink}>
-                          <Button
-                            onClick={() =>
-                              window.open(batchDetails.meetingLink, "_blank")
-                            }
-                            text="Join Live Class"
-                            disabled={!isPaid}
-                          />
+                          <Button onClick={() => window.open(batchDetails.meetingLink, "_blank")} text="Join Live Class" disabled={!isPaid} />
                         </div>
                       )}
                     </div>
                   </div>
                 ) : (
                   <div className={styles.emptyState}>
-                    <svg
-                      className={styles.emptyIcon}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M12 8V12"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M12 16H12.01"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
+                    <svg className={styles.emptyIcon} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M12 8V12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M12 16H12.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                     <h4>No Batch Details Available</h4>
-                    <p>
-                      There are no batch details to display at the moment.
-                      Please check back later or contact support for assistance.
-                    </p>
+                    <p>There are no batch details to display at the moment. Please check back later or contact support for assistance.</p>
                   </div>
                 )}
               </div>
@@ -822,28 +741,15 @@ export default function CourseDetails({ params }) {
                   <div className={styles.accordion}>
                     {syllabus.map((item, index) => (
                       <div key={item._id} className={styles.accordionItem}>
-                        <div
-                          className={`${styles.accordionHeader} ${expandedSyllabus === index ? styles.active : ""
-                            }`}
-                          onClick={() =>
-                            setExpandedSyllabus(
-                              expandedSyllabus === index ? null : index
-                            )
-                          }
-                        >
+                        <div className={`${styles.accordionHeader} ${expandedSyllabus === index ? styles.active : ""}`} onClick={() => setExpandedSyllabus(expandedSyllabus === index ? null : index)}>
                           <h3>
                             Chapter {index + 1}: {item.title}
                           </h3>
                           <span>{expandedSyllabus === index ? "−" : "+"}</span>
                         </div>
-                        <div
-                          className={`${styles.accordionContent} ${expandedSyllabus === index ? styles.active : ""
-                            }`}
-                        >
+                        <div className={`${styles.accordionContent} ${expandedSyllabus === index ? styles.active : ""}`}>
                           <div className={styles.syllabusContent}>
-                            <p>
-                              {item.description || "No description available."}
-                            </p>
+                            <p>{item.description || "No description available."}</p>
                             {item.topics && item.topics.length > 0 && (
                               <div className={styles.topicsList}>
                                 <h4>Topics:</h4>
@@ -861,54 +767,15 @@ export default function CourseDetails({ params }) {
                   </div>
                 ) : (
                   <div className={`${styles.emptyState} ${styles.withMargin}`}>
-                    <svg
-                      className={styles.emptyIcon}
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M14 2V8H20"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M16 13H8"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M16 17H8"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M10 9H9H8"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
+                    <svg className={styles.emptyIcon} viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M14 2V8H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M16 13H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M16 17H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M10 9H9H8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                     <h4>No Syllabus Available</h4>
-                    <p>
-                      This course doesn't have a syllabus yet. Please check back
-                      later or contact the course instructor for more
-                      information.
-                    </p>
+                    <p>This course doesn't have a syllabus yet. Please check back later or contact the course instructor for more information.</p>
                   </div>
                 )}
               </div>
@@ -916,10 +783,7 @@ export default function CourseDetails({ params }) {
           ) : (
             <>
               <h2>Upcoming Sessions</h2>
-              <div
-                className={`${styles.sessionListmain} ${!isPaid ? styles.lockedSession : ""
-                  }`}
-              >
+              <div className={`${styles.sessionListmain} ${!isPaid ? styles.lockedSession : ""}`}>
                 <div className={styles.sessionListslider}>
                   {upcomingSessions.length > 0 && !loading ? (
                     <Slider {...settings}>
@@ -927,11 +791,7 @@ export default function CourseDetails({ params }) {
                         <div key={session._id}>
                           <div className={styles.sessionCard}>
                             <div className={styles.sessionVideo}>
-                              <img
-                                src={session.sessionVideo}
-                                alt={session.sessionName}
-                                className={styles.videoThumbnail}
-                              />
+                              <img src={session.sessionVideo} alt={session.sessionName} className={styles.videoThumbnail} />
                             </div>
                             <div className={styles.sessionDetails}>
                               <h3>{session.sessionName}</h3>
@@ -939,30 +799,17 @@ export default function CourseDetails({ params }) {
                               <div className={styles.sessionMeta}>
                                 <div style={{ display: "flex", gap: "30px" }}>
                                   <span>
-                                    <strong>Date:</strong>{" "}
-                                    {new Date(
-                                      session.date
-                                    ).toLocaleDateString()}
+                                    <strong>Date:</strong> {new Date(session.date).toLocaleDateString()}
                                   </span>
                                   <span>
                                     <strong>Time:</strong> {session.time}
                                   </span>
                                 </div>
                                 <span>
-                                  <strong>Instructor:</strong>{" "}
-                                  {session.courseId?.instructor?.name}
+                                  <strong>Instructor:</strong> {session.courseId?.instructor?.name}
                                 </span>
                               </div>
-                              {session.meetingLink && (
-                                <Button
-                                  onClick={() =>
-                                    isPaid &&
-                                    window.open(session.meetingLink, "_blank")
-                                  }
-                                  text="Join Meeting"
-                                  disabled={!isPaid}
-                                />
-                              )}
+                              {session.meetingLink && <Button onClick={() => isPaid && window.open(session.meetingLink, "_blank")} text="Join Meeting" disabled={!isPaid} />}
                             </div>
                           </div>
                         </div>
@@ -970,21 +817,14 @@ export default function CourseDetails({ params }) {
                     </Slider>
                   ) : (
                     <div className={styles.noSessions}>
-                      <p>
-                        No upcoming sessions available. Please check back later
-                        for new schedules.
-                      </p>
+                      <p>No upcoming sessions available. Please check back later for new schedules.</p>
                     </div>
                   )}
                 </div>
                 {!isPaid && (
                   <div className={styles.sessionLockOverlay}>
                     <div className={styles.lockContent}>
-                      <img
-                        src={LockIcon}
-                        alt="Locked"
-                        className={styles.lockIcon}
-                      />
+                      <img src={LockIcon} alt="Locked" className={styles.lockIcon} />
                       <p>Enroll to unlock this session</p>
                     </div>
                   </div>
@@ -1024,13 +864,7 @@ export default function CourseDetails({ params }) {
               </div>
               <div className={styles.iconText}>
                 <span>
-                  Last-Update:{" "}
-                  {new Date(
-                    selectedCourse?.updatedAt || new Date()
-                  ).toLocaleDateString("en-GB")}{" "}
-                  |{" "}
-                  {selectedCourse?.language?.slice(0, 1).toUpperCase() +
-                    selectedCourse?.language?.slice(1) || "English"}
+                  Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString("en-GB")} | {selectedCourse?.language?.slice(0, 1).toUpperCase() + selectedCourse?.language?.slice(1) || "English"}
                 </span>
               </div>
             </div>
@@ -1047,12 +881,7 @@ export default function CourseDetails({ params }) {
             )}
             {!isPaid && (
               <div>
-                <Button
-                  text={isProcessingPayment ? "Enrolling..." : "Enroll Now"}
-                  icon={isProcessingPayment ? null : RightBlackIcon}
-                  onClick={handlePayment}
-                  disabled={isProcessingPayment}
-                />
+                <Button text={isProcessingPayment ? "Enrolling..." : "Enroll Now"} icon={isProcessingPayment ? null : RightBlackIcon} onClick={handlePayment} disabled={isProcessingPayment} />
               </div>
             )}
           </div>
@@ -1083,14 +912,7 @@ export default function CourseDetails({ params }) {
           <div className={styles.mainrelative}>
             <div className={styles.tabAlignment}>
               {chapters.map((chapter, index) => (
-                <Button
-                  key={chapter._id}
-                  className={
-                    selectedChapter?._id == chapter._id ? styles.activeTab : ""
-                  }
-                  onClick={() => setSelectedChapter(chapter)}
-                  text={`Chapter ${chapter.chapterNo || index + 1}`}
-                />
+                <Button key={chapter._id} className={selectedChapter?._id == chapter._id ? styles.activeTab : ""} onClick={() => setSelectedChapter(chapter)} text={`Chapter ${chapter.chapterNo || index + 1}`} />
               ))}
             </div>
             {selectedChapter && chapters.length > 0 ? (
@@ -1104,12 +926,7 @@ export default function CourseDetails({ params }) {
                             <img src={LockIcon} alt="Locked" />
                             <p>Enroll to unlock this video</p>
                           </div>
-                          <img
-                            src={`https://img.youtube.com/vi/${selectedChapter.chapterVideo.split("v=")[1]
-                              }/hqdefault.jpg`}
-                            alt="Video thumbnail"
-                            className={styles.videoThumbnail}
-                          />
+                          <img src={`https://img.youtube.com/vi/${selectedChapter.chapterVideo.split("v=")[1]}/hqdefault.jpg`} alt="Video thumbnail" className={styles.videoThumbnail} />
                         </div>
                       ) : (
                         <div className={styles.videoWrapper}>
@@ -1122,13 +939,10 @@ export default function CourseDetails({ params }) {
                             noremoteplayback
                             className={styles.videoPlayer}
                           /> */}
-                        
 
                           <CustomVideoPlayer
                             percentage={videoWatchingPercentage}
-                            onPercentageChange={(percentage) =>
-                              updateVideoPercentage(percentage)
-                            }
+                            onPercentageChange={(percentage) => updateVideoPercentage(percentage)}
                             src={selectedChapter.chapterVideo}
                             // src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
                             // src="https://pipsveda.s3.us-east-1.azonaws.com/pipsveda/blob-1757418874956new%20latest.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAVJSBBJ5XMZUEA2XW%2F20250913%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250913T063038Z&X-Amz-Expires=3600&X-Amz-Signature=e0ed6c6d43a4038201fd1206007456c1387457b7cb86fb7335d92417d65ba51b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject"
@@ -1137,7 +951,7 @@ export default function CourseDetails({ params }) {
                             controlsList="nodownload"
                             disablePictureInPicture
                             noremoteplayback
-                          // className={styles.videoPlayer}
+                            // className={styles.videoPlayer}
                           />
                         </div>
                       )
@@ -1147,57 +961,47 @@ export default function CourseDetails({ params }) {
                   </div>
                 </div>
                 <div className={styles.items}>
-                  <div
-                    className={styles.details}
-                    style={{ marginLeft: "20px" }}
-                  >
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <div className={styles.details} style={{ marginLeft: "20px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                       <h4>
-                        Chapter {selectedChapter.chapterNo} :{" "}
-                        {selectedChapter.chapterName || "Untitled Chapter"}
+                        Chapter {selectedChapter.chapterNo} : {selectedChapter.chapterName || "Untitled Chapter"}
                       </h4>
                       {selectedChapter.courseTracking?.percentage > 0 && (
-                        <div style={{
-                          width: '36px',
-                          height: '36px',
-                          borderRadius: '50%',
-                          background: `conic-gradient(rgb(106 16 185) 10.49%, rgb(229, 231, 235) ${videoWatchingPercentage}%, #E5E7EB 0)`,
-                          position: 'relative',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justifyContent: 'center',
-                          fontSize: '10px',
-                          fontWeight: 'bold',
-                          color: '#1F2937'
-                        }}>
-                          <div style={{
-                            width: '18px',
-                            height: '18px',
-                            background: 'white',
-                            borderRadius: '50%',
-                            display: 'flex',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            padding: '15px'
-                          }}>
+                        <div
+                          style={{
+                            width: "36px",
+                            height: "36px",
+                            borderRadius: "50%",
+                            background: `conic-gradient(rgb(106 16 185) 10.49%, rgb(229, 231, 235) ${videoWatchingPercentage}%, #E5E7EB 0)`,
+                            position: "relative",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: "10px",
+                            fontWeight: "bold",
+                            color: "#1F2937",
+                          }}
+                        >
+                          <div
+                            style={{
+                              width: "18px",
+                              height: "18px",
+                              background: "white",
+                              borderRadius: "50%",
+                              display: "flex",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              padding: "15px",
+                            }}
+                          >
                             {Math.round(videoWatchingPercentage)}%
                           </div>
                         </div>
                       )}
                     </div>
                     <p>
-                      {selectedChapter.description ||
-                        "No description available for this chapter."}
-                      {!selectedChapter.description && (
-                        <>
-                          Lorem ipsum dolor sit amet, consectetur adipiscing
-                          elit. Vivamus hendrerit, nulla non ultricies finibus,
-                          nibh purus ullamcorper augue, non tempor arcu nulla
-                          vitae nulla. Curabitur feugiat, ligula nec aliquam
-                          tincidunt, nulla ligula pretium eros, sed posuere
-                          neque lacus at neque.
-                        </>
-                      )}
+                      {selectedChapter.description || "No description available for this chapter."}
+                      {!selectedChapter.description && <>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus hendrerit, nulla non ultricies finibus, nibh purus ullamcorper augue, non tempor arcu nulla vitae nulla. Curabitur feugiat, ligula nec aliquam tincidunt, nulla ligula pretium eros, sed posuere neque lacus at neque.</>}
                     </p>
                   </div>
                 </div>
@@ -1206,16 +1010,9 @@ export default function CourseDetails({ params }) {
               <div className={styles.courseDetailsBox}>
                 <div className={styles.textStyle}>
                   <div style={{ textAlign: "center", padding: "40px 20px" }}>
-                    <img
-                      src="/assets/icons/no-course.svg"
-                      alt="No courses"
-                      className={styles.emptyImage}
-                    />
+                    <img src="/assets/icons/no-course.svg" alt="No courses" className={styles.emptyImage} />
                     <h3>No Course Content Available</h3>
-                    <p>
-                      This course doesn't have any chapters yet. Please check
-                      back later.
-                    </p>
+                    <p>This course doesn't have any chapters yet. Please check back later.</p>
                   </div>
                 </div>
               </div>
