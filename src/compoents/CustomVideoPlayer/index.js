@@ -29,13 +29,15 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
   const [isDragging, setIsDragging] = useState(false);
   const [isInView, setIsInView] = useState(true);
   const [wasPlaying, setWasPlaying] = useState(false);
-  const lastReportedTimeRef = useRef(0);
   const [hasSeekedInitially, setHasSeekedInitially] = useState(false);
-  const percentageRef = useRef(percentage);
+
+  const initialPercentage = typeof percentage === "number" ? percentage : parseFloat(percentage) || 0;
+  const percentageRef = useRef(initialPercentage);
+  const maxPercentageRef = useRef(initialPercentage);
+  const lastReportedPercentageRef = useRef(initialPercentage);
+  const ignoreNextPercentagePropRef = useRef(false);
 
   // --- Watch Tracking ---
-  const [maxWatchedTime, setMaxWatchedTime] = useState(0);
-  const [totalWatched, setTotalWatched] = useState(0);
   const watchedSetRef = useRef(new Set());
 
   // Set initial video position based on percentage
@@ -156,6 +158,13 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
       console.error("No video source provided");
       return;
     }
+
+    const startPercentage = typeof percentage === "number" ? percentage : parseFloat(percentage) || 0;
+    maxPercentageRef.current = startPercentage;
+    lastReportedPercentageRef.current = startPercentage;
+    percentageRef.current = startPercentage;
+    ignoreNextPercentagePropRef.current = false;
+    watchedSetRef.current = new Set();
 
     const video = document.createElement("video");
     video.src = src;
@@ -292,8 +301,17 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
         const currentPercentage = (current / video.duration) * 100;
         setProgress(currentPercentage);
 
-        if (typeof onPercentageChange === "function") {
-          onPercentageChange(currentPercentage.toFixed(2));
+        const previousMax = maxPercentageRef.current;
+        const updatedPercentage = Math.max(previousMax, currentPercentage);
+        maxPercentageRef.current = updatedPercentage;
+        percentageRef.current = currentPercentage;
+
+        const normalizedPercentage = Number(updatedPercentage.toFixed(2));
+
+        if (typeof onPercentageChange === "function" && normalizedPercentage > (lastReportedPercentageRef.current ?? 0) + 0.01) {
+          ignoreNextPercentagePropRef.current = true;
+          lastReportedPercentageRef.current = normalizedPercentage;
+          onPercentageChange(normalizedPercentage);
         }
       }
     };
@@ -308,7 +326,18 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
       // Calculate and update percentage
       if (video.duration > 0) {
         const currentPercentage = (video.currentTime / video.duration) * 100;
-        onPercentageChange(currentPercentage.toFixed(2));
+        const previousMax = maxPercentageRef.current;
+        const finalPercentage = Math.max(previousMax, currentPercentage);
+        maxPercentageRef.current = finalPercentage;
+        percentageRef.current = currentPercentage;
+
+        const normalizedPercentage = Number(finalPercentage.toFixed(2));
+
+        if (typeof onPercentageChange === "function" && normalizedPercentage > (lastReportedPercentageRef.current ?? 0) + 0.01) {
+          ignoreNextPercentagePropRef.current = true;
+          lastReportedPercentageRef.current = normalizedPercentage;
+          onPercentageChange(normalizedPercentage);
+        }
         // console.log(`Ended at: ${video.currentTime.toFixed(1)}s (${currentPercentage.toFixed(1)}%)`);
       }
       handleTimeUpdate();
@@ -329,6 +358,12 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
       if (!isDragging) {
         setProgress(currentPercentage);
       }
+
+      if (currentPercentage > maxPercentageRef.current) {
+        maxPercentageRef.current = currentPercentage;
+      }
+
+      percentageRef.current = currentPercentage;
 
       // Track watched time (only track full seconds to avoid too many updates)
       const currentSecond = Math.floor(current);
@@ -367,20 +402,31 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
     resizeCanvas();
   }, [isFullscreen]);
 
-  // Update percentage ref whenever percentage changes
   useEffect(() => {
-    percentageRef.current = percentage;
-  }, [percentage]);
+    const numericPercentage = typeof percentage === "number" ? percentage : parseFloat(percentage);
 
-  // Reset hasSeekedInitially when percentage changes significantly
-  useEffect(() => {
+    if (!Number.isFinite(numericPercentage)) {
+      return;
+    }
+
+    if (numericPercentage > maxPercentageRef.current) {
+      maxPercentageRef.current = numericPercentage;
+    }
+
+    if (numericPercentage > lastReportedPercentageRef.current) {
+      lastReportedPercentageRef.current = numericPercentage;
+    }
+
+    if (ignoreNextPercentagePropRef.current) {
+      ignoreNextPercentagePropRef.current = false;
+      return;
+    }
+
+    percentageRef.current = numericPercentage;
+
     const video = videoRef.current;
-    if (video && video.duration > 0 && percentage > 0) {
-      const targetTime = (percentage / 100) * video.duration;
-      // If we're not close to the target time, reset the flag
-      if (Math.abs(video.currentTime - targetTime) > 0.5) {
-        setHasSeekedInitially(false);
-      }
+    if (video && video.duration > 0 && numericPercentage > 0 && Math.abs(video.currentTime - (numericPercentage / 100) * video.duration) > 0.5) {
+      setHasSeekedInitially(false);
     }
   }, [percentage]);
 
@@ -433,9 +479,18 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
     if (video.duration > 0) {
       const newPercentage = (newTime / video.duration) * 100;
       setProgress(newPercentage);
+      const previousMax = maxPercentageRef.current;
+      if (newPercentage > previousMax) {
+        maxPercentageRef.current = newPercentage;
+      }
       percentageRef.current = newPercentage;
-      if (typeof onPercentageChange === "function") {
-        onPercentageChange(newPercentage.toFixed(2));
+
+      const normalizedPercentage = Number(maxPercentageRef.current.toFixed(2));
+
+      if (typeof onPercentageChange === "function" && normalizedPercentage > (lastReportedPercentageRef.current ?? 0) + 0.01) {
+        ignoreNextPercentagePropRef.current = true;
+        lastReportedPercentageRef.current = normalizedPercentage;
+        onPercentageChange(normalizedPercentage);
       }
     }
   };
