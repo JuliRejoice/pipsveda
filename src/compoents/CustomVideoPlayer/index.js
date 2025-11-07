@@ -31,28 +31,22 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
   const [wasPlaying, setWasPlaying] = useState(false);
   const lastReportedTimeRef = useRef(0);
   const [hasSeekedInitially, setHasSeekedInitially] = useState(false);
+  const percentageRef = useRef(percentage);
 
   // --- Watch Tracking ---
   const [maxWatchedTime, setMaxWatchedTime] = useState(0);
   const [totalWatched, setTotalWatched] = useState(0);
   const watchedSetRef = useRef(new Set());
 
-  console.log(percentage)
-  console.log(currentTime)
-
-
-
   // Set initial video position based on percentage
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    console.log('------------ho rha hai---------------')
 
     const seekToPercentage = () => {
-      if (video.duration > 0 && percentage >= 0) {
+      if (video.duration > 0 && percentage >= 0 && percentage <= 100) {
         const seekTime = (percentage / 100) * video.duration;
         // Only seek if this is a meaningful change
-        console.log(seekTime,"seekTime")
         if (Math.abs(video.currentTime - seekTime) > 0.05) {
           video.currentTime = seekTime;
           setCurrentTime(seekTime);
@@ -81,8 +75,6 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
               ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, offsetX, offsetY, renderWidth, renderHeight);
             }
           }
-
-
         }
       }
     };
@@ -92,17 +84,26 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
       setDuration(video.duration);
     };
 
-    if (video.readyState >= 2) {
-      handleLoadedMetadata();
+    const handleCanPlay = () => {
+      // Ensure we seek when video is ready to play
+      if (video.readyState >= 2 && video.duration > 0) {
+        seekToPercentage();
+      }
+    };
+
+    if (video.readyState >= 2 && video.duration > 0) {
+      seekToPercentage();
+      setDuration(video.duration);
     } else {
       video.addEventListener("loadedmetadata", handleLoadedMetadata);
+      video.addEventListener("canplay", handleCanPlay);
     }
 
     return () => {
       video.removeEventListener("loadedmetadata", handleLoadedMetadata);
+      video.removeEventListener("canplay", handleCanPlay);
     };
-  }, []);
-
+  }, [percentage]);
 
   // Handle scroll visibility
   useEffect(() => {
@@ -118,8 +119,8 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
         if (wasPlaying) {
           const playPromise = video.play();
           if (playPromise !== undefined) {
-            playPromise.catch(error => {
-              console.log('Playback failed:', error);
+            playPromise.catch((error) => {
+              console.log("Playback failed:", error);
               setWasPlaying(false);
             });
           }
@@ -137,7 +138,7 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
     const observer = new IntersectionObserver(handleIntersection, {
       root: null,
       threshold: 0.5,
-      rootMargin: '0px'
+      rootMargin: "0px",
     });
 
     const currentContainer = containerRef.current;
@@ -149,8 +150,6 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
       }
     };
   }, [wasPlaying]);
-
-
 
   useEffect(() => {
     if (!src) {
@@ -188,7 +187,7 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
         }
 
         ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, offsetX, offsetY, renderWidth, renderHeight);
-        drawWatermark(ctx, canvas);
+        // drawWatermark(ctx, canvas);
       }
 
       if (!video.paused && !video.ended) {
@@ -196,50 +195,65 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
       }
     };
 
-    const drawWatermark = (ctx, canvas) => {
-      if (!userId) return;
-      const text = `User: ${userId}`;
-      const fontSize = Math.max(12, canvas.width * 0.02);
-      const padding = 10;
-      ctx.font = `bold ${fontSize}px Arial`;
-      ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
-      ctx.textBaseline = "middle";
-      const textMetrics = ctx.measureText(text);
-      const textWidth = textMetrics.width;
-      const textHeight = fontSize * 1.2;
-      ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
-      ctx.fillRect(padding, canvas.height - textHeight - padding * 2, textWidth + padding * 2, textHeight + padding);
-      ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
-      ctx.fillText(text, padding * 2, canvas.height - textHeight / 2 - padding);
-    };
+    // const drawWatermark = (ctx, canvas) => {
+    //   if (!userId) return;
+    //   const text = `User: ${userId}`;
+    //   const fontSize = Math.max(12, canvas.width * 0.02);
+    //   const padding = 10;
+    //   ctx.font = `bold ${fontSize}px Arial`;
+    //   ctx.fillStyle = "rgba(255, 255, 255, 0.5)";
+    //   ctx.textBaseline = "middle";
+    //   const textMetrics = ctx.measureText(text);
+    //   const textWidth = textMetrics.width;
+    //   const textHeight = fontSize * 1.2;
+    //   ctx.fillStyle = "rgba(0, 0, 0, 0.3)";
+    //   ctx.fillRect(padding, canvas.height - textHeight - padding * 2, textWidth + padding * 2, textHeight + padding);
+    //   ctx.fillStyle = "rgba(255, 255, 255, 0.9)";
+    //   ctx.fillText(text, padding * 2, canvas.height - textHeight / 2 - padding);
+    // };
 
     const handleLoadedMetadata = () => {
       setDuration(video.duration || 0);
       resizeCanvas();
+
+      // Seek to the saved percentage position when metadata loads
+      const currentPercentage = percentageRef.current;
+      if (video.duration > 0 && currentPercentage > 0 && currentPercentage <= 100) {
+        const seekTime = (currentPercentage / 100) * video.duration;
+        video.currentTime = seekTime;
+        setCurrentTime(seekTime);
+        setProgress(currentPercentage);
+        setHasSeekedInitially(false); // Reset so handlePlay can seek if needed
+      }
+
       renderFrame();
     };
 
-
-
     const handlePlay = () => {
       const video = videoRef.current;
-      if (!video) return;
+      if (!video || !video.duration) return;
 
-      if (!hasSeekedInitially && video.readyState >= 2) {
-        const targetTime = (percentage / 100) * video.duration;
-        console.log('targetTime', targetTime);
-        if (Math.abs(video.currentTime - targetTime) > 0.1) {
-          // video.currentTime = targetTime;
-          setCurrentTime(targetTime);
-          const onSeeked = () => {
-            video.removeEventListener('seeked', onSeeked);
-            setHasSeekedInitially(true);
-            const playPromise = video.play();
-            handlePlayPromise(playPromise);
-          };
-          video.addEventListener('seeked', onSeeked, { once: true });
-          return;
-        }
+      // Always check if we need to seek to the percentage position
+      const currentPercentage = percentageRef.current;
+      const targetTime = (currentPercentage / 100) * video.duration;
+      if (Math.abs(video.currentTime - targetTime) > 0.1 && video.readyState >= 2 && currentPercentage > 0) {
+        video.currentTime = targetTime;
+        setCurrentTime(targetTime);
+        setProgress(currentPercentage);
+
+        // Wait for seek to complete before playing
+        const onSeeked = () => {
+          video.removeEventListener("seeked", onSeeked);
+          setHasSeekedInitially(true);
+          const playPromise = video.play();
+          handlePlayPromise(playPromise);
+        };
+        video.addEventListener("seeked", onSeeked, { once: true });
+        return;
+      }
+
+      // If already at the correct position, play directly
+      if (!hasSeekedInitially) {
         setHasSeekedInitially(true);
       }
 
@@ -249,15 +263,17 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
 
     const handlePlayPromise = (playPromise) => {
       if (playPromise !== undefined) {
-        playPromise.then(() => {
-          setIsPlaying(true);
-          setWasPlaying(true);
-          renderFrame();
-        }).catch(error => {
-          console.log('Playback failed:', error);
-          setIsPlaying(false);
-          setWasPlaying(false);
-        });
+        playPromise
+          .then(() => {
+            setIsPlaying(true);
+            setWasPlaying(true);
+            renderFrame();
+          })
+          .catch((error) => {
+            console.log("Playback failed:", error);
+            setIsPlaying(false);
+            setWasPlaying(false);
+          });
       }
     };
     const handlePause = () => {
@@ -270,7 +286,6 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
 
       // Update the current time immediately
       const current = video.currentTime;
-      console.log(current, "handlePause")
       setCurrentTime(current);
 
       if (video.duration > 0) {
@@ -299,7 +314,6 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
       handleTimeUpdate();
     };
 
-
     const handleError = (e) => {
       console.error("Video error:", e);
     };
@@ -310,7 +324,6 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
       const current = video.currentTime;
       // const seekTime = (percentage / 100) * video.duration;
       const currentPercentage = (current / video.duration) * 100;
-      console.log(current, "handleTimeUpdate")
       setCurrentTime(current);
       // video.currentTime = current;
       if (!isDragging) {
@@ -323,7 +336,7 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
         watchedSetRef.current.add(currentSecond);
         renderFrame();
       }
-    }
+    };
 
     video.addEventListener("loadedmetadata", handleLoadedMetadata);
     video.addEventListener("timeupdate", handleTimeUpdate);
@@ -354,6 +367,23 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
     resizeCanvas();
   }, [isFullscreen]);
 
+  // Update percentage ref whenever percentage changes
+  useEffect(() => {
+    percentageRef.current = percentage;
+  }, [percentage]);
+
+  // Reset hasSeekedInitially when percentage changes significantly
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video && video.duration > 0 && percentage > 0) {
+      const targetTime = (percentage / 100) * video.duration;
+      // If we're not close to the target time, reset the flag
+      if (Math.abs(video.currentTime - targetTime) > 0.5) {
+        setHasSeekedInitially(false);
+      }
+    }
+  }, [percentage]);
+
   const togglePlay = () => {
     const video = videoRef.current;
     if (!video) return;
@@ -365,14 +395,16 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
     } else {
       const playPromise = video.play();
       if (playPromise !== undefined) {
-        playPromise.then(() => {
-          setIsPlaying(true);
-          setWasPlaying(true);
-        }).catch(error => {
-          console.log('Playback failed:', error);
-          setIsPlaying(false);
-          setWasPlaying(false);
-        });
+        playPromise
+          .then(() => {
+            setIsPlaying(true);
+            setWasPlaying(true);
+          })
+          .catch((error) => {
+            console.log("Playback failed:", error);
+            setIsPlaying(false);
+            setWasPlaying(false);
+          });
       }
     }
   };
@@ -468,11 +500,7 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
             <div className={styles.loadprogress}></div>
             <div className={styles.progressmain} style={{ width: `${progress}%` }}>
               <div className={styles.progress}>
-                <div
-                  className={styles.progressdotmain}
-                  onMouseDown={handleMouseDown}
-                  style={{ cursor: isDragging ? "grabbing" : "grab" }}
-                >
+                <div className={styles.progressdotmain} onMouseDown={handleMouseDown} style={{ cursor: isDragging ? "grabbing" : "grab" }}>
                   <div className={styles.progressdot}></div>
                 </div>
               </div>
@@ -496,16 +524,7 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
               </div>
               {showVolumeSlider && (
                 <div className={styles.volumeSliderContainer}>
-                  <input
-                    type="range"
-                    min="0"
-                    max="1"
-                    step="0.01"
-                    value={volume}
-                    onChange={handleVolumeSliderChange}
-                    className={styles.volumeSlider}
-                    ref={volumeSliderRef}
-                  />
+                  <input type="range" min="0" max="1" step="0.01" value={volume} onChange={handleVolumeSliderChange} className={styles.volumeSlider} ref={volumeSliderRef} />
                 </div>
               )}
             </div>
@@ -523,4 +542,3 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
 });
 
 export default CustomVideoPlayer;
-
