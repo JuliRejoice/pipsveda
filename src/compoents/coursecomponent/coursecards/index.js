@@ -20,7 +20,7 @@ export default function Coursecards({ onSelect , selectedTab, id}) {
         }
         
     }
-    useEffect(() => {
+    useEffect(() => {   
        getTitle();
     }, [id]);
     const handleClick = (tab) => {
