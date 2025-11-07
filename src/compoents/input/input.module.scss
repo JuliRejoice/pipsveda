@@ -44,6 +44,18 @@
             outline: none;
             border: 1px solid var(--black-500);
         }
+        
+        &[disabled],
+        &.disabled {
+            background-color: #f5f5f5 !important;
+            color: #999 !important;
+            -webkit-text-fill-color: #666 !important;
+            cursor: not-allowed !important;
+            border-color: #e0e0e0 !important;
+            opacity: 1 !important;
+            pointer-events: none;
+            user-select: none;
+        }
     }
 
     ::placeholder {

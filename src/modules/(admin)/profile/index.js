@@ -41,11 +41,9 @@ export default function Profile() {
   const [profileImage, setProfileImage] = useState(null);
   const [previewImage, setPreviewImage] = useState("");
   // Default to India's country ID (101) and a default state ID if needed
-  // State management for location
   const [countryId, setCountryId] = useState(101);
-  const [stateId, setStateId] = useState(null);
-  const [selectedState, setSelectedState] = useState("");
-  const [selectedCity, setSelectedCity] = useState("");
+  const [stateId, setStateId] = useState(0);
+  const [isCountrySet, setIsCountrySet] = useState(false);
 
   const countryRef = useRef(null);
   const genderRef = useRef(null);
@@ -65,18 +63,8 @@ export default function Profile() {
       user.country = "India";
     }
 
-    // Initialize state and city if they don't exist
-    if (!user.state) user.state = "";
-    if (!user.city) user.city = "";
-
     setUser(user);
     setInitialUserData(user);
-
-    if (user.state) setSelectedState(user.state);
-
-    if (user.city) setSelectedCity(user.city);
-
-    console.log("selectedCity", selectedCity, "userCity", user.city);
 
     if (user.profileImage) {
       setPreviewImage(user.profileImage);
@@ -368,18 +356,15 @@ export default function Profile() {
               <label className={styles.label}>State</label>
               <div className={styles.selectWrapper}>
                 <StateSelect
-                  defaultValue={user?.state || selectedState}
-                  countryid={countryId || 101}
+                  defaultValue={user?.state || ""}
+                  countryid={countryId || 101} // Default to India's ID if not set
                   onChange={(val) => {
-                    if (val) {
-                      setStateId(val.id);
-                      setSelectedState(val.name);
-                      setUser((prev) => ({
-                        ...prev,
-                        state: val.name,
-                        city: "",
-                      }));
-                    }
+                    setUser((prev) => ({
+                      ...prev,
+                      state: val.name,
+                      city: "",
+                    }));
+                    setStateId(val.id);
                   }}
                   placeHolder={
                     countryId ? "Select State" : "Select Country First"
@@ -395,23 +380,18 @@ export default function Profile() {
               <label className={styles.label}>City</label>
               <div className={styles.selectWrapper}>
                 <CitySelect
-                  defaultValue={user?.city ? { name: user.city } : null}
-                  countryid={countryId || 101}
+                  defaultValue={user?.city || ""}
+                  countryid={countryId || 101} // Default to India's ID if not set
                   stateid={stateId}
                   onChange={(val) => {
-                    if (val) {
-                      const cityName = val.name;
-                      setSelectedCity(cityName);
-                      setUser((prev) => ({
-                        ...prev,
-                        city: cityName,
-                      }));
-                    }
+                    setUser((prev) => ({
+                      ...prev,
+                      city: val.name,
+                    }));
                   }}
                   placeHolder={stateId ? "Select City" : "Select State First"}
                   className={styles.selectInput}
                   disabled={!stateId}
-                  key={`city-${stateId}-${selectedCity}`}
                 />
                 {/* <Dropdownarrow className={styles.dropdownIcon} /> */}
               </div>

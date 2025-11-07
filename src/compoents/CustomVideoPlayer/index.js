@@ -425,7 +425,19 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
     const rect = progressBarRef.current.getBoundingClientRect();
     let pos = (e.clientX - rect.left) / rect.width;
     pos = Math.max(0, Math.min(1, pos));
-    videoRef.current.currentTime = pos * videoRef.current.duration;
+    const video = videoRef.current;
+    const newTime = pos * (video.duration || 0);
+    video.currentTime = newTime;
+    // Update states immediately when paused (timeupdate may not fire)
+    setCurrentTime(newTime);
+    if (video.duration > 0) {
+      const newPercentage = (newTime / video.duration) * 100;
+      setProgress(newPercentage);
+      percentageRef.current = newPercentage;
+      if (typeof onPercentageChange === "function") {
+        onPercentageChange(newPercentage.toFixed(2));
+      }
+    }
   };
 
   const handleMouseDown = (e) => {
@@ -438,7 +450,16 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
     const rect = progressBarRef.current.getBoundingClientRect();
     let pos = (e.clientX - rect.left) / rect.width;
     pos = Math.max(0, Math.min(1, pos));
-    videoRef.current.currentTime = pos * videoRef.current.duration;
+    const video = videoRef.current;
+    const newTime = pos * (video.duration || 0);
+    video.currentTime = newTime;
+    // Live-update UI and internal percentage while dragging
+    setCurrentTime(newTime);
+    if (video.duration > 0) {
+      const newPercentage = (newTime / video.duration) * 100;
+      setProgress(newPercentage);
+      percentageRef.current = newPercentage;
+    }
   };
 
   const handleMouseUp = () => {
