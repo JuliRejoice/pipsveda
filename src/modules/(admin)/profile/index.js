@@ -92,7 +92,7 @@ export default function Profile() {
     }, []);
 
     const validateUser = () => {
-        if (!user.name || !user.phone  || !user.gender || !birthDate) {
+        if (!user.name || !user.phone || !user.gender || !birthDate) {
             return false;
         }
         return true;
@@ -190,7 +190,7 @@ export default function Profile() {
             <Breadcumbs />
             <div className={styles.profileBox}>
                 {/* Profile Image Upload */}
-              
+
                 <div className={styles.cardHeader}>
                     <h2>Edit Profile</h2>
                     <p>
@@ -198,12 +198,12 @@ export default function Profile() {
                     </p>
                 </div>
 
-                  <div className={styles.profileImageContainer}>
+                <div className={styles.profileImageContainer}>
                     <div className={styles.profileImageWrapper}>
                         {previewImage ? (
-                            <img 
-                                src={previewImage} 
-                                alt="Profile" 
+                            <img
+                                src={previewImage}
+                                alt="Profile"
                                 className={styles.profileImage}
                                 onError={(e) => {
                                     e.target.style.display = 'none';
@@ -216,10 +216,10 @@ export default function Profile() {
                             </div>
                         )}
                         <label className={styles.profileImageUpload}>
-                            <input 
-                                type="file" 
-                                accept="image/*" 
-                                style={{ display: 'none' }} 
+                            <input
+                                type="file"
+                                accept="image/*"
+                                style={{ display: 'none' }}
                                 onChange={(e) => {
                                     const file = e.target.files[0];
                                     if (file) {
@@ -247,6 +247,16 @@ export default function Profile() {
                                 setUser({ ...user, name: value });
                             }}
                         />
+
+                        <Input
+                            type="email"
+                            name="email"
+                            label='Email'
+                            placeholder='Enter your email'
+                            value={user?.email || ''}
+                            disabled={true}
+                        />
+
                         {/* Country code + phone */}
                         <div className={styles.telephoninputmain}>
                             <div className={styles.dropdownrelative} ref={countryRef}>
@@ -304,14 +314,14 @@ export default function Profile() {
                             </div>
                         </div>
 
-                            
-                        <Input 
-                            type="text" 
-                            name="location" 
-                            label='Location' 
+
+                        <Input
+                            type="text"
+                            name="location"
+                            label='Location'
                             placeholder='Enter your full address'
                             value={user?.location || ''}
-                            onChange={(e) => setUser({ ...user, location: e.target.value })} 
+                            onChange={(e) => setUser({ ...user, location: e.target.value })}
                         />
 
                         <div className={styles.dropdownrelative}>
