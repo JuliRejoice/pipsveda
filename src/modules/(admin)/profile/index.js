@@ -260,6 +260,15 @@ export default function Profile() {
                 setUser({ ...user, name: value });
               }}
             />
+            <Input
+              type="email"
+              name="email"
+              label="Email"
+              placeholder="Enter your email"
+              value={user?.email || ""}
+              disabled={true}
+            />
+
             {/* Country code + phone */}
             <div className={styles.telephoninputmain}>
               <div className={styles.dropdownrelative} ref={countryRef}>
@@ -299,16 +308,14 @@ export default function Profile() {
                   </div>
 
                   <input
-                    type="tel" // Changed from text to tel for better mobile keyboard
+                    type="tel"
                     name="phone"
                     placeholder="Enter your number"
                     value={user?.phone || ""}
-                    maxLength={10} // Prevent typing more than 10 digits
+                    maxLength={10}
                     onChange={(e) => {
-                      // Only allow numbers and remove any non-digit characters
                       const value = e.target.value.replace(/\D/g, "");
                       setUser({ ...user, phone: value });
-                      // Clear error when user starts typing
                       if (phoneError) {
                         setPhoneError("");
                       }
@@ -357,7 +364,7 @@ export default function Profile() {
               <div className={styles.selectWrapper}>
                 <StateSelect
                   defaultValue={user?.state || ""}
-                  countryid={countryId || 101} // Default to India's ID if not set
+                  countryid={countryId || 101}
                   onChange={(val) => {
                     setUser((prev) => ({
                       ...prev,
@@ -380,7 +387,7 @@ export default function Profile() {
               <label className={styles.label}>City</label>
               <div className={styles.selectWrapper}>
                 <CitySelect
-                  defaultValue={user?.city || ""}
+                  defaultValue={user?.city ? { name: user.city } : null}
                   countryid={countryId || 101} // Default to India's ID if not set
                   stateid={stateId}
                   onChange={(val) => {
