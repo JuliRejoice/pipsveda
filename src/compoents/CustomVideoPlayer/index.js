@@ -30,70 +30,78 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
   const [isInView, setIsInView] = useState(true);
   const [wasPlaying, setWasPlaying] = useState(false);
   const lastReportedTimeRef = useRef(0);
+  const [hasSeekedInitially, setHasSeekedInitially] = useState(false);
 
   // --- Watch Tracking ---
   const [maxWatchedTime, setMaxWatchedTime] = useState(0);
   const [totalWatched, setTotalWatched] = useState(0);
   const watchedSetRef = useRef(new Set());
 
+  console.log(percentage)
+  console.log(currentTime)
+
+
+
   // Set initial video position based on percentage
-useEffect(() => {
-  const video = videoRef.current;
-  if (!video) return;
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    console.log('------------ho rha hai---------------')
 
-  const seekToPercentage = () => {
-    if (video.duration > 0 && percentage >= 0) {
-      const seekTime = (percentage / 100) * video.duration;
+    const seekToPercentage = () => {
+      if (video.duration > 0 && percentage >= 0) {
+        const seekTime = (percentage / 100) * video.duration;
+        // Only seek if this is a meaningful change
+        console.log(seekTime,"seekTime")
+        if (Math.abs(video.currentTime - seekTime) > 0.05) {
+          video.currentTime = seekTime;
+          setCurrentTime(seekTime);
+          setProgress(percentage);
 
-      // Only seek if this is a meaningful change
-      if (Math.abs(video.currentTime - seekTime) > 0.05) {
-        video.currentTime = seekTime;
-        console.log('seekTime', seekTime);
-        setCurrentTime(seekTime);
-        setProgress(percentage);
-
-        // If paused, manually render a frame
-        if (video.paused) {
-          const canvas = canvasRef.current;
-          if (canvas) {
-            const ctx = canvas.getContext("2d");
-            const videoAspect = video.videoWidth / video.videoHeight;
-            const canvasAspect = canvas.width / canvas.height;
-            let renderWidth, renderHeight, offsetX, offsetY;
-            if (videoAspect > canvasAspect) {
-              renderHeight = canvas.height;
-              renderWidth = renderHeight * videoAspect;
-              offsetX = (canvas.width - renderWidth) / 2;
-              offsetY = 0;
-            } else {
-              renderWidth = canvas.width;
-              renderHeight = renderWidth / videoAspect;
-              offsetX = 0;
-              offsetY = (canvas.height - renderHeight) / 2;
+          // If paused, manually render a frame
+          if (video.paused) {
+            const canvas = canvasRef.current;
+            if (canvas) {
+              const ctx = canvas.getContext("2d");
+              const videoAspect = video.videoWidth / video.videoHeight;
+              const canvasAspect = canvas.width / canvas.height;
+              let renderWidth, renderHeight, offsetX, offsetY;
+              if (videoAspect > canvasAspect) {
+                renderHeight = canvas.height;
+                renderWidth = renderHeight * videoAspect;
+                offsetX = (canvas.width - renderWidth) / 2;
+                offsetY = 0;
+              } else {
+                renderWidth = canvas.width;
+                renderHeight = renderWidth / videoAspect;
+                offsetX = 0;
+                offsetY = (canvas.height - renderHeight) / 2;
+              }
+              ctx.clearRect(0, 0, canvas.width, canvas.height);
+              ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, offsetX, offsetY, renderWidth, renderHeight);
             }
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, offsetX, offsetY, renderWidth, renderHeight);
           }
+
+
         }
       }
+    };
+
+    const handleLoadedMetadata = () => {
+      seekToPercentage();
+      setDuration(video.duration);
+    };
+
+    if (video.readyState >= 2) {
+      handleLoadedMetadata();
+    } else {
+      video.addEventListener("loadedmetadata", handleLoadedMetadata);
     }
-  };
 
-  const handleLoadedMetadata = () => {
-    seekToPercentage();
-    setDuration(video.duration);
-  };
-
-  if (video.readyState >= 2) {
-    handleLoadedMetadata();
-  } else {
-    video.addEventListener("loadedmetadata", handleLoadedMetadata);
-  }
-
-  return () => {
-    video.removeEventListener("loadedmetadata", handleLoadedMetadata);
-  };
-}, [percentage]); // 🔥 remove isPlaying here
+    return () => {
+      video.removeEventListener("loadedmetadata", handleLoadedMetadata);
+    };
+  }, []);
 
 
   // Handle scroll visibility
@@ -142,7 +150,7 @@ useEffect(() => {
     };
   }, [wasPlaying]);
 
-  
+
 
   useEffect(() => {
     if (!src) {
@@ -211,27 +219,30 @@ useEffect(() => {
       renderFrame();
     };
 
+
+
     const handlePlay = () => {
       const video = videoRef.current;
       if (!video) return;
 
-      // If this is the first play, ensure we're at the correct time
-      if (video.readyState >= 2) { // HAVE_CURRENT_DATA
+      if (!hasSeekedInitially && video.readyState >= 2) {
         const targetTime = (percentage / 100) * video.duration;
+        console.log('targetTime', targetTime);
         if (Math.abs(video.currentTime - targetTime) > 0.1) {
-          video.currentTime = targetTime;
-          // Wait for seek to complete before playing
+          // video.currentTime = targetTime;
+          setCurrentTime(targetTime);
           const onSeeked = () => {
             video.removeEventListener('seeked', onSeeked);
+            setHasSeekedInitially(true);
             const playPromise = video.play();
             handlePlayPromise(playPromise);
           };
           video.addEventListener('seeked', onSeeked, { once: true });
           return;
         }
+        setHasSeekedInitially(true);
       }
 
-      // If we're already at the right time, just play
       const playPromise = video.play();
       handlePlayPromise(playPromise);
     };
@@ -249,48 +260,41 @@ useEffect(() => {
         });
       }
     };
-const handlePause = () => {
-  const video = videoRef.current;
-  if (!video) return;
+    const handlePause = () => {
+      const video = videoRef.current;
+      if (!video) return;
 
-  // Stop animation frame loop immediately
-  cancelAnimationFrame(animationFrameRef.current);
-  setIsPlaying(false);
+      // Stop animation frame loop immediately
+      cancelAnimationFrame(animationFrameRef.current);
+      setIsPlaying(false);
 
-  // Wait a microtick to let browser update video.currentTime
-  requestAnimationFrame(() => {
-    const current = video.currentTime;
+      // Update the current time immediately
+      const current = video.currentTime;
+      console.log(current, "handlePause")
+      setCurrentTime(current);
 
-    setCurrentTime(current);
+      if (video.duration > 0) {
+        const currentPercentage = (current / video.duration) * 100;
+        setProgress(currentPercentage);
 
-    if (video.duration > 0) {
-      const currentPercentage = (current / video.duration) * 100;
-      setProgress(currentPercentage);
-
-      if (typeof onPercentageChange === "function") {
-        onPercentageChange(currentPercentage.toFixed(2));
+        if (typeof onPercentageChange === "function") {
+          onPercentageChange(currentPercentage.toFixed(2));
+        }
       }
+    };
 
-      console.log(
-        `Paused at: ${current.toFixed(2)}s (${currentPercentage.toFixed(2)}%)`
-      );
-    }
-  });
-};
-
-console.log('seek time',currentTime)
     const handleEnded = () => {
       const video = videoRef.current;
       if (!video) return;
-      
+
       setIsPlaying(false);
       cancelAnimationFrame(animationFrameRef.current);
-      
+
       // Calculate and update percentage
       if (video.duration > 0) {
         const currentPercentage = (video.currentTime / video.duration) * 100;
         onPercentageChange(currentPercentage.toFixed(2));
-        console.log(`Ended at: ${video.currentTime.toFixed(1)}s (${currentPercentage.toFixed(1)}%)`);
+        // console.log(`Ended at: ${video.currentTime.toFixed(1)}s (${currentPercentage.toFixed(1)}%)`);
       }
       handleTimeUpdate();
     };
@@ -304,13 +308,11 @@ console.log('seek time',currentTime)
       if (!video || !video.duration) return;
 
       const current = video.currentTime;
+      // const seekTime = (percentage / 100) * video.duration;
       const currentPercentage = (current / video.duration) * 100;
-
-      // Debug log to track current time and percentage
-      console.log(`Current Time: ${current.toFixed(2)}s, Percentage: ${currentPercentage.toFixed(2)}%`);
-
-      // Always update the current time in state, but only update progress if not dragging
+      console.log(current, "handleTimeUpdate")
       setCurrentTime(current);
+      // video.currentTime = current;
       if (!isDragging) {
         setProgress(currentPercentage);
       }
@@ -319,17 +321,15 @@ console.log('seek time',currentTime)
       const currentSecond = Math.floor(current);
       if (!watchedSetRef.current.has(currentSecond)) {
         watchedSetRef.current.add(currentSecond);
-          renderFrame();
-        }
+        renderFrame();
       }
+    }
 
     video.addEventListener("loadedmetadata", handleLoadedMetadata);
     video.addEventListener("timeupdate", handleTimeUpdate);
     video.addEventListener("play", handlePlay);
     video.addEventListener("pause", handlePause);
-    // video.addEventListener("pause", () => {
-    //   console.log("pause jaaraard", video.currentTime.toFixed(2));
-    // });
+
     video.addEventListener("ended", handleEnded);
     video.addEventListener("error", handleError);
 

@@ -42,7 +42,6 @@ export default function Profile() {
     const countryRef = useRef(null);
     const genderRef = useRef(null);
 
-    console.log(profileImage)
 
     useEffect(() => {
         fetchProfile();
@@ -53,7 +52,6 @@ export default function Profile() {
         const parsedUser = JSON.parse(userData)._id;
         const response = await getProfile(parsedUser);
         const user = response.payload.data[0];
-        console.log(user)
         setUser(user);
         setInitialUserData(user);
         if (user.profileImage) {
@@ -141,7 +139,6 @@ export default function Profile() {
             formData.append('birthday', birthDate ? birthDate.toISOString().split('T')[0] : '');
 
             // Append profile image if selected
-            console.log(profileImage)
             if (profileImage) {
                 const imageRes = await uploadImage(profileImage);
                 formData.append('profileImage', imageRes.payload);

@@ -171,7 +171,6 @@ function AlgobotDetails({ id }) {
       setIsValidating(false);
     }
   };
-  console.log("🚀 ~ plans:", plans)
 
   const handlePurchase = async () => {
     if (!selectedPlan) return;

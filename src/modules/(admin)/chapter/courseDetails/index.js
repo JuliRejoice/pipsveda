@@ -147,9 +147,6 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  console.log("user", user);
-  console.log("selectedCourse", selectedCourse?.courseIntroVideo);
-
   useEffect(() => {
     if (selectedCourse) {
       setIsLiveOnline(selectedCourse?.courseType === 'live');
@@ -309,7 +306,6 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
         setIsBeforepaymentModal(true)
         setIsLoading(true);
         const response = await getBatches({ courseId });
-        console.log(response)
         setBatches(response?.payload?.data);
       } catch (error) {
         console.error("Error fetching batches:", error);
@@ -325,7 +321,6 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
   };
 
   const handleBatchSelect = (batch) => {
-    console.log("Selected batch:", batch);
     const batchDetails = batches.find(b => b._id === batch);
     setSelectedBatch(batchDetails);
     setShowBeforePayment(true);
@@ -362,8 +357,6 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
       setShowBeforePayment(false);
     }
   };
-
-  console.log(syllabus, 'syllabus')
 
   const downloadId = async (id) => {
     setIsDownloading(true);
@@ -475,7 +468,6 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     );
   };
 
-  console.log(expandedSection, 'expandedSection')
   if (loading) {
     return isLiveOnline ? (
       <div className={styles.sessionContainer}>
@@ -750,7 +742,6 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                         </div>
                       ) : (
                         <div className={styles.videoWrapper}>
-                          {console.log("selectedChapter.chapterVideo", selectedChapter.chapterVideo)}
 
                           <CustomVideoPlayer
                             src={selectedChapter.chapterVideo}

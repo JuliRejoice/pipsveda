@@ -153,7 +153,6 @@ export default function AllAlgobots() {
     fetchAlgobotData();
   }, [pagination.currentPage, selectedCategory]);
 
-  console.log(bot);
 
   const handlePageChange = (newPage) => {
     if (

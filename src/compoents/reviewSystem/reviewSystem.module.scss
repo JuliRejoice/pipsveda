@@ -60,10 +60,14 @@
 }
 
 .reviewForm {
-  margin-bottom: 32px;
+
   padding: 20px;
   background-color: var(--grey-50);
   border-radius: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
 
   h4 {
     @include font16;
@@ -130,9 +134,7 @@
   }
 }
 
-.reviewsList {
-  margin-top: 24px;
-}
+
 
 .reviewItem {
   padding: 20px 0;

@@ -163,7 +163,6 @@ const PaymentHistory = () => {
         );
     }
 
-    console.log("🚀 ~ metaAccounts:", metaAccounts)
 
     const handleOpenModal = (payment, viewMode = false) => {
         setCurrentPayment(payment);
@@ -314,7 +313,9 @@ const PaymentHistory = () => {
         return purchase.toLocaleDateString("en-US");
     };
 
+
     const handleDownloadInvoice = async (payment) => {
+        console.log(payment)
         try {
             setLoadingInvoices(prev => ({ ...prev, [payment._id]: true }));
             const expiryDate = payment.planExpiry || 
@@ -344,9 +345,9 @@ const PaymentHistory = () => {
                         amount: parseFloat(payment.price) || 0,
                     },
                 ],
-                couponDiscount: payment.couponDiscount > 0 ? `-${payment.couponDiscount}` : "-",
-                planDiscount: payment.discount > 0 ? `-${payment.discount}` : "-",
-                totalValue: parseFloat(payment.initialPrice) || 0,
+                couponDiscount: payment.couponDiscount > 0 ? `-${payment.couponDiscount}` : "0",
+                planDiscount: payment.discount > 0 ? `-${(payment.price*payment.discount/100).toFixed(2)}` : "0",
+                totalValue: parseFloat((payment.initialPrice * payment.noOfBots) || payment.price) || 0,
                 total: parseFloat(payment.price) || 0,
             };
 

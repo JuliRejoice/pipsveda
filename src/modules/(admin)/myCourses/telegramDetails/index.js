@@ -223,7 +223,6 @@ function TelegramDetails({ id }) {
         ));
     };
 
-    console.log("🚀 ~ plans:", plans)
     const renderPlanCards = () => {
         if (isLoading) {
             return renderSkeletonCards(3);
