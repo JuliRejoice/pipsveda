@@ -5,9 +5,9 @@ import { toast } from 'react-hot-toast';
 import styles from './reviewSystem.module.scss';
 
 const StarIcon = ({ filled, className = '' }) => (
-  <img 
-    src={`/assets/icons/${filled ? 'star' : 'star-empty'}.svg`} 
-    alt={filled ? 'Filled star' : 'Empty star'} 
+  <img
+    src={`/assets/icons/${filled ? 'star' : 'star-empty'}.svg`}
+    alt={filled ? 'Filled star' : 'Empty star'}
     className={`${styles.starIcon} ${className}`}
   />
 );
@@ -77,27 +77,28 @@ const ReviewSystem = ({ courseId, isPaid, userId }) => {
 
   return (
     <div className={styles.reviewSystem}>
-      <h3>Course Reviews</h3>
-      
-   <div className={styles.ratingSummary}>
+      {/* <h3>Course Reviews</h3>
+
+      <div className={styles.ratingSummary}>
         <div className={styles.averageRating}>
           <span className={styles.averageNumber}>{calculateAverageRating()}</span>
           <div className={styles.stars}>
             {[1, 2, 3, 4, 5].map((star) => (
-              <StarIcon 
-                key={star} 
-                filled={star <= Math.floor(calculateAverageRating())} 
+              <StarIcon
+                key={star}
+                filled={star <= Math.floor(calculateAverageRating())}
               />
             ))}
           </div>
           <span className={styles.reviewCount}>({reviews.length} reviews)</span>
         </div>
-      </div>
+      </div> */}
 
       {isPaid && (
         <form onSubmit={handleSubmit} className={styles.reviewForm}>
+          <div>
           <h4>Write a Review</h4>
-           <div className={styles.ratingInput}>
+          <div className={styles.ratingInput}>
             {[1, 2, 3, 4, 5].map((star) => (
               <button
                 key={star}
@@ -107,21 +108,15 @@ const ReviewSystem = ({ courseId, isPaid, userId }) => {
                 onMouseEnter={() => setHoverRating(star)}
                 onMouseLeave={() => setHoverRating(0)}
               >
-                <StarIcon 
-                  filled={star <= (hoverRating || rating)} 
-                  className={styles.starIcon} 
+                <StarIcon
+                  filled={star <= (hoverRating || rating)}
+                  className={styles.starIcon}
                 />
               </button>
             ))}
           </div>
-          <textarea
-            value={review}
-            onChange={(e) => setReview(e.target.value)}
-            placeholder="Share your experience with this course..."
-            className={styles.reviewInput}
-            rows={4}
-            required
-          />
+          </div>
+
           <button
             type="submit"
             className={styles.submitButton}
@@ -132,35 +127,6 @@ const ReviewSystem = ({ courseId, isPaid, userId }) => {
         </form>
       )}
 
-      <div className={styles.reviewsList}>
-        {isLoading ? (
-          <p>Loading reviews...</p>
-        ) : reviews.length > 0 ? (
-          reviews.map((item) => (
-            <div key={item._id} className={styles.reviewItem}>
-              <div className={styles.reviewHeader}>
-                <div className={styles.userInfo}>
-                  <span className={styles.userName}>{item.user?.name || 'Anonymous'}</span>
-                  <div className={styles.rating}>
-                    {[...Array(5)].map((_, i) => (
-                      <StarIconSolid
-                        key={i}
-                        className={`${styles.starIcon} ${i < item.rating ? styles.filled : ''}`}
-                      />
-                    ))}
-                  </div>
-                </div>
-                <span className={styles.reviewDate}>
-                  {new Date(item.createdAt).toLocaleDateString()}
-                </span>
-              </div>
-              <p className={styles.reviewText}>{item.review}</p>
-            </div>
-          ))
-        ) : (
-          <p>No reviews yet. Be the first to review!</p>
-        )}
-      </div>
     </div>
   );
 };

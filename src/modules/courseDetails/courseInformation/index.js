@@ -70,7 +70,6 @@ export default function CourseInformation({ id }) {
     }
   }
 
-  console.log(course)
   return (
     <div className={styles.courseInformation}>
       <div className='container'>

@@ -98,7 +98,6 @@ export default function DifferentCourses({ course }) {
     const isInView = useInView(ref, { once: true, amount: 0.1 });
     const router = useRouter();
 
-    console.log(activeTab)
 
     useEffect(() => {
         if (isInView) {

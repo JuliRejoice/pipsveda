@@ -58,9 +58,7 @@ export default function RecentCourse({ selectedTab, courseType, setCourseType, s
                     instructorId: instructorId
                 };
 
-                console.log(params, '----------------')
                 const data = await getCourses(params);
-                console.log(data, '-----------');
                 if (data?.success) {
                     setAllCourses(data?.payload?.data || []);
                 }

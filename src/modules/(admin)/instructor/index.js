@@ -114,7 +114,6 @@ function Instructor() {
                                 height={200}
                                 className={styles.image}
                                 onError={(e) => {
-                                    console.log("e+++++++++++++++++++++++", e)
                                     e.target.onerror = null;
                                     // e.target.src = '/assets/images/default-avatar.png';
                                 }}

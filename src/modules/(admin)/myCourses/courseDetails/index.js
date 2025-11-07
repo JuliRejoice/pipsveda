@@ -146,12 +146,7 @@ export default function CourseDetails({ params }) {
   const [expandedSyllabus, setExpandedSyllabus] = useState(null);
   const [videoWatchingPercentage, setVideoWatchingPercentage] = useState(0);
 
-  console.log(
-    selectedCourse,
-    videoWatchingPercentage,
-    "0--------------------------------------"
-  );
-  console.log(selectedChapter?.courseTracking?.percentage);
+
   const id = params;
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -160,7 +155,6 @@ export default function CourseDetails({ params }) {
     if (selectedCourse) {
       setIsLiveOnline(selectedCourse?.courseType === "live");
       setIsInPerson(selectedCourse?.courseType === "physical");
-      console.log(selectedCourse?.courseType);
 
       // Check if certificate is available (course has ended and user has paid)
       if (selectedCourse.courseEnd && selectedCourse.isPayment) {
@@ -179,18 +173,12 @@ export default function CourseDetails({ params }) {
       const data = await getChapters(id);
       setChapters(data?.payload?.data || []);
       setIsPaid(data?.payload.isPayment);
-      console.log('--------------gdfg------------')
 
       if (data?.payload?.data?.length > 0) {
-          console.log('--------------gdfg------------')
 
         setSelectedChapter(data.payload.data[0]);
         if (res?.payload?.data?.[0]?.courseType === "recorded") {
-          console.log('--------------gdfg------------')
-          console.log(
-            "-------------------",
-            data.payload.data[0]?.courseTracking?.percentage
-          );
+        
           setVideoWatchingPercentage(
             data.payload.data[0]?.courseTracking?.percentage
           );
@@ -205,7 +193,6 @@ export default function CourseDetails({ params }) {
     }
   };
 
-  console.log("isPaid", isPaid);
 
   const fetchSessions = async () => {
     try {
@@ -256,7 +243,6 @@ export default function CourseDetails({ params }) {
     if (isLiveOnline || isInPerson) {
       // For live/online courses, fetch batch details and syllabus
       const userBatchId = selectedCourse?.payment?.[0]?.batchId;
-      console.log(userBatchId);
       if (userBatchId) {
         fetchBatchDetails(userBatchId);
       }
@@ -274,9 +260,6 @@ export default function CourseDetails({ params }) {
       setSelectedChapter(chapters[0]);
     }
   }, [chapters, selectedChapter]);
-
-  console.log("selectedChapter", selectedChapter);
-  console.log("chapters", chapters);
 
   useEffect(() => {
     const isPayment = searchParams.get("isPayment");
@@ -372,7 +355,6 @@ export default function CourseDetails({ params }) {
     );
   };
 
-  console.log(batchDetails,"batchDetails")
 
   const downloadId = async (id) => {
     setIsDownloadingStudentId(true);
@@ -652,9 +634,6 @@ export default function CourseDetails({ params }) {
     );
   }
 
-  console.log(selectedChapter, selectedChapter?.courseTracking?._id);
-
-  console.log(videoWatchingPercentage,'videoWatchingPercentage')
 
   return (
     <div className={styles.courseDetailsBox}>
@@ -1143,10 +1122,7 @@ export default function CourseDetails({ params }) {
                             noremoteplayback
                             className={styles.videoPlayer}
                           /> */}
-                          {console.log(
-                            "selectedChapter.chapterVideo",
-                            selectedChapter.courseTracking.percentage
-                          )}
+                        
 
                           <CustomVideoPlayer
                             percentage={videoWatchingPercentage}

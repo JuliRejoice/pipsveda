@@ -27,7 +27,6 @@ export function PreventProvider({ children }) {
 
     // Detect possible recording APIs (monkey patch getDisplayMedia)
     if (navigator.mediaDevices?.getDisplayMedia) {
-      console.log("getDisplayMedia is available");
       const originalGetDisplayMedia = navigator.mediaDevices.getDisplayMedia;
       navigator.mediaDevices.getDisplayMedia = async (...args) => {
         // When screen recording is requested, blackout

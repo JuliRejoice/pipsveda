@@ -21,13 +21,8 @@ const BatchSelectionModal = ({
   const [selectedBatchId, setSelectedBatchId] = useState(null);
   const [error, setError] = useState(null);
   
-  console.log("🚀 ~ BatchSelectionModal ~ selectedBatchId:", selectedBatchId)
-
-  
-  
   const handleProceed = () => {
     if (!selectedBatchId) return;
-    console.log("selectedBatchId", selectedBatchId);
     if (selectedBatchId) {
       onBatchSelect(selectedBatchId);
     }

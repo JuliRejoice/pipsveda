@@ -15,7 +15,6 @@ function BeforePaymentModal({
   isRecorded = false
 }) {
 
-  console.log(selectedBatch)
   if (!isOpen) return null;
 
   if (!isRecorded && !selectedBatch) {

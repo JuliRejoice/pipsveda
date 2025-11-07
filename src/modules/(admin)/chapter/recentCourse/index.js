@@ -32,7 +32,6 @@ export default function RecentCourse({ selectedCourse }) {
         }
     }
 
-    console.log("selectedCourse", selectedCourse)
     const fetchCourses = useCallback(async () => {
         if (!selectedCourse?._id) return;
         
@@ -41,7 +40,6 @@ export default function RecentCourse({ selectedCourse }) {
             setError(null);
             const response = await getCourses({courseType: selectedCourse?.courseType,categoryId: selectedCourse?.courseCategory
             });
-            console.log(response,'dfdfl---------------')
             // Filter out the currently selected course
             const filteredCourses = response?.payload?.data?.filter(course => 
                 course._id !== selectedCourse._id
