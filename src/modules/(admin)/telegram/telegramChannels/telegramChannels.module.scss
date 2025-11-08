@@ -176,6 +176,7 @@
       overflow: hidden;
       @include font16normal;
       color: var(--grey-600);
+      min-height: 56px;
     }
 
     .planslider {
