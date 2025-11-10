@@ -155,7 +155,9 @@
             .videoPlayer {
                 border-radius: 20px;
                 background: rgba(1, 11, 29, 0.20);
-                height: 400px;
+                // height: 400px;
+                aspect-ratio: 16 / 9;
+                max-width: 600px;
 
                 @include respond-to("sm") {
                     height: 280px;

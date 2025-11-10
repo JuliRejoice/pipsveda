@@ -25,7 +25,7 @@ const SidebarLayer = "/assets/images/sidebar-layer.png";
 const LogoutIcon = "/assets/icons/logout.svg";
 const DownIcon = "/assets/icons/down-white.svg";
 
-export default function Sidebar({ setToogle, toogle }) {
+export default function Sidebar({ setToogle, toogle, unreadCount }) {
   const [user, setUser] = useState(null);
   const [profileDropdown, setProfileDropdown] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
@@ -120,17 +120,25 @@ export default function Sidebar({ setToogle, toogle }) {
             <span>Instructor</span>
           </div>
 
-          {/* <div
+          <div
               className={`${styles.menu} ${
                 pathname === "/notification" ? styles.active : ""
               }`}
               onClick={() => {
                 handleTabClick("notification");
               }}
+              style={{ position: 'relative' }}
             >
-              <NotificationIcon />
+              <div style={{ position: 'relative' }}>
+                <NotificationIcon />
+                {unreadCount >= 0 && (
+                  <span className={styles.notificationBadge}>
+                    {unreadCount > 9 ? '9+' : unreadCount} 
+                  </span>
+                )}
+              </div>
               <span>Notifications</span>
-            </div> */}
+            </div>
 
           <div
             className={`${styles.menu} ${pathname === "/paymentHistory" ? styles.active : ""

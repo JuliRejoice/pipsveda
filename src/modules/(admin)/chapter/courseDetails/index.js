@@ -558,8 +558,8 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
           </div>
 
           {/* Intro Video */}
-          <div>
-            <h2>
+          <div className={styles.introVideo}>
+           
               <CustomVideoPlayer
                 src={selectedCourse?.courseIntroVideo}
                 userId={user?._id}
@@ -568,7 +568,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                 disablePictureInPicture
                 noremoteplayback
               />
-            </h2>
+           
           </div>
 
           {/* Course Syllabus */}
@@ -699,8 +699,8 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
             </div>
           </div>}
 
-          <div>
-            <h2>
+          <div className={styles.introVideo}>
+            
               <CustomVideoPlayer
                 src={selectedCourse?.courseIntroVideo}
                 userId={user?._id}
@@ -709,7 +709,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                 disablePictureInPicture
                 noremoteplayback
               />
-            </h2>
+            
           </div>
           {/* <div className={styles.mainrelative}>
             <div className={styles.tabAlignment}>

@@ -103,7 +103,7 @@ function Instructor() {
                                     {instructor.bio || 'Passionate educator dedicated to student success.'}
                                 </p>
                                 <div className={styles.footerContainer}>
-                                    {renderRating(instructor.rating || 0)}
+                                    {renderRating(instructor.averageRating || 0)}
                                     <span 
                                         className={styles.viewProfileLink}
                                         onClick={() => {

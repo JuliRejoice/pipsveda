@@ -290,22 +290,14 @@ export const getCourseCategoryById = async ({ id, courseType }) => {
 export const submitReview = async (data) => {
   console.log("data", data);
   try {
-    const response = await api.post("/api/courses/reviews", data);
+    const response = await api.post("/courseRating/addCourseRating", data);
     return response.data;
   } catch (error) {
     throw error.response?.data || error.message;
   }
 };
 
-// Get course reviews
-export const getCourseReviews = async (courseId) => {
-  try {
-    const response = await api.get(`/api/courses/${courseId}/reviews`);
-    return response.data;
-  } catch (error) {
-    throw error.response?.data || error.message;
-  }
-};
+
 
 export const getBatches = async (data) => {
   try {
@@ -355,6 +347,26 @@ export const downloadStudentID = async (id,batchId) => {
     return response.data;
   } catch (error) {
     console.error('Error downloading certificate:', error);
+    throw error;
+  }
+};
+
+export const getCourseRating = async (id) => {
+  try {
+    const response = await api.get(`/courseRating/getCourseRating?courseId=${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching course rating:', error);
+    throw error;
+  }
+};
+
+export const getCourseRatingByUser = async () => {
+  try {
+    const response = await api.get(`/courseRating/getUserByCourseRating`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching course rating:', error);
     throw error;
   }
 };
