@@ -464,18 +464,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
   };
 
   if (loading) {
-    return isLiveOnline ? (
-      <div className={styles.sessionContainer}>
-        <h2>Upcoming Sessions</h2>
-        <div className={styles.sessionListmain}>
-          <div className={styles.sessionList}>
-            {[1, 2, 3].map((item) => (
-              <SessionSkeleton key={item} />
-            ))}
-          </div>
-        </div>
-      </div>
-    ) : <CourseDetailsSkeleton />;
+    return <CourseDetailsSkeleton />;
   }
 
   if (error) {
