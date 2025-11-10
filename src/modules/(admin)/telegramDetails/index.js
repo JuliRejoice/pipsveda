@@ -200,18 +200,36 @@ function TelegramDetails({ id }) {
     };
 
     const renderSkeletonCards = (count = 3) => {
-        return Array(count).fill(0).map((_, index) => (
-            <div className={styles.planCard} key={`skeleton-${index}`}>
-                <Skeleton width="100%" height={24} />
-                <div className={styles.cardHeaderAlignment}>
-                </div>
-                <div className={styles.childBox}>
-                    <Skeleton width="100%" height="56px" />
-                </div>
-                <Skeleton width="143px" height="52px" />
+  return (
+    <div className={styles.skeletonContainer}>
+      {Array(count)
+        .fill(0)
+        .map((_, index) => (
+          <div className={styles.planCard} key={`skeleton-${index}`}>
+            <Skeleton width="40%" height={18} style={{ marginBottom: '8px' }} />
+
+            <Skeleton width="60%" height={28} style={{ marginBottom: '12px' }} />
+
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '6px',
+                marginBottom: '12px',
+              }}
+            >
+              <Skeleton width="70%" height={16} />
+              <Skeleton width="60%" height={16} />
             </div>
-        ));
-    };
+
+            <Skeleton width="100%" height={44} borderRadius={8} />
+          </div>
+        ))}
+    </div>
+  );
+};
+
+
 
     const renderPlanCards = () => {
         if (isLoading) {

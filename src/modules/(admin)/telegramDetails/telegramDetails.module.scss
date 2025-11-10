@@ -175,6 +175,23 @@
 
 }
 
+.skeletonContainer {
+  display: flex;
+//   justify-content: center; /* or space-between / space-around */
+  align-items: flex-start;
+  flex-wrap: wrap; /* allows wrapping on small screens */
+  gap: 20px; /* spacing between cards */
+}
+
+.planCard {
+  width: 250px;
+  background: #fff;
+  border-radius: 10px;
+  padding: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+
 .coursePlan {
     .sbutitle {
         padding: 50px 0 18px 0;

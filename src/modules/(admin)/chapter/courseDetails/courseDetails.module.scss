@@ -50,14 +50,14 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0px 0px 16px 0px;
+        padding: 0px 0px 40px 0px;
     }
 
     .allIconTextAlignment {
         display: flex;
         align-items: center;
         gap: 30px;
-        padding: 0 0 0px 0;
+        padding: 30px 0 0px 0;
 
         @include respond-to("md") {
             gap: 16px;
@@ -187,16 +187,15 @@
     }
 
     .mainGrid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 30px;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin: 0 auto;
+        max-width: 1000px;
 
-        @include respond-to("md") {
-            grid-template-columns: 1fr;
-        }
-
-        @include respond-to("sm") {
-            gap: 20px;
+        .items {
+            width: 100%;
+            max-width: 100%;
         }
 
         .image {

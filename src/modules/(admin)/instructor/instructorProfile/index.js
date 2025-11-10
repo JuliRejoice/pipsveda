@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { getInstructorById } from '@/compoents/api/instructor';
 import styles from './instructorProfile.module.scss';
 import Image from 'next/image';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 function InstructorProfile({ id }) {
   const [instructor, setInstructor] = useState(null);
@@ -34,7 +36,44 @@ function InstructorProfile({ id }) {
   }, [id]);
 
   if (loading) {
-    return <div className={styles.loading}>Loading...</div>;
+    return (
+      <div className={styles.profileContainer}>
+        <div className={styles.profileHeader}>
+          <div className={styles.avatarContainer}>
+            <Skeleton circle={true} width={120} height={120} />
+          </div>
+          <div className={styles.profileInfo}>
+            <Skeleton width={200} height={30} style={{ marginBottom: '15px' }} />
+            <div className={styles.stats}>
+              {[1, 2, 3].map((item) => (
+                <div key={item} className={styles.statItem}>
+                  <Skeleton width={30} height={24} style={{ marginBottom: '5px' }} />
+                  <Skeleton width={60} height={16} />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <div className={styles.detailsSection}>
+          <Skeleton width={100} height={28} style={{ marginBottom: '10px' }} />
+          <Skeleton count={1} style={{ marginBottom: '10px' }} />
+          <Skeleton width="80%" />
+        </div>
+
+        <div className={styles.contactInfo}>
+          <Skeleton width={150} height={28} style={{ marginBottom: '15px' }} />
+          <div className={styles.contactItem}>
+            <Skeleton width={50} height={20} style={{ marginRight: '10px', display: 'inline-block' }} />
+            <Skeleton width={200} height={20} style={{ display: 'inline-block' }} />
+          </div>
+          <div className={styles.contactItem} style={{ marginTop: '10px' }}>
+            <Skeleton width={100} height={20} style={{ marginRight: '10px', display: 'inline-block' }} />
+            <Skeleton width={150} height={20} style={{ display: 'inline-block' }} />
+          </div>
+        </div>
+      </div>
+    );
   }
 
   if (error) {
