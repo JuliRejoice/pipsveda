@@ -8,19 +8,25 @@ import ClockGreyIcon from '@/icons/clockGreyIcon';
 import { getNotification, updateNotification } from '@/compoents/api/notification';
 import { formatDistanceToNow } from 'date-fns';
 import { getSocket } from '@/utils/webSocket';
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 export default function Notification() {
     const [notifications, setNotifications] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
     const router = useRouter();
 
     const fetchNotifications = async () => {
         try {
+            setIsLoading(true);
             const response = await getNotification();
             if (response?.payload?.data) {
                 setNotifications(response.payload.data);
             }
         } catch (error) {
             console.error('Error fetching notifications:', error);
+        } finally {
+            setIsLoading(false);
         }
     };
 
@@ -35,7 +41,7 @@ export default function Notification() {
                 ));
             }
             
-            // Navigate based on notification type or link
+
             if (notification.link) {
                 router.push(notification.link);
             }
@@ -80,7 +86,22 @@ export default function Notification() {
                     <p>Your recent notifications and alerts</p>
                 </div>
                 <div className={styles.allBoxAlignment}>
-                    {notifications.length > 0 ? (
+                    {isLoading ? (
+                        // Skeleton loader
+                        [...Array(5)].map((_, index) => (
+                            <div key={`skeleton-${index}`} className={styles.box}>
+                                <div className={styles.leftContentAlignment}>
+                                    <div className={styles.content}>
+                                        <Skeleton width={200} height={24} style={{ marginBottom: '8px' }} />
+                                        <Skeleton width={300} count={1} />
+                                    </div>
+                                </div>
+                                <div className={styles.rightContentAlignment}>
+                                    <Skeleton width={100} />
+                                </div>
+                            </div>
+                        ))
+                    ) : notifications.length > 0 ? (
                         notifications.map((notification) => (
                             <div 
                                 key={notification._id} 
@@ -114,7 +135,7 @@ export default function Notification() {
                             </div>
                         ))
                     ) : (
-                        <div className={styles.noNotifications}>
+                        <div className={styles.box}>
                             <p>No notifications to display</p>
                         </div>
                     )}

@@ -690,11 +690,11 @@ export default function CourseDetails({ params }) {
                     Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString("en-GB")} | {selectedCourse?.language?.slice(0, 1).toUpperCase() + selectedCourse?.language?.slice(1) || "English"}
                   </span>
                 </div>
-                {selectedCourse?.courseEnd && (
+                {/* {selectedCourse?.courseEnd && (
                   <div className={styles.iconText}>
                     <span>Course Ends: {new Date(selectedCourse.courseEnd).toLocaleDateString("en-GB")}</span>
                   </div>
-                )}
+                )} */}
               </div>
 
               <div style={{ display: "flex", gap: "12px" }}>

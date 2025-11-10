@@ -1,5 +1,5 @@
 'use client';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import styles from './havequestions.module.scss';
 import Input from '@/compoents/input';
 import Textarea from '@/compoents/textarea';
@@ -7,6 +7,8 @@ import Button from '@/compoents/button';
 import { contactUs } from '@/compoents/api/contact';
 import toast from 'react-hot-toast';
 import { getUtilityData } from '@/compoents/api/dashboard';
+import Dropdownarrow from '@/icons/dropdownarrow';
+import { regions } from '@/regions';
 
 const ChatIcon = '/assets/icons/chat.svg';
 const EmailIcon = '/assets/icons/email-icon.svg';
@@ -35,6 +37,10 @@ export default function Havequestions() {
     const [utilityData, setUtilityData] = useState({});
     const [errors, setErrors] = useState({});
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [selectedCountryCode, setSelectedCountryCode] = useState('+91');
+    const [showCountryDropdown, setShowCountryDropdown] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
+    const countryRef = useRef(null);
 
     const validateForm = () => {
         const newErrors = {};
@@ -259,16 +265,70 @@ export default function Havequestions() {
                                 />
                                 {errors.email && <p className={styles.error}>{errors.email}</p>}
                             </div>
-                            <div className={styles.inputAlignment}>
-                                <Input
-                                    type='tel'
-                                    name='phone'
-                                    label='Phone Number'
-                                    placeholder='9876543210'
-                                    value={form.phone}
-                                    onChange={(e) => handleChange('phone', e.target.value)}
-                                />
-                                {errors.phone && <p className={styles.error}>{errors.phone}</p>}
+                            <div className={styles.telephoninputmain}>
+                                <div className={styles.dropdownrelative} ref={countryRef}>
+                                    <label>Phone</label>
+                                    <div className={styles.telephoninput}>
+                                        <div className={styles.countrycodeselectormain}>
+                                            <div className={styles.countrycodeselectorrelative}>
+                                                <div
+                                                    className={styles.countrycodeselector}
+                                                    onClick={() => setShowCountryDropdown(prev => !prev)}
+                                                    onChange={(e) => handleChange('countryCode', e.target.value)}
+                                                >
+                                                    <span>{selectedCountryCode}</span>
+                                                    <div className={styles.dropdownarrow}><Dropdownarrow /></div>
+                                                </div>
+
+                                                {showCountryDropdown && (
+                                                    <div className={styles.dropdown}>
+                                                        <div className={styles.searchContainer}>
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Search country code..."
+                                                                className={styles.searchInput}
+                                                                value={searchTerm}
+                                                                onChange={(e) => setSearchTerm(e.target.value)}
+                                                                onClick={(e) => e.stopPropagation()}
+                                                            />
+                                                        </div>
+                                                        <div className={styles.dropdownSpacing}>
+                                                            {regions
+                                                                .filter(region =>
+                                                                    region.numberCode.includes(searchTerm) ||
+                                                                    region.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                                                    region.code.toLowerCase().includes(searchTerm.toLowerCase())
+                                                                )
+                                                                .map((region) => (
+                                                                    <div
+                                                                        className={styles.iconText}
+                                                                        key={region.code}
+                                                                        onClick={() => {
+                                                                            setSelectedCountryCode(region.numberCode);
+                                                                            handleChange("countryCode", region.numberCode);
+                                                                            setShowCountryDropdown(false);
+                                                                            setSearchTerm(''); // Reset search term when a country is selected
+                                                                        }}
+                                                                    >
+                                                                        <span className={styles.countryCode}>{region.numberCode}</span>
+                                                                        <span className={styles.countryName}>({region.code}) {region.name}</span>
+                                                                    </div>
+                                                                ))}
+                                                        </div>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            name="phone"
+                                            placeholder='Enter your number'
+                                            value={form.phone}
+                                            onChange={(e) => handleChange('phone', e.target.value)}
+                                        />
+
+                                    </div>
+                                </div>
                             </div>
                             <div className={styles.lastCol}>
                                 <Input

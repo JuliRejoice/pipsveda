@@ -125,7 +125,7 @@ function BeforePaymentModal({
       <div className={styles.modalContent}>
         {renderContent()}
 
-        <div className={styles.note}>
+        <div className={styles.commonnote}>
           <p><strong>Note:</strong> Please verify all the details before proceeding to payment. Once payment is made, it cannot be refunded.</p>
         </div>
 

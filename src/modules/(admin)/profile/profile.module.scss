@@ -145,301 +145,320 @@
                 }
             }
 
-            .telephoninputmain {
-                position: relative;
+                    .telephoninputmain {
+            position: relative;
 
-                label {
-                    font-size: 18px;
-                    font-style: normal;
-                    font-weight: 400;
-                    font-family: var(--font-lexend);
-                    color: var(--border-200);
-                    padding: 0 0 8px;
-                    line-height: normal;
-                    display: block;
-                }
-
-                .telephoninput {
-                    position: relative;
-
-                    .countrycodeselectormain {
-                        position: absolute;
-                        height: 100%;
-                        top: 0;
-                        left: 0;
-
-                        .countrycodeselectorrelative {
-                            position: relative;
-                            height: 100%;
-                            width: 80px;
-
-                            .countrycodeselector {
-                                position: absolute;
-                                top: 50%;
-                                transform: translateY(-50%);
-                                left: 1px;
-                                width: 80px;
-                                height: calc(100% - 2px);
-                                display: flex;
-                                align-items: center;
-                                justify-content: center;
-                                cursor: pointer;
-                                transition: .4s ease-in-out;
-                                display: flex;
-                                justify-content: center;
-                                align-items: center;
-                                gap: 10px;
-                                border-radius: 10px 0 0 10px;
-
-                                &.active {
-                                    .dropdownarrow {
-                                        svg {
-                                            transform: rotate(180deg);
-                                        }
-                                    }
-                                }
-
-                                span {
-                                    font-size: 16px;
-                                    font-style: normal;
-                                    font-weight: 500;
-                                    font-family: var(--font-lexend);
-                                    color: var(--black-500);
-                                }
-
-                                .dropdownarrow {
-                                    width: 18px;
-                                    height: 18px;
-                                    display: flex;
-                                    justify-content: center;
-                                    align-items: center;
-
-                                    svg {
-                                        width: 100%;
-                                        height: 100%;
-                                    }
-                                }
-
-
-                                &:hover {
-                                    background-color: #e9ecf1;
-                                }
-                            }
-
-                            .dropdown {
-                                position: absolute;
-                                top: 60px;
-                                left: 0;
-                                width: 100%;
-                                background-color: var(--bg-white);
-                                border: 1px solid var(--border-color5);
-                                border-radius: 12px;
-                                z-index: 99;
-
-                                &.hide {
-                                    max-height: 0px;
-                                    overflow: hidden;
-                                    transition: 0.3s ease-in-out;
-                                    border-color: transparent;
-                                }
-
-                                &.show {
-                                    max-height: 100vh;
-                                    overflow: hidden;
-                                    transition: 0.3s ease-in-out;
-                                }
-
-                                .dropdownSpacing {
-                                    padding: 10px;
-                                    max-height: 200px;
-                                    overflow-y: auto;
-
-                                    .iconText {
-                                        display: flex;
-                                        align-items: center;
-                                        cursor: pointer;
-                                        padding: 10px 5px;
-                                        gap: 10px;
-                                        border-radius: 10px;
-                                        transition: 0.3s ease-in-out;
-
-                                        &.active,
-                                        &:hover {
-                                            background-color: #f7f8fa;
-                                        }
-
-                                        span {
-                                            display: block;
-                                            @include font16;
-                                            color: #051600cc;
-                                            cursor: pointer;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    input {
-                        width: 100%;
-                        background-color: #f7f8fa;
-                        font-family: var(--font-lexend);
-                        color: var(--black-500);
-                        border: 1px solid var(--border-color2);
-                        border-radius: 10px;
-                        height: 55px;
-                        padding: 0 16px 0 80px;
-                        font-size: 16px;
-                        font-style: normal;
-                        font-weight: 500;
-                        line-height: normal;
-                        transition: all .3s ease-in-out;
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        cursor: pointer;
-                        transition: .4s ease-in-out;
-                    }
-                }
+            label {
+                font-size: 18px;
+                font-style: normal;
+                font-weight: 400;
+                font-family: var(--font-lexend);
+                color: var(--border-200);
+                padding: 0 0 8px;
+                line-height: normal;
+                display: block;
             }
 
-            .dropdownrelative {
+            .telephoninput {
                 position: relative;
-                width: 100%;
-                .selectWrapper {
-                        margin-top: 10px;
-                    }
 
+                .countrycodeselectormain {
+                    position: absolute;
+                    height: 100%;
+                    top: 0;
+                    left: 0;
 
-                .dropdownhead {
-                    .label {
-                        font-size: 18px;
-                        font-style: normal;
-                        font-weight: 400;
-                        font-family: var(--font-lexend);
-                        color: var(--border-200);
-                        padding: 0 0 8px;
-                        line-height: normal;
-                        display: block;
-                        margin-bottom: 8px;
-                    }
+                    .countrycodeselectorrelative {
+                        position: relative;
+                        height: 100%;
+                        width: 80px;
 
-                  
-
-                    .dropdowninput {
-                        width: 100%;
-                        background-color: #f7f8fa;
-                        font-family: var(--font-lexend);
-                        color: var(--black-500);
-                        border: 1px solid var(--border-color2);
-                        border-radius: 10px;
-                        height: 55px;
-                        padding: 0px 16px;
-                        font-size: 16px;
-                        font-style: normal;
-                        font-weight: 500;
-                        line-height: normal;
-                        transition: all .3s ease-in-out;
-                        display: flex;
-                        justify-content: space-between;
-                        align-items: center;
-                        cursor: pointer;
-                        transition: .4s ease-in-out;
-                        margin-top: 8px;
-                        
-
-                        &.active {
-                            .dropdownarrow {
-                                svg {
-                                    transform: rotate(180deg);
-                                }
-                            }
-                        }
-
-                        .dropdownselecteditem {
-                            max-width: 415px;
-                            overflow-x: auto;
-                            white-space: nowrap;
-
-                            &::-webkit-scrollbar {
-                                height: 0;
-                            }
-                        }
-
-                        .dropdownarrow {
-                            width: 30px;
-                            height: 30px;
+                        .countrycodeselector {
+                            position: absolute;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            left: 1px;
+                            width: 80px;
+                            height: calc(100% - 2px);
                             display: flex;
                             align-items: center;
                             justify-content: center;
-
-                            svg {
-                                transition: .4s ease-in-out;
-                                width: 100%;
-                                height: 100%;
-                            }
-                        }
-                    }
-                }
-
-                .dropdown {
-                    position: absolute;
-                    top: 91px;
-                    left: 0;
-                    width: 100%;
-                    background-color: var(--bg-white);
-                    border: 1px solid var(--border-color5);
-                    border-radius: 12px;
-                    z-index: 9;
-
-                    &.hide {
-                        max-height: 0px;
-                        overflow: hidden;
-                        transition: 0.3s ease-in-out;
-                        border-color: transparent;
-                    }
-
-                    &.show {
-                        max-height: 100vh;
-                        overflow: hidden;
-                        transition: 0.3s ease-in-out;
-                    }
-
-                    .dropdownSpacing {
-                        padding: 16px;
-
-                        .iconText {
-                            display: flex;
-                            align-items: center;
                             cursor: pointer;
-                            padding: 13px 10px;
+                            transition: .4s ease-in-out;
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
                             gap: 10px;
-                            border-radius: 10px;
-                            transition: 0.3s ease-in-out;
+                            border-radius: 10px 0 0 10px;
 
-                            &.active,
-                            &:hover {
-                                background-color: #f7f8fa;
-                            }
-
-                            &:hover {
-                                transform: translateY(-3px);
-
-                                span {
-                                    color: var(--primary);
+                            &.active {
+                                .dropdownarrow {
+                                    svg {
+                                        transform: rotate(180deg);
+                                    }
                                 }
                             }
 
                             span {
-                                display: block;
-                                @include font16;
-                                color: #051600cc;
-                                cursor: pointer;
+                                font-size: 16px;
+                                font-style: normal;
+                                font-weight: 500;
+                                font-family: var(--font-lexend);
+                                color: var(--black-500);
+                                margin-top: 60px;
+                            }
+
+                            .dropdownarrow {
+                                width: 18px;
+                                height: 18px;
+                                display: flex;
+                                justify-content: center;
+                                align-items: center;
+                                margin-top: 60px;
+
+                                svg {
+                                    width: 100%;
+                                    height: 100%;
+                                }
+                            }
+
+
+                            &:hover {
+                                background-color: #e9ecf1;
+                            }
+                        }
+
+                        .dropdown {
+                            position: absolute;
+                            top: 100%;
+                            left: 0;
+                            background: white;
+                            border: 1px solid #e5e7eb;
+                            border-radius: 6px;
+                            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+                            z-index: 10;
+                            max-height: 300px;
+                            width: 300px;
+                            overflow-y: auto;
+
+                            &.hide {
+                                max-height: 0px;
+                                overflow: hidden;
+                                transition: 0.3s ease-in-out;
+                                border-color: transparent;
+                            }
+
+                            &.show {
+                                max-height: 100vh;
+                                overflow: hidden;
+                                transition: 0.3s ease-in-out;
+                            }
+
+                            .searchContainer {
+                                padding: 10px;
+                                position: sticky;
+                                top: 0;
+                                background: white;
+                                z-index: 1;
+                                border-bottom: 1px solid #e5e7eb;
+
+                                .searchInput {
+                                    width: 100%;
+                                    padding: 8px 12px;
+                                    border: 1px solid #e5e7eb;
+                                    border-radius: 6px;
+                                    font-size: 14px;
+                                    outline: none;
+                                    transition: border-color 0.2s;
+
+                                    &:focus {
+                                        border-color: #000;
+                                        box-shadow: 0 0 0 1px #000;
+                                    }
+                                }
+                            }
+
+                            .dropdownSpacing {
+                                padding: 10px;
+                                max-height: 200px;
+                                overflow-y: auto;
+
+                                .iconText {
+                                    padding: 10px 16px;
+                                    cursor: pointer;
+                                    display: flex;
+                                    align-items: center;
+                                    transition: background-color 0.2s;
+                                    font-size: 14px;
+
+                                    &:hover {
+                                        background-color: #f3f4f6;
+                                    }
+
+                                    .countryCode {
+                                        font-weight: 600;
+                                        margin-right: 8px;
+                                        color: #1f2937;
+                                    }
+
+                                    .countryName {
+                                        color: #6b7280;
+                                        font-size: 14px;
+                                    }
+                                }
                             }
                         }
                     }
                 }
+
+                input {
+                    width: 100%;
+                    background-color: #f7f8fa;
+                    font-family: var(--font-lexend);
+                    color: var(--black-500);
+                    border: 1px solid var(--border-color2);
+                    border-radius: 10px;
+                    height: 55px;
+                    padding: 0 16px 0 80px;
+                    font-size: 16px;
+                    font-style: normal;
+                    font-weight: 500;
+                    line-height: normal;
+                    transition: all .3s ease-in-out;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    cursor: pointer;
+                    transition: .4s ease-in-out;
+                }
             }
+        }
+
+        .dropdownrelative {
+            position: relative;
+            width: 100%;
+
+          
+
+            .dropdownhead {
+                label {
+                    @extend .labelStyle;
+                }
+
+
+                .dropdowninput {
+                    width: 100%;
+                    background-color: #f7f8fa;
+                    font-family: var(--font-lexend);
+                    color: var(--black-500);
+                    border: 1px solid var(--border-color2);
+                    border-radius: 10px;
+                    height: 55px;
+                    padding: 0 16px;
+                    font-size: 16px;
+                    font-style: normal;
+                    font-weight: 500;
+                    line-height: normal;
+                    transition: all .3s ease-in-out;
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    cursor: pointer;
+                    transition: .4s ease-in-out;
+
+                    &.active {
+                        .dropdownarrow {
+                            svg {
+                                transform: rotate(180deg);
+                            }
+                        }
+                    }
+
+                    .dropdownselecteditem {
+                        max-width: 415px;
+                        overflow-x: auto;
+                        white-space: nowrap;
+
+                        &::-webkit-scrollbar {
+                            height: 0;
+                        }
+                    }
+
+                    .dropdownarrow {
+                        width: 18px;
+                        height: 18px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+
+                        svg {
+                            transition: .4s ease-in-out;
+                            width: 100%;
+                            height: 100%;
+                        }
+                    }
+                }
+            }
+
+            .dropdown {
+                position: absolute;
+                top: 91px;
+                left: 0;
+                width: 100%;
+                background-color: var(--bg-white);
+                border: 1px solid var(--border-color5);
+                border-radius: 12px;
+                z-index: 9;
+
+                &.hide {
+                    max-height: 0px;
+                    overflow: hidden;
+                    transition: 0.3s ease-in-out;
+                    border-color: transparent;
+                }
+
+                &.show {
+                    max-height: 100vh;
+                    overflow: hidden;
+                    transition: 0.3s ease-in-out;
+                }
+
+                .dropdownSpacing {
+                    padding: 16px;
+
+                    .iconText {
+                        display: flex;
+                        align-items: center;
+                        cursor: pointer;
+                        padding: 13px 10px;
+                        gap: 10px;
+                        border-radius: 10px;
+                        transition: 0.3s ease-in-out;
+
+                        &.active,
+                        &:hover {
+                            background-color: #f7f8fa;
+                        }
+
+                        &:hover {
+                            transform: translateY(-3px);
+
+                            span {
+                                color: var(--primary);
+                            }
+                        }
+
+                        span {
+                            display: block;
+                            @include font16;
+                            color: #051600cc;
+                            cursor: pointer;
+                        }
+                    }
+                }
+            }
+        }
+
 
             /* Add this globally (not inside module, or use :global) */
             :global(.react-datepicker-wrapper) {
@@ -480,4 +499,17 @@
     color: #ff4d4f;
     font-size: 12px;
     display: block;
+}
+
+// Label styles
+.labelStyle {
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  font-family: var(--font-lexend);
+  color: var(--border-200);
+//   padding: 0 0 8px;
+  line-height: normal;
+  display: block;
+  margin-bottom: 8px;
 }

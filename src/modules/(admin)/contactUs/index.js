@@ -35,6 +35,7 @@ export default function ContactUs() {
     const [utility, setUtility] = useState({})
     const [selectedCountryCode, setSelectedCountryCode] = useState('91');
     const [showCountryDropdown, setShowCountryDropdown] = useState(false);
+    const [searchTerm, setSearchTerm] = useState('');
     const countryRef = useRef(null);
 
     useEffect(() => {
@@ -190,22 +191,38 @@ export default function ContactUs() {
 
                                                 {showCountryDropdown && (
                                                     <div className={styles.dropdown}>
+                                                        <div className={styles.searchContainer}>
+                                                            <input
+                                                                type="text"
+                                                                placeholder="Search country code..."
+                                                                className={styles.searchInput}
+                                                                value={searchTerm}
+                                                                onChange={(e) => setSearchTerm(e.target.value)}
+                                                                onClick={(e) => e.stopPropagation()}
+                                                            />
+                                                        </div>
                                                         <div className={styles.dropdownSpacing}>
-                                                            {regions.map((region) => (
-                                                                <div
-                                                                    className={styles.iconText}
-                                                                    key={region.code}
-                                                                    onClick={() => {
-                                                                        setSelectedCountryCode(region.numberCode);
-                                                                        handleChange("countryCode", region.numberCode);
-                                                                        setShowCountryDropdown(false);
-                                                                      }}
-                                                                    
-                                                                      
-                                                                >
-                                                                    <span>{region.numberCode}</span>
-                                                                </div>
-                                                            ))}
+                                                            {regions
+                                                                .filter(region => 
+                                                                    region.numberCode.includes(searchTerm) ||
+                                                                    region.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                                                    region.code.toLowerCase().includes(searchTerm.toLowerCase())
+                                                                )
+                                                                .map((region) => (
+                                                                    <div
+                                                                        className={styles.iconText}
+                                                                        key={region.code}
+                                                                        onClick={() => {
+                                                                            setSelectedCountryCode(region.numberCode);
+                                                                            handleChange("countryCode", region.numberCode);
+                                                                            setShowCountryDropdown(false);
+                                                                            setSearchTerm(''); // Reset search term when a country is selected
+                                                                        }}
+                                                                    >
+                                                                        <span className={styles.countryCode}>{region.numberCode}</span>
+                                                                        <span className={styles.countryName}>({region.code}) {region.name}</span>
+                                                                    </div>
+                                                                ))}
                                                         </div>
                                                     </div>
                                                 )}

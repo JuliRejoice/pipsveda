@@ -33,6 +33,7 @@ export default function Profile() {
   const [showCountryDropdown, setShowCountryDropdown] = useState(false);
   const [showGenderDropdown, setShowGenderDropdown] = useState(false);
   const [selectedCountryCode, setSelectedCountryCode] = useState("+12");
+  const [searchTerm, setSearchTerm] = useState('');
   const [selectedGender, setSelectedGender] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [dateError, setDateError] = useState("");
@@ -47,37 +48,72 @@ export default function Profile() {
 
   const countryRef = useRef(null);
   const genderRef = useRef(null);
+  
+  // Form state
+  const [form, setForm] = useState({
+    phone: '',
+    countryCode: '+91', // Default country code
+  });
+  
+  // Handle form input changes
+  const handleChange = (name, value) => {
+    // Update the form state
+    setForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    
+    // Also update the user state for phone number
+    if (name === 'phone') {
+      setUser(prev => ({
+        ...prev,
+        phone: value
+      }));
+    }
+  };
 
   useEffect(() => {
     fetchProfile();
   }, []);
 
   const fetchProfile = async () => {
-    const userData = getCookie("user");
-    const parsedUser = JSON.parse(userData)._id;
-    const response = await getProfile(parsedUser);
-    const user = response.payload.data[0];
+    try {
+      const userData = getCookie("user");
+      const parsedUser = JSON.parse(userData)._id;
+      const response = await getProfile(parsedUser);
+      const user = response.payload.data[0];
 
-    // Set default country to India if not set
-    if (!user.country) {
-      user.country = "India";
-    }
+      // Set default country to India if not set
+      if (!user.country) {
+        user.country = "India";
+      }
 
-    setUser(user);
-    setInitialUserData(user);
+      setUser(user);
+      setInitialUserData(user);
 
-    if (user.profileImage) {
-      setPreviewImage(user.profileImage);
-    }
+      if (user.profileImage) {
+        setPreviewImage(user.profileImage);
+      }
 
-    // Set birthdate if available
-    if (user?.birthday) {
-      setBirthDate(new Date(user.birthday));
-    }
+      // Set birthdate if available
+      if (user?.birthday) {
+        setBirthDate(new Date(user.birthday));
+      }
 
-    // Set country code if available
-    if (user?.countryCode) {
-      setSelectedCountryCode(user.countryCode);
+      // Initialize form state with user data
+      setForm(prev => ({
+        ...prev,
+        phone: user.phone || '',
+        countryCode: user.countryCode || '+91'
+      }));
+
+      // Set country code if available
+      if (user?.countryCode) {
+        setSelectedCountryCode(user.countryCode);
+      }
+    } catch (error) {
+      console.error('Error fetching profile:', error);
+      toast.error('Failed to load profile data');
     }
 
     // Set gender if available
@@ -188,7 +224,7 @@ export default function Profile() {
       (birthDate &&
         initialUserData.birthday &&
         new Date(birthDate).toISOString().split("T")[0] !==
-          initialUserData.birthday);
+        initialUserData.birthday);
 
     // Check if profile image has changed
     const imageChanged =
@@ -278,53 +314,78 @@ export default function Profile() {
                     <div className={styles.countrycodeselectorrelative}>
                       <div
                         className={styles.countrycodeselector}
-                        onClick={() => setShowCountryDropdown((prev) => !prev)}
+                        onClick={() => setShowCountryDropdown(prev => !prev)}
                       >
                         <span>{selectedCountryCode}</span>
-                        <div className={styles.dropdownarrow}>
-                          <Dropdownarrow />
-                        </div>
+                        <div className={styles.dropdownarrow}><Dropdownarrow /></div>
                       </div>
 
                       {showCountryDropdown && (
                         <div className={styles.dropdown}>
+                          <div className={styles.searchContainer}>
+                            <input
+                              type="text"
+                              placeholder="Search country code..."
+                              className={styles.searchInput}
+                              value={searchTerm}
+                              onChange={(e) => setSearchTerm(e.target.value)}
+                              onClick={(e) => e.stopPropagation()}
+                            />
+                          </div>
                           <div className={styles.dropdownSpacing}>
-                            {regions.map((region) => (
-                              <div
-                                className={styles.iconText}
-                                key={region.code}
-                                onClick={() => {
-                                  setSelectedCountryCode(region.numberCode);
-                                  setShowCountryDropdown(false);
-                                }}
-                              >
-                                <span>{region.numberCode}</span>
-                              </div>
-                            ))}
+                            {regions
+                              .filter(region =>
+                                region.numberCode.includes(searchTerm) ||
+                                region.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                                region.code.toLowerCase().includes(searchTerm.toLowerCase())
+                              )
+                              .map((region) => (
+                                <div
+                                  className={styles.iconText}
+                                  key={region.code}
+                                  onClick={() => {
+                                    const newCountryCode = region.numberCode;
+                                    setSelectedCountryCode(newCountryCode);
+                                    // Update the form state with the new country code
+                                    setForm(prev => ({
+                                      ...prev,
+                                      countryCode: newCountryCode
+                                    }));
+                                    setShowCountryDropdown(false);
+                                    setSearchTerm('');
+                                  }}
+                                >
+                                  <span className={styles.countryCode}>{region.numberCode}</span>
+                                  <span className={styles.countryName}>({region.code}) {region.name}</span>
+                                </div>
+                              ))}
                           </div>
                         </div>
                       )}
                     </div>
+                    <input
+                      type="tel"
+                      name="phone"
+                      placeholder='Enter your number'
+                      value={user?.phone || ''}
+                      onChange={(e) => {
+                        // Only allow numbers and limit to 15 digits
+                        const value = e.target.value.replace(/\D/g, '').slice(0, 15);
+                        setUser({ ...user, phone: value });
+                        if (phoneError) setPhoneError('');
+                      }}
+                      onBlur={(e) => {
+                        if (e.target.value && e.target.value.length < 10) {
+                          setPhoneError('Phone number must be at least 10 digits');
+                        } else {
+                          setPhoneError('');
+                        }
+                      }}
+                      className={`${styles.phoneInput} ${phoneError ? styles.error : ''}`}
+                    />
+                    {phoneError && <span className={styles.errorMessage}>{phoneError}</span>}
                   </div>
-
-                  <input
-                    type="tel"
-                    name="phone"
-                    placeholder="Enter your number"
-                    value={user?.phone || ""}
-                    maxLength={10}
-                    onChange={(e) => {
-                      const value = e.target.value.replace(/\D/g, "");
-                      setUser({ ...user, phone: value });
-                      if (phoneError) {
-                        setPhoneError("");
-                      }
-                    }}
-                  />
                 </div>
-                {phoneError && (
-                  <span className={styles.errorMessage}>{phoneError}</span>
-                )}
               </div>
             </div>
 
@@ -332,13 +393,13 @@ export default function Profile() {
               type="text"
               name="location"
               label="Location"
-              placeholder="Enter your full address"
+              placeholder="Enter your location"
               value={user?.location || ""}
               onChange={(e) => setUser({ ...user, location: e.target.value })}
             />
 
             <div className={styles.dropdownrelative}>
-              <label className={styles.label}>Country</label>
+              <label className={styles.labelStyle}>Country</label>
               <div className={styles.selectWrapper}>
                 <CountrySelect
                   defaultValue={user?.country}
@@ -360,7 +421,7 @@ export default function Profile() {
             </div>
 
             <div className={styles.dropdownrelative}>
-              <label className={styles.label}>State</label>
+              <label className={styles.labelStyle}>State</label>
               <div className={styles.selectWrapper}>
                 <StateSelect
                   defaultValue={user?.state || ""}
@@ -384,7 +445,7 @@ export default function Profile() {
             </div>
 
             <div className={styles.dropdownrelative}>
-              <label className={styles.label}>City</label>
+              <label className={styles.labelStyle}>City</label>
               <div className={styles.selectWrapper}>
                 <CitySelect
                   defaultValue={user?.city ? { name: user.city } : null}
@@ -399,6 +460,7 @@ export default function Profile() {
                   placeHolder={stateId ? "Select City" : "Select State First"}
                   className={styles.selectInput}
                   disabled={!stateId}
+                
                 />
                 {/* <Dropdownarrow className={styles.dropdownIcon} /> */}
               </div>
@@ -413,7 +475,7 @@ export default function Profile() {
                   onClick={() => setShowGenderDropdown((prev) => !prev)}
                 >
                   <div className={styles.dropdownselecteditem}>
-                    <span>{selectedGender || "Select Gender"}</span>
+                    <span>{user?.gender || "Select Gender"}</span>
                   </div>
                   <div className={styles.dropdownarrow}>
                     <Dropdownarrow />
@@ -452,9 +514,8 @@ export default function Profile() {
                 }}
                 dateFormat="dd/MM/yyyy"
                 placeholderText="Select date of birth"
-                className={`${styles.datePickerInput} date-picker-custom ${
-                  dateError ? styles.error : ""
-                }`}
+                className={`${styles.datePickerInput} date-picker-custom ${dateError ? styles.error : ""
+                  }`}
                 showYearDropdown
                 scrollableYearDropdown
                 yearDropdownItemNumber={100}

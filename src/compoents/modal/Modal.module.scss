@@ -88,7 +88,7 @@
 }
 
 .modalBody {
-  padding: 24px;
+  padding: 0px 24px 24px 24px;
 
   @include respond-to('sm') {
     padding: 16px;
