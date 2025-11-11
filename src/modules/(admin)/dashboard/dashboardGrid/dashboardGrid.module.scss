@@ -570,7 +570,7 @@
 
 // Status indicators
 .paid {
-  color: var(--success-color);
+  color: #21b910;
   background-color: rgba(16, 185, 129, 0.1);
   padding: 2px 8px;
   border-radius: 9999px;
@@ -579,7 +579,7 @@
 }
 
 .pending {
-  color: var(--warning-color);
+  color: #f59e0b;
   background-color: rgba(245, 158, 11, 0.1);
   padding: 2px 8px;
   border-radius: 9999px;
@@ -588,7 +588,7 @@
 }
 
 .failed {
-  color: var(--error-color);
+  color: #ef4444;
   background-color: rgba(239, 68, 68, 0.1);
   padding: 2px 8px;
   border-radius: 9999px;
@@ -611,11 +611,11 @@
   }
 }
 .purchasedPlanDetails {
-  background: rgba(16, 185, 129, 0.05);
+  background: rgba(22, 185, 16, 0.05);
   border-radius: 8px;
   padding: 12px;
   margin: 12px 0;
-  border: 1px solid var(--success-color);
+  border: 1px solid #21b91086;
 }
 
 .purchasedPlanHeader {
@@ -628,7 +628,7 @@
 }
 
 .planType {
-  color: var(--success-color);
+  color: #21b910;
   font-size: 14px;
   font-weight: 500;
 }
