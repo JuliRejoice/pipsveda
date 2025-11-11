@@ -34,7 +34,7 @@ function DashboardGrid() {
   });
 
   const sliderSettings = {
-    dots: false,
+    dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 2,
@@ -212,8 +212,26 @@ function DashboardGrid() {
   const CourseCard = ({ course, isPurchased = false }) => {
     const router = useRouter();
 
+      const handleCardClick = (e) => {
+        if (
+          e.target.tagName === "BUTTON" ||
+          e.target.closest("button") ||
+          e.target.tagName === "A" ||
+          e.target.closest("a")
+        ) {
+          return;
+        }
+        router.push(`/course/${course._id}`);
+      };
+
     return (
-      <div className={`${styles.card}`}>
+      <div
+        className={`${styles.card} ${styles.clickableCard}`}
+        onClick={handleCardClick}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === "Enter" && handleCardClick(e)}
+      >
         <div className={styles.imageContainer}>
           <img
             src={course.courseVideo || "/placeholder-course.jpg"}
@@ -318,7 +336,13 @@ function DashboardGrid() {
     };
 
     return (
-      <div className={`${styles.card}`}>
+      <div
+        className={`${styles.card} ${styles.clickableCard}`}
+        onClick={handleButtonClick}
+        role="button"
+        tabIndex={0}
+        onKeyDown={(e) => e.key === "Enter" && handleButtonClick(e)}
+      >
         <div className={styles.imageContainer}>
           <img
             src={
@@ -400,8 +424,9 @@ function DashboardGrid() {
                     >
                       <span>{formatPlanType(plan.planType)}:</span>
                       <div className={styles.priceWrapper}>
-                        <span className={styles.priceCurrency}>$</span>
-                        <span className={styles.priceAmount}>{plan.price}</span>
+                        <span className={styles.priceAmount}>
+                          ${plan.price}
+                        </span>
                       </div>
                     </div>
                     <div className={styles.contentAlignment}>
@@ -467,7 +492,7 @@ function DashboardGrid() {
                         bot.purchaseInfo.status.slice(1).toLowerCase()}
                     </span>
                   </div>
-                )}
+                )} 
               </div>
             </div>
           )}
@@ -495,7 +520,6 @@ function DashboardGrid() {
     isPurchased = false,
   }) => (
     <div className={styles.sliderContainer}>
-      {/* <h3 className={styles.sliderTitle}>{title}</h3> */}
       {loading ? (
         <div className={styles.loading}>Loading...</div>
       ) : items.length > 0 ? (
@@ -520,7 +544,7 @@ function DashboardGrid() {
             <h1>Purchased Courses</h1>
             <span>
               <CourseIcon />
-              Total Courses : {purchasedCourses.length}
+              Total Purchased Courses : {purchasedCourses.length}
             </span>
           </div>
           <div className={styles.sliderSection}>
@@ -539,6 +563,10 @@ function DashboardGrid() {
         <div className={`${styles.dashboardcard} ${styles.exploreSection}`}>
           <div className={styles.dashboardcardtitle}>
             <h1>Explore Courses</h1>
+            <span>
+              <CourseIcon />
+              Total Courses : {allCourses.length}
+            </span>
           </div>
           <div className={styles.sliderSection}>
             <SliderWrapper
@@ -554,7 +582,7 @@ function DashboardGrid() {
             <h1>Purchased AlgoBots</h1>
             <span>
               <Algobot />
-              Total Bots : {purchasedBots.length}
+              Total Purchased AlgoBots : {purchasedBots.length}
             </span>
           </div>
           <div className={styles.sliderSection}>
@@ -571,6 +599,10 @@ function DashboardGrid() {
         <div className={`${styles.dashboardcard} ${styles.exploreSection}`}>
           <div className={styles.dashboardcardtitle}>
             <h1>Explore AlgoBots</h1>
+            <span>
+              <Algobot />
+              Total AlgoBots : {allAlgobots.length}
+            </span>
           </div>
           <div className={styles.sliderSection}>
             <SliderWrapper

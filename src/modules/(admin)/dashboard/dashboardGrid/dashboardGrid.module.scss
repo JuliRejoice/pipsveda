@@ -59,9 +59,7 @@
 
       span {
         @include font18;
-        background: linear-gradient(90deg, #6e30f9 0%, #fe6917 85.71%);
-        color: transparent;
-        background-clip: text;
+        color: #6e30f9;
         display: flex;
         align-items: center;
         gap: 8px;
@@ -96,6 +94,36 @@
 
         > div {
           height: 100%;
+        }
+      }
+
+      /* Slider dots */
+      .slick-dots {
+        bottom: 10px;
+
+        li {
+          margin: 0 2px;
+
+          button {
+            width: 8px;
+            height: 8px;
+            padding: 0;
+            border-radius: 50%;
+            background: #cbd5e0;
+            opacity: 0.7;
+            transition: all 0.3s ease;
+
+            &:before {
+              display: none;
+            }
+          }
+
+          &.slick-active button {
+            background: #4a5568;
+            opacity: 1;
+            width: 24px;
+            border-radius: 4px;
+          }
         }
       }
 
@@ -138,8 +166,7 @@
 .sliderContainer {
   width: 100%;
   position: relative;
-  min-width: 100%; // ✅ prevents collapse before data
-  overflow: hidden;
+  min-width: 100%;
 
   .loading {
     display: flex;
@@ -191,7 +218,7 @@
   margin-inline: 10px;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   border: 1px solid rgba(0, 0, 0, 0.05);
   position: relative;
@@ -209,9 +236,8 @@
     position: absolute;
     top: 12px;
     left: 12px;
-    background: #3c8b3e9d;
+    background: #fe6917;
     color: white;
-    border: 1px solid #4caf4f;
     padding: 4px 8px;
     border-radius: 4px;
     backdrop-filter: blur(10px);
@@ -286,7 +312,10 @@
   .instructorInfo {
     display: flex;
     align-items: center;
-    margin-bottom: 12px;
+    margin-bottom: 4px;
+    // background-color: #e9ecff;
+    // border-radius: 8px;
+    // padding: 8px;
     .instructorName {
       display: flex;
       flex-direction: column;
@@ -415,17 +444,12 @@
     }
   }
 
-  .continueButton {
-    background: linear-gradient(90deg, #6e30f9 0%, #fe6917 100%);
-    color: white;
-  }
-
   .enrollButton {
-    background: linear-gradient(90deg, #6e30f9 0%, #fe6917 100%);
+    background: #6e30f9;
     color: white;
 
     &:hover {
-      background: linear-gradient(90deg, #fe6917 0%, #6e30f9 100%);
+      background: #fe6917;
     }
   }
 }
@@ -570,9 +594,9 @@
 
 // Status indicators
 .paid {
-  color: #21b910;
-  background-color: rgba(16, 185, 129, 0.1);
-  padding: 2px 8px;
+  color: #ffffff;
+  background-color: #7030f952;
+  padding: 2px 8px; 
   border-radius: 9999px;
   font-size: 12px;
   font-weight: 500;
@@ -611,11 +635,11 @@
   }
 }
 .purchasedPlanDetails {
-  background: rgba(22, 185, 16, 0.05);
+  background: #e9ecff;
   border-radius: 8px;
   padding: 12px;
   margin: 12px 0;
-  border: 1px solid #21b91086;
+  border: 1px solid #e9ecff;
 }
 
 .purchasedPlanHeader {
@@ -624,11 +648,11 @@
   align-items: center;
   margin-bottom: 8px;
   font-weight: 500;
-  color: #1a365d;
+  color: #000000;
 }
 
 .planType {
-  color: #21b910;
+  color: #000;
   font-size: 14px;
   font-weight: 500;
 }
