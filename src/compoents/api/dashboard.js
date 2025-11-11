@@ -359,5 +359,15 @@ export const downloadStudentID = async (id,batchId) => {
   }
 };
 
-
+export const purchasedAllCourses = async ({type,page,limit}) => {
+  try {
+    const response = await api.get(
+      `/payment/getMyCourseHistory?page=${page}&limit=${limit}&type=${type}`
+    );
+    return response.data;
+  } catch (error) {
+    console.log("error", error);
+    throw error;
+  }
+}; 
     
