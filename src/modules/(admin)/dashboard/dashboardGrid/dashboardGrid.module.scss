@@ -2,24 +2,6 @@
 @use "../../../../scss/breakpoints/breakpoints.scss" as *;
 @use "../../../../scss/typography/typography.scss" as *;
 
-// Theme color variables from existing project
-:root {
-  --primary-color: #1c2033;
-  --success-color: #078039;
-  --error-color: #ef4444;
-  --warning-color: #f59e0b;
-  --black-500: #4b5563;
-  --border-color: #e5e7eb;
-  --border-color2: #d1d5db;
-  --border-color5: #e5e7eb;
-  --bg-white: #ffffff;
-  --bg-gray-50: #f9fafb;
-  --bg-gray-100: #f3f4f6;
-  --text-primary: #1f2937;
-  --text-secondary: #4b5563;
-  --text-muted: #6b7280;
-}
-
 .dashboardWrapper {
   width: 100%;
   min-height: calc(100vh - 100px); // Adjust based on your header height
@@ -27,7 +9,7 @@
   flex-direction: column;
   margin-top: 24px;
   gap: 24px;
-  background: var(--bg-gray-50);
+  background: #f9fafb;
 }
 
 .dashboardCardGrid {
@@ -43,8 +25,8 @@
   }
 
   .dashboardcard {
-    background: var(--bg-white);
-    border: 1px solid var(--border-color);
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
     border-radius: 12px;
     padding: 24px;
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -163,7 +145,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;          // ✅ full width placeholder
+    width: 100%; // ✅ full width placeholder
     min-width: 100%;
     min-height: 320px;
     color: var(--text-muted, #718096);
@@ -179,15 +161,15 @@
 
   .slick-track {
     display: flex !important;
-    width: 100% !important;     // ✅ force full width track
+    width: 100% !important; // ✅ force full width track
     min-width: 100% !important; // ✅ stabilize width
     align-items: stretch;
-    transition: none;           // prevent resize animation
+    transition: none; // prevent resize animation
   }
 
   .slick-slide {
     flex: 1 0 auto;
-    width: 100% !important;   
+    width: 100% !important;
     display: flex !important;
     justify-content: center;
     padding: 0 8px;
