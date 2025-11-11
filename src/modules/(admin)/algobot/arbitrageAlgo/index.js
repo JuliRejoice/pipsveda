@@ -42,22 +42,42 @@ function SamplePrevArrow(props) {
 
 // Skeleton component to match the card layout
 const CardSkeleton = () => (
-  <div className={styles.griditemsloader}>
+  <div
+    className={styles.cardSkeleton}
+    style={{
+      width: "360px",       // same width as your card
+      borderRadius: "12px",
+      backgroundColor: "#fff",
+      padding: "16px",
+      boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
+    }}
+  >
+    {/* Image */}
     <div className={styles.image}>
-      <Skeleton height={200} style={{ borderRadius: "12px" }} />
+      <Skeleton height={200} style={{ borderRadius: "10px" }} />
     </div>
-    <div className={styles.details}>
-      <Skeleton width={200} height={24} />
-      <Skeleton count={2} />
-      <div className={styles.twoColgrid}>
-        <div className={styles.items}>
-          <Skeleton width="100%" height="95px" />
-        </div>
-        <div className={styles.items}>
-          <Skeleton width="100%" height="95px" />
-        </div>
-      </div>
-      <Skeleton height={46} width={155} />
+
+    {/* Title and description */}
+    <div style={{ marginTop: "12px" }}>
+      <Skeleton width={220} height={20} />
+      <Skeleton width={280} height={16} style={{ marginTop: "6px" }} />
+    </div>
+
+    {/* Dropdown placeholder */}
+    <div style={{ marginTop: "16px" }}>
+      <Skeleton height={40} width="100%" borderRadius={8} />
+    </div>
+
+    {/* Pricing info */}
+    <div style={{ marginTop: "16px", display: "grid", gap: "6px" }}>
+      <Skeleton width={120} height={16} />
+      <Skeleton width={80} height={16} />
+      <Skeleton width={100} height={16} />
+    </div>
+
+    {/* Button */}
+    <div style={{ marginTop: "20px" }}>
+      <Skeleton height={45} width={150} borderRadius={25} />
     </div>
   </div>
 );
@@ -185,7 +205,7 @@ export default function ArbitrageAlgo({
           <Skeleton width={200} height={32} />
         </div>
         <div className={styles.grid}>
-          {[...Array(3)].map((_, index) => (
+          {[...Array(4)].map((_, index) => (
             <CardSkeleton key={index} />
           ))}
         </div>

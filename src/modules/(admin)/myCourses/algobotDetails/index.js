@@ -320,7 +320,7 @@ function AlgobotDetails({ id }) {
             <div className={styles.algobanner}>
               <div className={styles.twocolgrid}>
                 <Skeleton width="100%" height="440px" />
-                <Skeleton width="100%" height="440px" />
+                <Skeleton count={20} width="100%" height="20px" className={styles.des} />
               </div>
             </div>
             <div className={styles.tutorial}>

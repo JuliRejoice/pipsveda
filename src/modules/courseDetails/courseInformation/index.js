@@ -7,24 +7,34 @@ import BathIcon from '@/icons/bathIcon';
 import StarIcon from '@/icons/starIcon';
 import ProfileGroupIcon from '@/icons/profileGroupIcon';
 import Button from '@/compoents/button';
-import { getChapters, getCourseById, getCourses, getPaymentUrl } from '@/compoents/api/dashboard';
+import { getChapters, getCourseById, getCourses, getCourseSyllabus, getPaymentUrl } from '@/compoents/api/dashboard';
 import { getCookie } from '../../../../cookie';
 import { useRouter } from 'next/navigation';
+import CustomVideoPlayer from '@/compoents/CustomVideoPlayer';
 const RightIcon = '/assets/icons/right.svg';
 const LockIcon = '/assets/icons/lock.svg';
 export default function CourseInformation({ id }) {
   const [course, setCourse] = useState({});
   const [isLogin, setIsLogin] = useState(false);
   const router = useRouter();
-  useEffect(() => {
-    const fetchChapter = async () => {
-      try {
-        const response = await getChapters({id});
-      } catch (error) {
-        console.error('Error fetching course:', error);
-      }
-    };
+  const [syllabus, setSyllabus] = useState([]);
+   const [expandedSection, setExpandedSection] = useState(null);
 
+
+    const fetchSyllabus = async () => {
+    try {
+      const data = await getCourseSyllabus(id);
+      // The API returns an array of syllabus items, we'll take the first one as the main syllabus
+      const syllabusData = data?.payload?.data;
+      setSyllabus(syllabusData);
+    } catch (err) {
+      console.error("Error fetching syllabus:", err);
+      setError("Failed to load course syllabus. Please try again later.");
+    }
+  };
+
+  useEffect(() => {
+  
     const fetchCourse = async () => {
       try {
         const response = await getCourseById({id});
@@ -34,10 +44,10 @@ export default function CourseInformation({ id }) {
       }
     };
     fetchCourse();
+    fetchSyllabus();
     const userToken = getCookie('userToken');
     if (userToken) {
       setIsLogin(true);
-      fetchChapter();
     }
     else {
       setIsLogin(false);
@@ -70,6 +80,8 @@ export default function CourseInformation({ id }) {
     }
   }
 
+  console.log(course)
+
   return (
     <div className={styles.courseInformation}>
       <div className='container'>
@@ -99,7 +111,7 @@ export default function CourseInformation({ id }) {
                 <span>{course?.subscribed || '0'}</span>
               </div>
               <div className={styles.iconText}>
-                <span>Last-Update: {new Date(course?.updatedAt || new Date()).toLocaleDateString('en-GB')} | {course?.language || 'English'}</span>
+                <span>Last-Update: {new Date(course?.updatedAt || new Date()).toLocaleDateString('en-GB')} | {course?.language.slice(0, 1).toUpperCase() + course?.language.slice(1) || 'English'}</span>
               </div>
             </div>
           </div>
@@ -110,7 +122,44 @@ export default function CourseInformation({ id }) {
             {course.isPayment ? '' : <Button text='Enroll Now' icon={RightIcon} onClick={() => handlePayment()} />}
           </div>
         </div>
-        {!course.isPayment ? 
+
+         <div className={styles.introVideo}>
+           
+              <CustomVideoPlayer
+                src={course?.courseIntroVideo}
+                // userId={user?._id}
+                controls
+                controlsList="nodownload"
+                disablePictureInPicture
+                noremoteplayback
+              />
+           
+          </div>
+
+           {syllabus.length > 0 && (
+            <div className={styles.syllabusContainer}>
+              <h2>Course Syllabus</h2>
+              <div className={styles.accordion}>
+                {syllabus.map((item, index) => (
+                  <div key={index} className={styles.accordionItem}>
+                    <div
+                      className={`${styles.accordionHeader} ${expandedSection === index ? styles.active : ''}`}
+                      onClick={() => setExpandedSection(expandedSection === index ? null : index)}
+                    >
+                      <h2>Chapter {index + 1} : {item.title}</h2>
+                      <span>{expandedSection === index ? '−' : '+'}</span>
+                    </div>
+                    <div className={`${styles.accordionContent} ${expandedSection === index ? styles.active : ''}`}>
+                      <div className={styles.chapterContent}>
+                        <p>{item.description || 'No description available for this chapter.'}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        {/* {!course.isPayment ? 
         <div className={styles.mainrelative}>
           <div className={styles.tabAlignment}>
             <button className={styles.activeTab}>Chapter 1</button>
@@ -152,7 +201,7 @@ export default function CourseInformation({ id }) {
           </div>
         </div>}
         </div>
-         : null}
+         : null} */}
       </div>
     </div>
   )

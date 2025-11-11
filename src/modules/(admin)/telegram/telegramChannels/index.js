@@ -17,23 +17,56 @@ const RightIcon = "/assets/icons/right.svg";
 
 // Skeleton component to match the card layout
 const CardSkeleton = () => (
-  <div className={styles.griditemsloader}>
-    <div className={styles.image}>
-      <Skeleton height={200} style={{ borderRadius: "12px" }} />
-    </div>
-    <div className={styles.details}>
-      <Skeleton width={200} height={24} />
-      <Skeleton count={2} />
-      <div className={styles.twoColgrid}>
-        <div className={styles.items}>
-          <Skeleton width="100%" height="95px" />
-        </div>
-        <div className={styles.items}>
-          <Skeleton width="100%" height="95px" />
-        </div>
+   <div
+    style={{
+      background: "#fff",
+      borderRadius: "12px",
+      padding: "20px",
+      boxShadow: "0 2px 10px rgba(0,0,0,0.05)",
+      width: "500px",
+      display: "flex",
+      flexDirection: "column",
+      gap: "16px",
+    }}
+  >
+    {/* Title */}
+    <Skeleton width="60%" height={24} />
+
+    {/* Description */}
+    <Skeleton count={2} height={12} />
+
+    {/* Dropdown Placeholder */}
+    <Skeleton height={40} width="60%" style={{ borderRadius: "8px" }} />
+
+    {/* Pricing Box */}
+    <div
+      style={{
+        border: "1px solid #eee",
+        borderRadius: "8px",
+        padding: "12px",
+        marginTop: "8px",
+      }}
+    >
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+        <Skeleton width={60} height={14} />
+        <Skeleton width={80} height={14} />
       </div>
-      <Skeleton height={46} width={155} />
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+        <Skeleton width={60} height={14} />
+        <Skeleton width={80} height={14} />
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "8px" }}>
+        <Skeleton width={60} height={14} />
+        <Skeleton width={80} height={14} />
+      </div>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <Skeleton width={60} height={14} />
+        <Skeleton width={80} height={14} />
+      </div>
     </div>
+
+    {/* Button Placeholder */}
+    <Skeleton height={45} width="60%" style={{ borderRadius: "24px", margin: "0 auto" }} />
   </div>
 );
 

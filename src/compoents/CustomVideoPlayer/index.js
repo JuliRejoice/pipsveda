@@ -351,9 +351,9 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
       if (!video || !video.duration) return;
 
       const current = video.currentTime;
-      // const seekTime = (percentage / 100) * video.duration;
       const currentPercentage = (current / video.duration) * 100;
-      setCurrentTime(current);
+      console.log(current, "handleTimeUpdate")
+      // setCurrentTime(current);
       // video.currentTime = current;
       if (!isDragging) {
         setProgress(currentPercentage);
@@ -562,6 +562,7 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
 
   return (
     <div ref={containerRef} className={`${styles.videoContainer} ${className} ${isFullscreen ? styles.fullscreen : ""}`}>
+      
       <canvas ref={canvasRef} className={styles.videoCanvas} onClick={togglePlay} />
       <video ref={videoRef} className={styles.videoElement} src={src} {...props} style={{ display: "none" }} />
       <Watermark isPlaying={isPlaying} />

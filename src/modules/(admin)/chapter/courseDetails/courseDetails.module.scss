@@ -50,14 +50,14 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0px 0px 16px 0px;
+        padding: 0px 0px 40px 0px;
     }
 
     .allIconTextAlignment {
         display: flex;
         align-items: center;
         gap: 30px;
-        padding: 0 0 0px 0;
+        padding: 30px 0 0px 0;
 
         @include respond-to("md") {
             gap: 16px;
@@ -87,7 +87,8 @@
 
     .mainrelative {
         position: relative;
-        min-height: 400px;
+        // min-height: 400px;
+        aspect-ratio: 16 / 9;
 
         .locksystem {
             position: absolute;
@@ -186,16 +187,15 @@
     }
 
     .mainGrid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 30px;
+        display: flex;
+        justify-content: center;
+        width: 100%;
+        margin: 0 auto;
+        max-width: 1000px;
 
-        @include respond-to("md") {
-            grid-template-columns: 1fr;
-        }
-
-        @include respond-to("sm") {
-            gap: 20px;
+        .items {
+            width: 100%;
+            max-width: 100%;
         }
 
         .image {
@@ -271,16 +271,21 @@
 
     .videoWrapper {
         position: relative;
-        width: 100%;
-        height: 400px;
+        // width: 100%;
+        max-width: 100%;
+        // height: 400px;
+
+        aspect-ratio: 16 / 9;
         border-radius: 20px;
         overflow: hidden;
         background-color: #000;
 
         .videoPlayer {
-            width: 100%;
+            // width: 100%;
+            max-width: 600px;
             height: 100%;
-            min-height: 400px;
+            // min-height: 400px;
+            aspect-ratio: 16 / 9;
             object-fit: cover;
             border-radius: 20px;
             display: flex;
@@ -646,6 +651,8 @@
 /* Video Container Styles */
 .videoContainer {
   margin: 40px 0;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
   
   h2 {
     @include heading20;
@@ -657,8 +664,8 @@
 
   .videoWrapper {
     position: relative;
-    width: 100%;
-    padding-bottom: 56.25%; 
+    max-width: 100%;
+    aspect-ratio: 16 / 9;
     border-radius: 12px;
     overflow: hidden;
     background-color: #000;
@@ -933,4 +940,10 @@
         color: var(--grey-600);
         margin: 0;
     }
+}
+
+.introVideo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

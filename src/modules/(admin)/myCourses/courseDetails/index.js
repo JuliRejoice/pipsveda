@@ -5,7 +5,7 @@ import ClockIcon from "@/icons/clockIcon";
 import BathIcon from "@/icons/bathIcon";
 import StarIcon from "@/icons/starIcon";
 import ProfileGroupIcon from "@/icons/profileGroupIcon";
-import { getChapters, getCourses, getPaymentUrl, getSessionData, getBatches, getCourseSyllabus, updateVideoProgress, downloadCourseCertificate, downloadStudentID } from "@/compoents/api/dashboard";
+import { getChapters, getCourses, getPaymentUrl, getSessionData, getBatches, getCourseSyllabus, updateVideoProgress, downloadCourseCertificate, downloadStudentID, getCourseRating } from "@/compoents/api/dashboard";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
 import OutlineButton from "@/compoents/outlineButton";
@@ -127,10 +127,28 @@ export default function CourseDetails({ params }) {
   const [isLoadingBatch, setIsLoadingBatch] = useState(false);
   const [expandedSyllabus, setExpandedSyllabus] = useState(null);
   const [videoWatchingPercentage, setVideoWatchingPercentage] = useState(0);
+  const [allChaptersCompleted, setAllChaptersCompleted] = useState(false);
+
+
 
   const id = params;
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  useEffect(() => {
+    // If there are no chapters, we can't complete any, so set to false
+    if (!chapters || chapters.length === 0) {
+      setAllChaptersCompleted(false);
+      return;
+    }
+
+    // Check if all chapters are 100% complete
+    const completed = chapters.every(chapter => {
+      const progress = parseFloat(chapter.courseTracking?.percentage || 0);
+      return progress >= 100;
+    });
+    setAllChaptersCompleted(completed);
+  }, [chapters]);
 
   useEffect(() => {
     if (selectedCourse) {
@@ -145,6 +163,27 @@ export default function CourseDetails({ params }) {
       }
     }
   }, [selectedCourse]);
+
+  // Add this with other state declarations at the top of the component
+  const [courseRating, setCourseRating] = useState(null);
+
+  // Add this effect to fetch the course rating
+  useEffect(() => {
+    const fetchCourseRating = async () => {
+      try {
+        const response = await getCourseRating(id); // id is from your route params
+        if (response.success && response.payload) {
+          setCourseRating(response.payload.data[0]?.averageRating || 0); // Adjust based on actual API response structure
+        }
+      } catch (error) {
+        console.error('Error fetching course rating:', error);
+      }
+    };
+
+    if (id) {
+      fetchCourseRating();
+    }
+  }, [id]);
 
   const fetchChapters = async () => {
     try {
@@ -634,7 +673,13 @@ export default function CourseDetails({ params }) {
                 </div>
                 <div className={styles.iconText}>
                   <BathIcon />
-                  <span>{selectedCourse?.instructor?.name || "Instructor"}</span>
+                  <span>
+                    {selectedCourse?.instructor?.name || "Instructor"}
+                  </span>
+                </div>
+                <div className={styles.iconText}>
+                  <StarIcon />
+                  <span>{courseRating !== null ? courseRating : '0'}</span>
                 </div>
                 <div className={styles.iconText}>
                   <ProfileGroupIcon />
@@ -645,12 +690,13 @@ export default function CourseDetails({ params }) {
                     Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString("en-GB")} | {selectedCourse?.language?.slice(0, 1).toUpperCase() + selectedCourse?.language?.slice(1) || "English"}
                   </span>
                 </div>
-                {selectedCourse?.courseEnd && (
+                {/* {selectedCourse?.courseEnd && (
                   <div className={styles.iconText}>
                     <span>Course Ends: {new Date(selectedCourse.courseEnd).toLocaleDateString("en-GB")}</span>
                   </div>
-                )}
+                )} */}
               </div>
+
               <div style={{ display: "flex", gap: "12px" }}>
                 {isPaid && selectedCourse?.courseType === "physical" ? (
                   <>
@@ -677,26 +723,61 @@ export default function CourseDetails({ params }) {
                         icon={isDownloadingCertificate ? null : undefined}
                       />
                     )}
+
+
                   </>
-                ) : (
-                  isPaid && (
-                    <Button
-                      fill
-                      text={isDownloadingCertificate ? "Downloading..." : "Download Certificate"}
-                      onClick={handleDownloadCertificate}
-                      style={{
-                        background: isCertificateAvailable && !isDownloadingCertificate ? "#10B981" : "#9CA3AF",
-                      }}
-                      disabled={!isCertificateAvailable || isDownloadingCertificate}
-                      icon={isDownloadingCertificate ? null : undefined}
-                    />
-                  )
+                ) : isPaid && (
+                  <Button
+                    fill
+                    text={isDownloadingCertificate ? 'Downloading...' : 'Download Certificate'}
+                    onClick={handleDownloadCertificate}
+                    style={{
+                      background: isCertificateAvailable && !isDownloadingCertificate
+                        ? "#10B981"
+                        : "#9CA3AF",
+                    }}
+                    disabled={!isCertificateAvailable || isDownloadingCertificate}
+                    icon={isDownloadingCertificate ? null : undefined}
+                  />
                 )}
-                {!isPaid && <Button fill text={isProcessingPayment ? "Enrolling..." : "Enroll Now"} icon={isProcessingPayment ? null : RightBlackIcon} onClick={handlePayment} disabled={isProcessingPayment} />}
+                {!isPaid && (
+                  <Button
+                    fill
+                    text={isProcessingPayment ? "Enrolling..." : "Enroll Now"}
+                    icon={isProcessingPayment ? null : RightBlackIcon}
+                    onClick={handlePayment}
+                    disabled={isProcessingPayment}
+                  />
+                )}
               </div>
+
             </div>
+            {isPaid && selectedCourse.courseType === "physical" && (
+              <div>
+                <div className={styles.physicaldetailsmain}>
+                  {selectedCourse?.location && (
+                    <div className={styles.physicaldetail}>
+                      <img src={LocationIcon} alt="ChatIcon" />
+                      <p>{selectedCourse?.location}</p>
+                    </div>
+                  )}
+                  {selectedCourse?.email && (
+                    <div className={styles.physicaldetail}>
+                      <img src={EmailIcon} alt="ChatIcon" />
+                      <p>{selectedCourse?.email}</p>
+                    </div>
+                  )}
+                  {selectedCourse?.phone && (
+                    <div className={styles.physicaldetail}>
+                      <img src={CallIcon} alt="ChatIcon" />
+                      <p>{selectedCourse?.phone}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
-          {isLiveOnline || isInPerson ? (
+          {(isLiveOnline || isInPerson) && (
             <>
               {/* Batch Details Section */}
               <h3 className={styles.sectionTitle}>Batch Details</h3>
@@ -780,57 +861,6 @@ export default function CourseDetails({ params }) {
                 )}
               </div>
             </>
-          ) : (
-            <>
-              <h2>Upcoming Sessions</h2>
-              <div className={`${styles.sessionListmain} ${!isPaid ? styles.lockedSession : ""}`}>
-                <div className={styles.sessionListslider}>
-                  {upcomingSessions.length > 0 && !loading ? (
-                    <Slider {...settings}>
-                      {upcomingSessions.map((session) => (
-                        <div key={session._id}>
-                          <div className={styles.sessionCard}>
-                            <div className={styles.sessionVideo}>
-                              <img src={session.sessionVideo} alt={session.sessionName} className={styles.videoThumbnail} />
-                            </div>
-                            <div className={styles.sessionDetails}>
-                              <h3>{session.sessionName}</h3>
-                              <p>{session.description}</p>
-                              <div className={styles.sessionMeta}>
-                                <div style={{ display: "flex", gap: "30px" }}>
-                                  <span>
-                                    <strong>Date:</strong> {new Date(session.date).toLocaleDateString()}
-                                  </span>
-                                  <span>
-                                    <strong>Time:</strong> {session.time}
-                                  </span>
-                                </div>
-                                <span>
-                                  <strong>Instructor:</strong> {session.courseId?.instructor?.name}
-                                </span>
-                              </div>
-                              {session.meetingLink && <Button onClick={() => isPaid && window.open(session.meetingLink, "_blank")} text="Join Meeting" disabled={!isPaid} />}
-                            </div>
-                          </div>
-                        </div>
-                      ))}
-                    </Slider>
-                  ) : (
-                    <div className={styles.noSessions}>
-                      <p>No upcoming sessions available. Please check back later for new schedules.</p>
-                    </div>
-                  )}
-                </div>
-                {!isPaid && (
-                  <div className={styles.sessionLockOverlay}>
-                    <div className={styles.lockContent}>
-                      <img src={LockIcon} alt="Locked" className={styles.lockIcon} />
-                      <p>Enroll to unlock this session</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </>
           )}
         </div>
       ) : (
@@ -854,10 +884,10 @@ export default function CourseDetails({ params }) {
                 <BathIcon />
                 <span>{selectedCourse?.instructor?.name || "Instructor"}</span>
               </div>
-              {/* <div className={styles.iconText}>
+              <div className={styles.iconText}>
                 <StarIcon />
-                <span>4.8</span>
-              </div> */}
+                <span>{courseRating !== null ? courseRating : '0'}</span>
+              </div>
               <div className={styles.iconText}>
                 <ProfileGroupIcon />
                 <span>{selectedCourse?.subscribed || "0"}</span>
@@ -868,47 +898,22 @@ export default function CourseDetails({ params }) {
                 </span>
               </div>
             </div>
-            {isPaid && (
-              <Button
-                fill
-                text="Download Certificate"
-                onClick={handleDownloadCertificate}
-                style={{
-                  background: isCertificateAvailable ? "#10B981" : "#9CA3AF",
-                }}
-                disabled={!isCertificateAvailable}
-              />
-            )}
+            <Button
+              fill
+              text="Download Certificate"
+              onClick={handleDownloadCertificate}
+              style={{
+                background: (isCertificateAvailable && allChaptersCompleted && chapters.length > 0) ? "#10B981" : "#9CA3AF",
+              }}
+              disabled={!isCertificateAvailable || !allChaptersCompleted || chapters.length === 0}
+            />
             {!isPaid && (
               <div>
                 <Button text={isProcessingPayment ? "Enrolling..." : "Enroll Now"} icon={isProcessingPayment ? null : RightBlackIcon} onClick={handlePayment} disabled={isProcessingPayment} />
               </div>
             )}
           </div>
-          {isPaid && selectedCourse.courseType === "physical" && (
-            <div>
-              <div className={styles.physicaldetailsmain}>
-                {selectedCourse?.location && (
-                  <div className={styles.physicaldetail}>
-                    <img src={LocationIcon} alt="ChatIcon" />
-                    <p>{selectedCourse?.location}</p>
-                  </div>
-                )}
-                {selectedCourse?.email && (
-                  <div className={styles.physicaldetail}>
-                    <img src={EmailIcon} alt="ChatIcon" />
-                    <p>{selectedCourse?.email}</p>
-                  </div>
-                )}
-                {selectedCourse?.phone && (
-                  <div className={styles.physicaldetail}>
-                    <img src={CallIcon} alt="ChatIcon" />
-                    <p>{selectedCourse?.phone}</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          )}
+
           <div className={styles.mainrelative}>
             <div className={styles.tabAlignment}>
               {chapters.map((chapter, index) => (
@@ -940,6 +945,7 @@ export default function CourseDetails({ params }) {
                             className={styles.videoPlayer}
                           /> */}
 
+
                           <CustomVideoPlayer
                             percentage={videoWatchingPercentage}
                             onPercentageChange={(percentage) => updateVideoPercentage(percentage)}
@@ -951,7 +957,7 @@ export default function CourseDetails({ params }) {
                             controlsList="nodownload"
                             disablePictureInPicture
                             noremoteplayback
-                            // className={styles.videoPlayer}
+                          // className={styles.videoPlayer}
                           />
                         </div>
                       )
@@ -961,45 +967,29 @@ export default function CourseDetails({ params }) {
                   </div>
                 </div>
                 <div className={styles.items}>
-                  <div className={styles.details} style={{ marginLeft: "20px" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+                  <div className={styles.details}>
+                    <div className={styles.titleDetails}>
                       <h4>
                         Chapter {selectedChapter.chapterNo} : {selectedChapter.chapterName || "Untitled Chapter"}
                       </h4>
                       {selectedChapter.courseTracking?.percentage > 0 && (
                         <div
+                          className={styles.progressCircle}
                           style={{
-                            width: "36px",
-                            height: "36px",
-                            borderRadius: "50%",
-                            background: `conic-gradient(rgb(106 16 185) 10.49%, rgb(229, 231, 235) ${videoWatchingPercentage}%, #E5E7EB 0)`,
-                            position: "relative",
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            fontSize: "10px",
-                            fontWeight: "bold",
-                            color: "#1F2937",
+                            background: `conic-gradient(
+        rgb(106 16 185) 0% ${videoWatchingPercentage}%,
+        rgb(229, 231, 235) ${videoWatchingPercentage}% 100%
+      )`
                           }}
                         >
-                          <div
-                            style={{
-                              width: "18px",
-                              height: "18px",
-                              background: "white",
-                              borderRadius: "50%",
-                              display: "flex",
-                              alignItems: "center",
-                              justifyContent: "center",
-                              padding: "15px",
-                            }}
-                          >
+                          <div className={styles.progressCircleInner}>
                             {Math.round(videoWatchingPercentage)}%
                           </div>
                         </div>
                       )}
+
                     </div>
-                    <p>
+                    <p style={{ marginLeft: "20px" }}>
                       {selectedChapter.description || "No description available for this chapter."}
                       {!selectedChapter.description && <>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus hendrerit, nulla non ultricies finibus, nibh purus ullamcorper augue, non tempor arcu nulla vitae nulla. Curabitur feugiat, ligula nec aliquam tincidunt, nulla ligula pretium eros, sed posuere neque lacus at neque.</>}
                     </p>
@@ -1018,13 +1008,7 @@ export default function CourseDetails({ params }) {
               </div>
             )}
 
-            {/* {isPaid && (
-              <ReviewSystem
-                courseId={id}
-                isPaid={isPaid}
-                userId={user?._id}
-              />
-            )} */}
+
 
             {!isPaid && (
               <div className={styles.locksystem}>
@@ -1038,6 +1022,13 @@ export default function CourseDetails({ params }) {
             )}
           </div>
         </div>
+      )}
+      {isPaid && (
+        <ReviewSystem
+          courseId={id}
+          isPaid={isPaid}
+          userId={user?._id}
+        />
       )}
     </div>
   );

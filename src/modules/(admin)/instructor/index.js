@@ -6,6 +6,8 @@ import styles from "./instructor.module.scss";
 import Button from "@/compoents/button";
 import OutlineButton from "@/compoents/outlineButton";
 import { useRouter } from "next/navigation";
+import Skeleton from 'react-loading-skeleton';
+import 'react-loading-skeleton/dist/skeleton.css';
 
 // Icons
 const StarIcon = "/assets/icons/star.svg";
@@ -73,54 +75,35 @@ function Instructor() {
 
   if (loading) {
     return (
-        <div className={styles.instructorContainer}>
-            <div className={styles.header}>
-                <h2 className={styles.title}>Our Expert Instructors</h2>
-                <p className={styles.subtitle}>Learn from industry professionals with years of experience</p>
-            </div>
-            
-            <div className={styles.grid}>
-                {instructorData.map((instructor) => (
-                    <div key={instructor._id} className={styles.card}>
-                        <div className={styles.imageWrapper}>
-                            <Image
-                                src={instructor.image}
-                                alt={instructor.name}
-                                width={200}
-                                height={200}
-                                className={styles.image}
-                                onError={(e) => {
-                                    e.target.onerror = null;
-                                    // e.target.src = '/assets/images/default-avatar.png';
-                                }}
-                            />
-                        </div>
-                        <div className={styles.content}>
-                            <div className={styles.details}>
-                                <h3 className={styles.name}>{instructor.name}</h3>
-                                
-                                <p className={styles.bio}>
-                                    {instructor.bio || 'Passionate educator dedicated to student success.'}
-                                </p>
-                                <div className={styles.footerContainer}>
-                                    {renderRating(instructor.rating || 0)}
-                                    <span 
-                                        className={styles.viewProfileLink}
-                                        onClick={() => {
-                                            router.push(`/instructor/${instructor._id}?name=${instructor.name}`);   
-                                        }}
-                                    >
-                                        View Profile
-                                    </span>
-                                </div>
-                            </div>
-                            
-                            
-                        </div>
-                    </div>
-                ))}
-            </div>
+      <div className={styles.instructorContainer}>
+        <div className={styles.header}>
+          <Skeleton width={300} height={40} style={{ marginBottom: '10px' }} />
+          <Skeleton width={400} height={20} />
         </div>
+        <div className={styles.grid}>
+          {[1, 2, 3, 4].map((item) => (
+            <div key={item} className={styles.card}>
+              <div className={styles.imageWrapper}>
+                <Skeleton width={370} height={200} />
+              </div>
+              <div className={styles.content}>
+                <div className={styles.details}>
+                  <Skeleton width={150} height={24} style={{ marginBottom: '10px' }} />
+                  <Skeleton count={3} style={{ marginBottom: '10px' }} />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ display: 'flex' }}>
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Skeleton key={star} width={16} height={16} style={{ marginRight: '4px' }} />
+                      ))}
+                    </div>
+                    <Skeleton width={100} height={20} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     );
   }
 
