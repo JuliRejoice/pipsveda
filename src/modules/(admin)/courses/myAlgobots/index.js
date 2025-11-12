@@ -112,7 +112,7 @@ export default function MyAlgobots() {
                 </div>
                 <div className={styles.details}>
                   <h3>{algobotCourse?.botId?.strategyId.title}</h3>
-                  <h4>Plans : {algobotCourse?.botId?.planType}</h4>
+                  <h4>Plans : {algobotCourse?.botId?.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}</h4>
                   <p>{algobotCourse?.botId?.strategyId.shortDescription}</p>
                 </div>
                 {/* <Button text="Pending Setup" />

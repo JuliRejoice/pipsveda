@@ -47,43 +47,47 @@ function SamplePrevArrow(props) {
 }
 
 const CourseDetailsSkeleton = () => (
-  <div className={styles.courseDetailsBox}>
-    <div className={styles.textStyle}>
-      <Skeleton height={20} width="60%" style={{ marginBottom: "10px" }} />
-      <Skeleton count={1} style={{ marginBottom: "8px" }} />
-
-      <div className={styles.allIconTextAlignment}>
-        {[1, 2, 3, 4, 5].map((item) => (
-          <div key={item} className={styles.iconText}>
-            <Skeleton circle width={20} height={20} />
-            <Skeleton width={100} height={20} style={{ marginLeft: "6px" }} />
-          </div>
-        ))}
-      </div>
-
-      <div className={styles.tabAlignment}>
-        {[1, 2, 3, 4].map((item) => (
-          <Skeleton key={item} width={120} height={50} style={{ marginRight: "15px" }} />
-        ))}
-      </div>
-
-      <div className={styles.mainGrid}>
-        <div className={styles.items}>
-          <Skeleton
-            height={400}
-            style={{
-              borderRadius: "20px",
-              backgroundColor: "rgba(1, 11, 29, 0.20)",
-            }}
-          />
-        </div>
-        <div className={styles.items}>
-          <Skeleton height={32} width="80%" style={{ marginBottom: "15px" }} />
-          <Skeleton count={5} style={{ marginBottom: "15px" }} />
-        </div>
-      </div>
-    </div>
-  </div>
+ <div className={styles.courseDetailsBox}>
+     <div className={styles.textStyle}>
+       <Skeleton height={20} width="60%" style={{ marginBottom: '10px' }} />
+       <Skeleton count={5} style={{ marginBottom: '8px' }} />
+ 
+       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap',marginBottom: '20px' }}>
+         <div className={styles.allIconTextAlignment} style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '20px' }}>
+           {[1, 2, 3, 4].map((item) => (
+             <div key={item} className={styles.iconText} style={{ display: 'flex', alignItems: 'center' }}>
+               <Skeleton circle width={20} height={20} />
+               <Skeleton width={100} height={20} style={{ marginLeft: '6px' }} />
+             </div>
+           ))}
+         </div>
+ 
+         <Skeleton
+           height={40}
+           width={150}
+           style={{
+             borderRadius: '8px',
+            
+           }}
+         />
+       </div>
+ 
+       <div>
+         <div style={{ width: '100%' }}>
+           <Skeleton
+             height={500}
+             style={{
+               borderRadius: '20px',
+               width: '100%',
+               maxWidth: '1000px',
+               margin: '0 auto',
+               display: 'block'
+             }}
+           />
+         </div>
+       </div>
+     </div>
+   </div>
 );
 
 const SessionSkeleton = () => (
@@ -602,18 +606,7 @@ export default function CourseDetails({ params }) {
   };
 
   if (loading) {
-    return isLiveOnline ? (
-      <div className={styles.sessionContainer}>
-        <h2>Upcoming Sessions</h2>
-        <div className={styles.sessionListmain}>
-          <div className={styles.sessionList}>
-            {[1, 2, 3].map((item) => (
-              <SessionSkeleton key={item} />
-            ))}
-          </div>
-        </div>
-      </div>
-    ) : (
+    return (
       <CourseDetailsSkeleton />
     );
   }
@@ -977,9 +970,9 @@ export default function CourseDetails({ params }) {
                           className={styles.progressCircle}
                           style={{
                             background: `conic-gradient(
-        rgb(106 16 185) 0% ${videoWatchingPercentage}%,
-        rgb(229, 231, 235) ${videoWatchingPercentage}% 100%
-      )`
+                          rgb(106 16 185) 0% ${videoWatchingPercentage}%,
+                          rgb(229, 231, 235) ${videoWatchingPercentage}% 100%
+                        )`
                           }}
                         >
                           <div className={styles.progressCircleInner}>

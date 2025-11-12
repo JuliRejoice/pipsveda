@@ -1,71 +1,32 @@
 "use client";
 import React from "react";
 import styles from "./breadcumbs.module.scss";
-import RightMdcon from "@/icons/rightMdcon";
-import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
 
 export default function Breadcumbs() {
   const router = useRouter();
-  const pathname = usePathname();
-  const pathSegments = pathname.split('/').filter(segment => segment)?.slice(0,2);
 
-  const redirect = () => {
-    const pathSegments = pathname.split('/').filter(Boolean);
-    // Redirect to /courses/pre-recorded if path matches certain conditions
-    if (pathSegments[0] === 'course') {
-      router.push('/course');
-    }
-    else if(pathSegments[0] === 'algobot' ){
-      router.push('/algobot');
-    }
-    else if(pathSegments[0] === 'telegram'){
-      router.push('/telegram');
-    }
-    else if(pathSegments[0] === 'my-courses'){
-      router.push('/my-courses');
-    }
-    else{
-      router.back()
-    }
+  const handleGoBack = () => {
+    router.back();
   };
-
-  // Format the breadcrumb text (e.g., 'pre-recorded' -> 'Pre Recorded')
-  const formatBreadcrumb = (segment) => {
-    return segment
-      .split('-')
-      .map(word => word.charAt(0).toUpperCase() + word?.slice(1))
-      .join(' ');
-  };
-
-  const breadcrumbs = pathSegments.map((segment, index) => {
-    // Skip numeric segments (like course IDs)
-    if (/^\d+$/.test(segment)) return null; 
-    
-    const isLast = index === pathSegments.length - 1;
-    const path = `/${pathSegments?.slice(0, index + 1).join('/')}`;
-    const displayText = formatBreadcrumb(segment);
-  
-
-    return (
-      <React.Fragment key={segment}>
-        {!isLast && <RightMdcon />}
-        {!isLast && (
-          <button type="button" onClick={() => redirect()} className={styles.breadcrumbLink}>
-            {displayText}
-          </button>
-        )}
-      </React.Fragment>
-    );
-  }).filter(Boolean); // Remove any null values
 
   return (
     <div className={styles.breadcumbsAlignment}>
-      <Link href="/dashboard" className={styles.breadcrumbLink}>
-        Home
-      </Link>
-      {breadcrumbs}
+      <button 
+        onClick={handleGoBack} 
+        className={styles.backButton}
+        aria-label="Go back"
+      >
+        <Image 
+          src="/assets/icons/back.svg" 
+          alt="" 
+          width={24} 
+          height={24} 
+          className={styles.backIcon}
+        />
+        Back
+      </button>
     </div>
   );
 }

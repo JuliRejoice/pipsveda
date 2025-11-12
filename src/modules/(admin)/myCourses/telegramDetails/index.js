@@ -244,7 +244,7 @@ function TelegramDetails({ id }) {
                         >
 
                             <div className={styles.cardHeaderAlignment}>
-                                <h3>{plan.planType}</h3>
+                                <h3>{plan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}</h3>
                                 <h4>${plan.price.toFixed(2)}</h4>
                             </div>
                             <div className={styles.childBox}>
@@ -404,7 +404,7 @@ function TelegramDetails({ id }) {
                                 />
                             </div>
                             <div className={styles.planInfo}>
-                                <h3>{selectedPlan.planType} Plan</h3>
+                                <h3>{selectedPlan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')} Plan</h3>
                                 <p>
                                     <span>Original Price:</span>
                                     <span>${selectedPlan.originalPrice?.toFixed(2) || '0.00'}</span>

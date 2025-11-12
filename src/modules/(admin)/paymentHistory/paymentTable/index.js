@@ -458,7 +458,7 @@ const PaymentHistory = () => {
                                 {activeTab === 'Telegram' && <td>{payment?.telegramId?.telegramId?.channelName || '-'}</td>}
 
                                 {(activeTab === 'all' || activeTab === 'Course') && <td>{courseType(payment.courseId?.courseType) || '-'}</td>}
-                                {activeTab !== 'Course' && <td>{payment.planType}</td>}
+                                {activeTab !== 'Course' && <td>{payment.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}</td>}
                                 <td>${payment.price}</td>
                                 <td>{payment.orderId}</td>
                                 {activeTab !== 'Course' && activeTab !== 'Telegram' && (

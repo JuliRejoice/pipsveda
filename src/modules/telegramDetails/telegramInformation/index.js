@@ -274,7 +274,7 @@ function TelegramInformation({ id }) {
                         plans.map((plan) => (
                             <div key={plan._id} className={styles.planCard}>
                                 <div className={styles.plancardheader}>
-                                    <span>{plan.planType}</span>
+                                    <span>{plan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}</span>
                                     <h3>${plan.price.toFixed(2)}</h3>
                                 </div>
                                 <div className={styles.plandetails}>
@@ -312,7 +312,7 @@ function TelegramInformation({ id }) {
                 {selectedPlan && (
                     <div className={styles.modalContent}>
                         <div className={styles.planInfo}>
-                            <h3>{selectedPlan.planType} Plan</h3>
+                            <h3>{selectedPlan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')} Plan</h3>
                             <p>
                                 <span>Original Price:</span>
                                 <span>${selectedPlan.originalPrice?.toFixed(2) || '0.00'}</span>

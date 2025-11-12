@@ -1,8 +1,9 @@
 'use client'
-import AdminHeader from '@/compoents/adminHeader'
+
 import Coursecards from '@/compoents/coursecomponent/coursecards';
 import React, { useState } from 'react'
 import RecentCourse from '@/modules/(admin)/preRecorded/recentCourse';
+import Breadcumbs from '../breadcumbs';
 
 function CategoryDetails({id}) {
     const [selectedTab, setSelectedTab] = useState('');
@@ -13,7 +14,7 @@ function CategoryDetails({id}) {
 
     return (
         <div>
-            <AdminHeader />
+            <Breadcumbs/>
             <div style={{
                 backgroundColor: '#f5f5f5',
                 border: '1px solid var(--border-color5)',

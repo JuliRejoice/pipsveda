@@ -127,7 +127,7 @@ function MyTelegram() {
                                         </div>
                                         <ArrowVec />
                                     </div>
-                                    <h4>Plan: {telegramCourse?.telegramId?.planType?.replace(/_/g, ' ')}</h4>
+                                    <h4>Plan: {telegramCourse?.telegramId?.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')?.replace(/_/g, ' ')}</h4>
                                     <p>{telegramCourse?.telegramId?.telegramId.description}</p>
                                 </div>
                             </div>

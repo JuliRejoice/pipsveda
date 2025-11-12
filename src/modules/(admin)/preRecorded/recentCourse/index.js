@@ -143,7 +143,7 @@ export default function RecentCourse({ selectedTab, courseType, setCourseType, s
                     </div>
                 ) : allCourse.length > 0 ? (
                     allCourse.map((course, index) => (
-                        <div className={styles.griditems} key={course._id ? `course-${JSON.stringify(course._id)}-${index}` : `course-${index}`}>
+                        <div className={styles.griditems} key={course._id ? `course-${JSON.stringify(course._id)}-${index}` : `course-${index}`} onClick={() => course.isPayment ? router.push(`/my-courses/course/${course._id}`) : router.push(`/course/${course._id}`)}>
                             <div className={styles.image}>
                                 <img
                                     src={course.courseVideo || CardImage}

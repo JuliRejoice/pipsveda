@@ -1,6 +1,6 @@
 'use client'
 import React, { useState } from 'react'
-import AdminHeader from '@/compoents/adminHeader';
+import Breadcumbs from '@/modules/(admin)/breadcumbs';
 import Coursecards from '@/compoents/coursecomponent/coursecards';
 import RecentCourse from '@/modules/(admin)/preRecorded/recentCourse';
 import { useSearchParams } from 'next/navigation';
@@ -17,7 +17,7 @@ function CoursesOfferedByInstructor({ params }) {
 
     return (
         <div>
-            <AdminHeader />
+            <Breadcumbs/>
             <div style={{
                 backgroundColor: '#f5f5f5',
                 border: '1px solid var(--border-color5)',

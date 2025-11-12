@@ -464,7 +464,7 @@ function AlgobotDetails({ id }) {
                       key={plan._id || index}
                     >
                       <div className={styles.cardHeaderAlignment}>
-                        <h3>{plan.planType}</h3>
+                        <h3>{plan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}</h3>
                         <h4>
                           $
                           {(
@@ -533,7 +533,7 @@ function AlgobotDetails({ id }) {
         {selectedPlan && (
           <div className={styles.modalContent}>
             <div className={styles.planInfo}>
-              <h3>{selectedPlan.planType} Plan</h3>
+              <h3>{selectedPlan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')} Plan</h3>
               <p>
                 <span>Quantity:</span>
                 <span>{selectedPlan.quantity || 1}</span>

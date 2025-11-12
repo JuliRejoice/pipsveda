@@ -370,6 +370,7 @@
     background-color: var(--bg-white);
     padding: 16px;
     border-radius: 12px;
+    cursor: pointer;
     width: calc(25% - 20px);
 
     @media (max-width: 1500px) {

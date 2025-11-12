@@ -10,9 +10,9 @@ export const getNotification = async () => {
     }
 }
 
-export const updateNotification = async (id, status) => {
+export const updateNotification = async () => {
     try {
-        const response = await api.put(`/notification/updateNotification?id=${id}`, {isRead: status});
+        const response = await api.put(`/notification/updateNotification?isReadAll=true`);
         return response.data;
     } catch (error) {
         console.error("Error updating notification", error);

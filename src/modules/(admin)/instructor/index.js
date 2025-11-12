@@ -140,7 +140,7 @@ function Instructor() {
 
       <div className={styles.grid}>
         {instructorData.map((instructor) => (
-          <div key={instructor._id} className={styles.card}>
+          <div key={instructor._id} className={styles.card} onClick={() => router.push(`/instructor/${instructor._id}`)}>
             <div className={styles.imageWrapper}>
               <Image
                 src={instructor.image}

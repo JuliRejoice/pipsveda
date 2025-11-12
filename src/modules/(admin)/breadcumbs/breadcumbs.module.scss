@@ -16,9 +16,19 @@
         color: var(--grey-600);
         border: none;
         background: none;
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
 
     span {
         color: var(--black-500);
+    }
+
+    .backIcon {
+        width: 16px;
+        height: 16px;
+        // rotate: 180deg;
+        color: var(--grey-600);
     }
 }

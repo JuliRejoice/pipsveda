@@ -19,6 +19,7 @@ import {
   CountrySelect,
   StateSelect,
 } from "react-country-state-city";
+import AdminHeader from "@/compoents/adminHeader";
 
 // Register the English (GB) locale
 registerLocale("en-GB", enGB);
@@ -212,30 +213,36 @@ export default function Profile() {
   const hasChanges = () => {
     if (!initialUserData || !user) return false;
 
+    // Format dates for comparison
+    const formattedBirthDate = birthDate ? new Date(birthDate).toISOString().split("T")[0] : null;
+    const initialBirthDate = initialUserData.birthday ? new Date(initialUserData.birthday).toISOString().split("T")[0] : null;
+
+    // Get current gender from user state if selectedGender is not set
+    const currentGender = selectedGender || user.gender || '';
+    const initialGender = initialUserData.gender || '';
+
     // Check if any profile field has changed
     const profileFieldsChanged =
-      user.name !== initialUserData.name ||
-      user.phone !== initialUserData.phone ||
-      user.gender !== initialUserData.gender ||
-      user.location !== initialUserData.location ||
-      user.city !== initialUserData.city ||
-      user.state !== initialUserData.state ||
-      user.country !== initialUserData.country ||
-      (birthDate &&
-        initialUserData.birthday &&
-        new Date(birthDate).toISOString().split("T")[0] !==
-        initialUserData.birthday);
+      (user.name || '') !== (initialUserData.name || '') ||
+      (user.phone || '') !== (initialUserData.phone || '') ||
+      currentGender !== initialGender ||
+      (user.location || '') !== (initialUserData.location || '') ||
+      (user.city || '') !== (initialUserData.city || '') ||
+      (user.state || '') !== (initialUserData.state || '') ||
+      (user.country || '') !== (initialUserData.country || '') ||
+      (selectedCountryCode || '+91') !== (initialUserData.countryCode || '+91') ||
+      (formattedBirthDate !== initialBirthDate && (formattedBirthDate || initialBirthDate));
 
     // Check if profile image has changed
-    const imageChanged =
+    const imageChanged = 
       profileImage !== null || // New image selected
-      (previewImage && previewImage !== initialUserData.profileImage); // Preview URL changed
+      (previewImage && previewImage !== (initialUserData.profileImage || '')); // Preview URL changed
 
     return profileFieldsChanged || imageChanged;
   };
   return (
     <div className={styles.profilePageAlignment}>
-      <Breadcumbs />
+      <AdminHeader/>
       <div className={styles.profileBox}>
         {/* Profile Image Upload */}
 
@@ -519,7 +526,7 @@ export default function Profile() {
                 showYearDropdown
                 scrollableYearDropdown
                 yearDropdownItemNumber={100}
-                maxDate={new Date()} // Prevent future dates
+                maxDate={new Date()}
                 locale="en-GB"
               />
               {dateError && (

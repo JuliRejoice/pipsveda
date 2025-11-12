@@ -278,7 +278,7 @@ export default function ArbitrageAlgo({
       <div className={styles.grid}>
         {bot?.length > 0 ? (
           bot.map((strategy) => (
-            <div className={styles.griditems} key={strategy._id}>
+            <div className={styles.griditems} key={strategy._id} onClick={() => strategy.strategyPlan?.some((plan) => plan.isPayment) ? router.push(`/my-courses/algobot/${strategy._id}`) : router.push(`/algobot/${strategy._id}`)}>
               <div className={styles.image}>
                 <img
                   src={strategy.imageUrl || CardImage}
@@ -297,10 +297,12 @@ export default function ArbitrageAlgo({
                     <div className={styles.dropdownmain}>
                       <div
                         className={styles.dropdownhead}
-                        onClick={() =>
+                        onClick={(e) =>{
+                          e.stopPropagation(),
                           setOpenDropdown(
                             openDropdown === strategy._id ? null : strategy._id
                           )
+                        }
                         }
                       >
                         <span>
@@ -309,7 +311,7 @@ export default function ArbitrageAlgo({
                               plan._id ===
                               (selectedPlans[strategy._id] ||
                                 strategy.strategyPlan[0]?._id)
-                          )?.planType || "Select a plan"}
+                          )?.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')?.replace(/(\d+)([A-Za-z]+)/, '$1 $2') || "Select a plan"}
                         </span>
                         <div className={styles.dropdownarrow}>
                           <Dropdownarrow />
@@ -328,7 +330,7 @@ export default function ArbitrageAlgo({
                                   setOpenDropdown(null);
                                 }}
                               >
-                                <span>{plan.planType}</span>
+                                <span>{plan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}</span>
                               </div>
                             ))}
                           </div>
@@ -351,7 +353,7 @@ export default function ArbitrageAlgo({
                           <div
                             className={`${styles.contentAlignment} ${styles.priceContainer}`}
                           >
-                            <span>{plan.planType}:</span>
+                            <span>{plan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}:</span>
                             <div className={styles.priceWrapper}>
                               <span className={styles.priceCurrency}>$</span>
                               <span className={styles.priceAmount}>

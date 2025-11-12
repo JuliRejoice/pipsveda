@@ -175,7 +175,18 @@ export default function TelegramChannels({
       </div>
       <div className={styles.grid}>
         {channels?.map((channel) => (
-          <div className={styles.griditems} key={channel._id}>
+          <div 
+            className={styles.griditems} 
+            key={channel._id} 
+            onClick={(e) => {
+              // Only navigate if the click is not on the dropdown
+              if (!e.target.closest(`.${styles.dropdownmain}`)) {
+                channel.telegramPlan?.some((plan) => plan.isPayment) 
+                  ? router.push(`/my-courses/telegram/${channel._id}`) 
+                  : router.push(`/telegram/${channel._id}`);
+              }
+            }}
+          >
             {/* <div className={styles.image}>
                             <img
                                 src={channel.imageUrl || '/assets/images/crypto.png'}
@@ -196,11 +207,12 @@ export default function TelegramChannels({
                       <div className={styles.dropdownmain}>
                         <div
                           className={styles.dropdownhead}
-                          onClick={() =>
+                          onClick={(e) => {
+                            e.stopPropagation();
                             setOpenDropdown(
                               openDropdown === channel._id ? null : channel._id
-                            )
-                          }
+                            );
+                          }}
                         >
                           <span>
                             {channel.telegramPlan.find(
@@ -208,7 +220,7 @@ export default function TelegramChannels({
                                 plan._id ===
                                 (selectedPlans[channel._id] ||
                                   channel.telegramPlan[0]?._id)
-                            )?.planType || "Select a plan"}
+                            )?.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2') || "Select a plan"}
                           </span>
                           <div className={styles.dropdownarrow}>
                             <Dropdownarrow />
@@ -222,12 +234,13 @@ export default function TelegramChannels({
                                 <div
                                   key={plan._id}
                                   className={styles.iconText}
-                                  onClick={() => {
+                                  onClick={(e) => {
+                                    e.stopPropagation();
                                     handlePlanChange(channel._id, plan._id);
                                     setOpenDropdown(null);
                                   }}
                                 >
-                                  <span>{plan.planType}</span>
+                                  <span>{plan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}</span>
                                 </div>
                               ))}
                             </div>
@@ -247,7 +260,7 @@ export default function TelegramChannels({
                             <div key={plan._id} className={styles.items}>
                               <div className={styles.contentAlignment}>
                                 <span>Plan:</span>
-                                <h4>{plan.planType}</h4>
+                                <h4>{plan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}</h4>
                               </div>
                               <div className={styles.contentAlignment}>
                                 <span>Price:</span>

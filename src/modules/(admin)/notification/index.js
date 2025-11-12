@@ -55,9 +55,36 @@ export default function Notification() {
         return formatDistanceToNow(new Date(dateString), { addSuffix: true });
     };
 
+    const markAllAsRead = async () => {
+        try {
+            // Mark all notifications as read in a single API call
+            await updateNotification();
+            
+            // Update local state to reflect all notifications as read
+            setNotifications(prev => 
+                prev.map(n => ({ ...n, isRead: true }))
+            );
+            
+            // Emit check-notification event to update unread count in real-time
+            const socket = getSocket();
+            if (socket) {
+                socket.emit('check-notification', {});
+            }
+        } catch (error) {
+            console.error('Error marking all notifications as read:', error);
+        }
+    };
+
     useEffect(() => {
         fetchNotifications();
     }, []);
+    
+    // Mark all notifications as read when component mounts
+    useEffect(() => {
+        if (notifications.length > 0) {
+            markAllAsRead();
+        }
+    }, [notifications.length]); // This will run after the initial fetch
 
     const handleMarkAsRead = async (notificationId) => {
         try {

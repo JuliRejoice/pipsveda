@@ -122,7 +122,7 @@ export default function AutomateTrades() {
                       {strategy.strategyPlan?.slice(0, 2).map((plan) => (
                         <div className={styles.planitem} key={plan._id}>
                           <h4>
-                            ${plan.price}<sub>/{plan.planType}</sub>
+                            ${plan.price}<sub>/{plan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}</sub>
                           </h4>
                         </div>
                       ))}

@@ -210,7 +210,7 @@ export default function RecentBots({ id, category }) {
                                     {/* {item.strategyPlan?.map((plan, index) => (
                                             <div className={styles.items} key={index}>
                                                 <div className={styles.contentAlignment}>
-                                                    <span>{plan.planType}:</span>
+                                                    <span>{plan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}:</span>
                                                     <h4>${plan.price}</h4>
                                                 </div>
                                                 <div className={styles.contentAlignment}>
@@ -231,7 +231,7 @@ export default function RecentBots({ id, category }) {
                                                 <div key={plan._id || index}>
                                                     <div className={styles.items}>
                                                         <div className={styles.contentAlignment}>
-                                                            <span>{plan.planType}:</span>
+                                                            <span>{plan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}:</span>
                                                             <h4>${plan.price}</h4>
                                                         </div>
                                                         <div className={styles.contentAlignment}>
@@ -252,7 +252,7 @@ export default function RecentBots({ id, category }) {
                                         <div className={styles.twoColgrid}>
                                             <div className={styles.items}>
                                                 <div className={styles.contentAlignment}>
-                                                    <span>{item.strategyPlan[0].planType}:</span>
+                                                    <span>{item.strategyPlan[0].planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}:</span>
                                                     <h4>${item.strategyPlan[0].price}</h4>
                                                 </div>
                                                 <div className={styles.contentAlignment}>

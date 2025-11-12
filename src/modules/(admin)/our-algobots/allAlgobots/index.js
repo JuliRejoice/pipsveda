@@ -284,7 +284,7 @@ export default function AllAlgobots() {
                                 plan._id ===
                                 (selectedPlans[strategy._id] ||
                                   strategy.strategyPlan[0]?._id)
-                            )?.planType || "Select a plan"}
+                            )?.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2') || "Select a plan"}
                           </span>
                           <div className={styles.dropdownarrow}>
                             <Dropdownarrow />
@@ -303,7 +303,7 @@ export default function AllAlgobots() {
                                     setOpenDropdown(null);
                                   }}
                                 >
-                                  <span>{plan.planType}</span>
+                                  <span>{plan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}</span>
                                 </div>
                               ))}
                             </div>
@@ -326,7 +326,7 @@ export default function AllAlgobots() {
                             <div
                               className={`${styles.contentAlignment} ${styles.priceContainer}`}
                             >
-                              <span>{plan.planType}:</span>
+                              <span>{plan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}:</span>
                               <div className={styles.priceWrapper}>
                                 <span className={styles.priceCurrency}>$</span>
                                 <span className={styles.priceAmount}>
