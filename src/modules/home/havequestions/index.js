@@ -10,10 +10,10 @@ import { getUtilityData } from '@/compoents/api/dashboard';
 import Dropdownarrow from '@/icons/dropdownarrow';
 import { regions } from '@/regions';
 
-const ChatIcon = '/assets/icons/chat.svg';
-const EmailIcon = '/assets/icons/email-icon.svg';
-const CallIcon = '/assets/icons/call.svg';
-const LocationIcon = '/assets/icons/location.svg';
+const ChatIcon = '/assets/icons/chat-new.svg';
+const EmailIcon = '/assets/icons/email-new.svg';
+const CallIcon = '/assets/icons/phone-new.svg';
+const LocationIcon = '/assets/icons/location-new.svg';
 
 const validateEmail = (email) => {
     const re = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;

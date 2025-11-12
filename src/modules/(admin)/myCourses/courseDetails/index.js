@@ -970,9 +970,9 @@ export default function CourseDetails({ params }) {
                           className={styles.progressCircle}
                           style={{
                             background: `conic-gradient(
-                          rgb(106 16 185) 0% ${videoWatchingPercentage}%,
-                          rgb(229, 231, 235) ${videoWatchingPercentage}% 100%
-                        )`
+        rgb(107 79 216) 0% ${videoWatchingPercentage}%,
+        rgb(229, 231, 235) ${videoWatchingPercentage}% 100%
+      )`
                           }}
                         >
                           <div className={styles.progressCircleInner}>

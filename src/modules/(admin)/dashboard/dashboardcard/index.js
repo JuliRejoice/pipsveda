@@ -1,12 +1,12 @@
 'use client'
 import React, { useState } from 'react'
 import styles from './dashboardcard.module.scss'
-import UserIcon from '@/icons/userIcon'
+import BlackUserIcon from '@/icons/BlackUserIcon'
 import { getDashboardData } from '@/compoents/api/dashboard';
 import CourseIcon from '@/icons/courseIcon';
 import Algobot from '@/icons/algobot';
 import DashboardGrid from '../dashboardGrid';
-;
+
 function DashboardCard() {
     const [data, setData] = useState([]);
     React.useEffect(() => {
@@ -46,10 +46,9 @@ function DashboardCard() {
                 <div className={styles.dashboardcard}>
                     <div className={styles.dashboardcardtitle}>
                         <h1>Telegram Channels</h1>
-                        <span><UserIcon/>{data.telegramCount || 0}</span>
+                        <span><BlackUserIcon/>{data.telegramCount || 0}</span>
                     </div>
                     <div className={styles.cardDetails}>
-                       
                         <p>${data.telegramTotalPrice || 0}</p>
                     </div>
                 </div>

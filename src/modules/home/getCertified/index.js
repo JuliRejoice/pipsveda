@@ -4,8 +4,8 @@ import { motion, useInView } from "framer-motion";
 import styles from "./getCertified.module.scss";
 import CheckIcon from "@/icons/checkIcon";
 
-const WinIcon = "/assets/icons/win.svg";
-const SampleIcon = "/assets/icons/Sample.svg";
+const WinIcon = "/assets/icons/win-new.svg";
+const SampleIcon = "/assets/icons/shield.svg";
 const LinkdinIcon = "/assets/icons/linkdin.svg";
 
 // Animation Variants

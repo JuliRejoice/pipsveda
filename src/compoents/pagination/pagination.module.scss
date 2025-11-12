@@ -35,7 +35,7 @@
         }
 
         &:hover {
-            background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
+            background: #6B4FD8;
 
             svg {
                 path {
@@ -81,13 +81,13 @@
 
             &:hover {
                 color: var(--text-white);
-                background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
+                background: #6B4FD8;
             }
 
         }
         .active {
             color: var(--text-white);
-            background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
+            background: #6B4FD8;
 
             svg {
                 path {

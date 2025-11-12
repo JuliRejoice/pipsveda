@@ -7,7 +7,7 @@ import StarIcon from "@/icons/starIcon";
 import Arrowicon from "@/icons/arrowicon";
 import classNames from "classnames";
 
-const SqureIcon = "/assets/icons/squre.svg";
+const SqureIcon = "/assets/icons/Group.svg";
 
 const testimonials = [
   {

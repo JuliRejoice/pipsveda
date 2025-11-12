@@ -30,19 +30,23 @@
   --border-color6: #dfe0e0;
   --border-color7: #dfe0e0;
   --orange: #fe6917;
-  --button-gradient: linear-gradient(90deg, #6e30f9 0%, #fe6917 85.71%);
-  --button-gradient-hover: linear-gradient(90deg, #fe6917 0%, #6e30f9 85.71%);
+  /* --button-gradient: linear-gradient(90deg, #6e30f9 0%, #fe6917 85.71%); */
+  --button-gradient: #6B4FD8;
+  --button-gradient-hover: #FE6917;
   --card-gradient-border: linear-gradient(
     109.33deg,
     #2f2f2f 74.94%,
     #fe6917 86.48%,
     #6f31f8 92.3%
   );
-  --button-gradient-border: linear-gradient(90deg, #6e30f9 0%, #fe6917 85.71%);
-  --button-gradient-border-hover: linear-gradient(
+  /* --button-gradient-border: linear-gradient(90deg, #6e30f9 0%, #fe6917 85.71%); */
+  --button-gradient-border: #6B4FD8;
+  --button-gradient-border-hover: #6B4FD8;
+  /* --button-gradient-border-hover: linear-gradient(
     90deg,
     #fe6917 0%,
     #6e30f9 85.71%
-  );
-  --light-bg: #fff5f1;
+  ); */
+  /* --light-bg: #fff5f1; */
+  --light-bg: #E9ECFF;
 }
