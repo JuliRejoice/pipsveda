@@ -4,11 +4,11 @@ import { motion, useInView } from "framer-motion";
 import styles from "./whypips.module.scss";
 
 const BottomVec = "/assets/images/bottomvec.png";
-const ComputerIcon = "/assets/icons/computer.svg";
+const ComputerIcon = "/assets/icons/com-new.svg";
 const DiscordIcon = "/assets/icons/Discord.svg";
 const ReviewsIcon = "/assets/icons/Reviews.svg";
-const ResourcesIcon = "/assets/icons/Resources.svg";
-const CertificateIcon = "/assets/icons/Certificate.svg";
+const ResourcesIcon = "/assets/icons/line-new.svg";
+const CertificateIcon = "/assets/icons/certi-new.svg";
 
 const cardItems = [
   {

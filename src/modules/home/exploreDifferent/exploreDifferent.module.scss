@@ -4,7 +4,7 @@
 
 .exploreDifferent {
     padding: 100px;
-    background-image: url('/assets/images/light-background.png');
+    background-image: url('/assets/images/grid-banner.png');
     width: 100%;
     background-size: cover;
 
@@ -116,7 +116,7 @@
     }
 
     .card {
-        background-color: var(--light-bg);
+        background-color: white;
         padding: 16px;
         border-radius: 12px;
         transition: .3s ease-in-out;
@@ -130,9 +130,9 @@
 
         }
 
-        &:hover {
-            background: linear-gradient(90deg, rgba(110, 48, 249, 0.18) 0%, rgba(254, 105, 23, 0.18) 85.71%);
-        }
+        // &:hover {
+        //     background: linear-gradient(90deg, rgba(110, 48, 249, 0.18) 0%, rgba(254, 105, 23, 0.18) 85.71%);
+        // }
 
         .image {
             img {
@@ -190,11 +190,15 @@
                     justify-content: center;
                     @include font16normal;
                     gap: 10px;
-                    background: linear-gradient(90deg, #6E30F9 0%, #FE6917 100%);
+                    background: #6B4FD8;
                     position: relative;
                     overflow: hidden;
                     box-shadow: 0 4px 15px rgba(110, 48, 249, 0.3);
                     transition: all 0.3s ease;
+
+                    &:hover {
+                        background: #FE6917;
+                    }
 
                     span {
                         color: white !important;

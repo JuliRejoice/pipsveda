@@ -16,12 +16,12 @@ import { useRouter } from "next/navigation";
 import { getCookie } from "../../../../cookie";
 
 const RightIcon = "/assets/icons/right.svg";
-const LineImage = "/assets/images/line-img.png";
+const LineImage = "/assets/images/hero-line-image.png";
 const Banner1 = "/assets/images/banner1.png";
 const Banner2 = "/assets/images/banner2.png";
 const RowBanner = "/assets/images/row.png";
 const SystemBanner = "/assets/images/system-img.png";
-const CrossLineImage = "/assets/images/cross-line.png";
+const CrossLineImage = "/assets/images/hero-crossline-image.png";
 
 // Animation variants
 const container = {

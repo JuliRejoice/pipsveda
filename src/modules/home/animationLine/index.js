@@ -2,7 +2,7 @@ import React from 'react'
 import styles from './animationLine.module.scss';
 import Marquee from "react-fast-marquee";
 const WhiteStarIcon = '/assets/icons/white-star.svg';
-const StarIcon = '/assets/icons/primary-star.svg';
+const StarIcon = '/assets/icons/starMarquee.svg';
 export default function AnimationLine() {
     return (
         <div className={styles.animationlinemain}>

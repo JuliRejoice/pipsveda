@@ -129,7 +129,7 @@
             }
 
             &:hover {
-                background: linear-gradient(90deg, rgba(110, 48, 249, 0.18) 0%, rgba(254, 105, 23, 0.18) 85.71%);
+                background: #6B4FD8;
             }
 
 
@@ -138,7 +138,19 @@
             }
 
             &:hover {
-                background: linear-gradient(90deg, rgba(110, 48, 249, 0.18) 0%, rgba(254, 105, 23, 0.18) 85.71%);
+                background: #6B4FD8;
+
+                h3{
+                    color: white;
+                }
+
+                p{
+                    color: white;
+                }
+
+                img{
+                    filter: brightness(0) invert(1);
+                }
             }
 
             .iconCenter {

@@ -3,7 +3,7 @@
 @use '../../../scss/breakpoints/breakpoints.scss' as *;
 
 .ourStudents {
-    background-image: url('/assets/images/light-background.png');
+    background-image: url('/assets/images/grid-banner.png');
     width: 100%;
     background-size: cover;
     width: 100%;
@@ -97,7 +97,7 @@
 
     .whiteBox {
         background-color: var(--bg-white);
-        padding: 16px;
+        padding: 30px;
         border-radius: 12px;
 
         @include respond-to("md") {

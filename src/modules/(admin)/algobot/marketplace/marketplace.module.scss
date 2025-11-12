@@ -3,8 +3,9 @@
 @use '../../../../scss/breakpoints/breakpoints.scss' as *;
 
 .marketplace {
-    background-image: url('/assets/images/herobanner.png');
+    background-image: url('/assets/images/Background.png');
     width: 100%;
+    background-size: cover;
     padding: 60px;
     border-radius: 20px;
 

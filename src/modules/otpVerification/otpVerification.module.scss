@@ -3,7 +3,7 @@
 @use '../../scss/breakpoints/breakpoints.scss' as *;
 
 .otpVerification {
-    background-image: url('/assets/images/login.png');
+    background-image: url('/assets/images/grid-banner.png');
     width: 100%;
     background-size: cover;
     min-height: 100dvh;
@@ -125,7 +125,7 @@
                 text-align: center;
                 background-clip: text;
                 font-weight: 500;
-                background: linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%);
+                background: #FE6917;
                 -webkit-background-clip: text;
                 cursor: pointer;
                 -webkit-text-fill-color: transparent;

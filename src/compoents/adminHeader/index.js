@@ -12,7 +12,7 @@ useEffect(() => {
   return (
     <div className={styles.adminHeader}>
       <h2>
-        Hello {user}, welcome!
+        Hello <span className={styles.userName}>{user}</span>, welcome!
       </h2>
       <p>
       Begin your monetization journey with expert-led courses in Forex, AlgoBots, and more.

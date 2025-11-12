@@ -10,6 +10,8 @@ import { GET_ALL_BLOG_DATA, GET_BLOG_CATEGORIES } from '@/graphql/getBlogData';
 import { useRouter } from 'next/navigation';
 import EmptyState from '@/modules/(admin)/chapter/recentCourse/EmptyState';
 import Button from '@/compoents/button';
+import UserIcon from '@/icons/userIcon';
+import CalanderIcon from '@/icons/calanderIcon';
 
 const BlogcardImage = '/assets/images/blog-card.png';
 const ProfileIcon = '/assets/icons/profile-primary.svg';
@@ -237,11 +239,13 @@ export default function BlogListingCard({ searchQuery }) {
                                         transition={{ delay: 0.2 }}
                                     >
                                         <div className={styles.iconText}>
-                                            <img src={ProfileIcon} alt="ProfileIcon" />
+                                            {/* <img src={ProfileIcon} alt="ProfileIcon" /> */}
+                                            <UserIcon />
                                             <span>{blog.author.name}</span>
                                         </div>
                                         <div className={styles.iconText}>
-                                            <img src={DateIcon} alt="DateIcon" />
+                                            {/* <img src={DateIcon} alt="DateIcon" /> */}
+                                            <CalanderIcon />
                                             <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
                                         </div>
                                     </motion.div>

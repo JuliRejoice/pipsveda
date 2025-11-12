@@ -95,7 +95,7 @@ export default function Signin() {
           </div>
           <div className={styles.text}>
             <h2>Welcome Back</h2>
-            <p>Continue your journey into the world of financial Five Veday.</p>
+            <p>Continue your journey into the world of financial Five Veda.</p>
           </div>
           <div className={styles.leftRightAlignment}>
             <form

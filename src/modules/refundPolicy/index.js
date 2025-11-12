@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './refundPolicy.module.scss';
 import CommonBanner from '@/compoents/commonBanner';
-const VecIcon = '/assets/icons/vec-icon.svg';
+const VecIcon = '/assets/icons/aerrow-new.svg';
 
 export default function RefundPolicy() {
     return (

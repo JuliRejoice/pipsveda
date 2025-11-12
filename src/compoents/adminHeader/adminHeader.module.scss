@@ -11,11 +11,11 @@
 
     h2 {
         @include heading24;
-        background: linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%);
-        background-clip: text;
-        -webkit-background-clip: text;
+        color: #6B4FD8;
+        // background-clip: text;
+        // -webkit-background-clip: text;
         display: inline;
-        -webkit-text-fill-color: transparent;
+        // -webkit-text-fill-color: transparent;
 
         @include respond-to("sm") {
             @include heading20;
@@ -31,5 +31,9 @@
         @include respond-to("sm") {
             @include font14;
         }
+    }
+
+    .userName {
+        color: #FE6917;
     }
 }
