@@ -230,10 +230,10 @@ export default function FinancialFreedom() {
                                                             <StarIcon />
                                                             <span>{course.rating || '4.8'}</span>
                                                         </div>
-                                                        <div className={styles.icontext}>
+                                                        {/* <div className={styles.icontext}>
                                                             <ProfileIcon />
                                                             <span>{course.students || '123'}</span>
-                                                        </div>
+                                                        </div> */}
                                                         <div className={styles.icontext}>
                                                             <ClockIcon />
                                                             <span>{`${course?.hours} hours` || '12 hours'}</span>
