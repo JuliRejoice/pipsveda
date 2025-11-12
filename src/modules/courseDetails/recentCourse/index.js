@@ -8,7 +8,7 @@ import RenderSkeleton from '@/modules/(admin)/chapter/recentCourse/RenderSkeleto
 const CardImage = '/assets/images/course-details-card.png';
 import 'react-loading-skeleton/dist/skeleton.css';
 import { useRouter } from 'next/navigation';
-const BathIcon = '/assets/icons/bath-primary.svg';
+const BathIcon = '/assets/icons/bath-new.svg';
 const RightIcon = '/assets/icons/right-black.svg';
 export default function RecentCourse({id}) {
     const [courses, setCourses] = useState([]);

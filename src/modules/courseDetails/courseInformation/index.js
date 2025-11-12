@@ -111,7 +111,7 @@ export default function CourseInformation({ id }) {
                 <span>{course?.subscribed || '0'}</span>
               </div>
               <div className={styles.iconText}>
-                <span>Last-Update: {new Date(course?.updatedAt || new Date()).toLocaleDateString('en-GB')} | {course?.language.slice(0, 1).toUpperCase() + course?.language.slice(1) || 'English'}</span>
+                <span>Last-Update: {new Date(course?.updatedAt || new Date()).toLocaleDateString('en-GB')} | {course?.language?.slice(0, 1).toUpperCase() + course?.language?.slice(1) || 'English'}</span>
               </div>
             </div>
           </div>

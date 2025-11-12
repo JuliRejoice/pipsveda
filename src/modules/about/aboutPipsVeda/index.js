@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import styles from "./aboutPipsVeda.module.scss";
 
 const CardImage = "/assets/images/about-pipsveda.png";
-const CheckIcon = "/assets/icons/check-pri.svg";
+const CheckIcon = "/assets/icons/check-new-ora.svg";
 
 const aboutPoints = [
   "Expert-led courses for all skill levels",
