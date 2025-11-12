@@ -5,7 +5,8 @@ import UserIcon from '@/icons/userIcon'
 import { getDashboardData } from '@/compoents/api/dashboard';
 import CourseIcon from '@/icons/courseIcon';
 import Algobot from '@/icons/algobot';
-
+import DashboardGrid from '../dashboardGrid';
+;
 function DashboardCard() {
     const [data, setData] = useState([]);
     React.useEffect(() => {
@@ -63,6 +64,7 @@ function DashboardCard() {
                 </div> */}
                 
             </div>
+                <DashboardGrid/>
         </>
     )
 }
