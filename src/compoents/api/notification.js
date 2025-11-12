@@ -10,12 +10,19 @@ export const getNotification = async () => {
     }
 }
 
-export const updateNotification = async () => {
+export const updateNotification = async (notificationId = null) => {
     try {
-        const response = await api.put(`/notification/updateNotification?isReadAll=true`);
+        let url = '/notification/updateNotification';
+        if (notificationId) {
+            url += `?notificationId=${notificationId}`;
+        } else {
+            url += '?isReadAll=true';
+        }
+        const response = await api.put(url);
         return response.data;
     } catch (error) {
         console.error("Error updating notification", error);
-        throw error;
+        // Don't throw the error to prevent automatic logout
+        return { error: true, message: error.message };
     }
 }

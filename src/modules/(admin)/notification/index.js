@@ -58,20 +58,21 @@ export default function Notification() {
     const markAllAsRead = async () => {
         try {
             // Mark all notifications as read in a single API call
-            await updateNotification();
+            const result = await updateNotification();
             
-            // Update local state to reflect all notifications as read
-            setNotifications(prev => 
-                prev.map(n => ({ ...n, isRead: true }))
-            );
+            if (result?.error) {
+                console.error('Failed to mark notifications as read:', result.message);
+                return;
+            }
             
-            // Emit check-notification event to update unread count in real-time
+            // Just emit the socket event to update unread count in real-time
             const socket = getSocket();
             if (socket) {
                 socket.emit('check-notification', {});
             }
         } catch (error) {
             console.error('Error marking all notifications as read:', error);
+            // Don't throw the error to prevent automatic logout
         }
     };
 
@@ -81,10 +82,10 @@ export default function Notification() {
     
     // Mark all notifications as read when component mounts
     useEffect(() => {
-        if (notifications.length > 0) {
+        if (notifications.length > 0 && notifications.some(n => !n.isRead)) {
             markAllAsRead();
         }
-    }, [notifications.length]); // This will run after the initial fetch
+    }, [notifications]); // This will run after the initial fetch
 
     const handleMarkAsRead = async (notificationId) => {
         try {
