@@ -56,16 +56,16 @@ export default function GetCertified() {
 
         {/* Cards */}
         <div className={styles.grid}>
-          {[0, 1].map((i) => (
+          
             <motion.div
-              key={i}
+              
               className={styles.griditems}
               variants={cardVariants}
-              custom={i}
+              
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
             >
-              {i === 0 ? (
+          
                 <div className={styles.card}>
                   <div className={styles.iconText}>
                     <img src={WinIcon} alt="WinIcon" />
@@ -92,32 +92,9 @@ export default function GetCertified() {
                     </div>
                   </div>
                 </div>
-              ) : (
-                <div className={styles.card}>
-                  <div className={styles.uplodBox}>
-                    <div>
-                      <div className={styles.center}>
-                        <img src={SampleIcon} alt="SampleIcon" />
-                      </div>
-                      <h4>Sample Certificate</h4>
-                      <p>Digital certificate with unique verification ID</p>
-                      <div className={styles.centerButton}>
-                        <button
-                          aria-label="LinkedIn Verified"
-                          onClick={() =>
-                            window.open("https://in.linkedin.com/")
-                          }
-                        >
-                          <img src={LinkdinIcon} alt="LinkdinIcon" />
-                          LinkedIn Verified
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              )}
+               
             </motion.div>
-          ))}
+    
         </div>
       </div>
     </motion.div>

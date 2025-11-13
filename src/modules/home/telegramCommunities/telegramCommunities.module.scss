@@ -90,6 +90,51 @@
                 width: 100%;
             }
 
+            .cardImageContainer {
+                position: relative;
+                width: 100%;
+                height: 200px; // Adjust height as needed
+                border-radius: 8px;
+                overflow: hidden;
+                margin-bottom: 16px;
+
+                .channelImage {
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    transition: transform 0.3s ease;
+                }
+
+                .logoContainer {
+                    position: absolute;
+                    top: 16px;
+                    left: 16px;
+                    width: 60px; // Slightly larger for better visibility
+                    height: 60px;
+                    border-radius: 50%;
+                    background: white;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+                    border: 2px solid white;
+                    overflow: hidden;
+
+                    .channelLogo {
+                        width: 100%;
+                        height: 100%;
+                        object-fit: contain;
+                        padding: 4px;
+                    }
+                }
+
+                &:hover {
+                    .channelImage {
+                        transform: scale(1.05);
+                    }
+                }
+            }
+
             .btn {
                 max-width: 140px;
                 width: 100%;
@@ -176,7 +221,7 @@
                     margin: 0 0 0 0;
                     color: var(--black-500);
                     -webkit-text-fill-color: transparent;
-                    background:black;
+                    background: black;
                     background-clip: text;
                     -webkit-background-clip: text;
                 }

@@ -28,29 +28,29 @@ function DashboardCard() {
                         <h1>Courses</h1>
                         <span><CourseIcon/>{data.courseCount || 0}</span>
                     </div>
-                    <div className={styles.cardDetails}>
+                    {/* <div className={styles.cardDetails}>
                         
                         <p>${data.courseTotalPrice || 0}</p>
-                    </div>
+                    </div> */}
                 </div>
                 <div className={styles.dashboardcard}>
                     <div className={styles.dashboardcardtitle}>
                         <h1>AlgoBots</h1>
                         <span><Algobot/>{data.botCount || 0}</span>
                     </div>
-                    <div className={styles.cardDetails}>
+                    {/* <div className={styles.cardDetails}>
                        
                         <p>${data.botTotalPrice || 0}</p>
-                    </div>
+                    </div> */}
                 </div>
                 <div className={styles.dashboardcard}>
                     <div className={styles.dashboardcardtitle}>
                         <h1>Telegram Channels</h1>
                         <span><BlackUserIcon/>{data.telegramCount || 0}</span>
                     </div>
-                    <div className={styles.cardDetails}>
+                    {/* <div className={styles.cardDetails}>
                         <p>${data.telegramTotalPrice || 0}</p>
-                    </div>
+                    </div> */}
                 </div>
                 {/* <div className={styles.dashboardcard}>
                     <div className={styles.dashboardcardtitle}>

@@ -1,5 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import styles from "./telegramInformation.module.scss";
 import Button from "@/compoents/button";
 import Input from "@/compoents/input";
@@ -36,7 +39,48 @@ function TelegramInformation({ id }) {
     const router = useRouter();
     const searchParams = useSearchParams();
 
-  
+    // Slider settings
+    const sliderSettings = {
+        dots: true,
+        infinite: false,
+        speed: 500,
+        slidesToShow: 5,
+        slidesToScroll: 1,
+        arrows: true,
+        responsive: [
+            {
+                breakpoint: 1500,
+                settings: {
+                    slidesToShow: 4,
+                    slidesToScroll: 1,
+                }
+            },
+            {
+                breakpoint: 1200,
+                settings: {
+                    slidesToShow: 3,
+                    slidesToScroll: 1,
+                }
+            },
+            {
+                breakpoint: 900,
+                settings: {
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                }
+            },
+            {
+                breakpoint: 600,
+                settings: {
+                    slidesToShow: 1,
+                    slidesToScroll: 1,
+                    arrows: false,
+                }
+            }
+        ]
+    };
+
+
     const fetchTelegramData = async () => {
         try {
             setIsLoading(true);
@@ -52,33 +96,33 @@ function TelegramInformation({ id }) {
     };
 
 
-    const handleBuyNow =async (plan) => {
+    const handleBuyNow = async (plan) => {
         const user = await getCookie('userToken');
-        if(user){
-            
-        const quantity = 1; // Since we're not using quantity in Telegram
-        const originalPrice = plan.initialPrice * quantity;
-        const commonDiscountAmount = (originalPrice * (plan.discount || 0)) / 100;
-        const priceAfterCommonDiscount = originalPrice - commonDiscountAmount;
-        
-        setSelectedPlan({
-            ...plan,
-            originalPrice: originalPrice,
-            totalPrice: priceAfterCommonDiscount,
-            quantity: quantity,
-            commonDiscount: plan.discount || 0,
-            discountType: 'common',
-            priceAfterCommonDiscount: priceAfterCommonDiscount
-        });
-        
-        setCoupon('');
-        setDiscount(commonDiscountAmount);
-        setError('');
-        setAppliedCoupon(null);
-        setIsModalOpen(true);
-    }else{
-     router.push('/signin');   
-    }
+        if (user) {
+
+            const quantity = 1; // Since we're not using quantity in Telegram
+            const originalPrice = plan.initialPrice * quantity;
+            const commonDiscountAmount = (originalPrice * (plan.discount || 0)) / 100;
+            const priceAfterCommonDiscount = originalPrice - commonDiscountAmount;
+
+            setSelectedPlan({
+                ...plan,
+                originalPrice: originalPrice,
+                totalPrice: priceAfterCommonDiscount,
+                quantity: quantity,
+                commonDiscount: plan.discount || 0,
+                discountType: 'common',
+                priceAfterCommonDiscount: priceAfterCommonDiscount
+            });
+
+            setCoupon('');
+            setDiscount(commonDiscountAmount);
+            setError('');
+            setAppliedCoupon(null);
+            setIsModalOpen(true);
+        } else {
+            router.push('/signin');
+        }
     };
 
     const handleApplyCoupon = async () => {
@@ -87,7 +131,7 @@ function TelegramInformation({ id }) {
         try {
             setIsValidating(true);
             setError('');
-            
+
             const response = await getCoupon(coupon);
 
             if (response.success) {
@@ -95,7 +139,7 @@ function TelegramInformation({ id }) {
                 const couponDiscountAmount = (selectedPlan.originalPrice * couponDiscountPercentage) / 100;
                 const totalDiscount = (((selectedPlan.commonDiscount * selectedPlan.originalPrice) / 100) || 0) + couponDiscountAmount;
                 const finalPrice = selectedPlan.originalPrice - totalDiscount;
-                
+
                 setCouponId(response.payload._id);
                 setAppliedCoupon({
                     code: coupon,
@@ -160,7 +204,13 @@ function TelegramInformation({ id }) {
     }, []);
 
 
-
+    const sortedPlans = [...plans].sort((a, b) => {
+        const getMonths = (planType) => {
+            const match = planType?.match(/(\d+)/);
+            return match ? parseInt(match[0], 10) : 0;
+        };
+        return getMonths(a.planType) - getMonths(b.planType);
+    })
     const getYouTubeEmbedUrl = (url) => {
         try {
             const urlObj = new URL(url);
@@ -203,44 +253,44 @@ function TelegramInformation({ id }) {
 
         const modalContent = paymentStatus === 'success' ? (
             <div className={styles.paymentModalContent}>
-        <div className={styles.paymentModaltitlecontent}>
-          <img src={SuccessIcon} alt="Success" className={styles.paymentIcon} />
-          {isInPerson && <h3>Congratulations!</h3>}
-          <h3>Payment Successful!</h3>
-          <p>Thank you for your purchase. You now have full access to this course.</p>
-        </div>
-      
-        <Button
-          text="Start Learning"
-          onClick={() => {
-            setShowPaymentModal(false);
-            setIsPaid(false);
-          }}
-        />
-      </div>
-    ) : (
-      <div className={styles.paymentModalContent}>
-      <div className={styles.paymentModaltitlecontent}>
-        <img src={ErrorIcon} alt="Cancelled" className={styles.paymentIcon} />
-        <h3>Payment Cancelled</h3>
-        <p>Your payment was not completed. Please try again to access the course.</p>
-      </div>
-      <div className={styles.modalButtons}>
-        
-          <OutlineButton
-            text="Try Again"
-            onClick={() => {
-              setShowPaymentModal(false);
-              handlePayment();
-            }}
-          />
-          <Button
-            text="Close"
-            onClick={() => setShowPaymentModal(false)}
-            style={{ marginLeft: '10px' }}
-          />
-        </div>
-      </div>
+                <div className={styles.paymentModaltitlecontent}>
+                    <img src={SuccessIcon} alt="Success" className={styles.paymentIcon} />
+                    {isInPerson && <h3>Congratulations!</h3>}
+                    <h3>Payment Successful!</h3>
+                    <p>Thank you for your purchase. You now have full access to this course.</p>
+                </div>
+
+                <Button
+                    text="Start Learning"
+                    onClick={() => {
+                        setShowPaymentModal(false);
+                        setIsPaid(false);
+                    }}
+                />
+            </div>
+        ) : (
+            <div className={styles.paymentModalContent}>
+                <div className={styles.paymentModaltitlecontent}>
+                    <img src={ErrorIcon} alt="Cancelled" className={styles.paymentIcon} />
+                    <h3>Payment Cancelled</h3>
+                    <p>Your payment was not completed. Please try again to access the course.</p>
+                </div>
+                <div className={styles.modalButtons}>
+
+                    <OutlineButton
+                        text="Try Again"
+                        onClick={() => {
+                            setShowPaymentModal(false);
+                            handlePayment();
+                        }}
+                    />
+                    <Button
+                        text="Close"
+                        onClick={() => setShowPaymentModal(false)}
+                        style={{ marginLeft: '10px' }}
+                    />
+                </div>
+            </div>
         );
 
         return (
@@ -253,129 +303,155 @@ function TelegramInformation({ id }) {
     return (
         <div className="container">
             {renderPaymentModal()}
-        <div className={styles.telegramDetails}>
-          
-            {/* Header Section */}
-            <div className={styles.telegramDetailsContainer}>
-            <div className={styles.telegramDetailstitle}>
-                <h1>{telegramData?.channelName || <Skeleton width="100%" height={24} />}</h1>
-                <p>{telegramData?.description || <Skeleton width="100%" height={24} count={2} />}</p>
-            </div>
+            <div className={styles.telegramDetails}>
 
-            {/* Plans Section */}
-            <div className={styles.plansSection}>
-                <div className={styles.plansTitle}>
-                    <h2>Available Plans</h2>
-                </div>
-                <div className={styles.plansGrid}>
-                    {isLoading ? (
-                        renderSkeletonCards()
-                    ) : plans?.length > 0 ? (
-                        plans.map((plan) => (
-                            <div key={plan._id} className={styles.planCard}>
-                                <div className={styles.plancardheader}>
-                                    <span>{plan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}</span>
-                                    <h3>${plan.price.toFixed(2)}</h3>
-                                </div>
-                                <div className={styles.plandetails}>
-                                    <div className={styles.plandetailsflx}>
-                                        <span>M.R.P :</span>
-                                        {plan.initialPrice > plan.price && (
-                                            <span>${plan.initialPrice}</span>
-                                        )}
-                                    </div>
-                                    <div className={styles.plandetailsflx}>
-                                        <span>Discount :</span>
-                                        {plan.discount > 0 && (
-                                            <span className={styles.redText}>-{plan.discount}%</span>
-                                        )}
-                                    </div>
-                                </div>
-                                <Button
-                                    text="Subscribe Now"
-                                    onClick={() => handleBuyNow(plan)}
+                {/* Header Section */}
+                <div className={styles.telegramDetailsContainer}>
+                    <div className={styles.telegramDetailstitle}>
+                    <h1>{telegramData?.channelName || <Skeleton width="100%" height={24} />}</h1>
+                    <div className={styles.channelGrid}>
+                        <div className={styles.channelImageContainer}>
+                            {telegramData?.image ? (
+                                <img 
+                                    src={telegramData.image} 
+                                    alt={telegramData.channelName} 
+                                    className={styles.channelImage}
+                                    onError={(e) => {
+                                        e.target.style.display = 'none';
+                                    }}
                                 />
-                            </div>
-                        ))
-                    ) : (
-                        <p>No plans available at the moment.</p>
-                    )}
-                </div>
-            </div>
-
-            {/* Purchase Modal */}
-            <Modal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                title="Complete Your Subscription"
-            >
-                {selectedPlan && (
-                    <div className={styles.modalContent}>
-                        <div className={styles.planInfo}>
-                            <h3>{selectedPlan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')} Plan</h3>
-                            <p>
-                                <span>Original Price:</span>
-                                <span>${selectedPlan.originalPrice?.toFixed(2) || '0.00'}</span>
-                            </p>
-
-                            {selectedPlan.commonDiscount > 0 && (
-                                <p className={styles.discountText}>
-                                    <span>Common Discount ({selectedPlan.commonDiscount}%):</span>
-                                    <span>-${((selectedPlan.originalPrice * selectedPlan.commonDiscount) / 100).toFixed(2)}</span>
-                                </p>
+                            ) : (
+                                <div className={styles.imagePlaceholder}>
+                                    <span>No Image</span>
+                                </div>
                             )}
-
-                            {appliedCoupon && (
-                                <p className={styles.discountText}>
-                                    <span>Coupon Discount ({appliedCoupon.discount}%):</span>
-                                    <span>-${(( selectedPlan.originalPrice) * (appliedCoupon.discount / 100)).toFixed(2)}</span>
-                                </p>
-                            )}
-
-                            <h4 className={styles.totalPrice}>
-                                <span>Total Amount:</span>
-                                <span>${selectedPlan.totalPrice?.toFixed(2) || '0.00'}</span>
-                            </h4>
                         </div>
-
-                        <div className={styles.couponSection}>
-                            <Input
-                                type="text"
-                                placeholder="Enter coupon code"
-                                value={coupon}
-                                onChange={(e) => setCoupon(e.target.value)}
-                                disabled={!!appliedCoupon}
-                                className={styles.couponInput}
-                            />
-                            <OutlineButton
-                                text={appliedCoupon ? 'Applied' : 'Apply'}
-                                onClick={handleApplyCoupon}
-                                disabled={isValidating || !!appliedCoupon || !coupon.trim()}
-                                isLoading={isValidating}
-                                variant={appliedCoupon ? 'secondary' : 'primary'}
-                            />
-                        </div>
-
-                        {error && <p className={styles.errorText}>{error}</p>}
-
-                        <div className={styles.modalActions}>
-                            <Button
-                                text="Cancel"
-                                variant="outline"
-                                onClick={() => setIsModalOpen(false)}
-                            />
-                            <Button
-                                text={`Pay $${selectedPlan.totalPrice?.toFixed(2) || '0.00'}`}
-                                onClick={handlePurchase}
-                                disabled={isProcessingPayment}
-                                isLoading={isProcessingPayment}
-                            />
+                        <div className={styles.channelDescription}>
+                            <p>{telegramData?.description || <Skeleton width="100%" height={24} count={2} />}</p>
                         </div>
                     </div>
-                )}
-            </Modal>
+                </div>
+
+                    {/* Plans Section */}
+                    <div className={styles.plansSection}>
+                        <div className={styles.plansTitle}>
+                            <h2>Available Plans</h2>
+                        </div>
+                        {isLoading ? (
+                            <div className={styles.plansGrid}>
+                                {renderSkeletonCards()}
+                            </div>
+                        ) : sortedPlans?.length > 0 ? (
+                            <Slider {...sliderSettings} className={styles.plansSlider}>
+                                {sortedPlans.map((plan) => (
+                                    <div key={plan._id} className={styles.planCard}>
+                                        <div className={styles.plancardheader}>
+                                            <span>{plan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}</span>
+                                            <h3>${plan.price.toFixed(2)}</h3>
+                                        </div>
+                                        <div className={styles.plandetails}>
+                                            <div className={styles.plandetailsflx}>
+                                                <span>M.R.P :</span>
+                                                {plan.initialPrice > plan.price ? (
+                                                    <span>${plan.initialPrice.toFixed(2)}</span>
+                                                ) : (
+                                                    <span>$0.00</span>
+                                                )}
+                                            </div>
+                                            <div className={styles.plandetailsflx}>
+                                                <span>Discount :</span>
+                                                {plan.discount > 0 ? (
+                                                    <span className={styles.redText}>-{plan.discount}%</span>
+                                                ) : (
+                                                    <span className={styles.redText}>-0%</span>
+                                                )}
+                                            </div>
+                                        </div>
+                                        <Button
+                                            text="Subscribe Now"
+                                            onClick={() => handleBuyNow(plan)}
+                                        />
+                                    </div>
+                                ))}
+                            </Slider>
+                        ) : (
+                            <p>No plans available at the moment.</p>
+                        )}
+                    </div>
+
+                    {/* Purchase Modal */}
+                    <Modal
+                        isOpen={isModalOpen}
+                        onClose={() => setIsModalOpen(false)}
+                        title="Complete Your Subscription"
+                    >
+                        {selectedPlan && (
+                            <div className={styles.modalContent}>
+                                <div className={styles.planInfo}>
+                                    <h3>{selectedPlan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')} Plan</h3>
+                                    <p>
+                                        <span>Original Price:</span>
+                                        <span>${selectedPlan.originalPrice?.toFixed(2) || '0.00'}</span>
+                                    </p>
+
+                                    {selectedPlan.commonDiscount > 0 && (
+                                        <p className={styles.discountText}>
+                                            <span>Common Discount ({selectedPlan.commonDiscount}%):</span>
+                                            <span>-${((selectedPlan.originalPrice * selectedPlan.commonDiscount) / 100).toFixed(2)}</span>
+                                        </p>
+                                    )}
+
+                                    {appliedCoupon && (
+                                        <p className={styles.discountText}>
+                                            <span>Coupon Discount ({appliedCoupon.discount}%):</span>
+                                            <span>-${((selectedPlan.originalPrice) * (appliedCoupon.discount / 100)).toFixed(2)}</span>
+                                        </p>
+                                    )}
+
+                                    <h4 className={styles.totalPrice}>
+                                        <span>Total Amount:</span>
+                                        <span>${selectedPlan.totalPrice?.toFixed(2) || '0.00'}</span>
+                                    </h4>
+                                </div>
+
+                                <div className={styles.couponSection}>
+                                    <Input
+                                        type="text"
+                                        placeholder="Enter coupon code"
+                                        value={coupon}
+                                        onChange={(e) => setCoupon(e.target.value)}
+                                        disabled={!!appliedCoupon}
+                                        className={styles.couponInput}
+                                    />
+                                    <OutlineButton
+                                        text={appliedCoupon ? 'Applied' : 'Apply'}
+                                        onClick={handleApplyCoupon}
+                                        disabled={isValidating || !!appliedCoupon || !coupon.trim()}
+                                        isLoading={isValidating}
+                                        variant={appliedCoupon ? 'secondary' : 'primary'}
+                                    />
+                                </div>
+
+                                {error && <p className={styles.errorText}>{error}</p>}
+
+                                <div className={styles.modalActions}>
+                                    <Button
+                                        text="Cancel"
+                                        variant="outline"
+                                        onClick={() => setIsModalOpen(false)}
+                                    />
+                                    <Button
+                                        text={`Pay $${selectedPlan.totalPrice?.toFixed(2) || '0.00'}`}
+                                        onClick={handlePurchase}
+                                        disabled={isProcessingPayment}
+                                        isLoading={isProcessingPayment}
+                                    />
+                                </div>
+                            </div>
+                        )}
+                    </Modal>
+                </div>
             </div>
-        </div>
         </div>
     );
 }

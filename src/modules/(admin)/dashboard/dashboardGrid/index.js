@@ -372,9 +372,10 @@ function DashboardGrid() {
               <div className={styles.dropdownmain}>
                 <div
                   className={styles.dropdownhead}
-                  onClick={() =>
+                  onClick={(e) => {
+                    e.stopPropagation();
                     setOpenDropdown(openDropdown === bot._id ? null : bot._id)
-                  }
+                  }}
                 >
                   <span>
                     {selectedPlan

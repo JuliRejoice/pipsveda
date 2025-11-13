@@ -236,9 +236,18 @@ function TelegramDetails({ id }) {
             return renderSkeletonCards(3);
         }
 
+        // Sort plans by the numeric value in planType (e.g., '1month' -> 1, '3months' -> 3)
+        const sortedPlans = [...plans].sort((a, b) => {
+            const getMonthValue = (planType) => {
+                const match = planType?.match(/(\d+)/);
+                return match ? parseInt(match[0], 10) : 0;
+            };
+            return getMonthValue(a.planType) - getMonthValue(b.planType);
+        });
+
         return (
             <div className={styles.planGrid}>
-                {plans.map((plan) => {
+                {sortedPlans.map((plan) => {
                     const isPurchased = plan.isPayment;
                     return (
                         <div 
@@ -258,7 +267,7 @@ function TelegramDetails({ id }) {
                                 <div className={styles.contentAlignment}>
                                     <span>Discount:</span>
                                     <span className={styles.dangerText}>
-                                        {plan.discount || 0}% OFF
+                                        {plan.discount || 0}%
                                     </span>
                                 </div>
                             </div>
@@ -336,10 +345,30 @@ function TelegramDetails({ id }) {
             <Breadcumbs />
             {/* Header Section */}
             <div className={styles.telegramDetailsContainer}>
-            <div className={styles.telegramDetailstitle}>
-                <h1>{telegramData?.channelName || <Skeleton width="100%" height={24} />}</h1>
-                <p>{telegramData?.description || <Skeleton width="100%" height={24} count={2} />}</p>
-            </div>
+                <div className={styles.telegramDetailstitle}>
+                    <h1>{telegramData?.channelName || <Skeleton width="100%" height={24} />}</h1>
+                    <div className={styles.channelGrid}>
+                        <div className={styles.channelImageContainer}>
+                            {telegramData?.image ? (
+                                <img 
+                                    src={telegramData.image} 
+                                    alt={telegramData.channelName} 
+                                    className={styles.channelImage}
+                                    onError={(e) => {
+                                        e.target.style.display = 'none';
+                                    }}
+                                />
+                            ) : (
+                                <div className={styles.imagePlaceholder}>
+                                    <span>No Image</span>
+                                </div>
+                            )}
+                        </div>
+                        <div className={styles.channelDescription}>
+                            <p>{telegramData?.description || <Skeleton width="100%" height={24} count={2} />}</p>
+                        </div>
+                    </div>
+                </div>
 
             {/* Plans Section */}
             <div className={styles.plansSection}>

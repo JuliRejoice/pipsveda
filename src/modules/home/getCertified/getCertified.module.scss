@@ -49,16 +49,15 @@
     }
 
     .grid {
-        display: grid;
-        grid-template-columns: 1fr 620px;
-        gap: 44px;
-
-        @include respond-to("md") {
-            grid-template-columns: 1fr;
-            gap: 20px;
-        }
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        margin: 0 auto;
 
         .griditems {
+            width: 100%;
+            max-width: 620px;
             background-color: var(--black-100);
             border-radius: 12px;
             height: 100%;

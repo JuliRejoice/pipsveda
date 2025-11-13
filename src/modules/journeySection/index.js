@@ -4,7 +4,7 @@ import { motion, useInView } from 'framer-motion';
 import styles from './journeySection.module.scss';
 import OutlineButton from '@/compoents/outlineButton';
 
-const JourneyImge = '/assets/images/Journey-new.png';
+const JourneyImge = '/assets/images/journey-new.png';
 const MessageIcon = '/assets/icons/message.svg';
 
 // Animation Variants
@@ -61,11 +61,10 @@ export default function JourneySection() {
 
             {/* Cards Section */}
             <div className={styles.callCardAlignment}>
-              {[...Array(2)].map((_, i) => (
+             
                 <motion.div
                   className={styles.card}
-                  key={i}
-                  custom={i}
+                
                   variants={cardVariants}
                   initial="hidden"
                   animate={isInView ? 'visible' : 'hidden'}
@@ -82,7 +81,7 @@ export default function JourneySection() {
                   </div>
                   <OutlineButton text="Visit Forum" />
                 </motion.div>
-              ))}
+         
             </div>
           </div>
 

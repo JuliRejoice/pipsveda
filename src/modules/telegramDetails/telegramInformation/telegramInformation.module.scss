@@ -405,10 +405,64 @@
 
 
 .telegramDetails {
-
     .telegramDetailsContainer {
         background-color: var(--bg-white);
         padding: 30px;
+        
+        .channelGrid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+
+            @include respond-to('md') {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .channelImageContainer {
+                position: relative;
+                border-radius: 12px;
+                overflow: hidden;
+                background: var(--grey-100);
+                padding-top: 56.25%; /* 16:9 Aspect Ratio */
+                height: 0;
+
+                .channelImage {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    object-fit: cover;
+                    transition: transform 0.3s ease;
+                }
+
+                .imagePlaceholder {
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    background: var(--grey-100);
+                    color: var(--grey-500);
+                    font-size: 0.875rem;
+                }
+            }
+
+            .channelDescription {
+                p {
+                    @include font18;
+                    color: var(--grey-600);
+                    line-height: 1.6;
+                    margin: 0;
+                }
+            }
+        }
 
         .telegramDetailstitle {
             padding-bottom: 30px;
@@ -443,10 +497,13 @@
     }
 
     .plansSection {
+        padding: 20px 0;
+        position: relative;
 
         .plansTitle {
             border-bottom: 1px solid var(--border-color5);
             padding: 20px 0;
+            margin-bottom: 20px;
 
             h2 {
                 @include heading20;
@@ -454,21 +511,71 @@
             }
         }
 
-        .plansGrid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            gap: 20px;
-            margin-top: 20px;
+        .slick-slider {
+            margin: 0 -10px;
+        }
 
-            .planCard {
-                background-color: #f7f8fa;
-                border-radius: 12px;
-                padding: 35px 30px;
-                transition: .4s ease-in-out;
+        .slick-slide {
+            padding: 0 50px;
+            box-sizing: border-box;
+        }
 
-                &:hover {
-                    transform: translateY(-3px);
+        .slick-prev,
+        .slick-next {
+            width: 32px;
+            height: 32px;
+            z-index: 1;
+            
+            &:before {
+                color: var(--primary-color);
+                font-size: 24px;
+                opacity: 1;
+            }
+        }
+
+        .slick-prev {
+            left: -10px;
+        }
+
+        .slick-next {
+            right: -10px;
+        }
+
+        .slick-dots {
+            bottom: -30px;
+            
+            li {
+                margin: 0 2px;
+                
+                button:before {
+                    font-size: 10px;
+                    color: var(--grey-400);
+                    opacity: 1;
                 }
+                
+                &.slick-active button:before {
+                    color: var(--primary-color);
+                }
+            }
+        }
+
+        .plansGrid {
+            display: none; /* Hide the grid view */
+        }
+
+        .planCard {
+            background-color: #f7f8fa;
+            border-radius: 12px;
+            padding: 35px 30px;
+            transition: transform 0.3s ease;
+            margin: 0 5px;
+            height: 100%;
+            box-sizing: border-box;
+
+            &:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            }
 
                 .plancardheader {
                     display: flex;
@@ -580,15 +687,12 @@
     }
 
     @include respond-to('md') {
-        padding: 1.5rem;
-
-        .plansGrid {
-            grid-template-columns: 1fr;
-        }
+        // padding: 50px;
+        // Add any specific styles for medium screens here if needed
     }
 
     @include respond-to('sm') {
-        padding: 1rem;
+        // padding: 50px;
 
         .header {
             margin-bottom: 2rem;
@@ -603,7 +707,7 @@
         }
 
         .planCard {
-            padding: 1.5rem;
+            padding: 50px;
 
             h3 {
                 @include heading20;
@@ -614,4 +718,3 @@
             }
         }
     }
-}

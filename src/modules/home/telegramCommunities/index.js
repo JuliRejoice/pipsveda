@@ -38,15 +38,23 @@ export default function TelegramCommunities() {
   const [telegramChannels, setTelegramChannels] = useState([]);
   const router = useRouter();
 
+  const fetchTelegramChannels = async () => {
+  try {
+    console.log("Fetching Telegram channels...");
+    const response = await getTelegramFordashboard();
+    console.log("API Response:", response); // Log the full response
+    if (response && response.payload && Array.isArray(response.payload.data)) {
+      console.log("Setting Telegram channels:", response.payload.data);
+      setTelegramChannels(response.payload.data);
+    } else {
+      console.error("Unexpected response format:", response);
+    }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
+};
+
   useEffect(() => {
-    const fetchTelegramChannels = async () => {
-      try {
-        const response = await getTelegramFordashboard();
-        setTelegramChannels(response.payload.data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
     fetchTelegramChannels();
   }, []);
 
@@ -163,6 +171,32 @@ export default function TelegramCommunities() {
                     mass: 0.6,
                   }}
                 >
+                  <div className={styles.cardImageContainer}>
+                    {channel.image && (
+                      <img 
+                        src={channel.image} 
+                        alt={channel.channelName}
+                        className={styles.channelImage}
+                        onError={(e) => {
+                          console.log(e);
+                          // e.target.style.display = 'none';
+                        }}
+                      />
+                    )}
+                    {channel.logo && (
+                      <div className={styles.logoContainer}>
+                        <img 
+                          src={channel.logo} 
+                          alt={`${channel.channelName} logo`}
+                          className={styles.channelLogo}
+                          onError={(e) => {
+                            console.log(e);
+                            // e.target.style.display = 'none';
+                          }}
+                        />
+                      </div>
+                    )}
+                  </div>
                   <div className={styles.cardHeader}>
                     <div className={styles.textStyle}>
                       <h3>{channel.channelName}</h3>

@@ -17,7 +17,7 @@ const RightIcon = "/assets/icons/right.svg";
 
 // Skeleton component to match the card layout
 const CardSkeleton = () => (
-   <div
+  <div
     style={{
       background: "#fff",
       borderRadius: "12px",
@@ -175,28 +175,40 @@ export default function TelegramChannels({
       </div>
       <div className={styles.grid}>
         {channels?.map((channel) => (
-          <div 
-            className={styles.griditems} 
-            key={channel._id} 
+          <div
+            className={styles.griditems}
+            key={channel._id}
             onClick={(e) => {
               // Only navigate if the click is not on the dropdown
               if (!e.target.closest(`.${styles.dropdownmain}`)) {
-                channel.telegramPlan?.some((plan) => plan.isPayment) 
-                  ? router.push(`/my-courses/telegram/${channel._id}`) 
+                channel.telegramPlan?.some((plan) => plan.isPayment)
+                  ? router.push(`/my-courses/telegram/${channel._id}`)
                   : router.push(`/telegram/${channel._id}`);
               }
             }}
           >
-            {/* <div className={styles.image}>
-                            <img
-                                src={channel.imageUrl || '/assets/images/crypto.png'}
-                                alt={channel.channelName}
-                                onError={(e) => {
-                                    e.target.onerror = null;
-                                    e.target.src = '/assets/images/crypto.png';
-                                }}
-                            />
-                        </div> */}
+            <div className={styles.imageContainer}>
+              <img
+                className={styles.channelImage}
+                src={channel.image || '/assets/images/crypto.png'}
+                alt={channel.channelName}
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = '/assets/images/crypto.png';
+                }}
+              />
+              <div className={styles.logoContainer}>
+                <img
+                  className={styles.channelLogo}
+                  src={channel.logo || channel.image || '/assets/images/crypto.png'}
+                  alt={`${channel.channelName} logo`}
+                  onError={(e) => {
+                    e.target.onerror = null;
+                    e.target.src = '/assets/images/crypto.png';
+                  }}
+                />
+              </div>
+            </div>
             <div className={styles.details}>
               <h3>{channel.channelName}</h3>
               <p>{channel.description}</p>

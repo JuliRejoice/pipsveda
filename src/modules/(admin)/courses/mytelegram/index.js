@@ -119,6 +119,33 @@ function MyTelegram() {
                     telegramCourses?.map((telegramCourse, index) => (
                         <Link href={`/my-courses/telegram/${telegramCourse?.telegramId?.telegramId?._id}`} key={telegramCourse?.telegramId?._id || index}>
                             <div className={styles.cardgridItems}>
+                                <div className={styles.imageContainer}>
+                                    {telegramCourse?.telegramId?.telegramId?.image ? (
+                                        <img 
+                                            src={telegramCourse.telegramId.telegramId.image} 
+                                            alt={telegramCourse.telegramId.telegramId.channelName}
+                                            className={styles.channelImage}
+                                            onError={(e) => {
+                                                e.target.style.display = 'none';
+                                                e.target.nextElementSibling.style.display = 'flex';
+                                            }}
+                                        />
+                                    ) : (
+                                        <div className={styles.imagePlaceholder}>
+                                            {telegramCourse?.telegramId?.telegramId.channelName?.charAt(0) || 'T'}
+                                        </div>
+                                    )}
+                                    {telegramCourse?.telegramId?.telegramId?.logo && (
+                                        <div className={styles.logoContainer}>
+                                            <img 
+                                                src={telegramCourse.telegramId.telegramId.logo} 
+                                                alt={`${telegramCourse.telegramId.telegramId.channelName} logo`}
+                                                className={styles.channelLogo}
+                                                onError={(e) => e.target.style.display = 'none'}
+                                            />
+                                        </div>
+                                    )}
+                                </div>
                                 <div className={styles.details}>
                                     <div className={styles.title}>
                                         <div className={styles.textStyle}>
