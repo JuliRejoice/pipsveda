@@ -1,284 +1,338 @@
-@use '../../../scss/main.scss' as *;
-@use '../../../scss/breakpoints/breakpoints.scss' as *;
-@use '../../../scss/typography/typography.scss' as *;
+@use "../../../scss/main.scss" as *;
+@use "../../../scss/breakpoints/breakpoints.scss" as *;
+@use "../../../scss/typography/typography.scss" as *;
 
 .coursesPagealignment {
-    background-color: var(--bg-white);
-    border: 1px solid var(--border-color5);
-    padding: 30px;
-    border-radius: 12px;
+  background-color: var(--bg-white);
+  border: 1px solid var(--border-color5);
+  padding: 30px;
+  border-radius: 12px;
 
-    .title {
-        padding: 0 0 24px 0;
+  .title {
+    padding: 0 0 24px 0;
 
-        h2 {
-            margin: 0 0 2px 0;
-            color: var(--black-500);
-            @include heading20;
-        }
-
-        p {
-            @include font16normal;
-            color: var(--grey-600);
-        }
+    h2 {
+      margin: 0 0 2px 0;
+      color: var(--black-500);
+      @include heading20;
     }
 
-    .algotabsmain {
-        border-bottom: 1px solid var(--border-color2);
-        overflow-x: auto;
+    p {
+      @include font16normal;
+      color: var(--grey-600);
+    }
+  }
 
-        // &::-webkit-scrollbar {
-        //   display: none;
-        // }
+  .algotabsmain {
+    border-bottom: 1px solid var(--border-color2);
+    overflow-x: auto;
 
-        .algotabs {
-            width: fit-content;
-            display: flex;
-            white-space: nowrap;
-            align-items: center;
+    // &::-webkit-scrollbar {
+    //   display: none;
+    // }
 
-            .algotabs {
-                background-color: transparent;
-                width: fit-content;
-                cursor: pointer;
-                border: none;
-                padding: 14px 22px;
-                @include font16;
-                position: relative;
-                outline: none;
-                // overflow: hidden;
-                transition: .4s ease-in-out;
+    .algotabs {
+      width: fit-content;
+      display: flex;
+      white-space: nowrap;
+      align-items: center;
 
-                &::before {
-                    position: absolute;
-                    bottom: 0;
-                    left: 0;
-                    width: 100%;
-                    height: 1px;
-                    content: "";
-                    background-color: transparent;
-                }
+      .algotabs {
+        background-color: transparent;
+        width: fit-content;
+        cursor: pointer;
+        border: none;
+        padding: 14px 22px;
+        @include font16;
+        position: relative;
+        outline: none;
+        // overflow: hidden;
+        transition: 0.4s ease-in-out;
 
-                &.active,
-                &:hover {
-                    &::before {
-                        background: var(--button-gradient);
-                    }
-
-                    span {
-                        background-image: var(--button-gradient);
-                        // color: transparent;
-                        background-clip: text;
-                        transition: .4s ease-in-out;
-                    }
-                }
-
-                span {
-                    color: var(--black-100);
-                }
-            }
+        &::before {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          width: 100%;
+          height: 1px;
+          content: "";
+          background-color: transparent;
         }
+
+        &.active,
+        &:hover {
+          &::before {
+            background: var(--button-gradient);
+          }
+
+          span {
+            background-image: var(--button-gradient);
+            // color: transparent;
+            background-clip: text;
+            transition: 0.4s ease-in-out;
+          }
+        }
+
+        span {
+          color: var(--black-100);
+        }
+      }
+    }
+  }
+
+  .tabAlignment {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 0 0 30px 0;
+    flex-wrap: wrap;
+
+    @include respond-to("sm") {
+      width: 100%;
+      overflow: auto;
+      scrollbar-width: none;
+      flex-wrap: nowrap;
     }
 
-    .tabAlignment {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-        padding: 0 0 30px 0;
-        flex-wrap: wrap;
+    &::-webkit-scrollbar {
+      display: none;
+    }
 
-        @include respond-to("sm") {
-            width: 100%;
-            overflow: auto;
-            scrollbar-width: none;
-            flex-wrap: nowrap;
+    *::-webkit-scrollbar {
+      display: none;
+    }
+
+    button {
+      border: none;
+      padding: 16px 30px;
+      cursor: pointer;
+      @include font16normal;
+      font-weight: 600;
+      background: rgba(218, 218, 218, 0.8);
+      color: var(--black-500);
+      transition: 0.3s ease-in-out;
+
+      @media (max-width: 1500px) {
+        padding: 12px 26px;
+        font-size: 15px;
+      }
+
+      @include respond-to("sm") {
+        white-space: nowrap;
+      }
+
+      &:hover,
+      &.activeTab {
+        background: var(--button-gradient);
+        color: var(--text-white);
+      }
+    }
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    padding-top: 24px;
+
+    @include respond-to("lg") {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include respond-to("md") {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include respond-to("sm") {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    .emptyState {
+      grid-column: 1 / -1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 3rem 1rem;
+      background: #f9fafb;
+      border-radius: 12px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
+      margin: 2rem auto;
+      max-width: 600px;
+    }
+
+    .griditems {
+      cursor: pointer;
+      background-color: var(--bg-white);
+      padding: 0;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      overflow: hidden;
+      border: 1px solid var(--border-color2);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+
+      &:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .cardImage {
+        position: relative;
+        width: 100%;
+        height: 180px;
+        overflow: hidden;
+
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.5s ease;
         }
 
-        &::-webkit-scrollbar {
-            display: none;
+        &::after {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: linear-gradient(
+            to bottom,
+            rgba(0, 0, 0, 0.1) 0%,
+            rgba(0, 0, 0, 0.4) 100%
+          );
+          opacity: 0.3;
+          transition: opacity 0.3s ease;
         }
 
-        *::-webkit-scrollbar {
-            display: none;
-        }
+        &:hover {
+          img {
+            transform: scale(1.05);
+          }
 
-        button {
-            border: none;
-            padding: 16px 30px;
-            cursor: pointer;
-            @include font16normal;
+          &::after {
+            opacity: 0.5;
+          }
+        }
+      }
+
+      .infoCard {
+        background: #f8f9fa;
+        border-radius: 8px;
+        padding: 15px;
+        margin-top: 15px;
+        border: 1px solid #e9ecef;
+        width: 100%;
+
+        .infoRow {
+          display: flex;
+          justify-content: space-between;
+          margin-bottom: 10px;
+          font-size: 14px;
+          line-height: 1.4;
+
+          &:last-child {
+            margin-bottom: 0;
+          }
+
+          .infoLabel {
+            color: #6c757d;
+            font-weight: 500;
+            margin-right: 8px;
+          }
+
+          .infoValue {
+            color: #212529;
+            text-align: right;
+            flex: 1;
+          }
+
+          .price {
+            color: #28a745;
             font-weight: 600;
-            background: rgba(218, 218, 218, 0.80);
-            color: var(--black-500);
-            transition: .3s ease-in-out;
-
-            @media (max-width:1500px) {
-                padding: 12px 26px;
-                font-size: 15px;
-            }
-
-            @include respond-to("sm") {
-                white-space: nowrap;
-            }
-
-            &:hover,
-            &.activeTab {
-                background: var(--button-gradient);
-                color: var(--text-white);
-            }
+          }
         }
-    }
+      }
 
-    .grid {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 22px;
-        padding-top: 20px;
+      .detailsAlignment {
+        padding: 20px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
 
-        @include respond-to("lg") {
-            grid-template-columns: repeat(2, 1fr);
+        h3 {
+          @include font18;
+          color: var(--black-700);
+          margin: 0;
+          line-height: 1.4;
+          font-weight: 600;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          text-overflow: ellipsis;
         }
 
-        @include respond-to("md") {
-            grid-template-columns: repeat(2, 1fr);
+        h4 {
+          @include font14;
+          color: var(--primary-color);
+          margin: 0;
+          font-weight: 500;
+          background: rgba(107, 79, 216, 0.1);
+          display: inline-block;
+          padding: 4px 10px;
+          border-radius: 4px;
         }
 
-        @include respond-to("sm") {
-            grid-template-columns: repeat(1, 1fr);
-        }
+        .twoalignment {
+          margin-top: auto;
+          padding-top: 12px;
+          border-top: 1px solid var(--border-color2);
+          display: flex;
+          align-items: center;
+          gap: 16px;
+          flex-wrap: wrap;
 
-
-        .emptyState {
-            grid-column: 1 / span 4;
+          .text {
             display: flex;
-            flex-direction: column;
-            justify-content: center;
             align-items: center;
-            text-align: center;
-            padding: 3rem 1rem;
-            background: #f9fafb; // light gray background
-            border-radius: 12px;
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
-            margin: 2rem auto;
-            max-width: 600px;
+            gap: 8px;
+            @include font14;
+            color: var(--grey-600);
+            margin: 0;
+            line-height: 1.4;
+
+            svg {
+              width: 16px;
+              height: 16px;
+              flex-shrink: 0;
+              color: var(--primary-color);
+            }
+
+            p {
+              margin: 0;
+              color: var(--grey-600);
+              -webkit-line-clamp: 3;
+              -webkit-box-orient: vertical;
+              display: -webkit-box;
+              overflow: hidden;
+            }
+
+            span {
+              display: block;
+              @include font16normal;
+              color: var(--grey-600);
+              line-height: 4px;
+            }
+          }
         }
-
-        .griditems {
-            cursor: pointer;
-            background-color: var(--bg-light-700);
-            padding: 16px;
-            border-radius: 12px;
-
-
-            .infoCard {
-                background: #f8f9fa;
-                border-radius: 8px;
-                padding: 15px;
-                margin-top: 15px;
-                border: 1px solid #e9ecef;
-                width: 100%;
-
-                .infoRow {
-                    display: flex;
-                    justify-content: space-between;
-                    margin-bottom: 10px;
-                    font-size: 14px;
-                    line-height: 1.4;
-
-                    &:last-child {
-                        margin-bottom: 0;
-                    }
-
-                    .infoLabel {
-                        color: #6c757d;
-                        font-weight: 500;
-                        margin-right: 8px;
-                    }
-
-                    .infoValue {
-                        color: #212529;
-                        text-align: right;
-                        flex: 1;
-                    }
-
-                    .price {
-                        color: #28a745;
-                        font-weight: 600;
-                    }
-                }
-            }
-
-            .cardImage {
-
-                img,
-                .cardImageskl {
-                    object-fit: cover;
-                    width: 100%;
-                    aspect-ratio: 16 / 9;
-                    border-radius: 12px;
-                    display: block;
-                }
-            }
-
-            .detailsAlignment {
-                padding: 14px 0 0 0;
-
-                h3 {
-                    @include heading18;
-                    color: var(--black-500);
-                    
-                }
-
-                h4 {
-                    @include font17;
-                    color: var(--black-500);
-                    font-family: var(--font-funneldisplay);
-                    padding-top: 10px;
-                }
-
-                .iconText {
-                    display: flex;
-                    align-items: center;
-                    gap: 6px;
-                    cursor: pointer;
-
-                    span {
-                        @include font16normal;
-                        color: var(--black);
-                    }
-                }
-
-                .twoalignment {
-                    display: flex;
-                    justify-content: space-between;
-                    flex-wrap: wrap;
-                    padding-top: 15px;
-                    gap: 10px;
-
-                    .text {
-                        display: flex;
-                        align-items: center;
-                        gap: 4px;
-
-                        p {
-                            @include font16;
-                            font-family: var(--font-lexend);
-                            color: var(--grey-600);
-                            -webkit-line-clamp: 3;
-                            -webkit-box-orient: vertical;
-                            display: -webkit-box;
-                            overflow: hidden;
-                        }
-
-                        span {
-                            display: block;
-                            @include font16normal;
-                            color: var(--grey-600);
-                            line-height: 4px;
-                        }
-                    }
-                }
-            }
-        }
+      }
     }
+  }
 }

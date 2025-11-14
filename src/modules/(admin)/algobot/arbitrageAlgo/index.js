@@ -45,7 +45,7 @@ const CardSkeleton = () => (
   <div
     className={styles.cardSkeleton}
     style={{
-      width: "360px",       // same width as your card
+      width: "360px", // same width as your card
       borderRadius: "12px",
       backgroundColor: "#fff",
       padding: "16px",
@@ -278,7 +278,15 @@ export default function ArbitrageAlgo({
       <div className={styles.grid}>
         {bot?.length > 0 ? (
           bot.map((strategy) => (
-            <div className={styles.griditems} key={strategy._id} onClick={() => strategy.strategyPlan?.some((plan) => plan.isPayment) ? router.push(`/my-courses/algobot/${strategy._id}`) : router.push(`/algobot/${strategy._id}`)}>
+            <div
+              className={styles.griditems}
+              key={strategy._id}
+              onClick={() =>
+                strategy.strategyPlan?.some((plan) => plan.isPayment)
+                  ? router.push(`/my-courses/algobot/${strategy._id}`)
+                  : router.push(`/algobot/${strategy._id}`)
+              }
+            >
               <div className={styles.image}>
                 <img
                   src={strategy.imageUrl || CardImage}
@@ -297,21 +305,26 @@ export default function ArbitrageAlgo({
                     <div className={styles.dropdownmain}>
                       <div
                         className={styles.dropdownhead}
-                        onClick={(e) =>{
+                        onClick={(e) => {
                           e.stopPropagation(),
-                          setOpenDropdown(
-                            openDropdown === strategy._id ? null : strategy._id
-                          )
-                        }
-                        }
+                            setOpenDropdown(
+                              openDropdown === strategy._id
+                                ? null
+                                : strategy._id
+                            );
+                        }}
                       >
                         <span>
-                          {strategy.strategyPlan.find(
-                            (plan) =>
-                              plan._id ===
-                              (selectedPlans[strategy._id] ||
-                                strategy.strategyPlan[0]?._id)
-                          )?.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')?.replace(/(\d+)([A-Za-z]+)/, '$1 $2') || "Select a plan"}
+                          {strategy.strategyPlan
+                            .find(
+                              (plan) =>
+                                plan._id ===
+                                (selectedPlans[strategy._id] ||
+                                  strategy.strategyPlan[0]?._id)
+                            )
+                            ?.planType?.replace(/(\d+)([A-Za-z]+)/, "$1 $2")
+                            ?.replace(/(\d+)([A-Za-z]+)/, "$1 $2") ||
+                            "Select a plan"}
                         </span>
                         <div className={styles.dropdownarrow}>
                           <Dropdownarrow />
@@ -325,12 +338,17 @@ export default function ArbitrageAlgo({
                               <div
                                 key={plan._id}
                                 className={styles.iconText}
-                                onClick={() => {
+                                onClick={(e) => {
+                                  e.stopPropagation();
                                   handlePlanChange(strategy._id, plan._id);
                                   setOpenDropdown(null);
                                 }}
                               >
-                                <span>{plan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}</span>
+                                <span>
+                                  {plan.planType
+                                    ?.replace(/(\d+)([A-Za-z]+)/, "$1 $2")
+                                    ?.replace(/(\d+)([A-Za-z]+)/, "$1 $2")}
+                                </span>
                               </div>
                             ))}
                           </div>
@@ -339,40 +357,46 @@ export default function ArbitrageAlgo({
                     </div>
 
                     <div className={styles.planDetails}>
-                      {strategy.strategyPlan.map((plan) => (
-                        <div
-                          key={plan._id}
-                          className={styles.planDetailItem}
-                          style={{
-                            display:
-                              selectedPlans[strategy._id] === plan._id
-                                ? "block"
-                                : "none",
-                          }}
-                        >
-                          <div
-                            className={`${styles.contentAlignment} ${styles.priceContainer}`}
-                          >
-                            <span>{plan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}:</span>
-                            <div className={styles.priceWrapper}>
-                              <span className={styles.priceCurrency}>$</span>
-                              <span className={styles.priceAmount}>
-                                {plan.price}
-                              </span>
+                      {strategy.strategyPlan
+                        .filter(
+                          (plan) =>
+                            plan._id ===
+                            (selectedPlans[strategy._id] ||
+                              strategy.strategyPlan[0]?._id)
+                        )
+                        .map((plan) => (
+                          <div key={plan._id} className={styles.items}>
+                            <div className={styles.contentAlignment}>
+                              <span>Plan:</span>
+                              <h4>
+                                {plan.planType?.replace(
+                                  /(\d+)([A-Za-z]+)/,
+                                  "$1 $2"
+                                )}
+                              </h4>
+                            </div>
+                            <div className={styles.contentAlignment}>
+                              <span>Price:</span>
+                              <div className={styles.priceWrapper}>
+                                <h4 className={styles.priceAmount}>
+                                  ${Number(plan.price).toFixed(2)}
+                                </h4>
+                              </div>
+                            </div>
+                            <div className={styles.contentAlignment}>
+                              <span>M.R.P:</span>
+                              <h5>${Number(plan.initialPrice).toFixed(2)}</h5>
+                            </div>
+                            <div className={styles.contentAlignment}>
+                              <span>Discount:</span>
+                              <h5 className={styles.dangerText}>
+                                {plan.discount > 0
+                                  ? `-${plan.discount}%`
+                                  : "0%"}
+                              </h5>
                             </div>
                           </div>
-                          <div className={styles.contentAlignment}>
-                            <span>M.R.P:</span>
-                            <h5>${plan.initialPrice}</h5>
-                          </div>
-                          <div className={styles.contentAlignment}>
-                            <span>Discount:</span>
-                            <h5 className={styles.dangerText}>
-                              {plan.discount > 0 ? `-${plan.discount}%` : "0%"}
-                            </h5>
-                          </div>
-                        </div>
-                      ))}
+                        ))}
                     </div>
                   </div>
                 )}
