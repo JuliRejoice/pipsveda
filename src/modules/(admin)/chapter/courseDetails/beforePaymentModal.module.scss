@@ -1,5 +1,4 @@
 .modalContent {
-  padding: 24px;
   max-width: 600px;
   width: 100%;
   background: #fff;
@@ -7,23 +6,23 @@
   position: relative;
 
   .commonnote {
-     background-color: #f8f9fa;
-  // border-left: 4px solid #007bff;
-  padding: 12px 16px;
-  border-radius: 4px;
-  // margin-top: 24px;
-  
-  p {
-    margin: 0;
-    font-size: 14px;
-    color: #495057;
-    line-height: 1.5;
-  }
-  
-  strong {
-    font-weight: 600;
-    color: #1a1a1a;
-  }
+    background-color: #f8f9fa;
+    // border-left: 4px solid #007bff;
+    padding: 12px 16px;
+    border-radius: 4px;
+    // margin-top: 24px;
+
+    p {
+      margin: 0;
+      font-size: 14px;
+      color: #495057;
+      line-height: 1.5;
+    }
+
+    strong {
+      font-weight: 600;
+      color: #1a1a1a;
+    }
   }
 }
 
@@ -32,7 +31,7 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 24px;
-  
+
   h3 {
     margin: 0;
     font-size: 20px;
@@ -53,7 +52,7 @@
   color: #666;
   border-radius: 4px;
   transition: background-color 0.2s;
-  
+
   &:hover {
     background-color: #f5f5f5;
   }
@@ -62,7 +61,6 @@
 .modalBody {
   margin-bottom: 24px;
 
-  
   h4 {
     font-size: 16px;
     font-weight: 600;
@@ -73,14 +71,14 @@
 
 .locationSection {
   margin-bottom: 24px;
-  
+
   .locationGrid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     gap: 16px;
     margin-bottom: 8px;
   }
-  
+
   .locationItem {
     display: flex;
     flex-direction: column;
@@ -89,11 +87,11 @@
 
 .batchDetails {
   margin-bottom: 24px;
-  
+
   .detailItem {
     display: flex;
     margin-bottom: 12px;
-    
+
     &:last-child {
       margin-bottom: 0;
     }
@@ -118,14 +116,14 @@
   padding: 12px 16px;
   border-radius: 4px;
   // margin-top: 24px;
-  
+
   p {
     margin: 0;
     font-size: 18px;
     color: #495057;
     line-height: 1.5;
   }
-  
+
   strong {
     font-weight: 600;
     color: #1a1a1a;
@@ -145,24 +143,24 @@
   .modalContent {
     padding: 16px;
   }
-  
+
   .locationGrid {
     grid-template-columns: 1fr !important;
   }
-  
+
   .detailItem {
     flex-direction: column;
     gap: 4px;
   }
-  
+
   .label {
     margin-bottom: 4px;
   }
-  
+
   .modalFooter {
     flex-direction: column-reverse;
     gap: 8px;
-    
+
     button {
       width: 100%;
       margin-left: 0 !important;

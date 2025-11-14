@@ -1,7 +1,7 @@
-import React from 'react';
-import Modal from '@/compoents/modal/Modal';
-import styles from './beforePaymentModal.module.scss';
-import Button from '@/compoents/button';
+import React from "react";
+import Modal from "@/compoents/modal/Modal";
+import styles from "./beforePaymentModal.module.scss";
+import Button from "@/compoents/button";
 
 function BeforePaymentModal({
   isOpen,
@@ -12,9 +12,8 @@ function BeforePaymentModal({
   isProcessing,
   isInPerson = false,
   isLiveOnline = false,
-  isRecorded = false
+  isRecorded = false,
 }) {
-
   if (!isOpen) return null;
 
   if (!isRecorded && !selectedBatch) {
@@ -31,11 +30,7 @@ function BeforePaymentModal({
             <p>Please select a batch to proceed with the payment.</p>
           </div>
           <div className={styles.modalFooter}>
-            <Button
-              text="Close"
-              onClick={onClose}
-              variant="outline"
-            />
+            <Button text="Close" onClick={onClose} variant="outline" />
           </div>
         </div>
       </Modal>
@@ -48,11 +43,16 @@ function BeforePaymentModal({
     if (isRecorded) {
       return (
         <>
-
           <div className={styles.modalBody}>
             <div className={styles.note}>
-              <p>You are about to enroll in the recorded course: <strong>{courseName}</strong>.</p>
-              <p>You will have lifetime access to all course materials after payment.</p>
+              <p>
+                You are about to enroll in the recorded course:{" "}
+                <strong>{courseName}</strong>.
+              </p>
+              <p>
+                You will have lifetime access to all course materials after
+                payment.
+              </p>
             </div>
           </div>
         </>
@@ -70,19 +70,19 @@ function BeforePaymentModal({
                 <div className={styles.locationItem}>
                   <span className={styles.label}>City</span>
                   <span className={styles.value}>
-                    {selectedBatch?.centerId?.city || 'Not specified'}
+                    {selectedBatch?.centerId?.city || "Not specified"}
                   </span>
                 </div>
                 <div className={styles.locationItem}>
                   <span className={styles.label}>State</span>
                   <span className={styles.value}>
-                    {selectedBatch?.centerId?.state || 'Not specified'}
+                    {selectedBatch?.centerId?.state || "Not specified"}
                   </span>
                 </div>
                 <div className={styles.locationItem}>
                   <span className={styles.label}>Country</span>
                   <span className={styles.value}>
-                    {selectedBatch?.centerId?.country || 'Not specified'}
+                    {selectedBatch?.centerId?.country || "Not specified"}
                   </span>
                 </div>
               </div>
@@ -94,18 +94,22 @@ function BeforePaymentModal({
 
             <div className={styles.detailItem}>
               <span className={styles.label}>Course Name</span>
-              <span className={styles.value}>{courseName || 'N/A'}</span>
+              <span className={styles.value}>{courseName || "N/A"}</span>
             </div>
             <div className={styles.detailItem}>
               <span className={styles.label}>Start Date</span>
               <span className={styles.value}>
-                {selectedBatch?.startDate ? new Date(selectedBatch.startDate).toLocaleDateString() : 'To be announced'}
+                {selectedBatch?.startDate
+                  ? new Date(selectedBatch.startDate).toLocaleDateString()
+                  : "To be announced"}
               </span>
             </div>
             <div className={styles.detailItem}>
               <span className={styles.label}>End Date</span>
               <span className={styles.value}>
-                {selectedBatch?.endDate ? new Date(selectedBatch.endDate).toLocaleDateString() : 'To be announced'}
+                {selectedBatch?.endDate
+                  ? new Date(selectedBatch.endDate).toLocaleDateString()
+                  : "To be announced"}
               </span>
             </div>
             {/* <div className={styles.detailItem}>
@@ -121,12 +125,19 @@ function BeforePaymentModal({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} title="Before You Proceed">
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      title="Before You Proceed"
+    >
       <div className={styles.modalContent}>
         {renderContent()}
 
         <div className={styles.commonnote}>
-          <p><strong>Note:</strong> Please verify all the details before proceeding to payment. Once payment is made, it cannot be refunded.</p>
+          <p>
+            <strong>Note:</strong> Please verify all the details before
+            proceeding to payment. Once payment is made, it cannot be refunded.
+          </p>
         </div>
 
         <div className={styles.modalFooter}>
@@ -137,7 +148,7 @@ function BeforePaymentModal({
             disabled={isProcessing}
           />
           <Button
-            text={isProcessing ? 'Processing...' : 'Proceed to Payment'}
+            text={isProcessing ? "Processing..." : "Proceed to Payment"}
             onClick={onConfirm}
             disabled={isProcessing}
           />

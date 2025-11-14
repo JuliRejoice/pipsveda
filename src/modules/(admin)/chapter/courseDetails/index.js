@@ -5,9 +5,17 @@ import ClockIcon from "@/icons/clockIcon";
 import BathIcon from "@/icons/bathIcon";
 import StarIcon from "@/icons/starIcon";
 import ProfileGroupIcon from "@/icons/profileGroupIcon";
-import { getBatches, getChapters, getCourses, getPaymentUrl, getSessionData, getCourseSyllabus, downloadStudentID } from "@/compoents/api/dashboard";
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+import {
+  getBatches,
+  getChapters,
+  getCourses,
+  getPaymentUrl,
+  getSessionData,
+  getCourseSyllabus,
+  downloadStudentID,
+} from "@/compoents/api/dashboard";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import OutlineButton from "@/compoents/outlineButton";
 import Button from "@/compoents/button";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
@@ -20,22 +28,18 @@ import CustomVideoPlayer from "@/compoents/CustomVideoPlayer";
 import BatchSelectionModal from "@/compoents/modal/BatchSelectionModal";
 import BeforePaymentModal from "./beforePaymentModal";
 
-
-const LockIcon = '/assets/icons/lock.svg';
-const RightBlackIcon = '/assets/icons/right-white.svg';
-const SuccessIcon = '/assets/icons/success.svg';
-const ErrorIcon = '/assets/icons/error.svg';
-const EmailIcon = '/assets/icons/email-icon.svg';
-const CallIcon = '/assets/icons/call.svg';
-const LocationIcon = '/assets/icons/location.svg';
+const LockIcon = "/assets/icons/lock.svg";
+const RightBlackIcon = "/assets/icons/right-white.svg";
+const SuccessIcon = "/assets/icons/success.svg";
+const ErrorIcon = "/assets/icons/error.svg";
+const EmailIcon = "/assets/icons/email-icon.svg";
+const CallIcon = "/assets/icons/call.svg";
+const LocationIcon = "/assets/icons/location.svg";
 
 function SampleNextArrow(props) {
   const { onClick } = props;
   return (
-    <div
-      className={`${styles.arrow} ${styles.rightIcon}`}
-      onClick={onClick}
-    >
+    <div className={`${styles.arrow} ${styles.rightIcon}`} onClick={onClick}>
       <Arrowicon />
     </div>
   );
@@ -44,10 +48,7 @@ function SampleNextArrow(props) {
 function SamplePrevArrow(props) {
   const { onClick } = props;
   return (
-    <div
-      className={`${styles.arrow} ${styles.leftIcon}`}
-      onClick={onClick}
-    >
+    <div className={`${styles.arrow} ${styles.leftIcon}`} onClick={onClick}>
       <Arrowicon />
     </div>
   );
@@ -56,15 +57,34 @@ function SamplePrevArrow(props) {
 const CourseDetailsSkeleton = () => (
   <div className={styles.courseDetailsBox}>
     <div className={styles.textStyle}>
-      <Skeleton height={20} width="60%" style={{ marginBottom: '10px' }} />
-      <Skeleton count={5} style={{ marginBottom: '8px' }} />
+      <Skeleton height={20} width="60%" style={{ marginBottom: "10px" }} />
+      <Skeleton count={5} style={{ marginBottom: "8px" }} />
 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap' }}>
-        <div className={styles.allIconTextAlignment} style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '20px' }}>
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          flexWrap: "wrap",
+        }}
+      >
+        <div
+          className={styles.allIconTextAlignment}
+          style={{
+            display: "flex",
+            flexWrap: "wrap",
+            alignItems: "center",
+            gap: "20px",
+          }}
+        >
           {[1, 2, 3, 4].map((item) => (
-            <div key={item} className={styles.iconText} style={{ display: 'flex', alignItems: 'center' }}>
+            <div
+              key={item}
+              className={styles.iconText}
+              style={{ display: "flex", alignItems: "center" }}
+            >
               <Skeleton circle width={20} height={20} />
-              <Skeleton width={100} height={20} style={{ marginLeft: '6px' }} />
+              <Skeleton width={100} height={20} style={{ marginLeft: "6px" }} />
             </div>
           ))}
         </div>
@@ -73,21 +93,21 @@ const CourseDetailsSkeleton = () => (
           height={40}
           width={150}
           style={{
-            borderRadius: '8px',
+            borderRadius: "8px",
           }}
         />
       </div>
 
       <div className={styles.mainGrid}>
-        <div className={styles.items} style={{ width: '100%' }}>
+        <div className={styles.items} style={{ width: "100%" }}>
           <Skeleton
             height={500}
             style={{
-              borderRadius: '20px',
-              width: '100%',
-              maxWidth: '1000px',
-              margin: '0 auto',
-              display: 'block'
+              borderRadius: "20px",
+              width: "100%",
+              maxWidth: "1000px",
+              margin: "0 auto",
+              display: "block",
             }}
           />
         </div>
@@ -96,26 +116,32 @@ const CourseDetailsSkeleton = () => (
   </div>
 );
 
-
 const SessionSkeleton = () => (
   <div className={styles.sessionSkeleton}>
     <div className={styles.skeletonVideo}>
-      <Skeleton height={200} style={{ display: 'block' }} />
+      <Skeleton height={200} style={{ display: "block" }} />
     </div>
     <div className={styles.skeletonContent}>
-      <Skeleton height={24} width="70%" style={{ marginBottom: '12px' }} />
-      <Skeleton count={2} style={{ marginBottom: '8px' }} />
-      <Skeleton width="80%" style={{ marginBottom: '16px' }} />
+      <Skeleton height={24} width="70%" style={{ marginBottom: "12px" }} />
+      <Skeleton count={2} style={{ marginBottom: "8px" }} />
+      <Skeleton width="80%" style={{ marginBottom: "16px" }} />
       <div className={styles.skeletonMeta}>
-        <Skeleton width="40%" style={{ marginRight: '30px' }} />
+        <Skeleton width="40%" style={{ marginRight: "30px" }} />
         <Skeleton width="30%" />
       </div>
-      <Skeleton height={40} style={{ marginTop: '16px', borderRadius: '6px' }} />
+      <Skeleton
+        height={40}
+        style={{ marginTop: "16px", borderRadius: "6px" }}
+      />
     </div>
   </div>
 );
 
-export default function CourseDetails({ params, selectedCourse, setSelectedCourse }) {
+export default function CourseDetails({
+  params,
+  selectedCourse,
+  setSelectedCourse,
+}) {
   const [user, setUser] = useState(null);
   const [chapters, setChapters] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -144,11 +170,11 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
 
   useEffect(() => {
     if (selectedCourse) {
-      setIsLiveOnline(selectedCourse?.courseType === 'live');
-      setIsInPerson(selectedCourse?.courseType === 'physical');
-      setIsRecorded(selectedCourse?.courseType === 'recorded');
+      setIsLiveOnline(selectedCourse?.courseType === "live");
+      setIsInPerson(selectedCourse?.courseType === "physical");
+      setIsRecorded(selectedCourse?.courseType === "recorded");
     }
-  }, [selectedCourse])
+  }, [selectedCourse]);
 
   const fetchChapters = async () => {
     try {
@@ -210,16 +236,15 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     fetchSyllabus();
   }, [id]);
 
-
   useEffect(() => {
-    const isPayment = searchParams.get('isPayment');
+    const isPayment = searchParams.get("isPayment");
     if (isPayment) {
-      setPaymentStatus(isPayment === 'true' ? 'success' : 'cancelled');
+      setPaymentStatus(isPayment === "true" ? "success" : "cancelled");
       setShowPaymentModal(true);
       // Clean up URL without refreshing the page
       const newUrl = new URL(window.location.href);
-      newUrl.searchParams.delete('isPayment');
-      window.history.replaceState({}, '', newUrl);
+      newUrl.searchParams.delete("isPayment");
+      window.history.replaceState({}, "", newUrl);
     }
   }, [searchParams]);
 
@@ -244,17 +269,17 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
         breakpoint: 1440,
         settings: {
           slidesToShow: 2,
-          centerMode: false
-        }
+          centerMode: false,
+        },
       },
       {
         breakpoint: 768,
         settings: {
           slidesToShow: 1,
-          centerMode: false
-        }
+          centerMode: false,
+        },
       },
-    ]
+    ],
   };
 
   // Add this function to check if a session is expired
@@ -264,12 +289,13 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     const sessionDateTime = new Date(`${session.date}`);
     const currentDateTime = new Date();
 
-
     return sessionDateTime < currentDateTime;
   };
 
   // Filter out expired sessions
-  const upcomingSessions = sessions.filter(session => !isSessionExpired(session));
+  const upcomingSessions = sessions.filter(
+    (session) => !isSessionExpired(session)
+  );
 
   const handlePayment = async () => {
     try {
@@ -277,14 +303,15 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
       const response = await getPaymentUrl({
         success_url: window.location.href,
         cancel_url: window.location.href,
-        courseId: id
+        courseId: id,
       });
       if (response?.payload?.code !== "00000") {
-        toast.error("A payment session is already active and will expire in 10 minutes. Please complete the current payment or try again after it expires.");
+        toast.error(
+          "A payment session is already active and will expire in 10 minutes. Please complete the current payment or try again after it expires."
+        );
       } else {
         router.replace(response?.payload?.data?.checkout_url);
       }
-
     } catch (error) {
       console.error("Payment error:", error);
       // Handle error appropriately
@@ -295,10 +322,8 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
 
   const fetchbatches = async (courseId) => {
     if (isInPerson || isLiveOnline) {
-
-
       try {
-        setIsBeforepaymentModal(true)
+        setIsBeforepaymentModal(true);
         setIsLoading(true);
         const response = await getBatches({ courseId });
         setBatches(response?.payload?.data);
@@ -309,14 +334,13 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
         setIsLoading(false);
         // setIsBeforepaymentModal(false)
       }
-    }
-    else {
+    } else {
       setShowBeforePayment(true);
     }
   };
 
   const handleBatchSelect = (batch) => {
-    const batchDetails = batches.find(b => b._id === batch);
+    const batchDetails = batches.find((b) => b._id === batch);
     setSelectedBatch(batchDetails);
     setShowBeforePayment(true);
     setIsBeforepaymentModal(false);
@@ -326,10 +350,15 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     try {
       setIsProcessingPayment(true);
 
+      const successUrl = new URL(window.location.href);
+      if (selectedBatch?._id) {
+        successUrl.searchParams.set("batchId", selectedBatch._id);
+      }
+
       const paymentData = {
-        success_url: window.location.href,
+        success_url: successUrl.toString(),
         cancel_url: window.location.href,
-        courseId: id
+        courseId: id,
       };
 
       // Only add batchId for non-recorded courses
@@ -340,7 +369,9 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
       const response = await getPaymentUrl(paymentData);
 
       if (response?.payload?.code !== "00000") {
-        toast.error("A payment session is already active and will expire in 10 minutes. Please complete the current payment or try again after it expires.");
+        toast.error(
+          "A payment session is already active and will expire in 10 minutes. Please complete the current payment or try again after it expires."
+        );
       } else {
         router.replace(response?.payload?.data?.checkout_url);
       }
@@ -356,7 +387,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
   const downloadId = async (id) => {
     setIsDownloading(true);
     try {
-      const response = await downloadStudentID(id,selectedBatch?._id);
+      const response = await downloadStudentID(id, selectedBatch?._id);
       if (response.success && response.payload) {
         const fileUrl = response.payload;
 
@@ -365,7 +396,8 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
 
         const blob = await fileRes.blob();
 
-        const contentType = fileRes.headers.get("content-type") || "application/octet-stream";
+        const contentType =
+          fileRes.headers.get("content-type") || "application/octet-stream";
 
         const extensionMap = {
           "application/pdf": "pdf",
@@ -376,9 +408,8 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
           "application/json": "json",
         };
 
-        const extension = extensionMap[contentType] || "bin"; 
+        const extension = extensionMap[contentType] || "bin";
 
-    
         const url = window.URL.createObjectURL(blob);
         const link = document.createElement("a");
         link.href = url;
@@ -400,64 +431,81 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
       toast.error("Failed to download file");
     } finally {
       setIsDownloading(false);
-
     }
-  }
+  };
   const renderPaymentModal = () => {
     if (!showPaymentModal) return null;
 
-    const modalContent = paymentStatus === 'success' ? (
-      <div className={styles.paymentModalContent}>
-        <div className={styles.paymentModaltitlecontent}>
-          <img src={SuccessIcon} alt="Success" className={styles.paymentIcon} />
-          {isInPerson && <h3>Congratulations!</h3>}
-          <h3>Payment Successful!</h3>
-          <p>Thank you for your purchase. You now have full access to this course.</p>
-        </div>
-        {isInPerson &&
+    const modalContent =
+      paymentStatus === "success" ? (
+        <div className={styles.paymentModalContent}>
+          <div className={styles.paymentModaltitlecontent}>
+            <img
+              src={SuccessIcon}
+              alt="Success"
+              className={styles.paymentIcon}
+            />
+            {isInPerson && <h3>Congratulations!</h3>}
+            <h3>Payment Successful!</h3>
+            <p>
+              Thank you for your purchase. You now have full access to this
+              course.
+            </p>
+          </div>
+          {isInPerson &&
           <div className={styles.paymentmodaldetails}>
             <p>Please Contact for extra Information.</p>
-            <p><span>Address</span> : {selectedCourse?.location && `${selectedCourse?.location}`}</p>
-            <p><span>Email</span> : {selectedCourse?.email && `${selectedCourse?.email}`}</p>
-            <p><span>Phone</span> : {selectedCourse?.phone && `${selectedCourse?.phone}`}</p>
+            <p><span>Batch</span> : {selectedBatch?.batchName && `${selectedBatch?.batchName}`}</p>
+            <p><span>City</span> : {selectedBatch?.city && `${selectedBatch?.city}`}</p>
+            <p><span>State</span> : {selectedBatch?.state && `${selectedBatch?.state}`}</p>
+            <p><span>Country</span> : {selectedBatch?.country && `${selectedBatch?.country}`}</p>
           </div>
         }
-        <Button
-          text={isDownloading ? 'Downloading...' : 'Download Student ID'}
-          onClick={() => {
-            downloadId(selectedCourse?._id)
-          }}
-          disabled={isDownloading}
-          loading={isDownloading}
-        />
-      </div>
-    ) : (
-
-      <div className={styles.paymentModalContent}>
-        <div className={styles.paymentModaltitlecontent}>
-          <img src={ErrorIcon} alt="Cancelled" className={styles.paymentIcon} />
-          <h3>Payment Cancelled</h3>
-          <p>Your payment was not completed. Please try again to access the course.</p>
-        </div>
-        <div className={styles.modalButtons}>
-          <OutlineButton
-            text="Try Again"
-            onClick={() => {
-              setShowPaymentModal(false);
-              handlePayment();
-            }}
-          />
           <Button
-            text="Close"
-            onClick={() => setShowPaymentModal(false)}
-            style={{ marginLeft: '10px' }}
+            text={isDownloading ? "Downloading..." : "Download Student ID"}
+            onClick={() => {
+              downloadId(selectedCourse?._id);
+            }}
+            disabled={isDownloading}
+            loading={isDownloading}
           />
         </div>
-      </div>
-    );
+      ) : (
+        <div className={styles.paymentModalContent}>
+          <div className={styles.paymentModaltitlecontent}>
+            <img
+              src={ErrorIcon}
+              alt="Cancelled"
+              className={styles.paymentIcon}
+            />
+            <h3>Payment Cancelled</h3>
+            <p>
+              Your payment was not completed. Please try again to access the
+              course.
+            </p>
+          </div>
+          <div className={styles.modalButtons}>
+            <OutlineButton
+              text="Try Again"
+              onClick={() => {
+                setShowPaymentModal(false);
+                handlePayment();
+              }}
+            />
+            <Button
+              text="Close"
+              onClick={() => setShowPaymentModal(false)}
+              style={{ marginLeft: "10px" }}
+            />
+          </div>
+        </div>
+      );
 
     return (
-      <Modal isOpen={showPaymentModal} onClose={() => setShowPaymentModal(false)}>
+      <Modal
+        isOpen={showPaymentModal}
+        onClose={() => setShowPaymentModal(false)}
+      >
         {modalContent}
       </Modal>
     );
@@ -471,22 +519,24 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     return (
       <div className={styles.courseDetailsBox}>
         <div className={styles.textStyle}>
-          <div style={{
-            textAlign: 'center',
-            padding: '40px 20px',
-            color: '#E53E3E'
-          }}>
+          <div
+            style={{
+              textAlign: "center",
+              padding: "40px 20px",
+              color: "#E53E3E",
+            }}
+          >
             <p>{error}</p>
             <button
               onClick={() => window.location.reload()}
               style={{
-                background: 'var(--button-gradient)',
-                color: 'white',
-                border: 'none',
-                padding: '12px 24px',
-                borderRadius: '6px',
-                marginTop: '16px',
-                cursor: 'pointer'
+                background: "var(--button-gradient)",
+                color: "white",
+                border: "none",
+                padding: "12px 24px",
+                borderRadius: "6px",
+                marginTop: "16px",
+                cursor: "pointer",
               }}
             >
               Try Again
@@ -497,24 +547,25 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
     );
   }
 
-
   return (
     <div className={styles.courseDetailsBox}>
       {renderPaymentModal()}
       {isLiveOnline ? (
         <div className={styles.sessionContainer}>
           <div className={styles.textStyle}>
-            <h3>{selectedCourse?.CourseName || 'Course Name Not Available'}</h3>
-            <p>{selectedCourse?.description || 'No description available'}</p>
+            <h3>{selectedCourse?.CourseName || "Course Name Not Available"}</h3>
+            <p>{selectedCourse?.description || "No description available"}</p>
             <div className={styles.alignments}>
               <div className={styles.allIconTextAlignment}>
                 <div className={styles.iconText}>
                   <ClockIcon />
-                  <span>{selectedCourse?.hours || '12'} hours</span>
+                  <span>{selectedCourse?.hours || "12"} hours</span>
                 </div>
                 <div className={styles.iconText}>
                   <BathIcon />
-                  <span>{selectedCourse?.instructor?.name || 'Instructor'}</span>
+                  <span>
+                    {selectedCourse?.instructor?.name || "Instructor"}
+                  </span>
                 </div>
                 {/* <div className={styles.iconText}>
                   <StarIcon />
@@ -522,37 +573,45 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                 </div> */}
                 <div className={styles.iconText}>
                   <ProfileGroupIcon />
-                  <span>{selectedCourse?.subscribed || '0'}</span>
+                  <span>{selectedCourse?.subscribed || "0"}</span>
                 </div>
                 <div className={styles.iconText}>
-                  <span>Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString('en-GB')} | {selectedCourse?.language?.slice(0, 1).toUpperCase() + selectedCourse?.language?.slice(1) || 'English'}</span>
+                  <span>
+                    Last-Update:{" "}
+                    {new Date(
+                      selectedCourse?.updatedAt || new Date()
+                    ).toLocaleDateString("en-GB")}{" "}
+                    |{" "}
+                    {selectedCourse?.language?.slice(0, 1).toUpperCase() +
+                      selectedCourse?.language?.slice(1) || "English"}
+                  </span>
                 </div>
               </div>
-              {!isPaid && <div>
-                <Button
-                  fill
-                  text={isProcessingPayment ? 'Enrolling...' : 'Enroll Now'}
-                  icon={isProcessingPayment ? null : RightBlackIcon}
-                  // onClick={handlePayment}
-                  onClick={() => fetchbatches(selectedCourse._id)}
-                  disabled={isProcessingPayment}
-                />
-              </div>}
+              {!isPaid && (
+                <div>
+                  <Button
+                    fill
+                    text={isProcessingPayment ? "Enrolling..." : "Enroll Now"}
+                    icon={isProcessingPayment ? null : RightBlackIcon}
+                    // onClick={handlePayment}
+                    onClick={() => fetchbatches(selectedCourse._id)}
+                    disabled={isProcessingPayment}
+                  />
+                </div>
+              )}
             </div>
           </div>
 
           {/* Intro Video */}
           <div className={styles.introVideo}>
-           
-              <CustomVideoPlayer
-                src={selectedCourse?.courseIntroVideo}
-                userId={user?._id}
-                controls
-                controlsList="nodownload"
-                disablePictureInPicture
-                noremoteplayback
-              />
-           
+            <CustomVideoPlayer
+              src={selectedCourse?.courseIntroVideo}
+              userId={user?._id}
+              controls
+              controlsList="nodownload"
+              disablePictureInPicture
+              noremoteplayback
+            />
           </div>
 
           {/* Course Syllabus */}
@@ -563,15 +622,30 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                 {syllabus.map((item, index) => (
                   <div key={index} className={styles.accordionItem}>
                     <div
-                      className={`${styles.accordionHeader} ${expandedSection === index ? styles.active : ''}`}
-                      onClick={() => setExpandedSection(expandedSection === index ? null : index)}
+                      className={`${styles.accordionHeader} ${
+                        expandedSection === index ? styles.active : ""
+                      }`}
+                      onClick={() =>
+                        setExpandedSection(
+                          expandedSection === index ? null : index
+                        )
+                      }
                     >
-                      <h2>Chapter {index + 1} : {item.title}</h2>
-                      <span>{expandedSection === index ? '−' : '+'}</span>
+                      <h2>
+                        Chapter {index + 1} : {item.title}
+                      </h2>
+                      <span>{expandedSection === index ? "−" : "+"}</span>
                     </div>
-                    <div className={`${styles.accordionContent} ${expandedSection === index ? styles.active : ''}`}>
+                    <div
+                      className={`${styles.accordionContent} ${
+                        expandedSection === index ? styles.active : ""
+                      }`}
+                    >
                       <div className={styles.chapterContent}>
-                        <p>{item.description || 'No description available for this chapter.'}</p>
+                        <p>
+                          {item.description ||
+                            "No description available for this chapter."}
+                        </p>
                       </div>
                     </div>
                   </div>
@@ -635,21 +709,25 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
         </div>
       ) : (
         <div className={styles.textStyle}>
-          <h3>{selectedCourse?.CourseName || 'Course Name Not Available'}</h3>
-          <p>{selectedCourse?.description || 'No description available'}</p>
-          {!isPaid && <div className={styles.price}>
-            <h4 className={styles.priceText}>${selectedCourse.price}</h4>
-          </div>}
+          <h3>{selectedCourse?.CourseName || "Course Name Not Available"}</h3>
+          <p>{selectedCourse?.description || "No description available"}</p>
+          {!isPaid && (
+            <div className={styles.price}>
+              <h4 className={styles.priceText}>${selectedCourse.price}</h4>
+            </div>
+          )}
           <div className={styles.alignments}>
             <div>
               <div className={styles.allIconTextAlignment}>
                 <div className={styles.iconText}>
                   <ClockIcon />
-                  <span>{selectedCourse?.hours || '12'} hours</span>
+                  <span>{selectedCourse?.hours || "12"} hours</span>
                 </div>
                 <div className={styles.iconText}>
                   <BathIcon />
-                  <span>{selectedCourse?.instructor?.name || 'Instructor'}</span>
+                  <span>
+                    {selectedCourse?.instructor?.name || "Instructor"}
+                  </span>
                 </div>
                 {/* <div className={styles.iconText}>
                 <StarIcon />
@@ -657,43 +735,68 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
               </div> */}
                 <div className={styles.iconText}>
                   <ProfileGroupIcon />
-                  <span>{selectedCourse?.subscribed || '0'}</span>
+                  <span>{selectedCourse?.subscribed || "0"}</span>
                 </div>
                 <div className={styles.iconText}>
-                  <span>Last-Update: {new Date(selectedCourse?.updatedAt || new Date()).toLocaleDateString('en-GB')} | {selectedCourse?.language?.slice(0, 1).toUpperCase() + selectedCourse?.language?.slice(1) || 'English'}</span>
+                  <span>
+                    Last-Update:{" "}
+                    {new Date(
+                      selectedCourse?.updatedAt || new Date()
+                    ).toLocaleDateString("en-GB")}{" "}
+                    |{" "}
+                    {selectedCourse?.language?.slice(0, 1).toUpperCase() +
+                      selectedCourse?.language?.slice(1) || "English"}
+                  </span>
                 </div>
               </div>
             </div>
 
-            {!isPaid && <div>
-              <Button
-                text={isProcessingPayment ? 'Enrolling...' : 'Enroll Now'}
-                icon={isProcessingPayment ? null : RightBlackIcon}
-                // onClick={handlePayment}
-                onClick={() => fetchbatches(selectedCourse._id)}
-                disabled={isProcessingPayment}
-              />
-            </div>}
+            {!isPaid && (
+              <div>
+                <Button
+                  text={isProcessingPayment ? "Enrolling..." : "Enroll Now"}
+                  icon={isProcessingPayment ? null : RightBlackIcon}
+                  // onClick={handlePayment}
+                  onClick={() => fetchbatches(selectedCourse._id)}
+                  disabled={isProcessingPayment}
+                />
+              </div>
+            )}
           </div>
-          {isPaid && selectedCourse.courseType === "physical" && <div>
-            <div className={styles.physicaldetailsmain}>
-              {selectedCourse?.location && <div className={styles.physicaldetail}><img src={LocationIcon} alt='ChatIcon' /><p>{selectedCourse?.location}</p></div>}
-              {selectedCourse?.email && <div className={styles.physicaldetail}><img src={EmailIcon} alt='ChatIcon' /><p>{selectedCourse?.email}</p></div>}
-              {selectedCourse?.phone && <div className={styles.physicaldetail}><img src={CallIcon} alt='ChatIcon' /><p>{selectedCourse?.phone}</p></div>}
+          {isPaid && selectedCourse.courseType === "physical" && (
+            <div>
+              <div className={styles.physicaldetailsmain}>
+                {selectedCourse?.location && (
+                  <div className={styles.physicaldetail}>
+                    <img src={LocationIcon} alt="ChatIcon" />
+                    <p>{selectedCourse?.location}</p>
+                  </div>
+                )}
+                {selectedCourse?.email && (
+                  <div className={styles.physicaldetail}>
+                    <img src={EmailIcon} alt="ChatIcon" />
+                    <p>{selectedCourse?.email}</p>
+                  </div>
+                )}
+                {selectedCourse?.phone && (
+                  <div className={styles.physicaldetail}>
+                    <img src={CallIcon} alt="ChatIcon" />
+                    <p>{selectedCourse?.phone}</p>
+                  </div>
+                )}
+              </div>
             </div>
-          </div>}
+          )}
 
           <div className={styles.introVideo}>
-            
-              <CustomVideoPlayer
-                src={selectedCourse?.courseIntroVideo}
-                userId={user?._id}
-                controls
-                controlsList="nodownload"
-                disablePictureInPicture
-                noremoteplayback
-              />
-            
+            <CustomVideoPlayer
+              src={selectedCourse?.courseIntroVideo}
+              userId={user?._id}
+              controls
+              controlsList="nodownload"
+              disablePictureInPicture
+              noremoteplayback
+            />
           </div>
           {/* <div className={styles.mainrelative}>
             <div className={styles.tabAlignment}>
@@ -791,18 +894,31 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
                 {syllabus.map((item, index) => (
                   <div key={index} className={styles.accordionItem}>
                     <div
-                      className={`${styles.accordionHeader} ${expandedSection === index ? styles.active : ''}`}
-                      onClick={() => setExpandedSection(expandedSection === index ? null : index)}
+                      className={`${styles.accordionHeader} ${
+                        expandedSection === index ? styles.active : ""
+                      }`}
+                      onClick={() =>
+                        setExpandedSection(
+                          expandedSection === index ? null : index
+                        )
+                      }
                     >
-                      <h2>Chapter {index + 1} : {item.title}</h2>
-                      <span>{expandedSection === index ? '−' : '+'}</span>
+                      <h2>
+                        Chapter {index + 1} : {item.title}
+                      </h2>
+                      <span>{expandedSection === index ? "−" : "+"}</span>
                     </div>
-                    <div className={`${styles.accordionContent} ${expandedSection === index ? styles.active : ''}`}>
+                    <div
+                      className={`${styles.accordionContent} ${
+                        expandedSection === index ? styles.active : ""
+                      }`}
+                    >
                       <div className={styles.chapterContent}>
-
-                        <p>{item.description || 'No description available for this chapter.'}</p>
+                        <p>
+                          {item.description ||
+                            "No description available for this chapter."}
+                        </p>
                       </div>
-
                     </div>
                   </div>
                 ))}
@@ -821,7 +937,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
           onClose={() => setIsBeforepaymentModal(false)}
           batches={batches}
           onBatchSelect={handleBatchSelect}
-          courseTitle={selectedCourse?.CourseName || 'Course'}
+          courseTitle={selectedCourse?.CourseName || "Course"}
           isLoading={isLoading}
         />
       )}
@@ -832,7 +948,7 @@ export default function CourseDetails({ params, selectedCourse, setSelectedCours
         onClose={() => setShowBeforePayment(false)}
         onConfirm={handleConfirmPayment}
         selectedBatch={selectedBatch}
-        courseName={selectedCourse?.CourseName || 'Course'}
+        courseName={selectedCourse?.CourseName || "Course"}
         isProcessing={isProcessingPayment}
         isInPerson={isInPerson}
         isLiveOnline={isLiveOnline}
