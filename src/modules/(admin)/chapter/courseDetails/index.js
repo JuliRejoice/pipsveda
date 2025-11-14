@@ -241,7 +241,6 @@ export default function CourseDetails({
     if (isPayment) {
       setPaymentStatus(isPayment === "true" ? "success" : "cancelled");
       setShowPaymentModal(true);
-      // Clean up URL without refreshing the page
       const newUrl = new URL(window.location.href);
       newUrl.searchParams.delete("isPayment");
       window.history.replaceState({}, "", newUrl);
@@ -251,7 +250,42 @@ export default function CourseDetails({
   useEffect(() => {
     const user = JSON.parse(getCookie("user"));
     setUser(user);
-  }, []);
+
+    // Get batchId from URL if it exists (note the case sensitivity: batchID vs batchId)
+    const urlParams = new URLSearchParams(window.location.search);
+    const batchId = urlParams.get("batchID") || urlParams.get("batchId");
+
+    if (batchId) {
+      const fetchBatchDetails = async () => {
+        try {
+          const response = await getBatches({ courseId: id });
+          if (response?.payload?.data) {
+            console.log(
+              response.payload.data,
+              "response.payload.data",
+              batchId
+            );
+            console.log(
+              "xdgdf",
+              response.payload.data.map((b) => b.courseId._id === batchId)
+            );
+
+            const batch = response.payload.data.find(
+              (b) => b.courseId._id === batchId
+            );
+            if (batch) {
+              setSelectedBatch(batch);
+              console.log(batch, "batch");
+            }
+          }
+        } catch (error) {
+          console.error("Error fetching batch details:", error);
+        }
+      };
+
+      fetchBatchDetails();
+    }
+  }, [id]);
 
   const settings = {
     dots: false,
@@ -452,15 +486,131 @@ export default function CourseDetails({
               course.
             </p>
           </div>
-          {isInPerson &&
-          <div className={styles.paymentmodaldetails}>
-            <p>Please Contact for extra Information.</p>
-            <p><span>Batch</span> : {selectedBatch?.batchName && `${selectedBatch?.batchName}`}</p>
-            <p><span>City</span> : {selectedBatch?.city && `${selectedBatch?.city}`}</p>
-            <p><span>State</span> : {selectedBatch?.state && `${selectedBatch?.state}`}</p>
-            <p><span>Country</span> : {selectedBatch?.country && `${selectedBatch?.country}`}</p>
-          </div>
-        }
+          {isInPerson && selectedBatch && (
+            <div className={styles.detailsContainer}>
+              <div className={styles.detailsCard}>
+                <h3 className={styles.cardTitle}>Course Batch Details</h3>
+
+                <div className={styles.detailsGrid}>
+                  <div className={styles.detailItem}>
+                    <div className={styles.detailLabel}>Start Date</div>
+                    <div className={styles.detailValue}>
+                      {selectedBatch.startDate
+                        ? new Date(selectedBatch.startDate).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )
+                        : "N/A"}
+                    </div>
+                  </div>
+
+                  <div className={styles.detailItem}>
+                    <div className={styles.detailLabel}>End Date</div>
+                    <div className={styles.detailValue}>
+                      {selectedBatch.endDate
+                        ? new Date(selectedBatch.endDate).toLocaleDateString(
+                            "en-US",
+                            {
+                              year: "numeric",
+                              month: "long",
+                              day: "numeric",
+                            }
+                          )
+                        : "N/A"}
+                    </div>
+                  </div>
+
+                  <div className={styles.detailItem}>
+                    <div className={styles.detailLabel}>Time</div>
+                    <div className={styles.detailValue}>
+                      {selectedBatch.time || "N/A"}
+                    </div>
+                  </div>
+
+                  {selectedBatch.courseId?.hours && (
+                    <div className={styles.detailItem}>
+                      <div className={styles.detailLabel}>Duration</div>
+                      <div className={styles.detailValue}>
+                        {`${selectedBatch.courseId.hours} hours`}
+                      </div>
+                    </div>
+                  )}
+                </div>
+
+                {selectedBatch.centerId && (
+                  <div className={styles.section}>
+                    <h4 className={styles.sectionTitle}>
+                      <i className="fas fa-building"></i> Center Information
+                    </h4>
+                    <div className={styles.detailsGrid}>
+                      <div className={styles.detailItem}>
+                        <div className={styles.detailLabel}>Center</div>
+                        <div className={styles.detailValue}>
+                          {selectedBatch.centerId.centerName || "N/A"}
+                        </div>
+                      </div>
+                      <div className={styles.detailItem}>
+                        <div className={styles.detailLabel}>Address</div>
+                        <div className={styles.detailValue}>
+                          {selectedBatch.centerId.location || "N/A"}
+                        </div>
+                      </div>
+                      <div className={styles.detailItem}>
+                        <div className={styles.detailLabel}>City</div>
+                        <div className={styles.detailValue}>
+                          {selectedBatch.centerId.city || "N/A"}
+                        </div>
+                      </div>
+                      <div className={styles.detailItem}>
+                        <div className={styles.detailLabel}>State</div>
+                        <div className={styles.detailValue}>
+                          {selectedBatch.centerId.state || "N/A"}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <div className={styles.contactSection}>
+                  {selectedBatch.courseId?.instructor && (
+                    <div className={styles.contactItem}>
+                      <i className="fas fa-phone-alt"></i>
+                      <div>
+                        <div className={styles.contactLabel}>
+                          Instructor Contact
+                        </div>
+                        <div className={styles.contactValue}>
+                          {selectedBatch.courseId.phone || "N/A"}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {selectedBatch.meetingLink && (
+                    <div className={styles.contactItem}>
+                      <i className="fas fa-video"></i>
+                      <div>
+                        <div className={styles.contactLabel}>Meeting Link</div>
+                        <a
+                          href={selectedBatch.meetingLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={styles.meetingLink}
+                        >
+                          <i className="fas fa-external-link-alt"></i> Join
+                          Meeting
+                        </a>
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          )}
           <Button
             text={isDownloading ? "Downloading..." : "Download Student ID"}
             onClick={() => {

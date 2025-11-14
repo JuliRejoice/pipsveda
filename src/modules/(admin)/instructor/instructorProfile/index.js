@@ -167,7 +167,7 @@ function InstructorProfile({ id }) {
               <span className={styles.statValue}>
                 {instructor.averageRating
                   ? instructor.averageRating.toFixed(1)
-                  : "N/A"}
+                  : "0"}
               </span>
               <span className={styles.statLabel}>Rating</span>
             </div>
