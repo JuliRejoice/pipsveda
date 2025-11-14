@@ -918,11 +918,11 @@ console.log(selectedChapter,'selectedChapter')
                     <div className={styles.batchMeta}>
                       <div className={styles.metaItem}>
                         <strong>Start Date:</strong>{" "}
-                        {new Date(batchDetails.startDate).toLocaleDateString()}
+                        {new Date(batchDetails.startDate).toLocaleDateString("en-GB")}
                       </div>
                       <div className={styles.metaItem}>
                         <strong>End Date:</strong>{" "}
-                        {new Date(batchDetails.endDate).toLocaleDateString()}
+                        {new Date(batchDetails.endDate).toLocaleDateString("en-GB")}
                       </div>
                       {batchDetails.meetingLink && (
                         <div className={styles.meetingLink}>

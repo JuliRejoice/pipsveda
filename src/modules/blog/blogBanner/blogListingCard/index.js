@@ -246,7 +246,7 @@ export default function BlogListingCard({ searchQuery }) {
                                         <div className={styles.iconText}>
                                             {/* <img src={DateIcon} alt="DateIcon" /> */}
                                             <CalanderIcon />
-                                            <span>{new Date(blog.createdAt).toLocaleDateString()}</span>
+                                            <span>{new Date(blog.createdAt).toLocaleDateString("en-GB")}</span>
                                         </div>
                                     </motion.div>
                                     <motion.h3

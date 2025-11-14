@@ -100,7 +100,7 @@ function BeforePaymentModal({
               <span className={styles.label}>Start Date</span>
               <span className={styles.value}>
                 {selectedBatch?.startDate
-                  ? new Date(selectedBatch.startDate).toLocaleDateString()
+                  ? new Date(selectedBatch.startDate).toLocaleDateString("en-GB")
                   : "To be announced"}
               </span>
             </div>
@@ -108,7 +108,7 @@ function BeforePaymentModal({
               <span className={styles.label}>End Date</span>
               <span className={styles.value}>
                 {selectedBatch?.endDate
-                  ? new Date(selectedBatch.endDate).toLocaleDateString()
+                  ? new Date(selectedBatch.endDate).toLocaleDateString("en-GB")
                   : "To be announced"}
               </span>
             </div>

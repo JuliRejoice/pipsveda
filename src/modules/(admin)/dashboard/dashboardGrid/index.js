@@ -471,7 +471,7 @@ function DashboardGrid() {
                     <span>
                       {new Date(
                         bot.purchaseInfo.startDate
-                      ).toLocaleDateString()}
+                      ).toLocaleDateString("en-GB")}
                     </span>
                   </div>
                 )}
@@ -479,7 +479,7 @@ function DashboardGrid() {
                   <div className={styles.planInfoItem}>
                     <span>End Date:</span>
                     <span>
-                      {new Date(bot.purchaseInfo.endDate).toLocaleDateString()}
+                      {new Date(bot.purchaseInfo.endDate).toLocaleDateString("en-GB")}
                     </span>
                   </div>
                 )}
