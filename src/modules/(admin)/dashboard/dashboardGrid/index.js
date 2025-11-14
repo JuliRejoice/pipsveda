@@ -374,7 +374,7 @@ function DashboardGrid() {
                   className={styles.dropdownhead}
                   onClick={(e) => {
                     e.stopPropagation();
-                    setOpenDropdown(openDropdown === bot._id ? null : bot._id)
+                    setOpenDropdown(openDropdown === bot._id ? null : bot._id);
                   }}
                 >
                   <span>
@@ -426,13 +426,13 @@ function DashboardGrid() {
                       <span>{formatPlanType(plan.planType)}:</span>
                       <div className={styles.priceWrapper}>
                         <span className={styles.priceAmount}>
-                          ${plan.price}
+                          ${Number(plan.price).toFixed(2)}
                         </span>
                       </div>
                     </div>
                     <div className={styles.contentAlignment}>
                       <span>M.R.P:</span>
-                      <h5>${plan.initialPrice}</h5>
+                      <h5>${Number(plan.initialPrice).toFixed(2)}</h5>
                     </div>
                     <div className={styles.contentAlignment}>
                       <span>Discount:</span>
@@ -493,7 +493,7 @@ function DashboardGrid() {
                         bot.purchaseInfo.status.slice(1).toLowerCase()}
                     </span>
                   </div>
-                )} 
+                )}
               </div>
             </div>
           )}

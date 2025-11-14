@@ -502,7 +502,7 @@
 }
 
 .iconText {
-  padding: 8px 16px;
+  padding:  6px 16px;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -544,9 +544,14 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 6px;
+  margin-bottom: 10px;
   font-size: 13px;
   color: #555;
+  h5{
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--primary-color);
+  }
 
   &:last-child {
     margin-bottom: 0;
@@ -580,7 +585,7 @@
 }
 
 .originalPrice {
-  font-size: 14px;
+  font-size: 16px;
   color: var(--text-muted);
   text-decoration: line-through;
   margin-left: 8px;
