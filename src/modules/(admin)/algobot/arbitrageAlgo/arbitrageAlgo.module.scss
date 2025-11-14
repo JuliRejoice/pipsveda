@@ -235,7 +235,7 @@
             display: flex;
             align-items: center;
             cursor: pointer;
-            padding: 8px 16px;
+            padding: 6px 16px;
             transition: background-color 0.2s;
 
             &:hover {
@@ -253,7 +253,7 @@
 
     .planDetails {
       // width: 100%;
-      margin: 0px 8px 8px 8px;
+      margin-bottom: 23px;
 
       .planslidermain {
         width: 100%;
@@ -439,9 +439,6 @@
         background-color: #f7f8fa;
         border: 1px solid rgba(218, 218, 218, 0.8);
         border-radius: 8px;
-        width: calc(100% - 17px);
-        padding: 6px;
-        margin: 17px 17px 23px 0;
 
         .contentAlignment:last-child {
           padding: 0;
@@ -460,7 +457,7 @@
           }
 
           h5 {
-            @include font16;
+            @include font14;
             color: var(--grey-600);
             font-weight: 400;
 
@@ -470,7 +467,7 @@
           }
 
           h4 {
-            @include font18;
+            @include font14;
             font-weight: 600;
             background: var(--button-gradient);
             background-clip: text;
