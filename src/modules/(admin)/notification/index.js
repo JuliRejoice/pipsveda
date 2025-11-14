@@ -151,14 +151,7 @@ export default function Notification() {
                                         <ClockGreyIcon />
                                         <span>{getTimeAgo(notification.createdAt)}</span>
                                     </div>
-                                    {!notification.isRead && (
-                                        <button 
-                                            className={styles.actionButton}
-                                            onClick={() => handleMarkAsRead(notification._id)}
-                                        >
-                                            <span>Mark as Read</span>
-                                        </button>
-                                    )}
+                                    
                                 </div>
                             </div>
                         ))

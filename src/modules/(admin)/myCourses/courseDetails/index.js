@@ -421,23 +421,25 @@ console.log(selectedChapter,'selectedChapter')
   const updateVideoPercentage = async (percentage) => {
     const numericPercentage = typeof percentage === "number" ? percentage : parseFloat(percentage);
     
-    if (!Number.isFinite(numericPercentage)) {
-        return;
-      }
-      
-      // If we have a valid numeric percentage, use it directly
-      if (Number.isFinite(numericPercentage)) {
-      console.log('dfhdbfhjf----------------',numericPercentage)
-      setVideoWatchingPercentage(numericPercentage);
+    console.log('dfhdbfhjf----------------',numericPercentage)
+    // if (!Number.isFinite(numericPercentage)) {
+    //   return;
+    // }
     
+    // If we have a valid numeric percentage, use it directly
+    if (Number.isFinite(numericPercentage)) {
+      setVideoWatchingPercentage(numericPercentage);
+      
     }
-
+    
+    console.log('percentage----------------',percentage,videoWatchingPercentage)
     // Fallback to the maximum of state and chapter percentage
-    const currentStatePercentage = Number.isFinite(Number(videoWatchingPercentage)) ? Number(videoWatchingPercentage) : 0;
+    const currentStatePercentage = Number.isFinite(Number(numericPercentage)) ? Number(numericPercentage) : 0;
     console.log(currentStatePercentage,'currentStatePercentage')
     const currentChapterPercentage = Number.isFinite(Number(selectedChapter?.courseTracking?.percentage)) ? Number(selectedChapter?.courseTracking?.percentage) : 0;
     console.log(currentChapterPercentage,'currentChapterPercentage')
     const maxPercentage = Math.max(currentStatePercentage, currentChapterPercentage);
+    console.log(maxPercentage,'maxPercentage')
     setVideoWatchingPercentage(Number(maxPercentage.toFixed(2)));
     console.log(videoWatchingPercentage,'videoWatchingPercentage')
 
@@ -468,12 +470,16 @@ console.log(selectedChapter,'selectedChapter')
       !selectedChapter?._id ||
       !selectedCourse?._id
     ) {
+      console.log(selectedChapter)
+      console.log('selectedChapter?.courseTracking?._id',selectedChapter?.courseTracking?._id)
+      console.log('selectedChapter?._id',selectedChapter?._id)
+      console.log('selectedCourse?._id',selectedCourse?._id)
       return;
     }
 
-    if (numericPercentage <= currentChapterPercentage) {
-      return;
-    }
+    // if (numericPercentage <= currentChapterPercentage) {
+    //   return;
+    // }
 
     try {
       await updateVideoProgress(selectedChapter.courseTracking._id, selectedChapter._id, selectedCourse._id, numericPercentage.toString());
