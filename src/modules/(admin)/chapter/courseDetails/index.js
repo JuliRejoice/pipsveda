@@ -754,14 +754,17 @@ export default function CourseDetails({
 
           {/* Intro Video */}
           <div className={styles.introVideo}>
-            <CustomVideoPlayer
-              src={selectedCourse?.courseIntroVideo}
-              userId={user?._id}
-              controls
-              controlsList="nodownload"
-              disablePictureInPicture
-              noremoteplayback
-            />
+           
+              <CustomVideoPlayer
+                src={selectedCourse?.courseIntroVideo}
+                userId={user?._id}
+                controls
+                controlsList="nodownload"
+                disablePictureInPicture
+                noremoteplayback
+                isIntro={true}
+              />
+           
           </div>
 
           {/* Course Syllabus */}
@@ -939,14 +942,17 @@ export default function CourseDetails({
           )}
 
           <div className={styles.introVideo}>
-            <CustomVideoPlayer
-              src={selectedCourse?.courseIntroVideo}
-              userId={user?._id}
-              controls
-              controlsList="nodownload"
-              disablePictureInPicture
-              noremoteplayback
-            />
+            
+              <CustomVideoPlayer
+                src={selectedCourse?.courseIntroVideo}
+                userId={user?._id}
+                controls
+                controlsList="nodownload"
+                disablePictureInPicture
+                noremoteplayback
+                isIntro={true}
+              />
+            
           </div>
           {/* <div className={styles.mainrelative}>
             <div className={styles.tabAlignment}>

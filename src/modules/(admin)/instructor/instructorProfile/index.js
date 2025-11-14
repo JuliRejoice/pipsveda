@@ -196,7 +196,7 @@ function InstructorProfile({ id }) {
         <div className={styles.contactItem}>
           <span className={styles.contactLabel}>Member Since:</span>
           <span className={styles.contactValue}>
-            {new Date(instructor.createdAt).toLocaleDateString()}
+            {new Date(instructor.createdAt).toLocaleDateString("en-GB")}
           </span>
         </div>
       </div>

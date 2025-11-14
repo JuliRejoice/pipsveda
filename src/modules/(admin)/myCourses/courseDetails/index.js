@@ -167,6 +167,9 @@ export default function CourseDetails({ params }) {
   const [videoWatchingPercentage, setVideoWatchingPercentage] = useState(0);
   const [allChaptersCompleted, setAllChaptersCompleted] = useState(false);
 
+
+console.log(videoWatchingPercentage,'----------fdf---------')
+console.log(selectedChapter,'selectedChapter')
   const id = params;
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -232,11 +235,10 @@ export default function CourseDetails({ params }) {
 
       if (data?.payload?.data?.length > 0) {
         setSelectedChapter(data.payload.data[0]);
-        if (res?.payload?.data?.[0]?.courseType === "recorded") {
-          setVideoWatchingPercentage(
-            data.payload.data[0]?.courseTracking?.percentage
-          );
-        }
+        // if (res?.payload?.data?.[0]?.courseType === "recorded") {
+        //   console.log(data.payload.data[0]?.courseTracking?.percentage,'fhdjgh-----------')
+        //   setVideoWatchingPercentage(data.payload.data[0]?.courseTracking?.percentage);
+        // }
       }
       setError(null);
     } catch (err) {
@@ -247,6 +249,14 @@ export default function CourseDetails({ params }) {
     }
   };
 
+
+  useEffect(()=>{
+    if(selectedChapter){
+      setVideoWatchingPercentage(selectedChapter?.courseTracking?.percentage);
+    }
+  },[selectedChapter])
+
+  console.log(videoWatchingPercentage,'videoWatchingPercentage')
   const fetchSessions = async () => {
     try {
       setLoading(true);
@@ -313,6 +323,16 @@ export default function CourseDetails({ params }) {
       setSelectedChapter(chapters[0]);
     }
   }, [chapters, selectedChapter]);
+
+  // Update videoWatchingPercentage when selectedChapter changes
+  useEffect(() => {
+    if (selectedChapter?.courseTracking?.percentage !== undefined) {
+      const newPercentage = Number(selectedChapter.courseTracking.percentage);
+      if (!isNaN(newPercentage)) {
+        setVideoWatchingPercentage(newPercentage);
+      }
+    }
+  }, [selectedChapter]);
 
   useEffect(() => {
     const isPayment = searchParams.get("isPayment");
@@ -399,33 +419,27 @@ export default function CourseDetails({ params }) {
   };
 
   const updateVideoPercentage = async (percentage) => {
-    const numericPercentage =
-      typeof percentage === "number" ? percentage : parseFloat(percentage);
-
+    const numericPercentage = typeof percentage === "number" ? percentage : parseFloat(percentage);
+    
     if (!Number.isFinite(numericPercentage)) {
-      return;
+        return;
+      }
+      
+      // If we have a valid numeric percentage, use it directly
+      if (Number.isFinite(numericPercentage)) {
+      console.log('dfhdbfhjf----------------',numericPercentage)
+      setVideoWatchingPercentage(numericPercentage);
+    
     }
 
-    const currentStatePercentage = Number.isFinite(
-      Number(videoWatchingPercentage)
-    )
-      ? Number(videoWatchingPercentage)
-      : 0;
-    const currentChapterPercentage = Number.isFinite(
-      Number(selectedChapter?.courseTracking?.percentage)
-    )
-      ? Number(selectedChapter?.courseTracking?.percentage)
-      : 0;
-
-    const maxPercentage = Math.max(
-      currentStatePercentage,
-      currentChapterPercentage,
-      numericPercentage
-    );
-
-    const normalizedPercentage = Number(maxPercentage.toFixed(2));
-
-    setVideoWatchingPercentage(normalizedPercentage);
+    // Fallback to the maximum of state and chapter percentage
+    const currentStatePercentage = Number.isFinite(Number(videoWatchingPercentage)) ? Number(videoWatchingPercentage) : 0;
+    console.log(currentStatePercentage,'currentStatePercentage')
+    const currentChapterPercentage = Number.isFinite(Number(selectedChapter?.courseTracking?.percentage)) ? Number(selectedChapter?.courseTracking?.percentage) : 0;
+    console.log(currentChapterPercentage,'currentChapterPercentage')
+    const maxPercentage = Math.max(currentStatePercentage, currentChapterPercentage);
+    setVideoWatchingPercentage(Number(maxPercentage.toFixed(2)));
+    console.log(videoWatchingPercentage,'videoWatchingPercentage')
 
     setSelectedChapter((prev) => {
       if (!prev) return prev;
@@ -436,7 +450,7 @@ export default function CourseDetails({ params }) {
         ? Number(prev.courseTracking?.percentage)
         : 0;
 
-      if (normalizedPercentage <= prevPercentage) {
+      if (numericPercentage <= prevPercentage) {
         return prev;
       }
 
@@ -444,7 +458,7 @@ export default function CourseDetails({ params }) {
         ...prev,
         courseTracking: {
           ...prev.courseTracking,
-          percentage: normalizedPercentage,
+          percentage: numericPercentage,
         },
       };
     });
@@ -457,17 +471,12 @@ export default function CourseDetails({ params }) {
       return;
     }
 
-    if (normalizedPercentage <= currentChapterPercentage) {
+    if (numericPercentage <= currentChapterPercentage) {
       return;
     }
 
     try {
-      await updateVideoProgress(
-        selectedChapter.courseTracking._id,
-        selectedChapter._id,
-        selectedCourse._id,
-        normalizedPercentage.toString()
-      );
+      await updateVideoProgress(selectedChapter.courseTracking._id, selectedChapter._id, selectedCourse._id, numericPercentage.toString());
     } catch (error) {
       console.error("Error updating video progress:", error);
     }
@@ -909,11 +918,11 @@ export default function CourseDetails({ params }) {
                     <div className={styles.batchMeta}>
                       <div className={styles.metaItem}>
                         <strong>Start Date:</strong>{" "}
-                        {new Date(batchDetails.startDate).toLocaleDateString()}
+                        {new Date(batchDetails.startDate).toLocaleDateString("en-GB")}
                       </div>
                       <div className={styles.metaItem}>
                         <strong>End Date:</strong>{" "}
-                        {new Date(batchDetails.endDate).toLocaleDateString()}
+                        {new Date(batchDetails.endDate).toLocaleDateString("en-GB")}
                       </div>
                       {batchDetails.meetingLink && (
                         <div className={styles.meetingLink}>
@@ -1197,7 +1206,8 @@ export default function CourseDetails({ params }) {
                             controlsList="nodownload"
                             disablePictureInPicture
                             noremoteplayback
-                            // className={styles.videoPlayer}
+                            isIntro={false}
+                          // className={styles.videoPlayer}
                           />
                         </div>
                       )
@@ -1213,7 +1223,7 @@ export default function CourseDetails({ params }) {
                         Chapter {selectedChapter.chapterNo} :{" "}
                         {selectedChapter.chapterName || "Untitled Chapter"}
                       </h4>
-                      {selectedChapter.courseTracking?.percentage > 0 && (
+                      {selectedChapter.courseTracking?.percentage >= 0 && (
                         <div
                           className={styles.progressCircle}
                           style={{

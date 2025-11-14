@@ -60,8 +60,8 @@ const BatchSelectionModal = ({
               >
                 <div className={styles.batchInfo}>
                   <h4>{batch.batchName || `Batch ${new Date(batch.startDate).getFullYear()}`}</h4>
-                  <p>Starts: {new Date(batch.startDate).toLocaleDateString()}</p>
-                  <p>Ends: {new Date(batch.endDate).toLocaleDateString()}</p>
+                  <p>Starts: {new Date(batch.startDate).toLocaleDateString("en-GB")}</p>
+                  <p>Ends: {new Date(batch.endDate).toLocaleDateString("en-GB")}</p>
                   {batch?.centerId?.centerName && <p>Center: {batch?.centerId?.centerName || 'N/A'}</p>}
                 </div>
                 {selectedBatchId === batch._id && (

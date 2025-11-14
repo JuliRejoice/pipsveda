@@ -18,7 +18,7 @@ export default function BlogContentList({ blog }) {
                     <div className={styles.iconText}>
                         {/* <img src={DateIcon} alt="DateIcon" /> */}
                         <CalanderIcon />
-                        <span>{new Date(blog?.createdAt).toLocaleDateString()}</span>
+                        <span>{new Date(blog?.createdAt).toLocaleDateString("en-GB")}</span>
                         {/* <img src={ProfileIcon} alt="ProfileIcon" /> */}
                         <UserIcon />
                         <span>{blog?.author.name}</span>

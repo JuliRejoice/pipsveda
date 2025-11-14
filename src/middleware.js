@@ -17,6 +17,9 @@ export default function middleware(req) {
     "/telegram",
     "/algobot",
     "/course",
+    "/categories",
+    "/instructor",
+    
   ];
 
   const isProtected = protectedPaths.some((path) =>
@@ -51,6 +54,8 @@ export const config = {
     "/course/:path*",
     "/algobot/:path*",
     "/telegram/:path*",
+    "/categories/:path*",
+    "/instructor/:path*",
   ],
 };
 

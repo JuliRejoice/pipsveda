@@ -132,6 +132,7 @@ export default function CourseInformation({ id }) {
                 controlsList="nodownload"
                 disablePictureInPicture
                 noremoteplayback
+                isIntro={true}
               />
            
           </div>
