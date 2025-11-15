@@ -307,7 +307,7 @@
 
         h3 {
           @include font18;
-          color: var(--black-700);
+          color: #000;
           margin: 0;
           line-height: 1.4;
           font-weight: 600;
@@ -320,7 +320,7 @@
 
         h4 {
           @include font14;
-          color: var(--primary-color);
+          color: #000;
           margin: 0;
           font-weight: 500;
           background: rgba(107, 79, 216, 0.1);

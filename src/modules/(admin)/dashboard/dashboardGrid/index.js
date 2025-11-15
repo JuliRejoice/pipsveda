@@ -4,6 +4,8 @@ import styles from "./dashboardGrid.module.scss";
 import UserIcon from "@/icons/userIcon";
 import CourseIcon from "@/icons/courseIcon";
 import Algobot from "@/icons/algobot";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 import {
   getDashboardData,
   getAlgobots,
@@ -212,17 +214,17 @@ function DashboardGrid() {
   const CourseCard = ({ course, isPurchased = false }) => {
     const router = useRouter();
 
-      const handleCardClick = (e) => {
-        if (
-          e.target.tagName === "BUTTON" ||
-          e.target.closest("button") ||
-          e.target.tagName === "A" ||
-          e.target.closest("a")
-        ) {
-          return;
-        }
-        router.push(`/course/${course._id}`);
-      };
+    const handleCardClick = (e) => {
+      if (
+        e.target.tagName === "BUTTON" ||
+        e.target.closest("button") ||
+        e.target.tagName === "A" ||
+        e.target.closest("a")
+      ) {
+        return;
+      }
+      router.push(`/course/${course._id}`);
+    };
 
     return (
       <div
@@ -469,9 +471,9 @@ function DashboardGrid() {
                   <div className={styles.planInfoItem}>
                     <span>Start Date:</span>
                     <span>
-                      {new Date(
-                        bot.purchaseInfo.startDate
-                      ).toLocaleDateString("en-GB")}
+                      {new Date(bot.purchaseInfo.startDate).toLocaleDateString(
+                        "en-GB"
+                      )}
                     </span>
                   </div>
                 )}
@@ -479,7 +481,9 @@ function DashboardGrid() {
                   <div className={styles.planInfoItem}>
                     <span>End Date:</span>
                     <span>
-                      {new Date(bot.purchaseInfo.endDate).toLocaleDateString("en-GB")}
+                      {new Date(bot.purchaseInfo.endDate).toLocaleDateString(
+                        "en-GB"
+                      )}
                     </span>
                   </div>
                 )}
@@ -512,6 +516,43 @@ function DashboardGrid() {
     );
   };
 
+  // Skeleton components
+  const CourseCardSkeleton = () => (
+    <div className={styles.card}>
+      <div className={styles.cardImage}>
+        <Skeleton height={160} style={{ borderRadius: "8px 8px 0 0" }} />
+      </div>
+      <div className={styles.cardContent}>
+        <Skeleton height={24} width="80%" style={{ marginBottom: "8px" }} />
+        <div className={styles.cardDescription}>
+          <Skeleton count={2} height={16} style={{ marginBottom: "4px" }} />
+        </div>
+        <div className={styles.cardFooter}>
+          <Skeleton height={20} width={60} style={{ marginRight: "8px" }} />
+          <Skeleton height={32} width={100} style={{ borderRadius: "6px" }} />
+        </div>
+      </div>
+    </div>
+  );
+
+  const AlgobotCardSkeleton = () => (
+    <div className={styles.card}>
+      <div className={styles.cardImage}>
+        <Skeleton height={160} style={{ borderRadius: "8px 8px 0 0" }} />
+      </div>
+      <div className={styles.cardContent}>
+        <Skeleton height={24} width="80%" style={{ marginBottom: "8px" }} />
+        <div className={styles.cardDescription}>
+          <Skeleton count={2} height={16} style={{ marginBottom: "4px" }} />
+        </div>
+        <div className={styles.cardFooter}>
+          <Skeleton height={20} width={80} style={{ marginRight: "8px" }} />
+          <Skeleton height={32} width={120} style={{ borderRadius: "6px" }} />
+        </div>
+      </div>
+    </div>
+  );
+
   const SliderWrapper = ({
     title,
     items,
@@ -519,10 +560,21 @@ function DashboardGrid() {
     renderItem,
     emptyMessage,
     isPurchased = false,
+    skeletonType = "course",
   }) => (
     <div className={styles.sliderContainer}>
       {loading ? (
-        <div className={styles.loading}>Loading...</div>
+        <Slider {...sliderSettings}>
+          {[...Array(3)].map((_, index) => (
+            <div key={`skeleton-${index}`} className={styles.slide}>
+              {skeletonType === "course" ? (
+                <CourseCardSkeleton />
+              ) : (
+                <AlgobotCardSkeleton />
+              )}
+            </div>
+          ))}
+        </Slider>
       ) : items.length > 0 ? (
         <Slider {...sliderSettings}>
           {items.map((item) => (
@@ -556,6 +608,7 @@ function DashboardGrid() {
                 <CourseCard course={course} isPurchased />
               )}
               emptyMessage="You don't have any Courses yet."
+              skeletonType="course"
             />
           </div>
         </div>
@@ -575,6 +628,7 @@ function DashboardGrid() {
               loading={loading.courses}
               renderItem={(course) => <CourseCard course={course} />}
               emptyMessage="No courses available at the moment."
+              skeletonType="course"
             />
           </div>
         </div>
@@ -592,6 +646,7 @@ function DashboardGrid() {
               loading={loading.purchasedBots}
               renderItem={(bot) => <AlgobotCard bot={bot} isPurchased />}
               emptyMessage="You don't have any AlgoBots yet."
+              skeletonType="algobot"
             />
           </div>
         </div>
@@ -611,6 +666,7 @@ function DashboardGrid() {
               loading={loading.algobots}
               renderItem={(bot) => <AlgobotCard bot={bot} />}
               emptyMessage="No AlgoBots available at the moment."
+              skeletonType="algobot"
             />
           </div>
         </div>

@@ -69,12 +69,12 @@
         }
 
         h4 {
-          @include font17;
+          @include font16;
           color: var(--black-500);
           background-color: rgb(107 79 216 / 10%);
           font-family: var(--font-funneldisplay);
-          padding: 10px;
-          border-radius: 10px;
+          padding: 8px;
+          border-radius: 5px;
         }
 
         p {
