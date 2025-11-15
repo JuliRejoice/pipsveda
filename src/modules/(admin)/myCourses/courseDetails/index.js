@@ -168,8 +168,8 @@ export default function CourseDetails({ params }) {
   const [allChaptersCompleted, setAllChaptersCompleted] = useState(false);
 
 
-console.log(videoWatchingPercentage,'----------fdf---------')
-console.log(selectedChapter,'selectedChapter')
+  console.log(videoWatchingPercentage, '----------fdf---------')
+  console.log(selectedChapter, 'selectedChapter')
   const id = params;
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -188,20 +188,33 @@ console.log(selectedChapter,'selectedChapter')
     });
     setAllChaptersCompleted(completed);
   }, [chapters]);
-
+  // Replace your current isCertificateAvailable effect with this:
   useEffect(() => {
-    if (selectedCourse) {
-      setIsLiveOnline(selectedCourse?.courseType === "live");
-      setIsInPerson(selectedCourse?.courseType === "physical");
-
-      // Check if certificate is available (course has ended and user has paid)
-      if (selectedCourse.courseEnd && selectedCourse.isPayment) {
-        const courseEndDate = new Date(selectedCourse.courseEnd);
-        const today = new Date();
-        setIsCertificateAvailable(courseEndDate < today);
-      }
+    if (!selectedCourse) {
+      setIsCertificateAvailable(false);
+      return;
     }
-  }, [selectedCourse]);
+
+    // Recorded / self-paced courses:
+    // Certificate available when user has paid AND all chapters are completed.
+    if (selectedCourse.courseType === "recorded") {
+      setIsCertificateAvailable(Boolean(isPaid && allChaptersCompleted && chapters.length > 0));
+      return;
+    }
+
+    // Live / physical courses:
+    // Certificate available if course has an end date in the past AND user has paid (selectedCourse.isPayment).
+    if (selectedCourse.courseEnd && selectedCourse.isPayment) {
+      const courseEndDate = new Date(selectedCourse.courseEnd);
+      const today = new Date();
+      setIsCertificateAvailable(courseEndDate < today);
+      return;
+    }
+
+    // Default fallback
+    setIsCertificateAvailable(false);
+  }, [selectedCourse, isPaid, allChaptersCompleted, chapters.length]);
+
 
   // Add this with other state declarations at the top of the component
   const [courseRating, setCourseRating] = useState(null);
@@ -235,6 +248,8 @@ console.log(selectedChapter,'selectedChapter')
 
       if (data?.payload?.data?.length > 0) {
         setSelectedChapter(data.payload.data[0]);
+        const completed = (data?.payload?.data || []).every(ch => Number(ch.courseTracking?.percentage || 0) >= 100);
+        setAllChaptersCompleted(completed);
         // if (res?.payload?.data?.[0]?.courseType === "recorded") {
         //   console.log(data.payload.data[0]?.courseTracking?.percentage,'fhdjgh-----------')
         //   setVideoWatchingPercentage(data.payload.data[0]?.courseTracking?.percentage);
@@ -250,13 +265,13 @@ console.log(selectedChapter,'selectedChapter')
   };
 
 
-  useEffect(()=>{
-    if(selectedChapter){
+  useEffect(() => {
+    if (selectedChapter) {
       setVideoWatchingPercentage(selectedChapter?.courseTracking?.percentage);
     }
-  },[selectedChapter])
+  }, [selectedChapter])
 
-  console.log(videoWatchingPercentage,'videoWatchingPercentage')
+  console.log(videoWatchingPercentage, 'videoWatchingPercentage')
   const fetchSessions = async () => {
     try {
       setLoading(true);
@@ -420,28 +435,28 @@ console.log(selectedChapter,'selectedChapter')
 
   const updateVideoPercentage = async (percentage) => {
     const numericPercentage = typeof percentage === "number" ? percentage : parseFloat(percentage);
-    
-    console.log('dfhdbfhjf----------------',numericPercentage)
+
+    console.log('dfhdbfhjf----------------', numericPercentage)
     // if (!Number.isFinite(numericPercentage)) {
     //   return;
     // }
-    
+
     // If we have a valid numeric percentage, use it directly
     if (Number.isFinite(numericPercentage)) {
       setVideoWatchingPercentage(numericPercentage);
-      
+
     }
-    
-    console.log('percentage----------------',percentage,videoWatchingPercentage)
+
+    console.log('percentage----------------', percentage, videoWatchingPercentage)
     // Fallback to the maximum of state and chapter percentage
     const currentStatePercentage = Number.isFinite(Number(numericPercentage)) ? Number(numericPercentage) : 0;
-    console.log(currentStatePercentage,'currentStatePercentage')
+    console.log(currentStatePercentage, 'currentStatePercentage')
     const currentChapterPercentage = Number.isFinite(Number(selectedChapter?.courseTracking?.percentage)) ? Number(selectedChapter?.courseTracking?.percentage) : 0;
-    console.log(currentChapterPercentage,'currentChapterPercentage')
+    console.log(currentChapterPercentage, 'currentChapterPercentage')
     const maxPercentage = Math.max(currentStatePercentage, currentChapterPercentage);
-    console.log(maxPercentage,'maxPercentage')
+    console.log(maxPercentage, 'maxPercentage')
     setVideoWatchingPercentage(Number(maxPercentage.toFixed(2)));
-    console.log(videoWatchingPercentage,'videoWatchingPercentage')
+    console.log(videoWatchingPercentage, 'videoWatchingPercentage')
 
     setSelectedChapter((prev) => {
       if (!prev) return prev;
@@ -471,9 +486,9 @@ console.log(selectedChapter,'selectedChapter')
       !selectedCourse?._id
     ) {
       console.log(selectedChapter)
-      console.log('selectedChapter?.courseTracking?._id',selectedChapter?.courseTracking?._id)
-      console.log('selectedChapter?._id',selectedChapter?._id)
-      console.log('selectedCourse?._id',selectedCourse?._id)
+      console.log('selectedChapter?.courseTracking?._id', selectedChapter?.courseTracking?._id)
+      console.log('selectedChapter?._id', selectedChapter?._id)
+      console.log('selectedCourse?._id', selectedCourse?._id)
       return;
     }
 
@@ -578,10 +593,9 @@ console.log(selectedChapter,'selectedChapter')
       };
 
       const extension = extensionMap[contentType] || "bin";
-      const fileName = `certificate-${
-        selectedCourse.CourseName?.replace(/\s+/g, "-").toLowerCase() ||
+      const fileName = `certificate-${selectedCourse.CourseName?.replace(/\s+/g, "-").toLowerCase() ||
         "course"
-      }.${extension}`;
+        }.${extension}`;
 
       const url = window.URL.createObjectURL(blob);
       const link = document.createElement("a");
@@ -990,9 +1004,8 @@ console.log(selectedChapter,'selectedChapter')
                     {syllabus.map((item, index) => (
                       <div key={item._id} className={styles.accordionItem}>
                         <div
-                          className={`${styles.accordionHeader} ${
-                            expandedSyllabus === index ? styles.active : ""
-                          }`}
+                          className={`${styles.accordionHeader} ${expandedSyllabus === index ? styles.active : ""
+                            }`}
                           onClick={() =>
                             setExpandedSyllabus(
                               expandedSyllabus === index ? null : index
@@ -1005,9 +1018,8 @@ console.log(selectedChapter,'selectedChapter')
                           <span>{expandedSyllabus === index ? "−" : "+"}</span>
                         </div>
                         <div
-                          className={`${styles.accordionContent} ${
-                            expandedSyllabus === index ? styles.active : ""
-                          }`}
+                          className={`${styles.accordionContent} ${expandedSyllabus === index ? styles.active : ""
+                            }`}
                         >
                           <div className={styles.syllabusContent}>
                             <p>
@@ -1132,8 +1144,8 @@ console.log(selectedChapter,'selectedChapter')
               style={{
                 background:
                   isCertificateAvailable &&
-                  allChaptersCompleted &&
-                  chapters.length > 0
+                    allChaptersCompleted &&
+                    chapters.length > 0
                     ? "#10B981"
                     : "#9CA3AF",
               }}
@@ -1180,9 +1192,8 @@ console.log(selectedChapter,'selectedChapter')
                             <p>Enroll to unlock this video</p>
                           </div>
                           <img
-                            src={`https://img.youtube.com/vi/${
-                              selectedChapter.chapterVideo.split("v=")[1]
-                            }/hqdefault.jpg`}
+                            src={`https://img.youtube.com/vi/${selectedChapter.chapterVideo.split("v=")[1]
+                              }/hqdefault.jpg`}
                             alt="Video thumbnail"
                             className={styles.videoThumbnail}
                           />
