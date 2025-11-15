@@ -148,7 +148,7 @@ export default function Sidebar({ setToogle, toogle, unreadCount }) {
             >
               <div style={{ position: 'relative' }}>
                 <NotificationIcon />
-                {unreadCount >= 0 && (
+                {unreadCount > 0 && (
                   <span className={styles.notificationBadge}>
                     {unreadCount > 9 ? '9+' : unreadCount} 
                   </span>

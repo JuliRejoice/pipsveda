@@ -13,6 +13,7 @@ import {
   getSessionData,
   getCourseSyllabus,
   downloadStudentID,
+  getCourseRating,
 } from "@/compoents/api/dashboard";
 import Skeleton from "react-loading-skeleton";
 import "react-loading-skeleton/dist/skeleton.css";
@@ -160,6 +161,7 @@ export default function CourseDetails({
   const [isLoading, setIsLoading] = useState(false);
   const [selectedBatch, setSelectedBatch] = useState(null);
   const [showBeforePayment, setShowBeforePayment] = useState(false);
+  const [courseRating, setCourseRating] = useState(0);
   const [syllabus, setSyllabus] = useState([]);
   const [expandedSection, setExpandedSection] = useState(null);
   const [isDownloading, setIsDownloading] = useState(false);
@@ -250,6 +252,22 @@ export default function CourseDetails({
   useEffect(() => {
     const user = JSON.parse(getCookie("user"));
     setUser(user);
+
+    // Fetch course rating
+    const fetchCourseRating = async () => {
+      try {
+        const response = await getCourseRating(id);
+        if (response?.payload?.data?.[0]?.averageRating) {
+          setCourseRating(response.payload.data[0].averageRating.toFixed(1));
+        }
+      } catch (error) {
+        console.error('Error fetching course rating:', error);
+      }
+    };
+
+    if (id) {
+      fetchCourseRating();
+    }
 
     // Get batchId from URL if it exists (note the case sensitivity: batchID vs batchId)
     const urlParams = new URLSearchParams(window.location.search);
@@ -717,10 +735,10 @@ export default function CourseDetails({
                     {selectedCourse?.instructor?.name || "Instructor"}
                   </span>
                 </div>
-                {/* <div className={styles.iconText}>
+                <div className={styles.iconText}>
                   <StarIcon />
-                  <span>4.8</span>
-                </div> */}
+                  <span>{courseRating || "0"}</span>
+                </div>
                 <div className={styles.iconText}>
                   <ProfileGroupIcon />
                   <span>{selectedCourse?.subscribed || "0"}</span>
@@ -882,10 +900,10 @@ export default function CourseDetails({
                     {selectedCourse?.instructor?.name || "Instructor"}
                   </span>
                 </div>
-                {/* <div className={styles.iconText}>
-                <StarIcon />
-                <span>4.8</span>
-              </div> */}
+                <div className={styles.iconText}>
+                  <StarIcon />
+                  <span>{courseRating || '0'}</span>
+                </div>
                 <div className={styles.iconText}>
                   <ProfileGroupIcon />
                   <span>{selectedCourse?.subscribed || "0"}</span>
