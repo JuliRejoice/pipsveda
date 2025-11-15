@@ -1,5 +1,5 @@
 "use client";
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect, useState, useCallback } from "react";
 import styles from "./CustomVideoPlayer.module.scss";
 import Playicon from "../../../public/assets/icons/playicon";
 import Pauseicon from "../../../public/assets/icons/pauseicon";
@@ -9,92 +9,81 @@ import Fullscreenicon from "../../../public/assets/icons/fullscreenicon";
 import Minimizedicon from "../../../public/assets/icons/minimizedicon";
 import Watermark from "../watermark/watermark";
 
-const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage = 0, onPercentageChange, isIntro, ...props }) => {
-  const canvasRef = useRef(null);
-  const videoRef = useRef(null);
+const THROTTLE_REPORT_DELTA = 0.01; // 0.01% threshold for reporting
+const MIN_SEEK_DIFF_SECONDS = 0.05; // minimal difference to perform a seek
+
+const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
+  src,
+  userId,
+  className = "",
+  percentage = 0,
+  onPercentageChange,
+  isIntro,
+  ...props
+}) {
+  // refs
   const containerRef = useRef(null);
+  const videoRef = useRef(null);
+  const canvasRef = useRef(null);
   const progressBarRef = useRef(null);
-  const volumeSliderRef = useRef(null);
-  const animationFrameRef = useRef(null);
-  const lastUpdateRef = useRef(0);
+  const animationRef = useRef(null);
 
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [progress, setProgress] = useState(0);
-  const [volume, setVolume] = useState(1);
-  const [isFullscreen, setIsFullscreen] = useState(false);
-  const [duration, setDuration] = useState(0);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [isMuted, setIsMuted] = useState(true);
-  const [showVolumeSlider, setShowVolumeSlider] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const [isInView, setIsInView] = useState(true);
-  const [wasPlaying, setWasPlaying] = useState(false);
-  const [hasSeekedInitially, setHasSeekedInitially] = useState(false);
-
-  const initialPercentage = typeof percentage === "number" ? percentage : parseFloat(percentage) || 0;
-  const percentageRef = useRef(initialPercentage);
-  const maxPercentageRef = useRef(initialPercentage);
-  const lastReportedPercentageRef = useRef(initialPercentage);
+  // percentage refs to preserve your original behavior
+  const percentageRef = useRef(typeof percentage === "number" ? percentage : parseFloat(percentage) || 0);
+  const maxPercentageRef = useRef(percentageRef.current);
+  const lastReportedPercentageRef = useRef(percentageRef.current);
   const ignoreNextPercentagePropRef = useRef(false);
 
-  // Update video position when percentage or src changes
-  useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+  // other refs
+  const watchedSetRef = useRef(new Set());
+  const isMountedRef = useRef(false);
 
-    const newPercentage = typeof percentage === "number" ? percentage : parseFloat(percentage) || 0;
+  // state
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const [volume, setVolume] = useState(1);
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [progress, setProgress] = useState(percentageRef.current); // shown progress %
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [showVolumeSlider, setShowVolumeSlider] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [dragProgress, setDragProgress] = useState(null); // temporary progress while dragging
+  const [wasPlayingBeforeHide, setWasPlayingBeforeHide] = useState(false);
 
-    // Always update the refs when src changes or percentage is 0
-    const shouldUpdate = src !== video.src ||
-      newPercentage === 0 ||
-      Math.abs(newPercentage - percentageRef.current) > 0.1;
+  // Helper: format time
+  const formatTime = (t = 0) => {
+    const minutes = Math.floor(t / 60);
+    const seconds = Math.floor(t % 60);
+    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
+  };
 
-    if (shouldUpdate) {
-      // Reset max percentage when src changes
-      if (src !== video.src) {
-        maxPercentageRef.current = newPercentage;
-      } else {
-        maxPercentageRef.current = Math.max(maxPercentageRef.current, newPercentage);
-      }
+  // Resize canvas to element size
+  const resizeCanvas = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    canvas.width = canvas.offsetWidth;
+    canvas.height = canvas.offsetHeight;
+    // draw a frame to avoid blank
+    forceCanvasUpdate();
+  }, []);
 
-      percentageRef.current = newPercentage;
-
-      // Reset video and force seek to 0 when src changes or percentage is 0
-      const resetAndSeek = () => {
-        if (video.duration > 0) {
-          const seekTime = (newPercentage / 100) * video.duration;
-          video.currentTime = seekTime;
-          setCurrentTime(seekTime);
-          setProgress(newPercentage);
-          forceCanvasUpdate();
-        }
-      };
-
-      if (video.readyState >= 2) { // HAVE_CURRENT_DATA
-        resetAndSeek();
-      } else {
-        const onLoadedData = () => {
-          resetAndSeek();
-          video.removeEventListener('loadeddata', onLoadedData);
-        };
-        video.addEventListener('loadeddata', onLoadedData);
-      }
-    }
-  }, [percentage, src]);
-
-  // Force update canvas
-  const forceCanvasUpdate = () => {
+  // draw current video frame to canvas
+  const forceCanvasUpdate = useCallback(() => {
     const video = videoRef.current;
     const canvas = canvasRef.current;
     if (!video || !canvas || video.readyState < 2) return;
-
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    const videoAspect = video.videoWidth / video.videoHeight;
-    const canvasAspect = canvas.width / canvas.height;
-    let renderWidth, renderHeight, offsetX, offsetY;
+    const vw = video.videoWidth;
+    const vh = video.videoHeight;
+    if (!vw || !vh) return;
 
+    const videoAspect = vw / vh;
+    const canvasAspect = canvas.width / canvas.height;
+
+    let renderWidth, renderHeight, offsetX, offsetY;
     if (videoAspect > canvasAspect) {
       renderHeight = canvas.height;
       renderWidth = renderHeight * videoAspect;
@@ -108,520 +97,425 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
     }
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, offsetX, offsetY, renderWidth, renderHeight);
-  };
+    try {
+      ctx.drawImage(video, 0, 0, vw, vh, offsetX, offsetY, renderWidth, renderHeight);
+    } catch (e) {
+      // sometimes drawImage can throw if video not ready; ignore
+    }
+  }, []);
 
-  // --- Watch Tracking ---
-  const watchedSetRef = useRef(new Set());
+  // Render loop while video is playing
+  const startRenderLoop = useCallback(() => {
+    cancelAnimationFrame(animationRef.current);
+    const loop = () => {
+      forceCanvasUpdate();
+      animationRef.current = requestAnimationFrame(loop);
+    };
+    animationRef.current = requestAnimationFrame(loop);
+  }, [forceCanvasUpdate]);
 
-  console.log(percentage, '------------------')
-  // Set initial video position based on percentage
+  const stopRenderLoop = useCallback(() => {
+    cancelAnimationFrame(animationRef.current);
+  }, []);
+
+  // Apply muted state to DOM video
   useEffect(() => {
-    const video = videoRef.current;
-    if (!video) return;
+    if (videoRef.current) videoRef.current.muted = !!isMuted;
+  }, [isMuted]);
 
-    const seekToPercentage = () => {
-      if (video.duration > 0 && percentage >= 0 && percentage <= 100) {
-        const seekTime = (percentage / 100) * video.duration;
-        // Only seek if this is a meaningful change
-        if (Math.abs(video.currentTime - seekTime) > 0.05) {
-          video.currentTime = seekTime;
-          setCurrentTime(seekTime);
-          setProgress(percentage);
+  // Listen to window resize
+  useEffect(() => {
+    window.addEventListener("resize", resizeCanvas);
+    return () => window.removeEventListener("resize", resizeCanvas);
+  }, [resizeCanvas]);
 
-          // If paused, manually render a frame
-          if (video.paused) {
-            const canvas = canvasRef.current;
-            if (canvas) {
-              const ctx = canvas.getContext("2d");
-              const videoAspect = video.videoWidth / video.videoHeight;
-              const canvasAspect = canvas.width / canvas.height;
-              let renderWidth, renderHeight, offsetX, offsetY;
-              if (videoAspect > canvasAspect) {
-                renderHeight = canvas.height;
-                renderWidth = renderHeight * videoAspect;
-                offsetX = (canvas.width - renderWidth) / 2;
-                offsetY = 0;
-              } else {
-                renderWidth = canvas.width;
-                renderHeight = renderWidth / videoAspect;
-                offsetX = 0;
-                offsetY = (canvas.height - renderHeight) / 2;
-              }
-              ctx.clearRect(0, 0, canvas.width, canvas.height);
-              ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, offsetX, offsetY, renderWidth, renderHeight);
-            }
+  // IntersectionObserver: pause when not in view
+  useEffect(() => {
+    const container = containerRef.current;
+    const vid = videoRef.current;
+    if (!container || !vid) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0];
+        if (entry.isIntersecting) {
+          if (wasPlayingBeforeHide) {
+            const p = vid.play();
+            if (p && p.catch) p.catch(() => setWasPlayingBeforeHide(false));
+          }
+        } else {
+          if (!vid.paused) {
+            setWasPlayingBeforeHide(true);
+            vid.pause();
           }
         }
-      }
-    };
+      },
+      { threshold: 0.5 }
+    );
 
-    const handleLoadedMetadata = () => {
-      seekToPercentage();
-      setDuration(video.duration);
-    };
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [wasPlayingBeforeHide]);
 
-    const handleCanPlay = () => {
-      // Ensure we seek when video is ready to play
-      if (video.readyState >= 2 && video.duration > 0) {
-        seekToPercentage();
-      }
-    };
-
-    if (video.readyState >= 2 && video.duration > 0) {
-      seekToPercentage();
-      setDuration(video.duration);
-    } else {
-      video.addEventListener("loadedmetadata", handleLoadedMetadata);
-      video.addEventListener("canplay", handleCanPlay);
-    }
-
-    return () => {
-      video.removeEventListener("loadedmetadata", handleLoadedMetadata);
-      video.removeEventListener("canplay", handleCanPlay);
-    };
-  }, [percentage]);
-
-  // Handle scroll visibility
+  // Handle incoming src / percentage props: initialize refs and set video src
   useEffect(() => {
-    if (!containerRef.current || !videoRef.current) return;
+    const vid = videoRef.current;
+    if (!src || !vid) return;
 
-    const handleIntersection = (entries) => {
-      const [entry] = entries;
-      const video = videoRef.current;
-
-      if (entry.isIntersecting) {
-        // When coming back into view
-        setIsInView(true);
-        if (wasPlaying) {
-          const playPromise = video.play();
-          if (playPromise !== undefined) {
-            playPromise.catch((error) => {
-              console.log("Playback failed:", error);
-              setWasPlaying(false);
-            });
-          }
-        }
-      } else {
-        // When going out of view
-        setIsInView(false);
-        if (!video.paused) {
-          setWasPlaying(true);
-          video.pause();
-        }
-      }
-    };
-
-    const observer = new IntersectionObserver(handleIntersection, {
-      root: null,
-      threshold: 0.5,
-      rootMargin: "0px",
-    });
-
-    const currentContainer = containerRef.current;
-    observer.observe(currentContainer);
-
-    return () => {
-      if (currentContainer) {
-        observer.unobserve(currentContainer);
-      }
-    };
-  }, [wasPlaying]);
-
-  // Replace your existing useEffect([src, userId]) that creates document.createElement("video")
-  // with this updated version that re-uses the JSX video element.
-  console.log(percentage, 'percentage')
-
-  useEffect(() => {
-    if (!src) {
-      console.error("No video source provided");
-      return;
-    }
-    console.log('src', src)
-    console.log(percentage, 'percentage')
-
-    const startPercentage = typeof percentage === "number" ? percentage : parseFloat(percentage) || 0;
-    console.log(startPercentage, '----------startPercentage----------')
-    maxPercentageRef.current = startPercentage;
-    lastReportedPercentageRef.current = startPercentage;
-    percentageRef.current = startPercentage;
+    // initialize trackers
+    const newPerc = typeof percentage === "number" ? percentage : parseFloat(percentage) || 0;
+    percentageRef.current = newPerc;
+    maxPercentageRef.current = newPerc;
+    lastReportedPercentageRef.current = newPerc;
     ignoreNextPercentagePropRef.current = false;
     watchedSetRef.current = new Set();
 
-    const video = videoRef.current;
-    if (!video) return;
+    // set up video element
+    vid.src = src;
+    vid.preload = "auto";
+    vid.playsInline = true;
+    vid.muted = true; // keep initial muted as original
 
-    // make sure the DOM video element has the correct attributes
-    video.src = src;
-    video.preload = "auto";
-    video.playsInline = true;
-    video.muted = true;
-
-    const renderFrame = () => {
-      if (!video || !canvasRef.current) return;
-      const canvas = canvasRef.current;
-      const ctx = canvas.getContext("2d");
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-      if (video.readyState >= video.HAVE_CURRENT_DATA && video.videoWidth && video.videoHeight) {
-        const videoAspectRatio = video.videoWidth / video.videoHeight;
-        const canvasAspectRatio = canvas.width / canvas.height;
-
-        let renderWidth, renderHeight, offsetX, offsetY;
-        if (videoAspectRatio > canvasAspectRatio) {
-          renderHeight = canvas.height;
-          renderWidth = renderHeight * videoAspectRatio;
-          offsetX = (canvas.width - renderWidth) / 2;
-          offsetY = 0;
-        } else {
-          renderWidth = canvas.width;
-          renderHeight = renderWidth / videoAspectRatio;
-          offsetX = 0;
-          offsetY = (canvas.height - renderHeight) / 2;
-        }
-
-        ctx.drawImage(video, 0, 0, video.videoWidth, video.videoHeight, offsetX, offsetY, renderWidth, renderHeight);
-      }
-
-      if (!video.paused && !video.ended) {
-        animationFrameRef.current = requestAnimationFrame(renderFrame);
-      }
-    };
-
-    const handleLoadedMetadata = () => {
-      setDuration(video.duration || 0);
+    // Ensure we update UI and canvas once metadata available
+    const onLoadedMetadata = () => {
+      setDuration(vid.duration || 0);
       resizeCanvas();
 
-      const currentPercentage = percentageRef.current;
-      if (video.duration > 0 && currentPercentage > 0 && currentPercentage <= 100) {
-        const seekTime = (currentPercentage / 100) * video.duration;
-        // only seek if meaningful
-        if (Math.abs(video.currentTime - seekTime) > 0.05) {
-          video.currentTime = seekTime;
-          setCurrentTime(seekTime);
-          setProgress(currentPercentage);
-          setHasSeekedInitially(false);
+      // seek to incoming percentage if meaningful
+      if (vid.duration && percentageRef.current > 0) {
+        const target = (percentageRef.current / 100) * vid.duration;
+        if (Math.abs(vid.currentTime - target) > MIN_SEEK_DIFF_SECONDS) {
+          vid.currentTime = target;
+          setCurrentTime(target);
+          setProgress(percentageRef.current);
+          forceCanvasUpdate();
         }
+      } else {
+        forceCanvasUpdate();
       }
-
-      renderFrame();
     };
+
+    const onCanPlay = () => {
+      forceCanvasUpdate();
+    };
+
+    vid.addEventListener("loadedmetadata", onLoadedMetadata);
+    vid.addEventListener("canplay", onCanPlay);
+
+    return () => {
+      vid.removeEventListener("loadedmetadata", onLoadedMetadata);
+      vid.removeEventListener("canplay", onCanPlay);
+      // cleanup src to avoid memory leak
+      try {
+        vid.pause();
+        vid.removeAttribute("src");
+        vid.load();
+      } catch (e) {}
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [src, resizeCanvas, forceCanvasUpdate, percentage]);
+
+  // Core video event handlers
+  useEffect(() => {
+    const vid = videoRef.current;
+    if (!vid) return;
 
     const handlePlay = () => {
-      if (!video || !video.duration) return;
-
-      const currentPercentage = percentageRef.current;
-      const targetTime = (currentPercentage / 100) * video.duration;
-      if (Math.abs(video.currentTime - targetTime) > 0.1 && video.readyState >= 2 && currentPercentage > 0) {
-        const onSeeked = () => {
-          video.removeEventListener("seeked", onSeeked);
-          setHasSeekedInitially(true);
-          const playPromise = video.play();
-          handlePlayPromise(playPromise);
-        };
-        video.addEventListener("seeked", onSeeked, { once: true });
-        video.currentTime = targetTime;
-        setCurrentTime(targetTime);
-        setProgress(currentPercentage);
-        return;
-      }
-
-      if (!hasSeekedInitially) setHasSeekedInitially(true);
-      const playPromise = video.play();
-      handlePlayPromise(playPromise);
-    };
-
-    const handlePlayPromise = (playPromise) => {
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            setIsPlaying(true);
-            setWasPlaying(true);
-            renderFrame();
-          })
-          .catch((error) => {
-            console.log("Playback failed:", error);
-            setIsPlaying(false);
-            setWasPlaying(false);
-          });
-      }
+      setIsPlaying(true);
+      setWasPlayingBeforeHide(true);
+      startRenderLoop();
     };
 
     const handlePause = () => {
-      cancelAnimationFrame(animationFrameRef.current);
       setIsPlaying(false);
+      stopRenderLoop();
 
-      if (!video) return;
-      const current = video.currentTime;
+      // update time & progress and report percentage if needed
+      if (!vid.duration) return;
+      const current = vid.currentTime;
       setCurrentTime(current);
+      const currentPercentage = (current / vid.duration) * 100;
+      setProgress(currentPercentage);
 
-      if (video.duration > 0) {
-        const currentPercentage = (current / video.duration) * 100;
-        setProgress(currentPercentage);
-        console.log(currentPercentage)
+      // update max and report if increased meaningfully
+      const prevMax = maxPercentageRef.current || 0;
+      const updatedMax = Math.max(prevMax, currentPercentage);
+      maxPercentageRef.current = updatedMax;
+      percentageRef.current = currentPercentage;
 
-        const previousMax = maxPercentageRef.current;
-        console.log(previousMax, '--------previousMax----------')
-        const updatedPercentage = Math.max(previousMax, currentPercentage);
-        console.log(updatedPercentage, '----------updatedPercentage---------------')
-        maxPercentageRef.current = updatedPercentage;
-        percentageRef.current = currentPercentage;
-
-        const normalizedPercentage = Number(updatedPercentage.toFixed(2));
-        console.log(normalizedPercentage, '----------dhjhgdf---------------')
-        if (typeof onPercentageChange === "function" && normalizedPercentage >= (lastReportedPercentageRef.current ?? 0) + 0.01) {
-          ignoreNextPercentagePropRef.current = true;
-          lastReportedPercentageRef.current = normalizedPercentage;
-          console.log('handlePause', normalizedPercentage)
-          onPercentageChange(normalizedPercentage);
-        }
+      const normalized = Number(updatedMax.toFixed(2));
+      if (typeof onPercentageChange === "function" && normalized >= (lastReportedPercentageRef.current ?? 0) + THROTTLE_REPORT_DELTA) {
+        ignoreNextPercentagePropRef.current = true;
+        lastReportedPercentageRef.current = normalized;
+        onPercentageChange(normalized);
       }
     };
 
     const handleEnded = () => {
-      cancelAnimationFrame(animationFrameRef.current);
       setIsPlaying(false);
-
-      if (!video || !video.duration) return;
-      const currentPercentage = (video.currentTime / video.duration) * 100;
-      const previousMax = maxPercentageRef.current;
-      const finalPercentage = Math.max(previousMax, currentPercentage);
+      stopRenderLoop();
+      if (!vid.duration) return;
+      const finalPercentage = Math.max(maxPercentageRef.current || 0, (vid.currentTime / vid.duration) * 100);
       maxPercentageRef.current = finalPercentage;
+      percentageRef.current = (vid.currentTime / vid.duration) * 100;
+
+      const normalized = Number(finalPercentage.toFixed(2));
+      if (typeof onPercentageChange === "function" && normalized >= (lastReportedPercentageRef.current ?? 0) + THROTTLE_REPORT_DELTA) {
+        ignoreNextPercentagePropRef.current = true;
+        lastReportedPercentageRef.current = normalized;
+        onPercentageChange(normalized);
+      }
+      // Update UI
+      setProgress(finalPercentage);
+      setCurrentTime(vid.currentTime || 0);
+    };
+
+    const handleTimeUpdate = () => {
+      if (!vid.duration) return;
+      const current = vid.currentTime;
+      setCurrentTime(current);
+      const currentPercentage = (current / vid.duration) * 100;
+      // update internal refs
+      if (!isDragging) setProgress(currentPercentage);
+      if (currentPercentage > maxPercentageRef.current) maxPercentageRef.current = currentPercentage;
       percentageRef.current = currentPercentage;
 
-      const normalizedPercentage = Number(finalPercentage.toFixed(2));
-      if (typeof onPercentageChange === "function" && normalizedPercentage >= (lastReportedPercentageRef.current ?? 0) + 0.01) {
-        ignoreNextPercentagePropRef.current = true;
-        lastReportedPercentageRef.current = normalizedPercentage;
-        onPercentageChange(normalizedPercentage);
+      // only re-draw canvas on new second to reduce work
+      const sec = Math.floor(current);
+      if (!watchedSetRef.current.has(sec)) {
+        watchedSetRef.current.add(sec);
+        forceCanvasUpdate();
       }
-      handleTimeUpdate();
     };
 
     const handleError = (e) => {
       console.error("Video error:", e);
     };
 
-    const handleTimeUpdate = () => {
-      if (!video || !video.duration) return;
-      const current = video.currentTime;
-      const currentPercentage = (current / video.duration) * 100;
-      setCurrentTime(current);
-      if (!isDragging) setProgress(currentPercentage);
-
-      if (currentPercentage > maxPercentageRef.current) {
-        maxPercentageRef.current = currentPercentage;
-      }
-      percentageRef.current = currentPercentage;
-      const currentSecond = Math.floor(current);
-      if (!watchedSetRef.current.has(currentSecond)) {
-        watchedSetRef.current.add(currentSecond);
-        renderFrame();
-      }
-    };
-
-    // Attach events to the DOM video element
-    video.addEventListener("loadedmetadata", handleLoadedMetadata);
-    video.addEventListener("timeupdate", handleTimeUpdate);
-    video.addEventListener("play", handlePlay);
-    // video.addEventListener("pause", ()=>{console.log('pause')});
-    video.addEventListener("pause", handlePause);
-    video.addEventListener("ended", handleEnded);
-    video.addEventListener("error", handleError);
-
-    // Save ref flags
-    videoRef.current = video;
+    vid.addEventListener("play", handlePlay);
+    vid.addEventListener("pause", handlePause);
+    vid.addEventListener("ended", handleEnded);
+    vid.addEventListener("timeupdate", handleTimeUpdate);
+    vid.addEventListener("error", handleError);
 
     return () => {
-      video.pause();
-      video.removeAttribute("src");
-      video.load();
-      // remove listeners
-      video.removeEventListener("loadedmetadata", handleLoadedMetadata);
-      video.removeEventListener("timeupdate", handleTimeUpdate);
-      video.removeEventListener("play", handlePlay);
-      video.removeEventListener("pause", handlePause);
-      video.removeEventListener("ended", handleEnded);
-      video.removeEventListener("error", handleError);
-      cancelAnimationFrame(animationFrameRef.current);
+      vid.removeEventListener("play", handlePlay);
+      vid.removeEventListener("pause", handlePause);
+      vid.removeEventListener("ended", handleEnded);
+      vid.removeEventListener("timeupdate", handleTimeUpdate);
+      vid.removeEventListener("error", handleError);
+      stopRenderLoop();
     };
-  }, [src, userId, percentage]);
+  }, [onPercentageChange, isDragging, startRenderLoop, stopRenderLoop, forceCanvasUpdate]);
 
-
-  useEffect(() => {
-    if (videoRef.current) {
-      videoRef.current.muted = isMuted;
-    }
-  }, [isMuted]);
-
-  useEffect(() => {
-    resizeCanvas();
-  }, [isFullscreen]);
-
+  // Respond to external percentage prop updates
   useEffect(() => {
     const numericPercentage = typeof percentage === "number" ? percentage : parseFloat(percentage);
+    if (!Number.isFinite(numericPercentage)) return;
 
-    if (!Number.isFinite(numericPercentage)) {
-      return;
-    }
-
-    if (numericPercentage > maxPercentageRef.current) {
-      maxPercentageRef.current = numericPercentage;
-    }
-
-    if (numericPercentage > lastReportedPercentageRef.current) {
-      lastReportedPercentageRef.current = numericPercentage;
-    }
+    if (numericPercentage > maxPercentageRef.current) maxPercentageRef.current = numericPercentage;
+    if (numericPercentage > lastReportedPercentageRef.current) lastReportedPercentageRef.current = numericPercentage;
 
     if (ignoreNextPercentagePropRef.current) {
+      // skip one incoming prop that was caused by our own reporting
       ignoreNextPercentagePropRef.current = false;
+      percentageRef.current = numericPercentage;
       return;
     }
 
     percentageRef.current = numericPercentage;
-
-    const video = videoRef.current;
-    if (video && video.duration > 0 && numericPercentage > 0 && Math.abs(video.currentTime - (numericPercentage / 100) * video.duration) > 0.5) {
-      setHasSeekedInitially(false);
+    const vid = videoRef.current;
+    if (vid && vid.duration && numericPercentage >= 0 && numericPercentage <= 100) {
+      const targetTime = (numericPercentage / 100) * vid.duration;
+      // if difference is meaningful, we need to seek (but don't cause extra re-render)
+      if (Math.abs(vid.currentTime - targetTime) > 0.5) {
+        // mark that we'll need to seek on play/loadedmetadata
+        try {
+          vid.currentTime = targetTime;
+          setCurrentTime(targetTime);
+          setProgress(numericPercentage);
+          forceCanvasUpdate();
+        } catch (e) {
+          // some browsers throw if seeking before metadata; ignore
+        }
+      }
     }
-  }, [percentage]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [percentage, forceCanvasUpdate]);
 
-  const togglePlay = () => {
-    const video = videoRef.current;
-    if (!video) return;
-
+  // Toggle play/pause
+  const togglePlay = useCallback(() => {
+    const vid = videoRef.current;
+    if (!vid) return;
     if (isPlaying) {
-      video.pause();
-      setIsPlaying(false);
-      setWasPlaying(false);
+      vid.pause();
     } else {
-      const playPromise = video.play();
-      if (playPromise !== undefined) {
-        playPromise
-          .then(() => {
-            setIsPlaying(true);
-            setWasPlaying(true);
-          })
-          .catch((error) => {
-            console.log("Playback failed:", error);
-            setIsPlaying(false);
-            setWasPlaying(false);
-          });
+      const p = vid.play();
+      if (p && p.catch) {
+        p.catch((err) => {
+          console.log("Play failed:", err);
+          setIsPlaying(false);
+        });
       }
     }
-  };
+  }, [isPlaying]);
 
-  const toggleMute = () => setIsMuted(!isMuted);
+  // Toggle mute
+  const toggleMute = useCallback(() => setIsMuted((v) => !v), []);
 
-  const handleVolumeSliderChange = (e) => {
-    const newVolume = parseFloat(e.target.value);
-    setVolume(newVolume);
+  // Volume change
+  const handleVolumeChange = (e) => {
+    const v = parseFloat(e.target.value);
+    setVolume(v);
     if (videoRef.current) {
-      videoRef.current.volume = newVolume;
-      if (isMuted && newVolume > 0) setIsMuted(false);
+      videoRef.current.volume = v;
+      if (v > 0 && isMuted) setIsMuted(false);
     }
   };
 
-  const handleProgressClick = (e) => {
+  // Progress calculations (clientX/touches)
+  const getRelativePosition = (clientX) => {
+    const bar = progressBarRef.current;
+    if (!bar) return 0;
+    const rect = bar.getBoundingClientRect();
+    let pos = (clientX - rect.left) / rect.width;
+    pos = Math.max(0, Math.min(1, pos));
+    return pos;
+  };
+
+  // Start dragging (mouse or touch)
+  const startDrag = (clientX) => {
     if (!videoRef.current || !progressBarRef.current) return;
-    const rect = progressBarRef.current.getBoundingClientRect();
-    let pos = (e.clientX - rect.left) / rect.width;
-    pos = Math.max(0, Math.min(1, pos));
-    const video = videoRef.current;
-    const newTime = pos * (video.duration || 0);
-    video.currentTime = newTime;
-    // Update states immediately when paused (timeupdate may not fire)
-    setCurrentTime(newTime);
-    if (video.duration > 0) {
-      const newPercentage = (newTime / video.duration) * 100;
-      setProgress(newPercentage);
-      const previousMax = maxPercentageRef.current;
-      if (newPercentage > previousMax) {
-        maxPercentageRef.current = newPercentage;
-      }
-      percentageRef.current = newPercentage;
-
-      const normalizedPercentage = Number(maxPercentageRef.current.toFixed(2));
-
-      if (typeof onPercentageChange === "function" && normalizedPercentage > (lastReportedPercentageRef.current ?? 0) + 0.01) {
-        ignoreNextPercentagePropRef.current = true;
-        lastReportedPercentageRef.current = normalizedPercentage;
-        onPercentageChange(normalizedPercentage);
-      }
-    }
-
-  };
-
-  const handleMouseDown = (e) => {
-    e.preventDefault();
     setIsDragging(true);
+    const pos = getRelativePosition(clientX);
+    const newPerc = (pos * 100) || 0;
+    setDragProgress(newPerc);
   };
 
-  const handleMouseMove = (e) => {
-    if (!isDragging || !videoRef.current || !progressBarRef.current) return;
-    const rect = progressBarRef.current.getBoundingClientRect();
-    let pos = (e.clientX - rect.left) / rect.width;
-    pos = Math.max(0, Math.min(1, pos));
-    const video = videoRef.current;
-    const newTime = pos * (video.duration || 0);
-    video.currentTime = newTime;
-    // Live-update UI and internal percentage while dragging
+  // Update dragging position
+  const updateDrag = (clientX) => {
+    if (!isDragging || !videoRef.current) return;
+    const pos = getRelativePosition(clientX);
+    const newPerc = pos * 100;
+    setDragProgress(newPerc);
+  };
+
+  // End dragging: seek video and report percentage if required
+  const endDrag = (clientX) => {
+    if (!videoRef.current) {
+      setIsDragging(false);
+      setDragProgress(null);
+      return;
+    }
+    const vid = videoRef.current;
+    const pos = getRelativePosition(clientX);
+    const newPerc = pos * 100;
+    const newTime = (vid.duration || 0) * pos;
+
+    // Seek only if meaningful difference
+    if (Math.abs(vid.currentTime - newTime) > MIN_SEEK_DIFF_SECONDS) {
+      try {
+        vid.currentTime = newTime;
+      } catch (e) {
+        // ignore seek errors before metadata
+      }
+    }
+
+    // Update UI states
+    setIsDragging(false);
+    setDragProgress(null);
     setCurrentTime(newTime);
-    if (video.duration > 0) {
-      // const newPercentage = (newTime / video.duration) * 100;
-      // setProgress(newPercentage);
-      // percentageRef.current = newPercentage;
+    setProgress(newPerc);
+    // Update percentage tracking
+    const prevMax = maxPercentageRef.current || 0;
+    const updatedMax = Math.max(prevMax, newPerc);
+    maxPercentageRef.current = updatedMax;
+    percentageRef.current = newPerc;
+
+    // Report if increased meaningfully
+    const normalized = Number(updatedMax.toFixed(2));
+    if (typeof onPercentageChange === "function" && normalized >= (lastReportedPercentageRef.current ?? 0) + THROTTLE_REPORT_DELTA) {
+      ignoreNextPercentagePropRef.current = true;
+      lastReportedPercentageRef.current = normalized;
+      onPercentageChange(normalized);
     }
   };
 
-  const handleMouseUp = () => {
-    setIsDragging(false);
-  };
-
+  // Global mouse/touch move & up handlers while dragging
   useEffect(() => {
-    const handleGlobalMouseMove = (e) => {
-      if (isDragging) handleMouseMove(e);
+    const handleMouseMove = (e) => {
+      if (!isDragging) return;
+      updateDrag(e.clientX);
     };
-    const handleGlobalMouseUp = () => {
-      if (isDragging) setIsDragging(false);
+    const handleMouseUp = (e) => {
+      if (!isDragging) return;
+      endDrag(e.clientX);
+    };
+
+    const handleTouchMove = (e) => {
+      if (!isDragging || !e.touches || e.touches.length === 0) return;
+      updateDrag(e.touches[0].clientX);
+      e.preventDefault();
+    };
+    const handleTouchEnd = (e) => {
+      if (!isDragging) return;
+      // use last touch position if available
+      const touch = e.changedTouches && e.changedTouches[0];
+      endDrag(touch ? touch.clientX : 0);
     };
 
     if (isDragging) {
-      window.addEventListener("mousemove", handleGlobalMouseMove);
-      window.addEventListener("mouseup", handleGlobalMouseUp);
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
+      window.addEventListener("touchmove", handleTouchMove, { passive: false });
+      window.addEventListener("touchend", handleTouchEnd);
     }
 
     return () => {
-      window.removeEventListener("mousemove", handleGlobalMouseMove);
-      window.removeEventListener("mouseup", handleGlobalMouseUp);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchend", handleTouchEnd);
     };
   }, [isDragging]);
 
-  const toggleFullscreen = () => setIsFullscreen((prev) => !prev);
-
-  const resizeCanvas = () => {
-    if (canvasRef.current) {
-      canvasRef.current.width = canvasRef.current.offsetWidth;
-      canvasRef.current.height = canvasRef.current.offsetHeight;
-    }
+  // click on progress bar (seek)
+  const handleProgressClick = (e) => {
+    // support mouse or touch
+    const clientX = e.clientX ?? (e.touches && e.touches[0] && e.touches[0].clientX) ?? 0;
+    endDrag(clientX);
   };
 
+  // pointer down on handle / bar
+  const handleProgressPointerDown = (e) => {
+    // support mouse and touch
+    const clientX = e.clientX ?? (e.touches && e.touches[0] && e.touches[0].clientX) ?? 0;
+    startDrag(clientX);
+  };
+
+  // Toggle fullscreen (CSS class-based)
+  const toggleFullscreen = () => setIsFullscreen((s) => !s);
+
+  // cleanup animation on unmount
   useEffect(() => {
-    window.addEventListener("resize", resizeCanvas);
-    return () => window.removeEventListener("resize", resizeCanvas);
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      cancelAnimationFrame(animationRef.current);
+    };
   }, []);
 
-  const formatTime = (time) => {
-    const minutes = Math.floor(time / 60);
-    const seconds = Math.floor(time % 60);
-    return `${minutes}:${seconds < 10 ? "0" : ""}${seconds}`;
-  };
+  // compute UI progress to show (drag override)
+  const shownProgress = isDragging && dragProgress !== null ? dragProgress : progress;
 
   return (
-    <div ref={containerRef} className={`${styles.videoContainer} ${className} ${isFullscreen ? styles.fullscreen : ""}`}>
-
+    <div
+      ref={containerRef}
+      className={`${styles.videoContainer} ${className} ${isFullscreen ? styles.fullscreen : ""}`}
+    >
       <canvas ref={canvasRef} className={styles.videoCanvas} onClick={togglePlay} />
       <video ref={videoRef} className={styles.videoElement} src={src} {...props} style={{ display: "none" }} />
+
       {!isIntro && <Watermark isPlaying={isPlaying} />}
 
       <div className={styles.controls}>
@@ -630,12 +524,25 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
             <span>{formatTime(currentTime)}</span>
           </div>
 
-          <div className={styles.timelinerelative} onClick={handleProgressClick} ref={progressBarRef}>
-            <div className={styles.loadprogress}></div>
-            <div className={styles.progressmain} style={{ width: `${progress}%` }}>
+          <div
+            className={styles.timelinerelative}
+            ref={progressBarRef}
+            onClick={handleProgressClick}
+            onMouseDown={handleProgressPointerDown}
+            onTouchStart={handleProgressPointerDown}
+            role="button"
+            aria-label="Seek"
+          >
+            <div className={styles.loadprogress} />
+            <div className={styles.progressmain} style={{ width: `${shownProgress}%` }}>
               <div className={styles.progress}>
-                <div className={styles.progressdotmain} onMouseDown={handleMouseDown} style={{ cursor: isDragging ? "grabbing" : "grab" }}>
-                  <div className={styles.progressdot}></div>
+                <div
+                  className={styles.progressdotmain}
+                  onMouseDown={(e) => { e.stopPropagation(); handleProgressPointerDown(e); }}
+                  onTouchStart={(e) => { e.stopPropagation(); handleProgressPointerDown(e); }}
+                  style={{ cursor: isDragging ? "grabbing" : "grab" }}
+                >
+                  <div className={styles.progressdot} />
                 </div>
               </div>
             </div>
@@ -648,24 +555,36 @@ const CustomVideoPlayer = React.memo(({ src, userId, className = "", percentage 
 
         <div className={styles.videcontrolsflx}>
           <div className={styles.videcontrolsflxleft}>
-            <div className={styles.icons} onClick={togglePlay}>
+            <div className={styles.icons} onClick={togglePlay} role="button" aria-label="Play/Pause">
               {isPlaying ? <Pauseicon /> : <Playicon />}
             </div>
 
-            <div className={styles.volumeContainer}>
-              <div className={styles.icons} onClick={toggleMute}>
+            <div
+              className={styles.volumeContainer}
+              onMouseEnter={() => setShowVolumeSlider(true)}
+              onMouseLeave={() => setShowVolumeSlider(false)}
+            >
+              <div className={styles.icons} onClick={toggleMute} role="button" aria-label="Mute/Unmute">
                 {isMuted || volume === 0 ? <Audiomuteicon /> : <Audiofullicon />}
               </div>
               {showVolumeSlider && (
                 <div className={styles.volumeSliderContainer}>
-                  <input type="range" min="0" max="1" step="0.01" value={volume} onChange={handleVolumeSliderChange} className={styles.volumeSlider} ref={volumeSliderRef} />
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.01"
+                    value={volume}
+                    onChange={handleVolumeChange}
+                    className={styles.volumeSlider}
+                  />
                 </div>
               )}
             </div>
           </div>
 
           <div className={styles.videcontrolsflxright}>
-            <div className={styles.icons} onClick={toggleFullscreen}>
+            <div className={styles.icons} onClick={toggleFullscreen} role="button" aria-label="Toggle Fullscreen">
               {isFullscreen ? <Minimizedicon /> : <Fullscreenicon />}
             </div>
           </div>
