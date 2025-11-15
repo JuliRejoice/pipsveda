@@ -65,7 +65,7 @@ export default function CourseBanner({
     }, 300),
     [setSearchQuery] // Add handleSearch to dependencies
   );
-
+  
   // Update local state and trigger debounced search
   const handleSearchChange = (e) => {
     const value = e.target.value.trimStart();

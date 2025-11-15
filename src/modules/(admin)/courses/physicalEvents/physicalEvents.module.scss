@@ -20,22 +20,23 @@
     }
 
     .cardgrid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 30px;
-        padding-top: 20px;
+    display: grid;
+    gap: 24px;
+    padding-top: 24px;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
 
-        @include respond-to("lg") {
-            grid-template-columns: repeat(2, 1fr);
-        }
+    @include respond-to("lg") {
+      grid-template-columns: repeat(2, 1fr);
+    }
 
-        @include respond-to("md") {
-            grid-template-columns: repeat(2, 1fr);
-        }
+    @include respond-to("md") {
+      grid-template-columns: repeat(2, 1fr);
+    }
 
-        @include respond-to("sm") {
-            grid-template-columns: repeat(1, 1fr);
-        }
+    @include respond-to("sm") {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
 
 
         .cardgridItems {
