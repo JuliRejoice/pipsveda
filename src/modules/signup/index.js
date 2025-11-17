@@ -321,20 +321,24 @@ export default function Signup() {
                 {errors.country && <div className={styles.error}>{errors.country}</div>}
               </div>
 
+              {/* State */}
+
               <div className={styles.inputAlignment}>
                 <label className={styles.label}>State</label>
                 <StateSelect
                   countryid={countryId}
                   onChange={(val) => {
-                    setData({ ...data, state: val.name, city: "" });
-                    setStateId(val.id);
-                    setErrors((prev) => ({ ...prev, state: "" }));
+                    setData({ ...data, state: val?.name || "", city: "" });
+                    setStateId(val?.id || 0);
+                    setErrors(prev => ({ ...prev, state: "", city: "Please select city" }));
                   }}
-                  placeHolder="Select State"
-                   
+                  placeHolder={!countryId ? "Please select country first" : "Select State"}
+                  value={data.state}
+                  disabled={!countryId}
                 />
                 {errors.state && <div className={styles.error}>{errors.state}</div>}
               </div>
+
 
               <div className={styles.inputAlignment}>
                 <label className={styles.label}>City</label>
@@ -342,14 +346,16 @@ export default function Signup() {
                   countryid={countryId}
                   stateid={stateId}
                   onChange={(val) => {
-                    setData({ ...data, city: val.name });
-                    setErrors((prev) => ({ ...prev, city: "" }));
+                    setData({ ...data, city: val?.name || "" });
+                    setErrors(prev => ({ ...prev, city: "" }));
                   }}
-                  placeHolder="Select City"
-                
+                  placeHolder={!stateId ? "Please select state first" : "Select City"}
+                  value={data.city}
+                  disabled={!stateId}
                 />
                 {errors.city && <div className={styles.error}>{errors.city}</div>}
               </div>
+
 
               <div className={styles.forgotPassword}>
                 <Link href="/reset-password" aria-label="reset-password">
