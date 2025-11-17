@@ -334,7 +334,7 @@ export default function Signup() {
                   }}
                   placeHolder={!countryId ? "Please select country first" : "Select State"}
                   value={data.state}
-                  disabled={!countryId}
+                  // disabled={!countryId}
                 />
                 {errors.state && <div className={styles.error}>{errors.state}</div>}
               </div>
@@ -351,7 +351,7 @@ export default function Signup() {
                   }}
                   placeHolder={!stateId ? "Please select state first" : "Select City"}
                   value={data.city}
-                  disabled={!stateId}
+                  // disabled={!stateId}
                 />
                 {errors.city && <div className={styles.error}>{errors.city}</div>}
               </div>
