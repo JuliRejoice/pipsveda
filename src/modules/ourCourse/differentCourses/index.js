@@ -39,47 +39,20 @@ const itemVariants = {
 
 // 3D tilt for entire card; keep overflow visible to prevent clipping
 function TiltCard({ className, children, variants, style }) {
-    const ref = useRef(null);
-
-    const rotateX = useMotionValue(0);
-    const rotateY = useMotionValue(0);
-
-    const springRotateX = useSpring(rotateX, { stiffness: 220, damping: 18, mass: 0.8 });
-    const springRotateY = useSpring(rotateY, { stiffness: 220, damping: 18, mass: 0.8 });
-
-    const handleMouseMove = (event) => {
-        const element = ref.current;
-        if (!element) return;
-        const rect = element.getBoundingClientRect();
-        const relativeX = (event.clientX - rect.left) / rect.width;
-        const relativeY = (event.clientY - rect.top) / rect.height;
-        const tiltRange = 14;
-        const rY = (relativeX - 0.5) * (tiltRange * 2);
-        const rX = (0.5 - relativeY) * (tiltRange * 2);
-        rotateX.set(rX);
-        rotateY.set(rY);
-    };
-
-    const handleMouseLeave = () => {
-        rotateX.set(0);
-        rotateY.set(0);
-    };
-
     return (
         <motion.div
-            ref={ref}
             className={className}
             variants={variants}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            whileHover={{ scale: 1.02 }}
+            whileHover={{ 
+                y: -5,
+                transition: { 
+                    type: 'spring',
+                    stiffness: 300,
+                    damping: 15
+                }
+            }}
             style={{
-                transformStyle: 'preserve-3d',
-                transformPerspective: 900,
-                rotateX: springRotateX,
-                rotateY: springRotateY,
                 willChange: 'transform',
-                overflow: 'visible',
                 ...style
             }}
         >

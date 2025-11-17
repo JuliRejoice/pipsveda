@@ -330,7 +330,7 @@ export default function AllAlgobots() {
                               <div className={styles.priceWrapper}>
                                 <span className={styles.priceCurrency}>$</span>
                                 <span className={styles.priceAmount}>
-                                  {plan.price}
+                                  {plan.price.toFixed(2)}
                                 </span>
                               </div>
                             </div>
