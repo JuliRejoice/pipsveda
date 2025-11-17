@@ -40,8 +40,9 @@
     }
 
     .griditems {
+        background-color: var(--bg-white);
+        padding: 12px;
       border-radius: 16px;
-      padding: 0;
       cursor: pointer;
       transition: all 0.3s ease;
       // overflow: hidden;
