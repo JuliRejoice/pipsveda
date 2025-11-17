@@ -171,8 +171,10 @@
 
 
         .activeTab {
-            background: var(--button-gradient);
-            color: var(--text-white);
+            button {
+                background: #FE6917;
+                color: var(--text-white);
+            }
         }
 
     }

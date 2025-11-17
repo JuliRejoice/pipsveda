@@ -4,9 +4,9 @@ import { motion } from 'framer-motion'
 import styles from './button.module.scss';
 import classNames from 'classnames';
 
-export default function Button({ text, icon, onClick, black, disabled }) {
+export default function Button({ text, icon, onClick, black, disabled, className }) {
   return (
-    <div className={classNames(styles.button, black ? styles.blackButton : "")}>
+    <div className={classNames(styles.button, black ? styles.blackButton : "", className)}>
       <motion.button
         aria-label={text}
         onClick={onClick}

@@ -767,6 +767,8 @@ export default function CourseDetails({ params }) {
     );
   }
 
+  console.log(selectedChapter,'-------------------selectedChapter-----------');
+
   return (
     <div className={styles.courseDetailsBox}>
       {renderPaymentModal()}
@@ -1173,7 +1175,7 @@ export default function CourseDetails({ params }) {
                 <Button
                   key={chapter._id}
                   className={
-                    selectedChapter?._id == chapter._id ? styles.activeTab : ""
+                    selectedChapter?._id == chapter?._id ? styles.activeTab : ""
                   }
                   onClick={() => setSelectedChapter(chapter)}
                   text={`Chapter ${chapter.chapterNo || index + 1}`}

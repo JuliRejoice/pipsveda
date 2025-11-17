@@ -29,7 +29,9 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
   const animationRef = useRef(null);
 
   // percentage refs to preserve your original behavior
-  const percentageRef = useRef(typeof percentage === "number" ? percentage : parseFloat(percentage) || 0);
+  const percentageRef = useRef(
+    typeof percentage === "number" ? percentage : parseFloat(percentage) || 0
+  );
   const maxPercentageRef = useRef(percentageRef.current);
   const lastReportedPercentageRef = useRef(percentageRef.current);
   const ignoreNextPercentagePropRef = useRef(false);
@@ -37,6 +39,7 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
   // other refs
   const watchedSetRef = useRef(new Set());
   const isMountedRef = useRef(false);
+  const wasPlayingBeforeDragRef = useRef(false); // 🔥 NEW
 
   // state
   const [isPlaying, setIsPlaying] = useState(false);
@@ -98,7 +101,17 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     try {
-      ctx.drawImage(video, 0, 0, vw, vh, offsetX, offsetY, renderWidth, renderHeight);
+      ctx.drawImage(
+        video,
+        0,
+        0,
+        vw,
+        vh,
+        offsetX,
+        offsetY,
+        renderWidth,
+        renderHeight
+      );
     } catch (e) {
       // sometimes drawImage can throw if video not ready; ignore
     }
@@ -163,7 +176,8 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
     if (!src || !vid) return;
 
     // initialize trackers
-    const newPerc = typeof percentage === "number" ? percentage : parseFloat(percentage) || 0;
+    const newPerc =
+      typeof percentage === "number" ? percentage : parseFloat(percentage) || 0;
     percentageRef.current = newPerc;
     maxPercentageRef.current = newPerc;
     lastReportedPercentageRef.current = newPerc;
@@ -226,41 +240,51 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
       startRenderLoop();
     };
 
-    const handlePause = () => {
-      setIsPlaying(false);
-      stopRenderLoop();
+  const handlePause = () => {
+  setIsPlaying(false);
+  stopRenderLoop();
 
-      // update time & progress and report percentage if needed
-      if (!vid.duration) return;
-      const current = vid.currentTime;
-      setCurrentTime(current);
-      const currentPercentage = (current / vid.duration) * 100;
-      setProgress(currentPercentage);
+  if (!vid.duration) return;
+  const current = vid.currentTime;
+  setCurrentTime(current);
+  const currentPercentage = (current / vid.duration) * 100;
+  setProgress(currentPercentage);
 
-      // update max and report if increased meaningfully
-      const prevMax = maxPercentageRef.current || 0;
-      const updatedMax = Math.max(prevMax, currentPercentage);
-      maxPercentageRef.current = updatedMax;
-      percentageRef.current = currentPercentage;
+  const prevMax = maxPercentageRef.current || 0;
+  const updatedMax = Math.max(prevMax, currentPercentage);
+  maxPercentageRef.current = updatedMax;
+  percentageRef.current = currentPercentage;
 
-      const normalized = Number(updatedMax.toFixed(2));
-      if (typeof onPercentageChange === "function" && normalized >= (lastReportedPercentageRef.current ?? 0) + THROTTLE_REPORT_DELTA) {
-        ignoreNextPercentagePropRef.current = true;
-        lastReportedPercentageRef.current = normalized;
-        onPercentageChange(normalized);
-      }
-    };
+  const normalized = Number(updatedMax.toFixed(2));
+  if (
+    typeof onPercentageChange === "function" &&
+    normalized >=
+      (lastReportedPercentageRef.current ?? 0) + THROTTLE_REPORT_DELTA
+  ) {
+    ignoreNextPercentagePropRef.current = true;
+    lastReportedPercentageRef.current = normalized; // ✅ FIXED
+    onPercentageChange(normalized);
+  }
+};
+
 
     const handleEnded = () => {
       setIsPlaying(false);
       stopRenderLoop();
       if (!vid.duration) return;
-      const finalPercentage = Math.max(maxPercentageRef.current || 0, (vid.currentTime / vid.duration) * 100);
+      const finalPercentage = Math.max(
+        maxPercentageRef.current || 0,
+        (vid.currentTime / vid.duration) * 100
+      );
       maxPercentageRef.current = finalPercentage;
       percentageRef.current = (vid.currentTime / vid.duration) * 100;
 
       const normalized = Number(finalPercentage.toFixed(2));
-      if (typeof onPercentageChange === "function" && normalized >= (lastReportedPercentageRef.current ?? 0) + THROTTLE_REPORT_DELTA) {
+      if (
+        typeof onPercentageChange === "function" &&
+        normalized >=
+          (lastReportedPercentageRef.current ?? 0) + THROTTLE_REPORT_DELTA
+      ) {
         ignoreNextPercentagePropRef.current = true;
         lastReportedPercentageRef.current = normalized;
         onPercentageChange(normalized);
@@ -277,7 +301,8 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
       const currentPercentage = (current / vid.duration) * 100;
       // update internal refs
       if (!isDragging) setProgress(currentPercentage);
-      if (currentPercentage > maxPercentageRef.current) maxPercentageRef.current = currentPercentage;
+      if (currentPercentage > maxPercentageRef.current)
+        maxPercentageRef.current = currentPercentage;
       percentageRef.current = currentPercentage;
 
       // only re-draw canvas on new second to reduce work
@@ -310,11 +335,14 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
 
   // Respond to external percentage prop updates
   useEffect(() => {
-    const numericPercentage = typeof percentage === "number" ? percentage : parseFloat(percentage);
+    const numericPercentage =
+      typeof percentage === "number" ? percentage : parseFloat(percentage);
     if (!Number.isFinite(numericPercentage)) return;
 
-    if (numericPercentage > maxPercentageRef.current) maxPercentageRef.current = numericPercentage;
-    if (numericPercentage > lastReportedPercentageRef.current) lastReportedPercentageRef.current = numericPercentage;
+    if (numericPercentage > maxPercentageRef.current)
+      maxPercentageRef.current = numericPercentage;
+    if (numericPercentage > lastReportedPercentageRef.current)
+      lastReportedPercentageRef.current = numericPercentage;
 
     if (ignoreNextPercentagePropRef.current) {
       // skip one incoming prop that was caused by our own reporting
@@ -329,7 +357,6 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
       const targetTime = (numericPercentage / 100) * vid.duration;
       // if difference is meaningful, we need to seek (but don't cause extra re-render)
       if (Math.abs(vid.currentTime - targetTime) > 0.5) {
-        // mark that we'll need to seek on play/loadedmetadata
         try {
           vid.currentTime = targetTime;
           setCurrentTime(targetTime);
@@ -343,13 +370,12 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [percentage, forceCanvasUpdate]);
 
-  // Toggle play/pause
+  // 🔥 Toggle play/pause based on actual video state instead of isPlaying
   const togglePlay = useCallback(() => {
     const vid = videoRef.current;
     if (!vid) return;
-    if (isPlaying) {
-      vid.pause();
-    } else {
+
+    if (vid.paused || vid.ended) {
       const p = vid.play();
       if (p && p.catch) {
         p.catch((err) => {
@@ -357,8 +383,10 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
           setIsPlaying(false);
         });
       }
+    } else {
+      vid.pause();
     }
-  }, [isPlaying]);
+  }, []);
 
   // Toggle mute
   const toggleMute = useCallback(() => setIsMuted((v) => !v), []);
@@ -386,9 +414,13 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
   // Start dragging (mouse or touch)
   const startDrag = (clientX) => {
     if (!videoRef.current || !progressBarRef.current) return;
+
+    // remember if it was playing before the drag
+    wasPlayingBeforeDragRef.current = !videoRef.current.paused;
+
     setIsDragging(true);
     const pos = getRelativePosition(clientX);
-    const newPerc = (pos * 100) || 0;
+    const newPerc = pos * 100 || 0;
     setDragProgress(newPerc);
   };
 
@@ -434,10 +466,25 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
 
     // Report if increased meaningfully
     const normalized = Number(updatedMax.toFixed(2));
-    if (typeof onPercentageChange === "function" && normalized >= (lastReportedPercentageRef.current ?? 0) + THROTTLE_REPORT_DELTA) {
+    if (
+      typeof onPercentageChange === "function" &&
+      normalized >=
+        (lastReportedPercentageRef.current ?? 0) + THROTTLE_REPORT_DELTA
+    ) {
       ignoreNextPercentagePropRef.current = true;
       lastReportedPercentageRef.current = normalized;
       onPercentageChange(normalized);
+    }
+
+    // 🔥 Auto-resume if it was playing before the drag
+    if (wasPlayingBeforeDragRef.current && vid.paused) {
+      const p = vid.play();
+      if (p && p.catch) {
+        p.catch((err) => {
+          console.log("Play after seek failed:", err);
+          setIsPlaying(false);
+        });
+      }
     }
   };
 
@@ -459,7 +506,6 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
     };
     const handleTouchEnd = (e) => {
       if (!isDragging) return;
-      // use last touch position if available
       const touch = e.changedTouches && e.changedTouches[0];
       endDrag(touch ? touch.clientX : 0);
     };
@@ -481,15 +527,19 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
 
   // click on progress bar (seek)
   const handleProgressClick = (e) => {
-    // support mouse or touch
-    const clientX = e.clientX ?? (e.touches && e.touches[0] && e.touches[0].clientX) ?? 0;
+    const clientX =
+      e.clientX ??
+      (e.touches && e.touches[0] && e.touches[0].clientX) ??
+      0;
     endDrag(clientX);
   };
 
   // pointer down on handle / bar
   const handleProgressPointerDown = (e) => {
-    // support mouse and touch
-    const clientX = e.clientX ?? (e.touches && e.touches[0] && e.touches[0].clientX) ?? 0;
+    const clientX =
+      e.clientX ??
+      (e.touches && e.touches[0] && e.touches[0].clientX) ??
+      0;
     startDrag(clientX);
   };
 
@@ -506,15 +556,28 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
   }, []);
 
   // compute UI progress to show (drag override)
-  const shownProgress = isDragging && dragProgress !== null ? dragProgress : progress;
+  const shownProgress =
+    isDragging && dragProgress !== null ? dragProgress : progress;
 
   return (
     <div
       ref={containerRef}
-      className={`${styles.videoContainer} ${className} ${isFullscreen ? styles.fullscreen : ""}`}
+      className={`${styles.videoContainer} ${className} ${
+        isFullscreen ? styles.fullscreen : ""
+      }`}
     >
-      <canvas ref={canvasRef} className={styles.videoCanvas} onClick={togglePlay} />
-      <video ref={videoRef} className={styles.videoElement} src={src} {...props} style={{ display: "none" }} />
+      <canvas
+        ref={canvasRef}
+        className={styles.videoCanvas}
+        onClick={togglePlay}
+      />
+      <video
+        ref={videoRef}
+        className={styles.videoElement}
+        src={src}
+        {...props}
+        style={{ display: "none" }}
+      />
 
       {!isIntro && <Watermark isPlaying={isPlaying} />}
 
@@ -534,12 +597,21 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
             aria-label="Seek"
           >
             <div className={styles.loadprogress} />
-            <div className={styles.progressmain} style={{ width: `${shownProgress}%` }}>
+            <div
+              className={styles.progressmain}
+              style={{ width: `${shownProgress}%` }}
+            >
               <div className={styles.progress}>
                 <div
                   className={styles.progressdotmain}
-                  onMouseDown={(e) => { e.stopPropagation(); handleProgressPointerDown(e); }}
-                  onTouchStart={(e) => { e.stopPropagation(); handleProgressPointerDown(e); }}
+                  onMouseDown={(e) => {
+                    e.stopPropagation();
+                    handleProgressPointerDown(e);
+                  }}
+                  onTouchStart={(e) => {
+                    e.stopPropagation();
+                    handleProgressPointerDown(e);
+                  }}
                   style={{ cursor: isDragging ? "grabbing" : "grab" }}
                 >
                   <div className={styles.progressdot} />
@@ -555,7 +627,12 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
 
         <div className={styles.videcontrolsflx}>
           <div className={styles.videcontrolsflxleft}>
-            <div className={styles.icons} onClick={togglePlay} role="button" aria-label="Play/Pause">
+            <div
+              className={styles.icons}
+              onClick={togglePlay}
+              role="button"
+              aria-label="Play/Pause"
+            >
               {isPlaying ? <Pauseicon /> : <Playicon />}
             </div>
 
@@ -564,8 +641,17 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
               onMouseEnter={() => setShowVolumeSlider(true)}
               onMouseLeave={() => setShowVolumeSlider(false)}
             >
-              <div className={styles.icons} onClick={toggleMute} role="button" aria-label="Mute/Unmute">
-                {isMuted || volume === 0 ? <Audiomuteicon /> : <Audiofullicon />}
+              <div
+                className={styles.icons}
+                onClick={toggleMute}
+                role="button"
+                aria-label="Mute/Unmute"
+              >
+                {isMuted || volume === 0 ? (
+                  <Audiomuteicon />
+                ) : (
+                  <Audiofullicon />
+                )}
               </div>
               {showVolumeSlider && (
                 <div className={styles.volumeSliderContainer}>
@@ -584,7 +670,12 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
           </div>
 
           <div className={styles.videcontrolsflxright}>
-            <div className={styles.icons} onClick={toggleFullscreen} role="button" aria-label="Toggle Fullscreen">
+            <div
+              className={styles.icons}
+              onClick={toggleFullscreen}
+              role="button"
+              aria-label="Toggle Fullscreen"
+            >
               {isFullscreen ? <Minimizedicon /> : <Fullscreenicon />}
             </div>
           </div>
