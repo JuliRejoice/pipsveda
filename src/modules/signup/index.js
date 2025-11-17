@@ -42,8 +42,8 @@ export default function Signup() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [countryId, setCountryId] = useState(0);
-  const [stateId, setStateId] = useState(0);
+  const [countryId, setCountryId] = useState(null);
+  const [stateId, setStateId] = useState(null);
 
   // Name: Only letters, spaces, apostrophes, hyphens; min 2 chars
   const validateName = (value) => {
@@ -94,7 +94,7 @@ export default function Signup() {
     const countryId = e.target.selectedOptions[0]?.getAttribute('data-countryid') || 0;
     setData({ ...data, country, state: "", city: "" });
     setCountryId(Number(countryId));
-    setStateId(0);
+    // setStateId(0);
     setErrors(prev => ({ ...prev, country: "" }));
   };
 
@@ -102,7 +102,7 @@ export default function Signup() {
     const state = e.target.value;
     const stateId = e.target.selectedOptions[0]?.getAttribute('data-stateid') || 0;
     setData({ ...data, state, city: "" });
-    setStateId(Number(stateId));
+    // setStateId(Number(stateId));
     setErrors(prev => ({ ...prev, state: "" }));
   };
 
@@ -313,7 +313,7 @@ export default function Signup() {
                   onChange={(val) => {
                     setData({ ...data, country: val.name, state: "", city: "" });
                     setCountryId(val.id);
-                    setStateId(0);
+                    // setStateId(0);
                     setErrors((prev) => ({ ...prev, country: "" }));
                   }}
                   placeHolder="Select Country"
@@ -322,40 +322,47 @@ export default function Signup() {
               </div>
 
               {/* State */}
+              {countryId && (
+                <div className={styles.inputAlignment}>
+                  <label className={styles.label}>State</label>
+                  <StateSelect
+                    countryid={countryId}
+                    onChange={(val) => {
+                      setData({
+                        ...data,
+                        state: val?.name || "",
+                        city: ""  // Clear city when state changes
+                      });
+                      setStateId(val?.id || null);  // Set to null if no value
+                      setErrors(prev => ({
+                        ...prev,
+                        state: "",
+                        city: ""
+                      }));
+                    }}
+                    placeHolder="Select State"
+                    value={data.state}
+                  />
+                  {errors.state && <div className={styles.error}>{errors.state}</div>}
+                </div>
+              )}
 
-              <div className={styles.inputAlignment}>
-                <label className={styles.label}>State</label>
-                <StateSelect
-                  countryid={countryId}
-                  onChange={(val) => {
-                    setData({ ...data, state: val?.name || "", city: "" });
-                    setStateId(val?.id || 0);
-                    setErrors(prev => ({ ...prev, state: "", city: "Please select city" }));
-                  }}
-                  placeHolder={!countryId ? "Please select country first" : "Select State"}
-                  value={data.state}
-                  // disabled={!countryId}
-                />
-                {errors.state && <div className={styles.error}>{errors.state}</div>}
-              </div>
-
-
-              <div className={styles.inputAlignment}>
-                <label className={styles.label}>City</label>
-                <CitySelect
-                  countryid={countryId}
-                  stateid={stateId}
-                  onChange={(val) => {
-                    setData({ ...data, city: val?.name || "" });
-                    setErrors(prev => ({ ...prev, city: "" }));
-                  }}
-                  placeHolder={!stateId ? "Please select state first" : "Select City"}
-                  value={data.city}
-                  // disabled={!stateId}
-                />
-                {errors.city && <div className={styles.error}>{errors.city}</div>}
-              </div>
-
+              {stateId && stateId !== 0 && (
+                <div className={styles.inputAlignment}>
+                  <label className={styles.label}>City</label>
+                  <CitySelect
+                    countryid={countryId}
+                    stateid={stateId}
+                    onChange={(val) => {
+                      setData({ ...data, city: val?.name || "" });
+                      setErrors(prev => ({ ...prev, city: "" }));
+                    }}
+                    placeHolder="Select City"
+                    value={data.city}
+                  />
+                  {errors.city && <div className={styles.error}>{errors.city}</div>}
+                </div>
+              )}
 
               <div className={styles.forgotPassword}>
                 <Link href="/reset-password" aria-label="reset-password">
