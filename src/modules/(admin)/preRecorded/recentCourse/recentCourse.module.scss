@@ -41,8 +41,8 @@
 
     .griditems {
         background-color: var(--bg-white);
-        padding: 12px;
-      border-radius: 16px;
+        padding: 20px;
+      border-radius: 12px;
       cursor: pointer;
       transition: all 0.3s ease;
       // overflow: hidden;
@@ -60,7 +60,7 @@
           object-fit: cover;
           display: block;
           aspect-ratio: 16 / 9;
-          border-radius: 16px;
+          border-radius: 12px;
           transition: transform 0.3s ease;
 
           @include respond-to("md") {
