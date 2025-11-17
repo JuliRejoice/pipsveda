@@ -40,19 +40,14 @@
     }
 
     .griditems {
-      background-color: var(--bg-white);
       border-radius: 16px;
       padding: 0;
       cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
       transition: all 0.3s ease;
-      overflow: hidden;
-      border: 1px solid rgba(0, 0, 0, 0.06);
+      // overflow: hidden;
 
       &:hover {
         transform: translateY(-4px);
-        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-        border-color: rgba(0, 0, 0, 0.1);
       }
 
       .image {
@@ -64,7 +59,7 @@
           object-fit: cover;
           display: block;
           aspect-ratio: 16 / 9;
-          border-radius: 16px 16px 0 0;
+          border-radius: 16px;
           transition: transform 0.3s ease;
 
           @include respond-to("md") {
@@ -73,59 +68,83 @@
         }
 
         &:hover img {
-          transform: scale(1.05);
         }
       }
 
       .details {
-        padding: 20px 16px 16px 16px;
+        padding-top: 16px;
         display: flex;
         flex-direction: column;
         flex: 1;
 
         button {
           padding: 8px 24px;
-          border-radius: 8px;
+          border-radius: 20px;
           font-weight: 600;
           transition: all 0.2s ease;
-          margin-top: 12px;
-        
+          margin-top: 10px;
         }
-
-        .twoContentAlignment {
+        .content {
           display: flex;
           align-items: center;
-          justify-content: space-between;
           gap: 16px;
+          width: 100%;
 
-          .iconText {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            background-color: #f8f9fa;
-            border-radius: 8px;
-
-            img {
-              width: 16px;
-              height: 16px;
-              object-fit: contain;
-            }
-
-            span {
-              @include font14;
-              color: var(--grey-700);
-              display: block;
-              font-weight: 500;
-            }
+          .levelBadge {
+            @include font14;
+            display: inline-block;
+            background-color: rgba(107, 79, 216, 0.1);
+            color: var(--primary-color);
+            padding: 2px 10px;
+            border-radius: 16px;
+            font-weight: 600;
+            text-transform: capitalize;
+            white-space: nowrap;
           }
 
-          h4 {
-            background: var(--button-gradient);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            @include heading18;
-            font-weight: 700;
+          .twoContentAlignment {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            gap: 16px;
+
+            .iconText {
+              display: flex;
+              align-items: center;
+              gap: 8px;
+              padding: 6px 12px;
+              background: var(--grey-100);
+              border-radius: 8px;
+              white-space: nowrap;
+
+              img {
+                width: 24px;
+                height: 24px;
+                object-fit: contain;
+                flex-shrink: 0;
+              }
+
+              span {
+                @include font16;
+                color: var(--grey-700);
+                font-weight: 500;
+                line-height: 1.4;
+              }
+            }
+
+            h4 {
+              background: var(--button-gradient);
+              background-clip: text;
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              @include heading18;
+              font-weight: 700;
+              margin: 0;
+              white-space: nowrap;
+              overflow: hidden;
+              text-overflow: ellipsis;
+            }
           }
         }
 
@@ -152,17 +171,6 @@
           line-height: 1;
           min-height: 1.8em;
         }
-      }
-      .levelBadge {
-        @include font14;
-        display: inline-block;
-        background-color: rgba(107, 79, 216, 0.1);
-        color: var(--primary-color);
-        padding: 6px 14px;
-        border-radius: 10px;
-        font-weight: 600;
-        text-transform: capitalize;
-        margin: 0 0 10px 0;
       }
     }
   }
