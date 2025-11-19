@@ -41,13 +41,6 @@ export default function Authentication() {
     }
   };
 
-  const handleLocationSubmit = (locationData) => {
-    // Here you would typically make an API call to save the location
-    // For now, we'll just close the modal and redirect
-    setShowLocationModal(false);
-    router.push("/profile");
-  };
-
   return (
     <div className={styles.authentication}>
       <div className={styles.whiteButton} onClick={googleLogin}>
@@ -62,8 +55,8 @@ export default function Authentication() {
         title="Complete Your Profile"
       >
         <LocationForm 
-          onSubmit={handleLocationSubmit} 
           initialData={userData}
+          setShowLocationModal={setShowLocationModal}
         />
       </Modal>
     </div>

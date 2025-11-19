@@ -8,7 +8,7 @@ import { CountrySelect, StateSelect, CitySelect } from "react-country-state-city
 import { getCookie } from '../../../cookie';
 import { useRouter } from 'next/navigation';
 
-const LocationForm = ({ onSubmit, initialData }) => {
+const LocationForm = ({ setShowLocationModal , initialData }) => {
   const [formData, setFormData] = useState({
     location: '',
     city: '',
@@ -82,7 +82,8 @@ const LocationForm = ({ onSubmit, initialData }) => {
       const res = await editProfile(userData._id, formData);
       
       if (res.success) {
-        router.push('/profile');
+        setShowLocationModal(false);
+        router.push('/course');
       } else {
         throw new Error(res.message || "Failed to update location");
       }

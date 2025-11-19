@@ -86,6 +86,7 @@ export const loginWithGoogle = async () => {
       email: result.user.email,
       name: result.user.displayName,
       accessToken: result.user.stsTokenManager.accessToken,
+      profileImage: result.user.photoURL,
     }
     // const response = await fetch(`/user/signinWithGoogle`, {
     const response = await api.post(`/user/signinWithGoogle`,
