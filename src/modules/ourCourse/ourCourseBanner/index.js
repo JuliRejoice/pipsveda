@@ -5,8 +5,9 @@ import { usePathname } from "next/navigation";
 import { useAnimate, useInView, motion } from "framer-motion";
 import Button from "@/compoents/button";
 
-const LiveCardImage = "/assets/images/algobot-banner5.png";
+const AlgoBotImage = "/assets/images/algobot-banner5.png";
 const PreCardImage = "/assets/images/pre-recorded.png";
+const LiveCardImage = "/assets/images/live-online.png";
 const PhysicalCardImage = "/assets/images/in-person-card.png";
 const ArrowLine = "/assets/icons/arrow-line.svg";
 const VecIcon = "/assets/icons/vec4.svg";
@@ -126,7 +127,7 @@ export default function OurCourseBanner({ course }) {
                   <img src={PhysicalCardImage} alt="In Person Courses" />
                 )}
                 {pathname === "/algobots" && (
-                  <img src={LiveCardImage} alt="AlgoBots" />
+                  <img src={AlgoBotImage} alt="AlgoBots" />
                 )}
               </div>
 

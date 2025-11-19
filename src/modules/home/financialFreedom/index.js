@@ -266,6 +266,15 @@ export default function FinancialFreedom() {
                         </div>
                     ))}
                 </div>
+                <div className={styles.viewAllButton}>
+                    <Button
+                        text="View All"
+                        onClick={() => {
+                            const courseType = courseTypes.find(t => t.id === activeType)?.id || 'recorded';
+                            router.push(`/our-course?course=${courseType}`);
+                        }}
+                    />
+                </div>
             </div>
         </motion.div>
     );

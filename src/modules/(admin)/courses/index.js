@@ -14,6 +14,7 @@ import MyTelegram from "./mytelegram";
 import Pagination from "@/compoents/pagination";
 import Link from "next/link";
 import Breadcumbs from "../breadcumbs";
+import DashboardCard from "../dashboard/dashboardcard";
 
 const TABS = {
   VIDEO_COURSES: "Pre Recorded Courses",
@@ -203,6 +204,7 @@ export default function Courses() {
     <div className={styles.coursesPagealignment}>
       <div className={styles.title}>
         <h2>My Library</h2>
+        <DashboardCard/>
         {/* <p>Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p> */}
       </div>
       {/* <div className={styles.tabAlignment}>

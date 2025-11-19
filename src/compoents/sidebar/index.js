@@ -18,15 +18,17 @@ import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import Algobot from "@/icons/algobot";
 import toast from "react-hot-toast";
+import UserIcon from "@/icons/userIcon";
 import PaymentIcon from "@/icons/paymentIcon";
 import TelegramIcon from "@/icons/telegramIcon";
 import InstructorIcon from "@/icons/instructorIcon";
+import { getProfile } from "../api/auth";
 const SidebarLayer = "/assets/images/sidebar-layer.png";
 const LogoutIcon = "/assets/icons/logout.svg";
 const DownIcon = "/assets/icons/down-white.svg";
 
 export default function Sidebar({ setToogle, toogle, unreadCount }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState();
   const [profileDropdown, setProfileDropdown] = useState(false);
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
@@ -50,11 +52,31 @@ export default function Sidebar({ setToogle, toogle, unreadCount }) {
     toast.success("Logout successfully.");
     router.push("/");
   };
+
   useEffect(() => {
-    const user = getCookie("user");
-    const userName = user && JSON.parse(user)?.name;
-    setUser(userName);
+    const fetchUserProfile = async () => {
+      const userData = getCookie("user");
+      if (userData) {
+        try {
+          const parsedUser = JSON.parse(userData);
+          const userProfile = await getProfile(parsedUser._id);
+          console.log("User profile data:", userProfile); // Debug log
+          setUser(
+            userProfile.payload.data[0]
+
+          );
+        } catch (error) {
+          console.error("Error fetching user profile:", error);
+          // Fallback to basic user data if API call fails
+          const parsedUser = JSON.parse(userData);
+
+        }
+      }
+    };
+
+    fetchUserProfile();
   }, []);
+  console.log(user)
 
   return (
     <div className={styles.stickyBar}>
@@ -71,7 +93,7 @@ export default function Sidebar({ setToogle, toogle, unreadCount }) {
           </div>
         </div>
         <div className={styles.sidebarBody}>
-          <div
+          {/* <div
             className={`${styles.menu} ${
               pathname === "/dashboard" ? styles.active : ""
             }`}
@@ -81,12 +103,11 @@ export default function Sidebar({ setToogle, toogle, unreadCount }) {
           >
             <DashboardIcon />
             <span>Dashboard</span>
-          </div>
+          </div> */}
 
           <div
-            className={`${styles.menu} ${
-              pathname === "/my-courses" ? styles.active : ""
-            }`}
+            className={`${styles.menu} ${pathname === "/my-courses" ? styles.active : ""
+              }`}
             onClick={() => {
               handleTabClick("my-courses");
             }}
@@ -95,18 +116,16 @@ export default function Sidebar({ setToogle, toogle, unreadCount }) {
             <span>My Library</span>
           </div>
           <div
-            className={`${styles.menu} ${
-              pathname === "/course" ? styles.active : ""
-            }`}
+            className={`${styles.menu} ${pathname === "/course" ? styles.active : ""
+              }`}
             onClick={() => handleTabClick("course")}
           >
             <CourseIcon />
             <span>Courses</span>
           </div>
           <div
-            className={`${styles.menu} ${
-              pathname === "/algobot" ? styles.active : ""
-            }`}
+            className={`${styles.menu} ${pathname === "/algobot" ? styles.active : ""
+              }`}
             onClick={() => handleTabClick("algobot")}
           >
             <Algobot />
@@ -114,9 +133,8 @@ export default function Sidebar({ setToogle, toogle, unreadCount }) {
           </div>
 
           <div
-            className={`${styles.menu} ${
-              pathname === "/telegram" ? styles.active : ""
-            }`}
+            className={`${styles.menu} ${pathname === "/telegram" ? styles.active : ""
+              }`}
             onClick={() => {
               handleTabClick("telegram");
             }}
@@ -126,9 +144,8 @@ export default function Sidebar({ setToogle, toogle, unreadCount }) {
           </div>
 
           <div
-            className={`${styles.menu} ${
-              pathname === "/instructor" ? styles.active : ""
-            }`}
+            className={`${styles.menu} ${pathname === "/instructor" ? styles.active : ""
+              }`}
             onClick={() => {
               handleTabClick("instructor");
             }}
@@ -138,29 +155,27 @@ export default function Sidebar({ setToogle, toogle, unreadCount }) {
           </div>
 
           <div
-              className={`${styles.menu} ${
-                pathname === "/notification" ? styles.active : ""
+            className={`${styles.menu} ${pathname === "/notification" ? styles.active : ""
               }`}
-              onClick={() => {
-                handleTabClick("notification");
-              }}
-              style={{ position: 'relative' }}
-            >
-              <div style={{ position: 'relative' }}>
-                <NotificationIcon />
-                {unreadCount > 0 && (
-                  <span className={styles.notificationBadge}>
-                    {unreadCount > 9 ? '9+' : unreadCount} 
-                  </span>
-                )}
-              </div>
-              <span>Notifications</span>
+            onClick={() => {
+              handleTabClick("notification");
+            }}
+            style={{ position: 'relative' }}
+          >
+            <div style={{ position: 'relative' }}>
+              <NotificationIcon />
+              {unreadCount > 0 && (
+                <span className={styles.notificationBadge}>
+                  {unreadCount > 9 ? '9+' : unreadCount}
+                </span>
+              )}
             </div>
+            <span>Notifications</span>
+          </div>
 
           <div
-            className={`${styles.menu} ${
-              pathname === "/paymentHistory" ? styles.active : ""
-            }`}
+            className={`${styles.menu} ${pathname === "/paymentHistory" ? styles.active : ""
+              }`}
             onClick={() => {
               handleTabClick("paymentHistory");
             }}
@@ -169,9 +184,8 @@ export default function Sidebar({ setToogle, toogle, unreadCount }) {
             <span>Payment History</span>
           </div>
           <div
-            className={`${styles.menu} ${
-              pathname === "/contact-us" ? styles.active : ""
-            }`}
+            className={`${styles.menu} ${pathname === "/contact-us" ? styles.active : ""
+              }`}
             onClick={() => {
               handleTabClick("contact-us");
             }}
@@ -190,8 +204,21 @@ export default function Sidebar({ setToogle, toogle, unreadCount }) {
               )}
             >
               <button>
-                {user}
-                <img src={DownIcon} alt="DownIcon" />
+                <div className={styles.profileContainer}>
+                  {user?.profileImage ? (
+                    <img
+                      src={user.profileImage}
+                      alt="Profile"
+                      className={styles.profileImage}
+                    />
+                  ) : (
+                    <div className={styles.userIconWrapper}>
+                      <UserIcon />
+                    </div>
+                  )}
+                  <span className={styles.userName}>{user?.name}</span>
+                </div>
+                <img src={DownIcon} className={styles.dropdownIcon} alt="DownIcon" />
               </button>
             </div>
             <div

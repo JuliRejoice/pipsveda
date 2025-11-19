@@ -148,6 +148,12 @@ export default function AutomateTrades() {
             </motion.div>
           ))}
         </motion.div>
+        <div className={styles.viewAllButton}>
+          <Button
+            text="View All"
+            onClick={() => router.push('/algobots')}
+          />
+        </div>
       </div>
     </motion.div>
   );

@@ -1,47 +1,71 @@
-import React from 'react'
-import styles from './authentication.module.scss';
+'use client';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-
-
-
+import styles from './authentication.module.scss';
 import { errorMessages } from '@/utils/constant';
 import { setCookie } from '../../../cookie';
 import { loginWithGoogle } from '../api/auth';
 import toast from 'react-hot-toast';
+import Modal from '../modal/Modal';
+import LocationForm from '../modal/LocationForm'; 
+
 const GoogleIcon = '/assets/icons/google-icon.svg';
 const FacebookIcon = '/assets/icons/facebook.svg';
 const LinkdinIcon = '/assets/icons/linkdin-icon.svg';
+
 export default function Authentication() {
   const router = useRouter();
+  const [showLocationModal, setShowLocationModal] = useState(false);
+  const [userData, setUserData] = useState(null);
+
   const googleLogin = async () => {
     try {
       const data = await loginWithGoogle();
       if (data.success) {
-        toast.success("Login successfully.");
+        toast.success("Login successful.");
         setCookie("userToken", data.payload.token);
         setCookie("user", data.payload);
-        router.push("/course");
+        
+        // Check if user has location details
+        if (!data.payload.location) {
+          setUserData(data.payload);
+          setShowLocationModal(true);
+        } else {
+          router.push("/profile");
+        }
       } else {
-        toast.error(
-          errorMessages[data?.message] ?? errorMessages["default"]
-        );
+        toast.error(errorMessages[data?.message] ?? errorMessages["default"]);
       }
     } catch (error) {
       toast.error(error?.response?.data?.message ?? "Login Failed.");
     }
   };
-  
+
+  const handleLocationSubmit = (locationData) => {
+    // Here you would typically make an API call to save the location
+    // For now, we'll just close the modal and redirect
+    setShowLocationModal(false);
+    router.push("/profile");
+  };
+
   return (
     <div className={styles.authentication}>
       <div className={styles.whiteButton} onClick={googleLogin}>
-        <img src={GoogleIcon} alt='GoogleIcon'/> <span>Continue with Google</span>
+        <img src={GoogleIcon} alt='GoogleIcon'/> 
+        <span>Continue with Google</span>
       </div>
-      {/* <div className={styles.whiteButton}>
-        <img src={FacebookIcon} alt='FacebookIcon'/>
-      </div>
-      <div className={styles.whiteButton}>
-        <img src={LinkdinIcon} alt='LinkdinIcon'/>
-      </div> */}
+      
+      {/* Location Modal */}
+      <Modal
+        isOpen={showLocationModal}
+        onClose={() => setShowLocationModal(false)}
+        title="Complete Your Profile"
+      >
+        <LocationForm 
+          onSubmit={handleLocationSubmit} 
+          initialData={userData}
+        />
+      </Modal>
     </div>
-  )
+  );
 }

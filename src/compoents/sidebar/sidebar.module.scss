@@ -65,14 +65,14 @@
     .buttonDeisgn {
       &.iconRotate {
         button {
-          img {
+          .dropdownIcon {
             transform: rotate(180deg);
           }
         }
       }
 
       button {
-        padding: 14px 22px;
+        padding: 10px 15px;
         width: 100%;
         border-radius: 7px;
         background: var(--button-gradient);
@@ -85,6 +85,29 @@
         align-items: center;
         gap: 10px;
         justify-content: space-between;
+
+        .profileContainer{
+          display: flex;
+          align-items: center;
+          gap: 10px;
+
+          .profileImage{
+            height: 30px;
+            width: 30px;
+            border-radius: 50%;
+            
+          }
+
+          .userIconWrapper{
+            padding: 5px;
+            background-color: var(--bg-white);
+            border-radius: 50%;
+            border: 2px solid black;
+            
+          }
+        }
+
+
 
         img {
           transition: 0.3s ease-in-out;
