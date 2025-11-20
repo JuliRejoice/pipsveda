@@ -49,13 +49,13 @@ export default function Profile() {
 
   const countryRef = useRef(null);
   const genderRef = useRef(null);
-  
+
   // Form state
   const [form, setForm] = useState({
     phone: '',
     countryCode: '+91', // Default country code
   });
-  
+
   // Handle form input changes
   const handleChange = (name, value) => {
     // Update the form state
@@ -63,7 +63,7 @@ export default function Profile() {
       ...prev,
       [name]: value
     }));
-    
+
     // Also update the user state for phone number
     if (name === 'phone') {
       setUser(prev => ({
@@ -234,7 +234,7 @@ export default function Profile() {
       (formattedBirthDate !== initialBirthDate && (formattedBirthDate || initialBirthDate));
 
     // Check if profile image has changed
-    const imageChanged = 
+    const imageChanged =
       profileImage !== null || // New image selected
       (previewImage && previewImage !== (initialUserData.profileImage || '')); // Preview URL changed
 
@@ -242,7 +242,7 @@ export default function Profile() {
   };
   return (
     <div className={styles.profilePageAlignment}>
-      <AdminHeader/>
+      <AdminHeader />
       <div className={styles.profileBox}>
         {/* Profile Image Upload */}
 
@@ -271,6 +271,7 @@ export default function Profile() {
                 <UserIcon />
               </div>
             )}
+
             <label className={styles.profileImageUpload}>
               <input
                 type="file"
@@ -284,7 +285,7 @@ export default function Profile() {
                   }
                 }}
               />
-              <span>Edit Photo</span>
+              <span>✎</span>
             </label>
           </div>
         </div>
@@ -467,7 +468,7 @@ export default function Profile() {
                   placeHolder={stateId ? "Select City" : "Select State First"}
                   className={styles.selectInput}
                   disabled={!stateId}
-                
+
                 />
                 {/* <Dropdownarrow className={styles.dropdownIcon} /> */}
               </div>

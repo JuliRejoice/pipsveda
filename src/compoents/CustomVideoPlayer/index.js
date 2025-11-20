@@ -19,6 +19,7 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
   percentage = 0,
   onPercentageChange,
   isIntro,
+  thumbnail,
   ...props
 }) {
   // refs
@@ -561,11 +562,19 @@ const CustomVideoPlayer = React.memo(function CustomVideoPlayer({
 
   return (
     <div
-      ref={containerRef}
-      className={`${styles.videoContainer} ${className} ${
-        isFullscreen ? styles.fullscreen : ""
-      }`}
-    >
+    ref={containerRef}
+    className={`${styles.videoContainer} ${className} ${
+      isFullscreen ? styles.fullscreen : ""
+    }`}
+  >
+    {thumbnail && !isPlaying && currentTime === 0 && (
+      <img
+        src={thumbnail}
+        alt="Chapter thumbnail"
+        className={styles.thumbnailOverlay}
+        onClick={togglePlay}  
+      />
+    )}
       <canvas
         ref={canvasRef}
         className={styles.videoCanvas}

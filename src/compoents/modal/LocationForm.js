@@ -71,15 +71,15 @@ const LocationForm = ({ setShowLocationModal , initialData }) => {
     
     try {
       const userData = JSON.parse(getCookie("user"));
-      const formData = new FormData();
+      const sendData = new FormData();      
       
       // Append location data
-      formData.append("location", formData.location || '');
-      formData.append("city", formData.city || '');
-      formData.append("state", formData.state || '');
-      formData.append("country", formData.country || '');
+      sendData.append("location", formData.location || '');
+      sendData.append("city", formData.city || '');
+      sendData.append("state", formData.state || '');
+      sendData.append("country", formData.country || '');
       
-      const res = await editProfile(userData._id, formData);
+      const res = await editProfile(userData._id, sendData);
       
       if (res.success) {
         setShowLocationModal(false);
