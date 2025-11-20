@@ -10,6 +10,7 @@ import {
 } from "@/compoents/api/dashboard";
 import { useRouter } from "next/navigation";
 import { getCookie } from "../../../../cookie";
+import Dropdownarrow from "@/icons/dropdownarrow";
 
 const ProfileImage = "/assets/images/profile-img.png";
 
@@ -36,6 +37,8 @@ export default function TelegramCommunities() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const [telegramChannels, setTelegramChannels] = useState([]);
+  const [selectedPlans, setSelectedPlans] = useState({});
+  const [openDropdown, setOpenDropdown] = useState(null);
   const router = useRouter();
 
   const fetchTelegramChannels = async () => {
@@ -53,6 +56,26 @@ export default function TelegramCommunities() {
     console.error("Error fetching data:", error);
   }
 };
+
+  // Initialize selected plans when channels are loaded
+  useEffect(() => {
+    if (telegramChannels && telegramChannels.length > 0) {
+      const initialSelectedPlans = {};
+      telegramChannels.forEach((channel) => {
+        if (channel.telegramPlan?.length > 0) {
+          initialSelectedPlans[channel._id] = channel.telegramPlan[0]?._id;
+        }
+      });
+      setSelectedPlans(initialSelectedPlans);
+    }
+  }, [telegramChannels]);
+
+  const handlePlanChange = (channelId, planId) => {
+    setSelectedPlans(prev => ({
+      ...prev,
+      [channelId]: planId
+    }));
+  };
 
   useEffect(() => {
     fetchTelegramChannels();
@@ -211,14 +234,90 @@ export default function TelegramCommunities() {
                     </p>
                   </div>
                     <div className={styles.priceSection}>
-                  {lowestMonthlyPrice && (
+                      <div className={styles.twoColgrid}>
+                  {channel.telegramPlan?.length > 0 && (
+                    <div className={styles.planDropdownContainer}>
+                      <div className={styles.dropdownmain}>
+                        <div
+                          className={styles.dropdownhead}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            setOpenDropdown(
+                              openDropdown === channel._id ? null : channel._id
+                            );
+                          }}
+                        >
+                          <span>
+                            {channel.telegramPlan.find(
+                              (plan) =>
+                                plan._id ===
+                                (selectedPlans[channel._id] ||
+                                  channel.telegramPlan[0]?._id)
+                            )?.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2') || "Select a plan"}
+                          </span>
+                          <div className={styles.dropdownarrow}>
+                            <Dropdownarrow />
+                          </div>
+                        </div>
+
+                        {openDropdown === channel._id && (
+                          <div className={styles.dropdown}>
+                            <div className={styles.dropdownspacing}>
+                              {channel.telegramPlan.map((plan) => (
+                                <div
+                                  key={plan._id}
+                                  className={styles.iconText}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    handlePlanChange(channel._id, plan._id);
+                                    setOpenDropdown(null);
+                                  }}
+                                >
+                                  <span>{plan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}</span>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
+
+                      <div className={styles.planDetails}>
+                        {channel.telegramPlan
+                          .filter(
+                            (plan) =>
+                              plan._id ===
+                              (selectedPlans[channel._id] ||
+                                channel.telegramPlan[0]?._id)
+                          )
+                          .map((plan) => (
+                            <div key={plan._id} className={styles.items}>
+                              <div className={styles.contentAlignment}>
+                                <span>{plan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}</span>
+                                <h4> ${plan.price.toFixed(2)}</h4>
+                              </div>
+                              {/* <div className={styles.contentAlignment}>
+                                <span>Price:</span>
+                                <div className={styles.priceWrapper}>
+                                  <h4 className={styles.priceAmount}>
+                                    ${plan.price.toFixed(2)}
+                                  </h4>
+                                </div>
+                              </div> */}
+                              
+                            </div>
+                          ))}
+                      </div>
+                    </div>
+                  )}
+                </div>
+                  {/* {lowestMonthlyPrice && (
                       <div className={styles.priceContainer}>
                         <span className={styles.price}>
                           ${lowestMonthlyPrice.toFixed(2)}
                         </span>
                         <span className={styles.priceLabel}>/month</span>
                       </div>
-                  )}
+                  )} */}
                     </div>
 
                   <div className={styles.btn}>
