@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./allalgobots.module.scss";
 import OutlineButton from "@/compoents/outlineButton";
 import Pagination from "@/compoents/pagination";
@@ -87,6 +87,26 @@ export default function AllAlgobots() {
   });
   const [selectedPlans, setSelectedPlans] = useState({});
   const [openDropdown, setOpenDropdown] = useState(bot[0]?._id || null);
+const dropdownRefs = useRef({});
+
+useEffect(() => {
+  function handleClickOutside(event) {
+    if (openDropdown) {
+      const dropdownEl = dropdownRefs.current[openDropdown];
+
+      if (dropdownEl && !dropdownEl.contains(event.target)) {
+        setOpenDropdown(null);
+      }
+    }
+  }
+
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [openDropdown]);
+
+
 
   const handlePlanChange = (strategyId, planId) => {
     setSelectedPlans((prev) => ({
@@ -270,7 +290,10 @@ export default function AllAlgobots() {
                   <p>{strategy.shortDescription}</p>
                   {strategy.strategyPlan?.length > 0 && (
                     <div className={styles.planDropdownContainer}>
-                      <div className={styles.dropdownmain}>
+                      <div
+                        className={styles.dropdownmain}
+                        ref={(el) => (dropdownRefs.current[strategy._id] = el)}
+                      >
                         <div
                           className={styles.dropdownhead}
                           onClick={() =>
