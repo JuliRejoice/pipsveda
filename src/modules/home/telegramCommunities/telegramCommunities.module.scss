@@ -3,93 +3,600 @@
 @use '../../../scss/breakpoints/breakpoints.scss' as *;
 
 .telegramCommunities {
-    background-image: url('/assets/images/grid-banner.png');
-    width: 100%;
-    background-size: cover;
-    width: 100%;
-    padding: 100px 0;
+  background-image: url('/assets/images/grid-banner.png');
+  width: 100%;
+  background-size: cover;
+  padding: 100px 0;
+
+  @include respond-to("md") {
+    padding: 80px 0;
+  }
+
+  @include respond-to("sm") {
+    padding: 60px 0;
+  }
+
+  .text {
+    padding: 0 0 60px 0;
+
+    @include respond-to("sm") {
+      padding: 0 0 40px 0;
+    }
+
+    h2 {
+      @include heading2;
+      margin: 0 0 16px 0;
+      color: var(--black-500);
+      text-align: center;
+
+      @include respond-to("md") {
+        @include heading40;
+        max-width: 600px;
+        margin: 0 auto 16px auto;
+      }
+
+      @include respond-to("sm") {
+        @include heading32;
+      }
+    }
+
+    p {
+      @include font18;
+      color: var(--black-500);
+      opacity: 0.9;
+      text-align: center;
+
+      @include respond-to("sm") {
+        @include font16normal;
+      }
+    }
+  }
+
+  .grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 22px;
+    justify-content: center;
 
     @include respond-to("md") {
-        padding: 80px 0;
+      gap: 20px;
     }
 
     @include respond-to("sm") {
-        padding: 60px 0;
+      gap: 16px;
     }
 
-    .text {
-        padding: 0 0 60px 0;
+    .griditems {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      background-color: var(--bg-white);
+      padding: 16px;
+      width: calc(33.33% - 22px);
+      border-radius: 12px;
+      align-items: flex-start;
 
-        @include respond-to("sm") {
-            padding: 0 0 40px 0;
+      @include respond-to("md") {
+        padding: 16px;
+        width: calc(50% - 20px);
+      }
+
+      @include respond-to("sm") {
+        padding: 16px;
+        width: 100%;
+      }
+
+      .cardImageContainer {
+        position: relative;
+        width: 100%;
+        height: 200px; // Adjust height as needed
+        border-radius: 8px;
+        overflow: hidden;
+        margin-bottom: 16px;
+
+        .channelImage {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.3s ease;
         }
 
-        h2 {
-            @include heading2;
-            margin: 0 0 16px 0;
-            color: var(--black-500);
-            text-align: center;
+        .logoContainer {
+          position: absolute;
+          top: 16px;
+          left: 16px;
+          width: 60px;
+          height: 60px;
+          border-radius: 50%;
+          background: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+          border: 2px solid white;
+          overflow: hidden;
 
-            @include respond-to("md") {
-                @include heading40;
-                max-width: 600px;
-                margin: 0 auto 16px auto;
-            }
+          .channelLogo {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            padding: 4px;
+          }
+        }
 
-            @include respond-to("sm") {
-                @include heading32;
-            }
+        &:hover {
+          .channelImage {
+            transform: scale(1.05);
+          }
+        }
+      }
+
+      .btn {
+        max-width: 140px;
+        width: 100%;
+
+        button {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+        }
+      }
+
+      .freeaccess {
+        padding: 0 0 25px 0;
+
+        @include respond-to("sm") {
+          padding: 0 0 20px 0;
+        }
+
+        span {
+          background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
+          background-clip: text;
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          @include font18;
+          font-weight: 500;
+        }
+      }
+
+      .listAlignment {
+        padding: 0;
+
+        p:last-child {
+          margin: 0;
         }
 
         p {
-            @include font18;
-            color: var(--black-500);
-            opacity: 0.9;
-            text-align: center;
+          @include font16;
+          font-weight: 400;
+          color: var(--grey-650);
+          display: -webkit-box;
+          -webkit-line-clamp: 4;
+          line-height: 25px;
+          margin: 0 0 12px 0;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
 
-            @include respond-to("sm") {
-                @include font16normal;
+          @include respond-to("sm") {
+            font-size: 14px;
+          }
+        }
+
+        ul {
+          padding: 0 0 0 15px;
+          margin: 0;
+          display: flex;
+          flex-wrap: wrap;
+          gap: 11px 40px;
+          list-style: none;
+
+          li {
+            @include font16;
+            color: var(--border-200);
+            position: relative;
+
+            &::before {
+              content: "";
+              position: absolute;
+              top: 50%;
+              left: -14px;
+              transform: translateY(-50%);
+              width: 6px;
+              background: var(--button-gradient);
+              height: 6px;
+              border-radius: 50%;
             }
+          }
         }
-    }
+      }
 
-    .grid {
+      .textStyle {
+        h3 {
+          @include heading20;
+          margin: 0 0 0 0;
+          color: var(--black-500);
+          -webkit-text-fill-color: transparent;
+          background: black;
+          background-clip: text;
+          -webkit-background-clip: text;
+        }
+
+        .textImagealignment {
+          display: flex;
+          align-items: center;
+          padding: 0 0 14px 0;
+          gap: 10px;
+
+          span {
+            display: block;
+            @include font14;
+            color: var(--grey-500);
+          }
+        }
+
+        .imageAlignment {
+          display: flex;
+          align-items: center;
+
+          .plus {
+            width: 34px;
+            height: 34px;
+            background-color: var(--black-190);
+            border: 1px solid var(--bg-white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            @include heading20;
+            color: var(--text-white);
+            cursor: pointer;
+          }
+
+          img {
+            width: 34px;
+            height: 34px;
+            margin-right: -10px;
+            border-radius: 50%;
+            display: block;
+            object-fit: cover;
+            border: 1px solid var(--bg-white);
+          }
+        }
+      }
+
+      .cardHeader {
         display: flex;
-        flex-wrap: wrap;
-        gap: 22px;
-        justify-content: center;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 0 16px 0;
 
-        @include respond-to("md") {
-            gap: 20px;
+        svg {
+          max-width: 30px;
+          max-height: 30px;
         }
+
+        button {
+          background-color: transparent;
+          padding: 8px 30px;
+          @include font16;
+          border: 1px solid var(--border-light);
+          border-radius: 99px;
+
+          span {
+            background: var(--button-gradient);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: block;
+          }
+        }
+      }
+
+      .priceSection {
+        width: 100% !important;
+        max-width: 100% !important;
+        padding: 15px 0 30px 0;
+        text-align: left;
+        display: block;
+        margin: 0;
+        box-sizing: border-box;
 
         @include respond-to("sm") {
-            gap: 16px;
+          padding: 15px 0;
         }
 
-        .griditems {
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            background-color: var(--bg-white);
-            padding: 16px;
-            width: calc(33.33% - 22px);
-            border-radius: 12px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: flex-start;
+        .twoColgrid {
+          display: block;
+          width: 100% !important;
+          max-width: 100% !important;
+          margin: 0;
+          padding: 0;
+          gap: 0;
 
-            @include respond-to("md") {
-                padding: 16px;
-                width: calc(50% - 20px);
+          .details {
+            padding: 15px 0 0 0;
+
+            .dropdownmain {
+              position: relative;
+              width: 100%;
+              margin: 15px 0;
+
+              .dropdownhead {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px 15px;
+                border: 1px solid #e2e8f0;
+                border-radius: 6px;
+                cursor: pointer;
+                background: white;
+                transition: all 0.2s;
+
+                &:hover { border-color: #cbd5e0; }
+              }
+
+              .dropdown {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                border: 1px solid #e2e8f0;
+                border-radius: 6px;
+                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+                z-index: 10;
+                margin-top: 5px;
+              }
+
+              .dropdownspacing { padding: 8px 0; }
+
+              .iconText {
+                padding: 8px 15px;
+                cursor: pointer;
+                transition: background-color 0.2s;
+
+                &:hover { background-color: #f7fafc; }
+              }
+
+              .dropdownarrow {
+                display: flex;
+                margin-left: 10px;
+                transition: transform 0.2s;
+
+                .dropdownhead[aria-expanded="true"] & { transform: rotate(180deg); }
+              }
+
+              .selectArrow {
+                position: absolute;
+                top: 50%;
+                right: 12px;
+                transform: translateY(-50%);
+                pointer-events: none;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 20px;
+                height: 20px;
+              }
             }
+          }
+
+          .dropdownmain { /* additional dropdown variant used elsewhere */
+            position: relative;
+            width: 100%;
+            margin-bottom: 15px;
+
+            .dropdownhead {
+              width: 100%;
+              font-family: var(--font-lexend);
+              color: var(--black-500);
+              border: 1px solid var(--border-color2);
+              cursor: pointer;
+              background-color: #f7f8fa;
+              border-radius: 10px;
+              justify-content: space-between;
+              align-items: center;
+              height: 40px;
+              padding: 0 16px;
+              transition: all 0.4s ease-in-out;
+              display: flex;
+
+              &.active {
+                .dropdownarrow {
+                  svg { transform: rotate(180deg); }
+                }
+              }
+
+              span { font-size: 14px; font-weight: 500; line-height: normal; }
+
+              .dropdownarrow {
+                width: 24px;
+                height: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+
+                svg { transition: 0.4s ease-in-out; width: 100%; height: 100%; }
+              }
+            }
+
+            .dropdown {
+              position: absolute;
+              top: calc(100% + 5px);
+              left: 0;
+              width: 100%;
+              background-color: var(--bg-white);
+              border: 1px solid var(--border-color5);
+              border-radius: 12px;
+              z-index: 9;
+              box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+              max-height: 200px;
+              overflow-y: auto;
+
+              .dropdownspacing {
+                padding: 8px 0;
+
+                .iconText {
+                  display: flex;
+                  align-items: center;
+                  cursor: pointer;
+                  padding: 8px 16px;
+                  transition: background-color 0.2s;
+
+                  &:hover { background-color: #f7f8fa; }
+
+                  span { font-size: 14px; color: var(--text-primary); }
+                }
+              }
+            }
+          }
+
+          .planDetails {
+            width: 100%;
+            margin: 16px 0;
+
+            .planslidermain { width: 100%; }
+
+            .planslider {
+              display: flex;
+              gap: 16px;
+              overflow-x: auto;
+              padding-bottom: 8px;
+              scrollbar-width: thin;
+            }
+
+            .twoColgrid {
+              display: grid;
+              grid-template-columns: 1fr;
+              gap: 16px;
+              width: 100%;
+
+              .items { 
+                width: 100% !important; 
+                margin: 0 !important;
+                min-width: 100% !important;
+                max-width: 100% !important;
+              }
+            }
+
+            .items {
+              width: 100% !important;
+              max-width: 100% !important;
+              box-sizing: border-box;
+              background-color: #f7f8fa;
+              border: 1px solid rgba(218, 218, 218, 0.8);
+              border-radius: 8px;
+              padding: 16px;
+              margin: 0 0 16px 0 !important;
+              display: block;
+
+              .contentAlignment {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 4px 0;
+
+                span { @include font14; color: var(--grey-500); }
+
+                h4 {
+                  @include font14;
+                  font-weight: 600;
+                  margin: 0;
+                  display: flex;
+                  align-items: center;
+                  gap: 2px;
+                  background: #6B4FD8;
+                  -webkit-background-clip: text;
+                  -webkit-text-fill-color: transparent;
+                }
+
+                h5 { @include font16; color: var(--grey-600); font-weight: 400; margin: 0; }
+
+                .priceCurrency { @include font18; font-weight: 600; color: var(--primary-color, #6e30f9); }
+              }
+            }
+
+            .planDetailItem {
+              .contentAlignment {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin-bottom: 6px;
+                padding: 2px 0;
+
+                &:last-child { margin-bottom: 0; }
+
+                span { color: var(--text-secondary, #666); font-size: 14px; font-weight: 400; }
+
+                h4, h5 { margin: 0; color: var(--text-primary, #111827); font-size: 14px; font-weight: 500; }
+
+                .dangerText { color: var(--error-color, #ef4444); }
+              }
+            }
+
+            .items {
+              width: 100%;
+              background-color: #f7f8fa;
+              border: 1px solid #dadadacc;
+              padding: 12px;
+              border-radius: 8px;
+
+              .contentAlignment:last-child { padding: 0; }
+
+              .contentAlignment {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0;
+
+                span { display: block; @include font14; color: var(--grey-500); }
+
+                h5 { @include font16; color: var(--grey-600); font-weight: 400; }
+
+                h4 {
+                  @include font18;
+                  font-weight: 600;
+                  background: var(--button-gradient);
+                  background-clip: text;
+                  -webkit-background-clip: text;
+                  display: inline;
+                  -webkit-text-fill-color: transparent;
+                }
+              }
+            }
+          }
+        }
+
+        .priceContainer {
+          display: flex;
+          align-items: baseline;
+          gap: 4px;
+          position: relative;
+
+          &::before {
+            position: absolute;
+            top: 0;
+            right: -10px;
+            content: "";
+            width: 1px;
+            height: 21px;
+            background-color: var(--black-500);
+          }
+
+          &:last-child { &::before { display: none; } }
+
+          .price {
+            @include heading20;
+            color: var(--button-gradient);
+            line-height: 1;
 
             @include respond-to("sm") {
-                padding: 16px;
-                width: 100%;
+              font-size: 14px;
+              font-weight: 500;
             }
+          }
 
+          .priceLabel { @include font16; color: var(--black-500); }
             .cardImageContainer {
                 position: relative;
                 width: 100%;
@@ -363,230 +870,76 @@
                 }
             }
         }
+
+        .freeBadge {
+          @include font16;
+          color: var(--success-color);
+          background: rgba(34, 197, 94, 0.1);
+          padding: 6px 16px;
+          border-radius: 20px;
+          display: inline-block;
+        }
+      }
     }
+  }
 
-    .flex {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 20px;
+  .flex {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
 
-        @include respond-to("md") {
-            grid-template-columns: repeat(2, 1fr);
-        }
+    @include respond-to("md") { grid-template-columns: repeat(2, 1fr); }
+    @include respond-to("sm") { grid-template-columns: repeat(1, 1fr); }
 
-        @include respond-to("sm") {
-            grid-template-columns: repeat(1, 1fr);
-        }
+    .griditems {
+      background-color: var(--bg-white);
+      padding: 50px;
+      border-radius: 12px;
 
+      @include respond-to("md") { padding: 16px; }
 
-        .griditems {
-            background-color: var(--bg-white);
-            padding: 50px;
-            border-radius: 12px;
+      .btn { max-width: 180px; }
 
+      .btn button { width: 100%; display: flex; justify-content: center; }
 
-            @include respond-to("md") {
-                padding: 16px;
-            }
+      .freeaccess { padding: 0 0 25px 0; }
+      @include respond-to("sm") { .freeaccess { padding: 0 0 20px 0; } }
 
-            .btn {
-                max-width: 180px;
+      .freeaccess span {
+        background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        @include font18;
+        font-weight: 500;
+      }
 
-                button {
-                    width: 100%;
-                    display: flex;
-                    justify-content: center;
-                }
-            }
+      .listAlignment { @include respond-to("sm") { padding: 0 0 20px 0; } }
 
-            .freeaccess {
-                padding: 0 0 25px 0;
+      .listAlignment p { @include font16; color: var(--black-500); display: -webkit-box; -webkit-line-clamp: 3; margin: 0 0 12px 0; -webkit-box-orient: vertical; overflow: hidden; }
 
-                @include respond-to("sm") {
-                    padding: 0 0 20px 0;
-                }
+      .listAlignment ul { padding: 0 0 0 15px; margin: 0; display: flex; flex-wrap: wrap; gap: 11px 40px; list-style: none; }
 
-                span {
-                    background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
-                    background-clip: text;
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    @include font18;
-                    font-weight: 500;
-                }
-            }
+      .listAlignment li { @include font16; color: var(--border-200); position: relative; }
+      .listAlignment li::before { content: ""; position: absolute; top: 50%; left: -14px; transform: translateY(-50%); width: 6px; background: var(--button-gradient); height: 6px; border-radius: 50%; }
 
-            .listAlignment {
-                @include respond-to("sm") {
-                    padding: 0 0 20px 0;
-                }
+      .textStyle h3 { @include heading20; margin: 0 0 12px 0; color: var(--black-500); -webkit-text-fill-color: transparent; background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%)); background-clip: text; -webkit-background-clip: text; }
 
-                p {
-                    @include font16;
-                    color: var(--black-500);
-                    display: -webkit-box;
-                    -webkit-line-clamp: 3;
-                    margin: 0 0 12px 0;
-                    -webkit-box-orient: vertical;
-                    overflow: hidden;
-                }
+      .cardHeader { display: flex; align-items: center; justify-content: space-between; padding: 0 0 16px 0; }
+      .cardHeader button { background-color: transparent; padding: 8px 30px; @include font16; border: 1px solid var(--border-light); border-radius: 99px; }
+      .cardHeader button span { background: var(--button-gradient); background-clip: text; -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: block; }
 
-                ul {
-                    padding: 0 0 0 15px;
-                    margin: 0;
-                    display: flex;
-                    flex-wrap: wrap;
-                    gap: 11px 40px;
-                    list-style: none;
+      .priceSection { padding: 15px 0 30px 0; text-align: center; display: flex; gap: 20px; }
 
-                    li {
-                        @include font16;
-                        color: var(--border-200);
-                        position: relative;
+      .priceSection .priceContainer { display: flex; align-items: baseline; gap: 4px; position: relative; }
 
-                        &::before {
-                            content: "";
-                            position: absolute;
-                            top: 50%;
-                            left: -14px;
-                            transform: translateY(-50%);
-                            width: 6px;
-                            background: var(--button-gradient);
-                            height: 6px;
-                            border-radius: 50%;
-                        }
-                    }
-                }
-            }
+      .priceSection .priceContainer::before { position: absolute; top: 0; right: -10px; content: ""; width: 1px; height: 21px; background-color: var(--black-500); }
+      .priceSection .priceContainer:last-child::before { display: none; }
 
-            .textStyle {
-                h3 {
-                    @include heading20;
-                    margin: 0 0 12px 0;
-                    color: var(--black-500);
-                    -webkit-text-fill-color: transparent;
-                    background: var(--Main, linear-gradient(90deg, #6E30F9 0%, #FE6917 85.71%));
-                    background-clip: text;
-                    -webkit-background-clip: text;
-                }
+      .priceSection .price { @include heading20; color: var(--button-gradient); line-height: 1; }
+      .priceSection .priceLabel { @include font16; color: var(--black-500); }
 
-                .textImagealignment {
-                    display: flex;
-                    align-items: center;
-                    padding: 0 0 14px 0;
-                    gap: 10px;
-
-                    span {
-                        display: block;
-                        @include font14;
-                        color: var(--grey-500);
-                    }
-                }
-
-                .imageAlignment {
-                    display: flex;
-                    align-items: center;
-
-                    .plus {
-                        width: 34px;
-                        height: 34px;
-                        background-color: var(--black-190);
-                        border: 1px solid var(--bg-white);
-                        border-radius: 50%;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        @include heading20;
-                        color: var(--text-white);
-                        cursor: pointer;
-                    }
-
-                    img {
-                        width: 34px;
-                        height: 34px;
-                        margin-right: -10px;
-                        border-radius: 50%;
-                        display: block;
-                        object-fit: cover;
-                        border: 1px solid var(--bg-white);
-                    }
-                }
-            }
-
-            .cardHeader {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 0 0 16px 0;
-
-                button {
-                    background-color: transparent;
-                    padding: 8px 30px;
-                    @include font16;
-                    border: 1px solid var(--border-light);
-                    border-radius: 99px;
-
-                    span {
-                        background: var(--button-gradient);
-                        background-clip: text;
-                        -webkit-background-clip: text;
-                        -webkit-text-fill-color: transparent;
-                        display: block;
-                    }
-                }
-            }
-
-            .priceSection {
-                padding: 15px 0 30px 0;
-                text-align: center;
-                flex-wrap: wrap;
-                display: flex;
-                gap: 20px;
-
-                .priceContainer {
-                    display: flex;
-                    align-items: baseline;
-                    gap: 4px;
-                    position: relative;
-
-                    &::before {
-                        position: absolute;
-                        top: 0;
-                        right: -10px;
-                        content: "";
-                        width: 1px;
-                        height: 21px;
-                        background-color: var(--black-500);
-                    }
-
-                    &:last-child {
-                        &::before {
-                            display: none;
-                        }
-                    }
-
-                    .price {
-                        @include heading20;
-                        color: var(--button-gradient);
-                        line-height: 1;
-                    }
-
-                    .priceLabel {
-                        @include font16;
-                        color: var(--black-500);
-                    }
-                }
-
-                .freeBadge {
-                    @include font16;
-                    color: var(--success-color);
-                    background: rgba(34, 197, 94, 0.1);
-                    padding: 6px 16px;
-                    border-radius: 20px;
-                    display: inline-block;
-                }
-            }
-        }
-
+      .freeBadge { @include font16; color: var(--success-color); background: rgba(34, 197, 94, 0.1); padding: 6px 16px; border-radius: 20px; display: inline-block; }
     }
+  }
 }
