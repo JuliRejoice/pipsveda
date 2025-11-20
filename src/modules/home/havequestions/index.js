@@ -42,6 +42,21 @@ export default function Havequestions() {
     const [searchTerm, setSearchTerm] = useState('');
     const countryRef = useRef(null);
 
+    useEffect(() => {
+    const handleClickOutside = (event) => {
+        if (countryRef.current && !countryRef.current.contains(event.target)) {
+            setShowCountryDropdown(false);
+        }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+    };
+}, []);
+
+
     const validateForm = () => {
         const newErrors = {};
         let isValid = true;

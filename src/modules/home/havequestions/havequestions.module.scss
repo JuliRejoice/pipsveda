@@ -171,16 +171,16 @@
 
                             .dropdown {
                                 position: absolute;
-                                top: 100%;
-                                left: 0;
-                                background: white;
-                                border: 1px solid #e5e7eb;
-                                border-radius: 6px;
-                                box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-                                z-index: 10;
-                                max-height: 300px;
-                                width: 300px;
-                                overflow-y: auto;
+  top: 100%;
+  left: 0;
+  width: 260px;
+  max-height: 240px;
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #e5e5e5;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  overflow-y: auto;
+  z-index: 9999;
 
                                 &.hide {
                                     max-height: 0px;
