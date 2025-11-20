@@ -25,6 +25,8 @@ import AdminHeader from "@/compoents/adminHeader";
 registerLocale("en-GB", enGB);
 
 const RightIcon = "/assets/icons/right.svg";
+const EditIcon = "/assets/images/edit.png";
+
 
 export default function Profile() {
   const [user, setUser] = useState(null);
@@ -285,7 +287,9 @@ export default function Profile() {
                   }
                 }}
               />
-              <span>✎</span>
+              <span>
+                <img src={EditIcon} alt="Edit profile" />
+              </span>
             </label>
           </div>
         </div>

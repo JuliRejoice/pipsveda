@@ -60,7 +60,7 @@ export default function Signin() {
         toast.success("Login successfully.");
         setCookie("userToken", data.payload.token);
         setCookie("user", data.payload);
-        router.push("/dashboard");
+        router.push("/course");
       } else {
         // handle case where API responds with success=false
         toast.dismiss();

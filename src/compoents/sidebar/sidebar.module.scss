@@ -98,14 +98,17 @@
             
           }
 
-          .userIconWrapper{
-            padding: 5px;
-            background-color: var(--bg-white);
-            border-radius: 50%;
-            border: 2px solid black;
-            
-          }
-        }
+                    .userIconWrapper {
+                      background-color: var(--bg-white);
+                      border-radius: 50%;
+                      height: 30px;
+                      width: 30px;
+          
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                    }
+                    }
 
 
 

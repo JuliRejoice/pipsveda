@@ -169,6 +169,7 @@ export default function AllAlgobots() {
   // Show skeleton loading while data is being fetched
   if (loading) {
     return (
+      <div className={styles.differentAlgobots}>
       <div className="container">
         <div className={styles.arbitrageAlgoAlignment}>
           <div className={styles.title}>
@@ -180,6 +181,7 @@ export default function AllAlgobots() {
             ))}
           </div>
         </div>
+      </div>
       </div>
     );
   }
@@ -230,6 +232,7 @@ export default function AllAlgobots() {
   };
 
   return (
+    <div className={styles.differentAlgobots}>
     <div className="container">
       <div className={styles.arbitrageAlgoAlignment}>
         <div className={styles.algotabsmain}>
@@ -376,6 +379,7 @@ export default function AllAlgobots() {
           onPageChange={handlePageChange}
         />
       </div>
+    </div>
     </div>
   );
 }
