@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./arbitrageAlgo.module.scss";
 import OutlineButton from "@/compoents/outlineButton";
 import Pagination from "@/compoents/pagination";
@@ -121,6 +121,24 @@ export default function ArbitrageAlgo({
   const pathname = usePathname();
   const [openDropdown, setOpenDropdown] = useState(null);
   const [selectedPlans, setSelectedPlans] = useState({});
+  const dropdownRefs = useRef({});
+
+  useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (openDropdown) {
+      const dropdownEl = dropdownRefs.current[openDropdown];
+      if (dropdownEl && !dropdownEl.contains(event.target)) {
+        setOpenDropdown(null);
+      }
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [openDropdown]);
+
 
   // Initialize selected plans when bot data loads
   useEffect(() => {
@@ -302,7 +320,11 @@ export default function ArbitrageAlgo({
                 <p>{strategy.shortDescription}</p>
                 {strategy.strategyPlan?.length > 0 && (
                   <div className={styles.planDropdownContainer}>
-                    <div className={styles.dropdownmain}>
+                    <div
+  className={styles.dropdownmain}
+  ref={(el) => (dropdownRefs.current[strategy._id] = el)}
+>
+
                       <div
                         className={styles.dropdownhead}
                         onClick={(e) => {

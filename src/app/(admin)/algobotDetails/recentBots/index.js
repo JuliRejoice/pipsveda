@@ -232,7 +232,7 @@ export default function RecentBots({ id, category }) {
                                                     <div className={styles.items}>
                                                         <div className={styles.contentAlignment}>
                                                             <span>{plan.planType?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')?.replace(/(\d+)([A-Za-z]+)/, '$1 $2')}:</span>
-                                                            <h4>${plan.price}</h4>
+                                                            <h4>${plan.price.toFixed(2)}</h4>
                                                         </div>
                                                         <div className={styles.contentAlignment}>
                                                             <span>M.R.P:</span>
