@@ -420,18 +420,20 @@
               }
             }
 
-            .dropdown {
-              position: absolute;
-              top: calc(100% + 5px);
-              left: 0;
-              width: 100%;
-              background-color: var(--bg-white);
-              border: 1px solid var(--border-color5);
-              border-radius: 12px;
-              z-index: 9;
-              box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-              max-height: 200px;
-              overflow-y: auto;
+                        .dropdown {
+                          position: absolute;
+                          top: 100%;
+                          left: 0;
+                          width: 100%;
+            
+                          background: #fff;
+                          border-radius: 8px;
+                          z-index: 999;
+            
+                          max-height: 150px !important;
+                          overflow-y: auto;
+            
+                          box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.15);
 
               .dropdownspacing {
                 padding: 8px 0;
@@ -895,6 +897,8 @@
       background-color: var(--bg-white);
       padding: 50px;
       border-radius: 12px;
+      position: relative;
+  overflow: visible !important;
 
       @include respond-to("md") { padding: 16px; }
 

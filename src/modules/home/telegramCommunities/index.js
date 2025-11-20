@@ -40,6 +40,24 @@ export default function TelegramCommunities() {
   const [selectedPlans, setSelectedPlans] = useState({});
   const [openDropdown, setOpenDropdown] = useState(null);
   const router = useRouter();
+  const dropdownRefs = useRef({});
+
+  useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (openDropdown) {
+      const dropdownEl = dropdownRefs.current[openDropdown];
+      if (dropdownEl && !dropdownEl.contains(event.target)) {
+        setOpenDropdown(null);
+      }
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [openDropdown]);
+
 
   const fetchTelegramChannels = async () => {
   try {
@@ -237,7 +255,10 @@ export default function TelegramCommunities() {
                       <div className={styles.twoColgrid}>
                   {channel.telegramPlan?.length > 0 && (
                     <div className={styles.planDropdownContainer}>
-                      <div className={styles.dropdownmain}>
+                          <div
+                            className={styles.dropdownmain}
+                            ref={(el) => (dropdownRefs.current[channel._id] = el)}
+                          >
                         <div
                           className={styles.dropdownhead}
                           onClick={(e) => {
