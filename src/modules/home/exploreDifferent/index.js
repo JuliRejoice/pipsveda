@@ -93,21 +93,21 @@ export default function ExploreDifferent() {
   const cardData = [
     {
       id: 1,
-      title: "Recorded Courses",
+      title: "On demand Courses",
       description:
         "Learn at your own pace with our extensive library of pre-recorded courses. Access high-quality content anytime, anywhere, and Five Veda trading at your convenience.",
       image: CardImage1,
-      courses: `${courses?.recorded?.length} Recorded Courses`,
+      courses: `${courses?.recorded?.length} On demand Courses`,
       icon: BookIcon,
       link: "/our-course?course=recorded",
     },
     {
       id: 2,
-      title: "Live Webinars",
+      title: "Live Online Courses",
       description:
         "Join interactive live sessions with market experts. Ask questions, participate in discussions, and get your trading queries resolved in real-time.",
       image: CardImage3,
-      courses: `${courses?.live?.length} Live Sessions`,
+      courses: `${courses?.live?.length} Live Online Courses`,
       icon: BookIcon,
       link: "/our-course?course=live",
     },

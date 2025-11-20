@@ -131,13 +131,13 @@ export default function DifferentCourses({ course }) {
                             className={activeTab === 'recorded' ? styles.activeTab : ''}
                             onClick={() => setActiveTab('recorded')}
                         >
-                            Recorded Courses
+                            On demand Courses
                         </button>
                         <button
                             className={activeTab === 'live' ? styles.activeTab : ''}
                             onClick={() => setActiveTab('live')}
                         >
-                            Live Courses
+                            Live Online Courses
                         </button>
                         <button
                             className={activeTab === 'physical' ? styles.activeTab : ''}

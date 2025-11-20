@@ -17,7 +17,7 @@ import Breadcumbs from "../breadcumbs";
 import DashboardCard from "../dashboard/dashboardcard";
 
 const TABS = {
-  VIDEO_COURSES: "Pre Recorded Courses",
+  VIDEO_COURSES: "On Demand Courses",
   LIVE_SESSIONS: "Live Online courses",
   PHYSICAL_EVENTS: "In Person Courses",
   MY_ALGOBOTS: "My AlgoBots",

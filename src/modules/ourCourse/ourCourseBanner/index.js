@@ -24,7 +24,7 @@ export default function OurCourseBanner({ course }) {
       "Join our expert mentors in real-time through interactive online sessions. These live classes create a collaborative environment where you can ask questions, engage in discussions, and learn from both instructors and peers. Stay up-to-date with the latest market trends, trading strategies, and industry insights — all from the comfort of your home."),
       (btnText = "Live Online Classes");
   } else if (course === "recorded") {
-    title = "Pre Recorded Courses";
+    title = "On demand Courses";
     (description =
       "Access a library of high-quality, pre-recorded lessons that allow you to learn at your own pace, on your own time. These courses are perfect for self-starters who prefer flexibility and the ability to revisit complex topics whenever needed. Each module is carefully structured to ensure a step-by-step understanding of trading concepts, tools, and strategies."),
       (btnText = "Pre Recorded Courses");
