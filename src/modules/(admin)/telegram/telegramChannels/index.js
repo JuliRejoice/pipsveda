@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./telegramChannels.module.scss";
 import OutlineButton from "@/compoents/outlineButton";
 import Pagination from "@/compoents/pagination";
@@ -101,6 +101,24 @@ export default function TelegramChannels({
   const router = useRouter();
   const [openDropdown, setOpenDropdown] = useState(null);
   const [selectedPlans, setSelectedPlans] = useState({});
+  const dropdownRefs = useRef({});
+
+  useEffect(() => {
+  const handleClickOutside = (event) => {
+    if (openDropdown) {
+      const dropdownElement = dropdownRefs.current[openDropdown];
+      if (dropdownElement && !dropdownElement.contains(event.target)) {
+        setOpenDropdown(null);
+      }
+    }
+  };
+
+  document.addEventListener("mousedown", handleClickOutside);
+  return () => {
+    document.removeEventListener("mousedown", handleClickOutside);
+  };
+}, [openDropdown]);
+
 
   // Add this effect to initialize selected plans
   useEffect(() => {
@@ -216,7 +234,11 @@ export default function TelegramChannels({
                 <div className={styles.twoColgrid}>
                   {channel.telegramPlan?.length > 0 && (
                     <div className={styles.planDropdownContainer}>
-                      <div className={styles.dropdownmain}>
+                      <div
+  className={styles.dropdownmain}
+  ref={(el) => (dropdownRefs.current[channel._id] = el)}
+>
+
                         <div
                           className={styles.dropdownhead}
                           onClick={(e) => {

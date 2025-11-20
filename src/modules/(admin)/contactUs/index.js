@@ -39,6 +39,20 @@ export default function ContactUs() {
     const countryRef = useRef(null);
 
     useEffect(() => {
+    const handleClickOutside = (event) => {
+        if (countryRef.current && !countryRef.current.contains(event.target)) {
+            setShowCountryDropdown(false);
+        }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+    };
+}, []);
+
+
+    useEffect(() => {
         const fetchUtility = async () => {
             try {
                 const response = await getUtilityData();
