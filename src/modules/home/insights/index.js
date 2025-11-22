@@ -15,8 +15,11 @@ import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
 
 const BottomVec = '/assets/images/bottomvec.png';
+const LeftDesign = '/assets/images/left-design.png';
 const BlogImage = '/assets/images/blog-img.png';
+const CardImage = '/assets/images/dummy-img.png';
 const RightIcon = '/assets/icons/right-white.svg';
+import Slider from "react-slick";
 
 // Animation Variants
 const titleVariants = {
@@ -44,7 +47,36 @@ export default function Insights() {
   const router = useRouter();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
-
+  const settings = {
+    dots: false,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    autoplay: true,
+    speed: 5000,
+    autoplaySpeed: 5000,
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true
+        }
+      },
+      {
+        breakpoint: 700,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true
+        }
+      },
+    ]
+  };
   const { data: blogData, loading, error } = useQuery(GET_ALL_BLOG_DATA, {
     variables: {
       pagination: {
@@ -131,10 +163,41 @@ export default function Insights() {
 
   return (
     <div className={styles.insights}>
-      <div className={styles.bottomVec}>
-        <img src={BottomVec} alt='BottomVec' />
-      </div>
       <div className='container' ref={ref}>
+        <motion.div
+          className={styles.title}
+          variants={titleVariants}
+          initial="hidden"
+          animate={isInView ? 'visible' : 'hidden'}
+        >
+          <h2>Financial Insights & Articles</h2>
+          <p>
+            Explore our curated writings on markets, strategies, and more
+          </p>
+        </motion.div>
+        <div className={styles.cardBottomAlignment}>
+          <Slider {...settings}>
+            {
+              [...Array(5)].map(() => {
+                return (
+                  <div>
+                    <div className={styles.whiteBoxDesign}>
+                      <div className={styles.image}>
+                        <img src={CardImage} alt='CardImage' />
+                      </div>
+                      <div className={styles.details}>
+                        <p>
+                          Lorem Ipsum is simply dummy text of
+                          the printing and typesetting industry
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })
+            }
+          </Slider>
+        </div>
         {/* Section Title */}
         <motion.div
           className={styles.title}
@@ -157,55 +220,55 @@ export default function Insights() {
               .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
               .slice(0, 3)
               .map((blog, i) => (
-              <motion.div
-                className={styles.griditems}
-                key={i}
-                variants={cardVariants}
-                custom={i}
-                initial="hidden"
-                animate={isInView ? 'visible' : 'hidden'}
-                onMouseMove={handleMouseMove}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                style={{
-                  transform:
-                    'perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(var(--s, 1))',
-                  transformStyle: 'preserve-3d',
-                  transition: 'transform 150ms ease',
-                  willChange: 'transform',
-                }}
-              >
-                <div className={styles.image}>
-                  <img
-                    src={process.env.NEXT_PUBLIC_NEXT_GRAPHQL_IMAGE_URL + blog?.coverImage?.url}
-                    alt={blog.title}
-                    onError={(e) => {
-                      e.target.onerror = null;
-                      e.target.src = BlogImage;
-                    }}
-                  />
-                </div>
-                <div className={styles.details}>
-                  <div className={styles.allIconText}>
-                    <div className={styles.iconText}>
-                      <UserIcon />
-                      <span>{blog.author?.name || 'Anonymous'}</span>
-                    </div>
-                    <div className={styles.iconText}>
-                      <CalanderIcon />
-                      <span>{new Date(blog.createdAt).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                      })}</span>
-                    </div>
+                <motion.div
+                  className={styles.griditems}
+                  key={i}
+                  variants={cardVariants}
+                  custom={i}
+                  initial="hidden"
+                  animate={isInView ? 'visible' : 'hidden'}
+                  onMouseMove={handleMouseMove}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                  style={{
+                    transform:
+                      'perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(var(--s, 1))',
+                    transformStyle: 'preserve-3d',
+                    transition: 'transform 150ms ease',
+                    willChange: 'transform',
+                  }}
+                >
+                  <div className={styles.image}>
+                    <img
+                      src={process.env.NEXT_PUBLIC_NEXT_GRAPHQL_IMAGE_URL + blog?.coverImage?.url}
+                      alt={blog.title}
+                      onError={(e) => {
+                        e.target.onerror = null;
+                        e.target.src = BlogImage;
+                      }}
+                    />
                   </div>
-                  <h3>{blog.title}</h3>
-                  <p>{blog.shortDescription}</p>
-                  <Button onClick={() => router.push(`/blog/${blog.slug}`)} text="Read More" />
-                </div>
-              </motion.div>
-            ))
+                  <div className={styles.details}>
+                    <div className={styles.allIconText}>
+                      <div className={styles.iconText}>
+                        <UserIcon />
+                        <span>{blog.author?.name || 'Anonymous'}</span>
+                      </div>
+                      <div className={styles.iconText}>
+                        <CalanderIcon />
+                        <span>{new Date(blog.createdAt).toLocaleDateString('en-US', {
+                          year: 'numeric',
+                          month: 'short',
+                          day: 'numeric'
+                        })}</span>
+                      </div>
+                    </div>
+                    <h3>{blog.title}</h3>
+                    <p>{blog.shortDescription}</p>
+                    <Button onClick={() => router.push(`/blog/${blog.slug}`)} text="Read More" />
+                  </div>
+                </motion.div>
+              ))
           )}
         </div>
       </div>
