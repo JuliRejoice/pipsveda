@@ -382,5 +382,14 @@ export const getCourseRatingByUser = async () => {
   }
 };
 
-
+export const getYoutubeVideo = async () => {
+  try {
+    const res = await api.get(`/youtube/getAllYoutube`);
+    const data = await res.data;
+    return data;
+  } catch (error) {
+    console.error("Error fetching utility data", error);
+    throw error;
+  }
+};
     

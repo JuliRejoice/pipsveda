@@ -20,6 +20,7 @@ const BlogImage = '/assets/images/blog-img.png';
 const CardImage = '/assets/images/dummy-img.png';
 const RightIcon = '/assets/icons/right-white.svg';
 import Slider from "react-slick";
+import { getYoutubeVideo } from '@/compoents/api/dashboard';
 
 // Animation Variants
 const titleVariants = {
@@ -44,6 +45,8 @@ export default function Insights() {
   const [itemsPerPage, setItemsPerPage] = useState(3);
   const [currentPage, setCurrentPage] = useState(1);
   const [blogs, setBlogs] = useState([]);
+  const [youtubeVideos, setYoutubeVideos] = useState([]);
+  const [youtubeLoading, setYoutubeLoading] = useState(true);
   const router = useRouter();
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
@@ -91,6 +94,22 @@ export default function Insights() {
       setBlogs(blogData?.blogs_connection?.nodes);
     }
   }, [blogData]);
+
+  useEffect(() => {
+    const fetchYoutubeVideos = async () => {
+      try {
+        setYoutubeLoading(true);
+        const data = await getYoutubeVideo();        
+        setYoutubeVideos(data?.payload?.data || []);
+      } catch (error) {
+        console.error('Error fetching YouTube videos:', error);
+      } finally {
+        setYoutubeLoading(false);
+      }
+    };
+
+    fetchYoutubeVideos();
+  }, []);
 
   // Skeleton loading component
   const renderSkeletonCards = () => {
@@ -170,32 +189,49 @@ export default function Insights() {
           initial="hidden"
           animate={isInView ? 'visible' : 'hidden'}
         >
-          <h2>Financial Insights & Articles</h2>
+          <h2>Latest Trading Videos</h2>
           <p>
-            Explore our curated writings on markets, strategies, and more
+            Explore fresh trading content to boost your skills and keep you ahead in the markets.
           </p>
         </motion.div>
         <div className={styles.cardBottomAlignment}>
           <Slider {...settings}>
-            {
-              [...Array(5)].map(() => {
-                return (
-                  <div>
-                    <div className={styles.whiteBoxDesign}>
-                      <div className={styles.image}>
-                        <img src={CardImage} alt='CardImage' />
-                      </div>
-                      <div className={styles.details}>
-                        <p>
-                          Lorem Ipsum is simply dummy text of
-                          the printing and typesetting industry
-                        </p>
-                      </div>
+            {youtubeLoading ? (
+              [...Array(5)].map((_, index) => (
+                <div key={`skeleton-${index}`}>
+                  <div className={styles.whiteBoxDesign}>
+                    <div className={styles.image}>
+                      <Skeleton height={276} />
+                    </div>
+                    <div className={styles.details}>
+                      <Skeleton height={24} count={2} />
                     </div>
                   </div>
-                )
-              })
-            }
+                </div>
+              ))
+            ) : (
+              youtubeVideos.map((video, index) => (
+                <div key={index}>
+                  <div className={styles.whiteBoxDesign} onClick={() => window.open(video.videoUrl, '_blank')}>
+                    <div className={styles.image}>
+                      <img 
+                        src={video.thumbnail || CardImage} 
+                        alt="YouTube Video"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = CardImage;
+                        }}
+                      />
+                    </div>
+                    <div className={styles.details}>
+                      <p>
+                        {video.description || 'No title available'}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))
+            )}
           </Slider>
         </div>
         {/* Section Title */}
