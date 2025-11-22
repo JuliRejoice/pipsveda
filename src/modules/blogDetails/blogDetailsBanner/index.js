@@ -9,7 +9,7 @@ export default function BlogDetailsBanner({ title }) {
             <div className={styles.blogDetailsBanner}>
                 <div className='container'>
                     <div className={styles.breadcumbAlignment}>
-                        <img src={HomeIcon} alt="HomeIcon" />
+                        <span className={styles.lightText}><Link href='/' style={{ textDecoration: 'none', color: 'inherit' }}>Home</Link></span>
                         <img src={RightIcon} alt="RightIcon" />
                         <span className={styles.lightText}><Link href='/blog' style={{ textDecoration: 'none', color: 'inherit' }}>Blog</Link></span>
                         <img src={RightIcon} alt="RightIcon" />

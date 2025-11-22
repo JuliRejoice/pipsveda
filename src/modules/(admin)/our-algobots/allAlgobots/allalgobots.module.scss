@@ -73,6 +73,7 @@
             color: var(--black-500);
             font-weight: 500;
             background: none;
+            background-clip: initial;
             -webkit-background-clip: initial;
             -webkit-text-fill-color: initial;
           }
@@ -128,6 +129,20 @@
 
     .details {
       padding: 15px 0 0 0;
+
+      p {
+        display: -webkit-box;
+        display: box;
+        -webkit-line-clamp: 2;
+        line-clamp: 2;
+        -webkit-box-orient: vertical;
+        box-orient: vertical;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.5;
+        max-height: 3em;
+        min-height: 3em;
+      }
 
       .dropdownmain {
         position: relative;
@@ -347,6 +362,7 @@
               var(--primary-color, #6e30f9) 0%,
               #fe6917 100%
             );
+            background-clip: text;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
           }

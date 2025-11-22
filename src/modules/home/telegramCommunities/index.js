@@ -147,6 +147,12 @@ export default function TelegramCommunities() {
   const formatPlanType = (plan) =>
     plan?.planType?.replace(/(\d+)([A-Za-z]+)/, "$1 $2");
 
+  const getMonthsFromPlan = (planType) => {
+  const match = planType.match(/(\d+)/);
+  return match ? parseInt(match[1], 10) : 0;
+};
+
+
   return (
     <div className={styles.telegramCommunities}>
       <div className="container" ref={ref}>
@@ -211,11 +217,13 @@ export default function TelegramCommunities() {
                 {/* IMAGE */}
                 <div className={styles.cardImageContainer}>
                   {channel.image && (
-                    <img
-                      src={channel.image}
-                      alt={channel.channelName}
-                      className={styles.channelImage}
-                    />
+                    <div className={styles.imageWrapper}>
+                      <img
+                        src={channel.image}
+                        alt={channel.channelName}
+                        className={styles.channelImage}
+                      />
+                    </div>
                   )}
                   {channel.logo && (
                     <div className={styles.logoContainer}>
@@ -280,7 +288,9 @@ export default function TelegramCommunities() {
                           {openDropdown === channel._id && (
                             <div className={styles.dropdown}>
                               <div className={styles.dropdownspacing}>
-                                {channel.telegramPlan.map((plan) => (
+                                {[...channel.telegramPlan]
+  .sort((a, b) => getMonthsFromPlan(a.planType) - getMonthsFromPlan(b.planType))
+  .map((plan) => (
                                   <div
                                     key={plan._id}
                                     className={styles.iconText}

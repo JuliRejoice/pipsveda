@@ -171,16 +171,16 @@
 
                             .dropdown {
                                 position: absolute;
-  top: 100%;
-  left: 0;
-  width: 260px;
-  max-height: 240px;
-  background: #fff;
-  border-radius: 10px;
-  border: 1px solid #e5e5e5;
-  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-  overflow-y: auto;
-  z-index: 9999;
+                                top: 100%;
+                                left: 0;
+                                width: 260px;
+                                max-height: 240px;
+                                background: #fff;
+                                border-radius: 10px;
+                                border: 1px solid #e5e5e5;
+                                box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+                                overflow-y: auto;
+                                z-index: 9999;
 
                                 &.hide {
                                     max-height: 0px;
@@ -290,51 +290,69 @@
                 margin: 0;
             }
 
-            .box {
-                background-color: var(--black-100);
-                border-radius: 14px;
-                border: 1px solid var(--border-200);
-                padding: 17px 20px;
-                display: grid;
-                grid-template-columns: 58px 1fr;
-                gap: 18px;
-                align-items: center;
-                margin: 0 0 13px 0;
+            .clickableBox {
+                text-decoration: none;
+                color: inherit; // remove link blue color
+                display: block;
 
-                @include respond-to("sm") {
-                    padding: 14px;
-                    grid-template-columns: 1fr;
-                    gap: 14px;
-                }
 
-                .icon {
-                    width: 58px;
-                    height: 58px;
-                    border-radius: 8px;
-                    display: flex;
+                .box {
+                    background-color: var(--black-100);
+                    border-radius: 14px;
+                    border: 1px solid var(--border-200);
+                    padding: 17px 20px;
+                    display: grid;
+                    grid-template-columns: 58px 1fr;
+                    gap: 18px;
                     align-items: center;
-                    justify-content: center;
-                    background: rgba(255, 255, 255, 0.10);
+                    margin: 0 0 13px 0;
+                    transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+                    @include respond-to("sm") {
+                        padding: 14px;
+                        grid-template-columns: 1fr;
+                        gap: 14px;
+                    }
+
+                    .icon {
+                        width: 58px;
+                        height: 58px;
+                        border-radius: 8px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        background: rgba(255, 255, 255, 0.10);
+                    }
+
+                    h3 {
+                        @include heading18;
+                        color: var(--text-white);
+                    }
+
+                    p {
+                        @include font14;
+                        color: var(--text-white);
+                        margin: 0 0 6px 0;
+                    }
+
+                    a {
+                        background: var(--button-gradient);
+                        background-clip: text;
+                        -webkit-background-clip: text;
+                        -webkit-text-fill-color: transparent;
+                        @include font18;
+                    }
+
+                    span {
+                        color: #6B4FD8;
+                    }
                 }
 
-                h3 {
-                    @include heading18;
-                    color: var(--text-white);
-                }
-
-                p {
-                    @include font14;
-                    color: var(--text-white);
-                    margin: 0 0 6px 0;
-                }
-
-                a {
-                    background: var(--button-gradient);
-                    background-clip: text;
-                    -webkit-background-clip: text;
-                    -webkit-text-fill-color: transparent;
-                    @include font18;
-                }
+                &:hover .box {
+                        border: 1px solid #6c6d6e !important;
+                        transform: translateY(-4px) scale(1.02);
+                        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+                    }
             }
         }
     }

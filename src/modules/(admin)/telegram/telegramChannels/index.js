@@ -119,6 +119,12 @@ export default function TelegramChannels({
   };
 }, [openDropdown]);
 
+const getMonthsFromPlan = (planType) => {
+  const match = planType?.match(/(\d+)/);
+  return match ? parseInt(match[1], 10) : 0;
+};
+
+
 
   // Add this effect to initialize selected plans
   useEffect(() => {
@@ -264,7 +270,9 @@ export default function TelegramChannels({
                         {openDropdown === channel._id && (
                           <div className={styles.dropdown}>
                             <div className={styles.dropdownspacing}>
-                              {channel.telegramPlan.map((plan) => (
+                              {[...channel.telegramPlan]
+  .sort((a, b) => getMonthsFromPlan(a.planType) - getMonthsFromPlan(b.planType))
+  .map((plan) => (
                                 <div
                                   key={plan._id}
                                   className={styles.iconText}

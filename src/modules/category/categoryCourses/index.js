@@ -172,13 +172,13 @@ export default function CategoryCourses({ course }) {
                             className={activeTab === 'recorded' ? styles.activeTab : ''}
                             onClick={() => setActiveTab('recorded')}
                         >
-                            Recorded Courses
+                            On Demand Courses
                         </button>
                         <button
                             className={activeTab === 'live' ? styles.activeTab : ''}
                             onClick={() => setActiveTab('live')}
                         >
-                            Live Courses
+                            Live Online Courses
                         </button>
                         <button
                             className={activeTab === 'physical' ? styles.activeTab : ''}

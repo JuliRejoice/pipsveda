@@ -89,6 +89,12 @@ export default function AllAlgobots() {
   const [openDropdown, setOpenDropdown] = useState(bot[0]?._id || null);
 const dropdownRefs = useRef({});
 
+const getMonthsFromPlan = (planType) => {
+  const match = planType.match(/(\d+)/);
+  return match ? parseInt(match[1], 10) : 0;
+};
+
+
 useEffect(() => {
   function handleClickOutside(event) {
     if (openDropdown) {
@@ -320,7 +326,9 @@ useEffect(() => {
                         {openDropdown === strategy._id && (
                           <div className={styles.dropdown}>
                             <div className={styles.dropdownspacing}>
-                              {strategy.strategyPlan.map((plan) => (
+                              {[...strategy.strategyPlan]
+  .sort((a, b) => getMonthsFromPlan(a.planType) - getMonthsFromPlan(b.planType))
+  .map((plan) => (
                                 <div
                                   key={plan._id}
                                   className={styles.iconText}

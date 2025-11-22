@@ -10,7 +10,7 @@ import { getUtilityData } from '@/compoents/api/dashboard';
 import Dropdownarrow from '@/icons/dropdownarrow';
 import { regions } from '@/regions';
 
-const ChatIcon = '/assets/icons/chat-new.svg';
+const ChatIcon = '/assets/images/whatsapp.png';
 const EmailIcon = '/assets/icons/email-new.svg';
 const CallIcon = '/assets/icons/phone-new.svg';
 const LocationIcon = '/assets/icons/location-new.svg';
@@ -43,18 +43,18 @@ export default function Havequestions() {
     const countryRef = useRef(null);
 
     useEffect(() => {
-    const handleClickOutside = (event) => {
-        if (countryRef.current && !countryRef.current.contains(event.target)) {
-            setShowCountryDropdown(false);
-        }
-    };
+        const handleClickOutside = (event) => {
+            if (countryRef.current && !countryRef.current.contains(event.target)) {
+                setShowCountryDropdown(false);
+            }
+        };
 
-    document.addEventListener("mousedown", handleClickOutside);
+        document.addEventListener("mousedown", handleClickOutside);
 
-    return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-    };
-}, []);
+        return () => {
+            document.removeEventListener("mousedown", handleClickOutside);
+        };
+    }, []);
 
 
     const validateForm = () => {
@@ -176,72 +176,71 @@ export default function Havequestions() {
                 <form onSubmit={handleSubmit} className={styles.grid}>
                     <div className={styles.griditems}>
                         <div className={styles.blockBox}>
-                            <div className={styles.box}>
-                                <div className={styles.icon}>
-                                    <img src={ChatIcon} alt='ChatIcon' />
+                            <a
+                                href={`https://wa.me/${utilityData?.chatNumber?.replace(/[^0-9]/g, "")}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={styles.clickableBox}
+                            >
+                                <div className={styles.box}>
+                                    <div className={styles.icon}>
+                                        <img src={ChatIcon} alt='ChatIcon' />
+                                    </div>
+                                    <div>
+                                        <h3>Live Chat / WhatsApp</h3>
+                                        <p>Available 24/7 for instant support</p>
+                                        <span className={styles.numberText}>
+                                            {utilityData?.chatNumber}
+                                        </span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h3>Live Chat / WhatsApp</h3>
-                                    <p>Available 24/7 for instant support</p>
-                                    <a
-                                        href={`https://wa.me/${utilityData?.chatNumber?.replace(/[^0-9]/g, "")}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        aria-label={utilityData?.chatNumber}
-                                    >
-                                        {utilityData?.chatNumber}
-                                    </a>
+                            </a>
+                            <a
+                                href={`mailto:${utilityData?.email}`}
+                                className={styles.clickableBox}
+                            >
+                                <div className={styles.box}>
+                                    <div className={styles.icon}>
+                                        <img src={EmailIcon} alt='EmailIcon' />
+                                    </div>
+                                    <div>
+                                        <h3>Email</h3>
+                                        <p>For detailed inquiries</p>
+                                        <span className={styles.numberText}>{utilityData?.email}</span>
+                                    </div>
                                 </div>
+                            </a>
+                            <a
+                                href={`tel:${utilityData?.phoneNo}`}
+                                className={styles.clickableBox}
+                            >
+                                <div className={styles.box}>
+                                    <div className={styles.icon}>
+                                        <img src={CallIcon} alt='CallIcon' />
+                                    </div>
+                                    <div>
+                                        <h3>Phone</h3>
+                                        <p>Call us during business hours</p>
+                                        <span className={styles.numberText}>{utilityData?.phoneNo}</span>
+                                    </div>
+                                </div>
+                            </a>
+                            <a
+                                href="#"
+                                className={styles.clickableBox}
+                            >
+                                <div className={styles.box}>
+                                    <div className={styles.icon}>
+                                        <img src={LocationIcon} alt='LocationIcon' />
+                                    </div>
+                                    <div>
+                                        <h3>Location</h3>
+                                        <p>For offline programs</p>
+                                        <span className={styles.numberText}>{utilityData?.location}</span>
+                                    </div>
+                                </div>
+                            </a>
 
-                            </div>
-                            <div className={styles.box}>
-                                <div className={styles.icon}>
-                                    <img src={EmailIcon} alt='EmailIcon' />
-                                </div>
-                                <div>
-                                    <h3>
-                                        Email
-                                    </h3>
-                                    <p>
-                                        For detailed inquiries
-                                    </p>
-                                    <a href={`mailto:${utilityData?.email}`} aria-label={utilityData?.email}>
-                                        {utilityData?.email}
-                                    </a>
-                                </div>
-                            </div>
-                            <div className={styles.box}>
-                                <div className={styles.icon}>
-                                    <img src={CallIcon} alt='CallIcon' />
-                                </div>
-                                <div>
-                                    <h3>
-                                        Phone
-                                    </h3>
-                                    <p>
-                                        Call us during business hours
-                                    </p>
-                                    <a href={`callto:${utilityData?.phoneNo}`} aria-label={utilityData?.phoneNo}>
-                                        {utilityData?.phoneNo}
-                                    </a>
-                                </div>
-                            </div>
-                            <div className={styles.box}>
-                                <div className={styles.icon}>
-                                    <img src={LocationIcon} alt='LocationIcon' />
-                                </div>
-                                <div>
-                                    <h3>
-                                        Location
-                                    </h3>
-                                    <p>
-                                        For offline programs
-                                    </p>
-                                    <a aria-label={utilityData?.location}>
-                                        {utilityData?.location}
-                                    </a>
-                                </div>
-                            </div>
                         </div>
                     </div>
                     <div className={styles.griditems}>

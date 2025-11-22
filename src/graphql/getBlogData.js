@@ -1,8 +1,46 @@
 import { gql } from "@apollo/client";
 
-export const GET_ALL_BLOG_DATA = gql`
+export const GET_ALL_BLOG_DATA_PAGINATION = gql`
   query ExampleQuery($pagination: PaginationArg, $filters: BlogFiltersInput) {
   blogs_connection(pagination: $pagination, filters: $filters) {
+    nodes {
+      author {
+        id
+        name
+        picture {
+          url
+        }
+        biography
+        title
+      }
+      categories {
+        slug
+        createdAt
+        description
+        name
+      }
+      coverImage {
+        url
+      }
+      createdAt
+      documentId
+      shortDescription
+      title
+      slug
+    }
+    pageInfo {
+      total
+      page
+      pageCount
+      pageSize
+    }
+  }
+}
+`;
+
+export const GET_ALL_BLOG_DATA = gql`
+  query ExampleQuery( $filters: BlogFiltersInput) {
+  blogs_connection(filters: $filters) {
     nodes {
       author {
         id

@@ -1077,9 +1077,9 @@ export default function CourseDetails({
                         )
                       }
                     >
-                      <h2>
+                      <div className={styles.accordianTitle}>
                         Chapter {index + 1} : {item.title}
-                      </h2>
+                      </div>
                       <span>{expandedSection === index ? "−" : "+"}</span>
                     </div>
                     <div

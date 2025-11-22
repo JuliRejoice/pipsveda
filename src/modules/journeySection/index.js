@@ -4,7 +4,7 @@ import { motion, useInView } from 'framer-motion';
 import styles from './journeySection.module.scss';
 import OutlineButton from '@/compoents/outlineButton';
 
-const JourneyImge = '/assets/images/journey-new.png';
+const JourneyImge = '/assets/images/journey.png';
 const MessageIcon = '/assets/icons/message.svg';
 
 // Animation Variants

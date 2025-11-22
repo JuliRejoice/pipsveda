@@ -123,6 +123,12 @@ export default function ArbitrageAlgo({
   const [selectedPlans, setSelectedPlans] = useState({});
   const dropdownRefs = useRef({});
 
+  const getMonthsFromPlan = (planType) => {
+  const match = planType.match(/(\d+)/);
+  return match ? parseInt(match[1], 10) : 0;
+};
+
+
   useEffect(() => {
   const handleClickOutside = (event) => {
     if (openDropdown) {
@@ -356,7 +362,10 @@ export default function ArbitrageAlgo({
                       {openDropdown === strategy._id && (
                         <div className={styles.dropdown}>
                           <div className={styles.dropdownspacing}>
-                            {strategy.strategyPlan.map((plan) => (
+                            {[...strategy.strategyPlan]
+  .sort((a, b) => getMonthsFromPlan(a.planType) - getMonthsFromPlan(b.planType))
+  .map((plan) => (
+
                               <div
                                 key={plan._id}
                                 className={styles.iconText}

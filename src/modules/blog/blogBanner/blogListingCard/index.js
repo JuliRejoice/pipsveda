@@ -6,7 +6,7 @@ import styles from './blogListingCard.module.scss';
 import Pagination from '@/compoents/pagination';
 import OutlineButton from '@/compoents/outlineButton';
 import { useQuery } from '@apollo/client/react';
-import { GET_ALL_BLOG_DATA, GET_BLOG_CATEGORIES } from '@/graphql/getBlogData';
+import { GET_ALL_BLOG_DATA, GET_ALL_BLOG_DATA_PAGINATION, GET_BLOG_CATEGORIES } from '@/graphql/getBlogData';
 import { useRouter } from 'next/navigation';
 import EmptyState from '@/modules/(admin)/chapter/recentCourse/EmptyState';
 import Button from '@/compoents/button';
@@ -101,7 +101,7 @@ export default function BlogListingCard({ searchQuery }) {
 
     const { data: categoriesData } = useQuery(GET_BLOG_CATEGORIES);
 
-    const { data: blogData, loading, error } = useQuery(GET_ALL_BLOG_DATA, {
+    const { data: blogData, loading, error } = useQuery(GET_ALL_BLOG_DATA_PAGINATION, {
         variables: {
             pagination: {
                 pageSize: itemsPerPage,
@@ -226,8 +226,8 @@ export default function BlogListingCard({ searchQuery }) {
                             >
                                 <motion.div
                                     className={styles.image}
-                                    whileHover={{ scale: 1.05 }}
-                                    transition={{ duration: 0.2 }}
+                                    // whileHover={{ scale: 1.05 }}
+                                    // transition={{ duration: 0.2 }}
                                 >
                                     <img src={process.env.NEXT_PUBLIC_NEXT_GRAPHQL_IMAGE_URL + blog?.coverImage?.url} alt="BlogcardImage" />
                                 </motion.div>

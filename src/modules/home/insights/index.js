@@ -153,7 +153,10 @@ export default function Insights() {
           {loading ? (
             renderSkeletonCards()
           ) : (
-            blogs.map((blog, i) => (
+            [...blogs]
+              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+              .slice(0, 3)
+              .map((blog, i) => (
               <motion.div
                 className={styles.griditems}
                 key={i}

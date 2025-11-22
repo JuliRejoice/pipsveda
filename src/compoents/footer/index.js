@@ -4,7 +4,6 @@ import styles from "./footer.module.scss";
 import Logo from "../logo";
 import FacebookIcon from "@/icons/facebookIcon";
 import TwitterIcon from "@/icons/twitterIcon";
-import IinstagramIcon from "@/icons/instagramIcon";
 import LinkdinIcon from "@/icons/linkdinIcon";
 import InstagramIcon from "@/icons/instagramIcon";
 import Button from "../button";
@@ -12,6 +11,7 @@ import { createNewsLetter, getUtilityData } from "../api/dashboard";
 import Link from "next/link";
 import toast from "react-hot-toast";
 const FooterImage = "/assets/images/footer-bg.png";
+const TelegramIcon = "/assets/images/telegram-footer.svg";
 export default function Footer() {
   const [footerData, setFooterData] = useState([]);
   const [email, setEmail] = useState("");
@@ -85,6 +85,11 @@ export default function Footer() {
                 <Link target="_blank" href={footerData?.linkedin || ""}>
                   <div>
                     <LinkdinIcon />
+                  </div>
+                </Link>
+                <Link target="_blank" href={footerData?.telegramLink || ""}>
+                  <div>
+                    <img src={TelegramIcon} alt="TelegramIcon" className={styles.telegramIcon} />
                   </div>
                 </Link>
               </div>

@@ -13,7 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import toast from 'react-hot-toast';
 import { getUtilityData } from '@/compoents/api/dashboard';
 
-const ChatIcon = '/assets/icons/chat-new.svg';
+const ChatIcon = '/assets/images/whatsapp.png';
 const EmailIcon = '/assets/icons/email-new.svg';
 const CallIcon = '/assets/icons/phone-new.svg';
 const LocationIcon = '/assets/icons/location-new.svg';
@@ -278,78 +278,70 @@ export default function ContactUs() {
                     </div>
                     <div className={styles.griditems}>
                         <div className={styles.whiteBox}>
-                            <div className={styles.box}>
-                                <div className={styles.icon}>
-                                    <img src={ChatIcon} alt='ChatIcon' />
+                            <a
+                                href={`https://wa.me/${utility?.chatNumber?.replace(/[^0-9]/g, "")}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className={styles.clickableBox}
+                            >
+                                <div className={styles.box}>
+                                    <div className={styles.icon}>
+                                        <img src={ChatIcon} alt='ChatIcon' />
+                                    </div>
+                                    <div>
+                                        <h3>Live Chat / WhatsApp</h3>
+                                        <p>Available 24/7 for instant support</p>
+                                        <span className={styles.numberText}>
+                                            {utility?.chatNumber}
+                                        </span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h3>
-                                        Live Chat / WhatsApp
-                                    </h3>
-                                    <p>
-                                        Available 24/7 for instant support
-                                    </p>
-                                    <a href={`https://wa.me/${utility?.chatNumber?.replace(/[^0-9]/g, "")}`}
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        aria-label={utility?.chatNumber}>
-                                        {utility?.chatNumber}
-                                    </a>
+                            </a>
+                            <a
+                                href={`mailto:${utility?.email}`}
+                                className={styles.clickableBox}
+                            >
+                                <div className={styles.box}>
+                                    <div className={styles.icon}>
+                                        <img src={EmailIcon} alt='EmailIcon' />
+                                    </div>
+                                    <div>
+                                        <h3>Email</h3>
+                                        <p>For detailed inquiries</p>
+                                        <span className={styles.numberText}>{utility?.email}</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className={styles.box}>
-                                <div className={styles.icon}>
-                                    <img src={EmailIcon} alt='EmailIcon' />
+                            </a>
+                            <a
+                                href={`tel:${utility?.phoneNo}`}
+                                className={styles.clickableBox}
+                            >
+                                <div className={styles.box}>
+                                    <div className={styles.icon}>
+                                        <img src={CallIcon} alt='CallIcon' />
+                                    </div>
+                                    <div>
+                                        <h3>Phone</h3>
+                                        <p>Call us during business hours</p>
+                                        <span className={styles.numberText}>{utility?.phoneNo}</span>
+                                    </div>
                                 </div>
-                                <div>
-                                    <h3>
-                                        Email
-                                    </h3>
-                                    <p>
-                                        For detailed inquiries
-                                    </p>
-                                    <a
-                                        href={`mailto:${utility?.email ?? ''}`}
-                                        aria-label={utility?.email ?? 'Email'}
-                                        className="text-blue-500 underline"
-                                    >
-                                        {utility?.email ?? 'Email not available'}
-                                    </a>
-
+                            </a>
+                            <a
+                                href="#"
+                                className={styles.clickableBox}
+                            >
+                                <div className={styles.box}>
+                                    <div className={styles.icon}>
+                                        <img src={LocationIcon} alt='LocationIcon' />
+                                    </div>
+                                    <div>
+                                        <h3>Location</h3>
+                                        <p>For offline programs</p>
+                                        <span className={styles.numberText}>{utility?.location}</span>
+                                    </div>
                                 </div>
-                            </div>
-                            <div className={styles.box}>
-                                <div className={styles.icon}>
-                                    <img src={CallIcon} alt='CallIcon' />
-                                </div>
-                                <div>
-                                    <h3>
-                                        Phone
-                                    </h3>
-                                    <p>
-                                        Call us during business hours
-                                    </p>
-                                    <a href={`callto:${utility?.phoneNo}`} aria-label='+91 98765 43210'>
-                                        {utility?.phoneNo}
-                                    </a>
-                                </div>
-                            </div>
-                            <div className={styles.box}>
-                                <div className={styles.icon}>
-                                    <img src={LocationIcon} alt='LocationIcon' />
-                                </div>
-                                <div>
-                                    <h3>
-                                        Location
-                                    </h3>
-                                    <p>
-                                        For offline programs
-                                    </p>
-                                    <a aria-label='Mumbai, Maharashtra'>
-                                        {utility?.location}
-                                    </a>
-                                </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>

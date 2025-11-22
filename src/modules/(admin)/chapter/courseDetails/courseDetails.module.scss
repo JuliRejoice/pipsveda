@@ -789,6 +789,11 @@
     cursor: pointer;
     transition: all 0.3s ease;
 
+    .accordianTitle{
+      @include font16;
+      color: var(--black-500);
+    }
+
     h3 {
       @include font16;
       color: var(--black-500);
@@ -825,7 +830,7 @@
     padding: 0 24px;
 
     &.active {
-      padding: 0 24px 24px;
+      // padding: 0 24px 24px;
       max-height: 2000px; /* Increased to accommodate more content */
       overflow: visible;
     }
