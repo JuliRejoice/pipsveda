@@ -139,13 +139,15 @@ export default function Signup() {
       return;
     }
     setIsSubmitting(true);
+    console.log(data.refferalCode,"-------data.refferalCode");
     signUp({
       name: data.name,
       email: data.email,
       password: data.password,
       country: data.country,
       state: data.state,
-      city: data.city
+      city: data.city,
+      referredBy: data.refferalCode
     })
       .then((response) => {
         if (response.success) {
@@ -306,6 +308,18 @@ export default function Signup() {
                 {errors.confirmPassword && (
                   <div className={styles.error}>{errors.confirmPassword}</div>
                 )}
+              </div>
+                <div className={styles.inputAlignment}>
+                <Input
+                  name="refferalCode"
+                  type="text"
+                  label="Refferal Code"
+                  placeholder="Your Refferal Code"
+                  value={data.refferalCode}
+                  onChange={(e) => {
+                    setData({ ...data, refferalCode: e.target.value });
+                  }}
+                />
               </div>
               <div className={styles.inputAlignment}>
                 <label className={styles.label}>Country</label>

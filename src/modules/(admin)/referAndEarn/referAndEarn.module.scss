@@ -1,0 +1,948 @@
+@use '../../../scss/main.scss' as *;
+@use '../../../scss/typography/typography.scss' as *;
+@use '../../../scss/breakpoints/breakpoints.scss' as *;
+
+.contactUsPage {
+    background-color: var(--bg-white);
+    border: 1px solid var(--border-color5);
+    padding: 30px;
+    border-radius: 12px;
+
+    @include respond-to("sm") {
+        padding: 14px;
+        border-radius: 12px;
+    }
+
+    .textstyle {
+        padding: 0 0 14px 0;
+        border-bottom: 1px solid var(--border-color5);
+
+        h2 {
+            @include heading20;
+            margin: 0 0 4px 0;
+            color: var(--black-500);
+        }
+
+        p {
+            @include font16normal;
+            color: var(--black-500);
+            font-weight: 400;
+        }
+    }
+
+    .statsSection {
+        margin: 30px 0;
+
+        .statsGrid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+
+            @include respond-to("lg") {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            @include respond-to("sm") {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .statCard {
+                background: white;
+                border: 1px solid #e9ecef;
+                border-radius: 12px;
+                padding: 20px;
+                transition: all 0.2s ease;
+
+                &.colSpan2 {
+                    grid-column: span 2;
+
+                    @include respond-to("lg") {
+                        grid-column: span 1;
+                    }
+
+                    @include respond-to("sm") {
+                        grid-column: span 1;
+                    }
+                }
+
+                &.clickable {
+                    cursor: pointer;
+
+                    &:hover {
+                        box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+                        transform: translateY(-3px);
+                        // border-color: #6B4FD8;
+                    }
+                }
+
+                &:hover {
+                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+                    transform: translateY(-2px);
+                }
+
+                .cardContent {
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+
+                    .statIcon {
+                        width: 48px;
+                        height: 48px;
+                        background: #6B4FD8;
+                        border-radius: 12px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        flex-shrink: 0;
+
+                        svg {
+                            width: 24px;
+                            height: 24px;
+                        }
+                    }
+
+                    .cardInfo {
+                        flex: 1;
+                        min-width: 0;
+
+                        h4 {
+                            @include font16;
+                            color: #495057;
+                            margin: 0 0 8px 0;
+                            font-weight: 500;
+                        }
+
+                        .statValue {
+                            // @include font24;
+                            color: #051600;
+                            margin: 0;
+                            font-weight: 600;
+                            font-size: 20px;
+                        }
+
+                        .cardAmount {
+                            p {
+                                color: #051600;
+                                font-weight: 600;
+                                // font-family: 'Courier New', monospace;
+                                // background: #f8f9fa;
+                                padding: 6px 0px;
+                                border-radius: 6px;
+                                // border: 1px solid #dee2e6;
+                                font-size: 18px;
+                                margin: 0;
+                                display: flex;
+                                align-items: center;
+                                line-height: 1.4;
+                            }
+                        }
+
+                        .referralCodeDisplay {
+                            display: flex;
+                            flex-direction: column;
+                            gap: 8px;
+
+                            span {
+                                @include font16;
+                                color: #051600;
+                                font-weight: 600;
+                                // font-family: 'Courier New', monospace;
+                                background: #f8f9fa;
+                                padding: 6px 10px;
+                                border-radius: 6px;
+                                border: 1px solid #dee2e6;
+                                font-size: 14px;
+                                display: flex;
+                                align-items: center;
+                                justify-content: space-between;
+                                gap: 10px;
+
+                                .buttonGroup {
+                                    display: flex;
+                                    gap: 6px;
+                                    align-items: center;
+                                }
+
+                                .copyButton,
+                                .shareButton {
+                                    background: #6B4FD8;
+                                    color: white;
+                                    border: none;
+                                    border-radius: 6px;
+                                    padding: 4px 8px;
+                                    // @include font12;
+                                    cursor: pointer;
+                                    transition: all 0.2s ease;
+                                    flex-shrink: 0;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+
+                                    img {
+                                        width: 16px;
+                                        height: 16px;
+                                        display: block;
+                                    }
+
+                                    &:hover {
+                                        background: #5a3fc7;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .referralSection {
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        margin: 30px 0;
+        flex-wrap: wrap;
+
+        @include respond-to("sm") {
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .referralCard {
+            flex: 1;
+            min-width: 300px;
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 12px;
+            padding: 24px;
+
+            h3 {
+                @include font18;
+                color: #051600;
+                margin: 0 0 16px 0;
+                font-weight: 600;
+            }
+
+            .referralCodeContainer {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+
+                .referralCode,
+                .referralLink {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    background: white;
+                    border: 1px solid #dee2e6;
+                    border-radius: 8px;
+                    padding: 12px 16px;
+
+                    span {
+                        @include font16;
+                        color: #495057;
+                        font-family: 'Courier New', monospace;
+                        word-break: break-all;
+                    }
+
+                    .copyButton {
+                        background: #5f38f0;
+                        color: white;
+                        border: none;
+                        border-radius: 6px;
+                        padding: 6px 12px;
+                        @include font14;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+                        white-space: nowrap;
+                        margin-left: 12px;
+
+                        &:hover {
+                            background: #4a2ed8;
+                        }
+                    }
+                }
+            }
+        }
+
+        .withdrawalSection {
+            display: flex;
+            align-items: center;
+
+            .withdrawalButton {
+                // background: linear-gradient(135deg, #5f38f0 0%, #7c3aed 100%);
+                color: white;
+                border: none;
+                border-radius: 8px;
+                padding: 12px 20px 12px 0px;
+                @include font16;
+                font-weight: 500;
+                cursor: pointer;
+                // transition: all 0.2s ease;
+                white-space: nowrap;
+
+                // &:hover {
+                //     transform: translateY(-2px);
+                //     box-shadow: 0 4px 12px rgba(95, 56, 240, 0.3);
+                // }
+            }
+        }
+    }
+
+    .tabsSection {
+        margin-top: 40px;
+
+        .tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 24px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 0.5rem;
+
+            .tab {
+                padding: 0.5rem 1rem;
+                background: none;
+                border: none;
+                border-radius: 0.25rem;
+                @include font16;
+                font-weight: 500;
+                color: #64748b;
+                cursor: pointer;
+                transition: all 0.2s ease;
+                position: relative;
+                outline: none;
+
+                &:hover {
+                    color: #334155;
+                }
+
+                &.active {
+                    color: #051600;
+                    font-weight: 600;
+
+                    &::after {
+                        content: '';
+                        position: absolute;
+                        bottom: -0.5rem;
+                        left: 0;
+                        width: 100%;
+                        height: 2px;
+                        background: linear-gradient(135deg, #5f38f0 0%, #7c3aed 100%);
+                        border-radius: 2px;
+                    }
+                }
+            }
+        }
+
+        .tableContainer {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #e9ecef;
+
+            .walletTable,
+            .withdrawalTable {
+                overflow-x: auto;
+
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    text-align: left;
+
+                    thead {
+                        background-color: #f8f9fa;
+
+                        tr {
+                            th {
+                                padding: 16px 20px;
+                                @include font16;
+                                font-weight: 600;
+                                color: #051600;
+                                text-transform: capitalize;
+                                border-bottom: 1px solid #dee2e6;
+                            }
+                        }
+                    }
+
+                    tbody {
+                        tr {
+                            border-bottom: 1px solid #f1f3f4;
+                            transition: .3s ease-in-out;
+
+                            &:hover {
+                                background-color: #f8f9fa;
+                            }
+
+                            &:last-child {
+                                border-bottom: none;
+                            }
+
+                            td {
+                                padding: 16px 20px;
+                                color: #495057;
+
+                                .status {
+                                    padding: 4px 12px;
+                                    border-radius: 20px;
+                                    @include font14;
+                                    font-weight: 500;
+
+                                    &.available {
+                                        background: #d4edda;
+                                        color: #155724;
+                                    }
+
+                                    &.pending {
+                                        background: #fff3cd;
+                                        color: #856404;
+                                    }
+
+                                    &.approved {
+                                        background: #d1ecf1;
+                                        color: #0c5460;
+                                    }
+
+                                    &.processing {
+                                        background: #f8d7da;
+                                        color: #721c24;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    .withdrawalModal {
+        min-width: 500px;
+
+        @include respond-to("sm") {
+            min-width: auto;
+            width: 100%;
+        }
+
+        .withdrawalOptions {
+            h3 {
+                @include font18;
+                color: #051600;
+                margin: 0 0 24px 0;
+            }
+
+            .optionsContainer {
+                display: flex;
+                gap: 16px;
+                flex-direction: column;
+
+                .optionCard {
+                    background: white;
+                    border: 2px solid #e9ecef;
+                    border-radius: 12px;
+                    padding: 24px;
+                    cursor: pointer;
+                    transition: all 0.2s ease;
+                    text-align: left;
+                    width: 100%;
+                    display: flex;
+                    align-items: center;
+                    gap: 16px;
+
+                    &:hover {
+                        border-color: #5f38f0;
+                        box-shadow: 0 4px 12px rgba(95, 56, 240, 0.1);
+                    }
+
+                    .optionIcon {
+                        width: 50px;
+                        height: 50px;
+                        background-color: #6B4FD8;
+                        border-radius: 8px;
+
+                        display: flex; // center horizontally & vertically
+                        align-items: center;
+                        justify-content: center;
+                        flex-shrink: 0; // Prevent icon from shrinking
+
+                        img {
+                            width: 28px; // adjust as needed
+                            height: 28px;
+                            object-fit: contain;
+                        }
+                    }
+
+                    .optionContent {
+                        flex: 1; // Take remaining space
+
+                        h4 {
+                            @include font16;
+                            color: #051600;
+                            margin: 0 0 8px 0;
+                            font-weight: 600;
+                        }
+
+                        p {
+                            @include font14;
+                            color: #6c757d;
+                            margin: 0;
+                        }
+                    }
+                }
+            }
+        }
+
+        .withdrawalForm {
+            .backButton {
+                background: none;
+                border: none;
+                color: #5f38f0;
+                border : 2px solid #6B4FD8;
+                border-radius: 30px;
+                cursor: pointer;
+                @include font14;
+                margin-bottom: 10px;
+                margin-top: 10px;
+                padding: 4px 20px;
+
+                &:hover {
+                    text-decoration: underline;
+                }
+            }
+
+            h3 {
+                @include font18;
+                color: #051600;
+                margin: 0 0 24px 0;
+                // text-align: center;
+            }
+
+            .form {
+                .formGroup {
+                    margin-bottom: 20px;
+
+                    label {
+                        display: block;
+                        @include font14;
+                        color: #495057;
+                        margin-bottom: 8px;
+                        font-weight: 500;
+                    }
+
+                    input,
+                    select {
+                        width: 100%;
+                        padding: 10px 14px;
+                        border: 1px solid #ced4da;
+                        border-radius: 8px;
+                        color: #495057;
+                        transition: all 0.2s ease;
+
+                        &:focus {
+                            outline: none;
+                            border-color: #5f38f0;
+                            box-shadow: 0 0 0 2px rgba(95, 56, 240, 0.1);
+                        }
+                    }
+
+                    select {
+                        cursor: pointer;
+                    }
+                }
+
+                .formActions {
+                    display: flex;
+                    justify-content: space-between;
+                    align-items: center;
+                    margin-top: 24px;
+
+                    .backButton {
+                        background: none;
+                        border: none;
+                        color: #5f38f0;
+                        border: 2px solid #6B4FD8;
+                        border-radius: 30px;
+                        cursor: pointer;
+                        @include font16;
+                        margin-bottom: 10px;
+                        margin-top: 10px;
+                        padding: 10px 20px;
+
+                        &:hover {
+                            text-decoration: underline;
+                        }
+                    }
+
+                    .submitButton {
+                        // background: linear-gradient(135deg, #5f38f0 0%, #7c3aed 100%);
+                        color: white;
+                        border: none;
+                        border-radius: 6px;
+                        padding: 10px 0px;
+                        cursor: pointer;
+                        transition: all 0.2s ease;
+                    }
+                }
+            }
+        }
+    }
+
+    .form {
+        .formGroup {
+            margin-bottom: 20px;
+
+            label {
+                display: block;
+                @include font16;
+                font-weight: 500;
+                color: #051600;
+                margin-bottom: 8px;
+            }
+
+            .input {
+                width: 100%;
+                padding: 12px 16px;
+                border: 1px solid #dee2e6;
+                border-radius: 8px;
+                @include font16;
+                color: #051600;
+                background: white;
+                transition: all 0.2s ease;
+
+                &:focus {
+                    outline: none;
+                    border-color: #6B4FD8;
+                    box-shadow: 0 0 0 3px rgba(107, 79, 216, 0.1);
+                }
+
+                &::placeholder {
+                    color: #adb5bd;
+                }
+            }
+        }
+
+        // .formActions {
+        //     display: flex;
+        //     gap: 12px;
+        //     justify-content: flex-end;
+        //     margin-top: 24px;
+
+        //     .cancelButton, .submitButton {
+        //         padding: 12px 24px;
+        //         border: none;
+        //         border-radius: 8px;
+        //         @include font16;
+        //         font-weight: 500;
+        //         cursor: pointer;
+        //         transition: all 0.2s ease;
+        //     }
+
+        //     // .cancelButton {
+        //     //     background: #f8f9fa;
+        //     //     color: #495057;
+        //     //     border: 1px solid #dee2e6;
+
+        //     //     &:hover {
+        //     //         background: #e9ecef;
+        //     //     }
+        //     // }
+
+        //     // .submitButton {
+        //     //     background: #6B4FD8;
+        //     //     color: white;
+
+        //     //     &:hover {
+        //     //         background: #5a3fc7;
+        //     //     }
+        //     // }
+        // }
+    }
+
+    // }
+
+    // Custom Modal Styles (matches original Modal design)
+    .customModalOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        padding: 16px;
+        backdrop-filter: blur(4px);
+        opacity: 0;
+        animation: fadeIn 0.2s ease-out forwards;
+        overflow-y: auto;
+        font-family: var(--font-lexend);
+    }
+
+    .customModalContent {
+        background: var(--bg-white);
+        border-radius: 12px;
+        width: 100%;
+        max-width: 550px;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        transform: translateY(20px);
+        animation: slideUp 0.3s ease-out forwards;
+        position: relative;
+    }
+
+    .customModalHeader {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 20px 24px;
+        position: sticky;
+        top: 0;
+        background: var(--bg-white);
+        z-index: 1;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+        cursor: pointer;
+
+        svg {
+            width: 20px;
+            height: 20px;
+            color: var(--grey-600);
+        }
+    }
+
+    .customModalTitle {
+        @include heading20;
+        font-family: var(--font-lexend) !important;
+        color: var(--black-500);
+        margin: 0;
+        text-transform: capitalize;
+    }
+
+    .customCloseButton {
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 8px;
+        margin: -8px -8px -8px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+        transition: background-color 0.2s;
+        color: var(--grey-600);
+
+        &:hover {
+            background-color: var(--grey-100);
+            color: var(--black-500);
+        }
+
+        &:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+    }
+
+    .customModalBody {
+        padding: 0px 24px 24px 24px;
+
+        @include respond-to('sm') {
+            padding: 16px;
+        }
+
+        .form {
+            .formGroup {
+                margin-bottom: 20px;
+
+                label {
+                    display: block;
+                    @include font16;
+                    font-weight: 500;
+                    color: #051600;
+                    margin-bottom: 8px;
+                }
+
+                .input {
+                    width: 100%;
+                    padding: 12px 16px;
+                    border: 1px solid #dee2e6;
+                    border-radius: 8px;
+                    @include font16;
+                    color: #051600;
+                    background: white;
+                    transition: all 0.2s ease;
+
+                    &:focus {
+                        outline: none;
+                        border-color: #6B4FD8;
+                        box-shadow: 0 0 0 3px rgba(107, 79, 216, 0.1);
+                    }
+
+                    &::placeholder {
+                        color: #adb5bd;
+                    }
+                }
+            }
+
+            // .formActions {
+            //     display: flex;
+            //     gap: 12px;
+            //     justify-content: flex-end;
+            //     margin-top: 24px;
+
+            //     .cancelButton, .submitButton {
+            //         padding: 12px 24px;
+            //         border: none;
+            //         border-radius: 8px;
+            //         @include font16;
+            //         font-weight: 500;
+            //         cursor: pointer;
+            //         transition: all 0.2s ease;
+            //     }
+
+            //     // .cancelButton {
+            //     //     background: #f8f9fa;
+            //     //     color: #495057;
+            //     //     border: 1px solid #dee2e6;
+
+            //     //     &:hover {
+            //     //         background: #e9ecef;
+            //     //     }
+            //     // }
+
+            //     // .submitButton {
+            //     //     background: #6B4FD8;
+            //     //     color: white;
+
+            //     //     &:hover {
+            //     //         background: #5a3fc7;
+            //     //     }
+            //     // }
+            // }
+        }
+    }
+
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes slideUp {
+        from {
+            transform: translateY(20px);
+            opacity: 0;
+        }
+
+        to {
+            transform: translateY(0);
+            opacity: 1;
+        }
+    }
+
+    @include respond-to('sm') {
+        .customModalContent {
+            max-width: 95%;
+            max-height: 95vh;
+        }
+
+        .customModalHeader {
+            padding: 16px;
+        }
+    }
+}
+
+.inputError {
+    border-color: #dc3545 !important;
+}
+
+.errorMessage {
+    color: #dc3545;
+    font-size: 14px;
+    margin-top: 6px;
+    font-weight: 500;
+}
+
+.withdrawalRequestFormContainer {
+    padding: 40px;
+    width: 100%;
+
+    .form {
+        .formGroup {
+            margin-bottom: 24px;
+
+            label {
+                display: block;
+                @include font16;
+                font-weight: 500;
+                color: #051600;
+                margin-bottom: 8px;
+            }
+
+            .input {
+                width: 100%;
+                padding: 12px 16px;
+                border: 1px solid #dee2e6;
+                border-radius: 8px;
+                @include font16;
+                color: #051600;
+                background: white;
+                transition: all 0.2s ease;
+
+                &:focus {
+                    outline: none;
+                    border-color: #6B4FD8;
+                    box-shadow: 0 0 0 3px rgba(107, 79, 216, 0.1);
+                }
+
+                &::placeholder {
+                    color: #adb5bd;
+                }
+
+                &.inputError {
+                    border-color: #dc3545;
+
+                    &:focus {
+                        border-color: #dc3545;
+                        box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1);
+                    }
+                }
+            }
+
+            .errorMessage {
+                color: #dc3545;
+                @include font14;
+                margin-top: 6px;
+                font-weight: 500;
+            }
+        }
+
+        .formActions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 24px;
+
+            .submitButton {
+                background: #6B4FD8;
+                color: white;
+                border: none;
+                border-radius: 8px;
+                padding: 12px 24px;
+                @include font16;
+                font-weight: 500;
+                cursor: pointer;
+                transition: all 0.2s ease;
+
+                &:hover {
+                    background: #5a3fc7;
+                }
+            }
+        }
+    }
+}

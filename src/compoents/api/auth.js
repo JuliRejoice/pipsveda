@@ -27,6 +27,7 @@ export const signUp = async (data) => {
   fromdata.append("country", data.country);
   fromdata.append("state", data.state);
   fromdata.append("city", data.city);
+  fromdata.append("referredBy", data.referredBy);
   try {
     const response = await api.post(`/user/signup`, fromdata, {
       headers: {

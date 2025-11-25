@@ -193,6 +193,16 @@ export default function Sidebar({ setToogle, toogle, unreadCount }) {
             <ContactUs />
             <span>Contact Us</span>
           </div>
+           <div
+            className={`${styles.menu} ${pathname === "/refer-and-earn" ? styles.active : ""
+              }`}
+            onClick={() => {
+              handleTabClick("refer-and-earn");
+            }}
+          >
+            <PaymentIcon />
+            <span>Refer & Earn</span>
+          </div>
         </div>
         <div className={styles.sidebarFooter}>
           <div className={styles.relativeDiv}>
