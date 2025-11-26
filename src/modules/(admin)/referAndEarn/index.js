@@ -316,8 +316,7 @@ export default function ReferAndEarn() {
             value: referralCode,
             icon: <TotalEarningIcon />,
             isReferral: true,
-            id: 1,
-            colSpan: 2
+            id: 1
         },
         {
             title: 'Wallet Balance',
@@ -531,6 +530,7 @@ export default function ReferAndEarn() {
                                         <tr>
                                             <th>Sr. No</th>
                                             <th>Withdrawal Status</th>
+                                            <th>Withdrawal Type</th>
                                             <th>Requested Amount</th>
                                             <th>Transaction Id</th>
                                             <th>Requested Date</th>
@@ -552,8 +552,9 @@ export default function ReferAndEarn() {
                                                             {item.status || 'N/A'}
                                                         </span>
                                                     </td>
-                                                    <td>${item.amount || '0.00'}</td>
-                                                    <td>{item.transactionId || 'N/A'}</td>
+                                                    <td>{item?.withdrawalType || '-'}</td>
+                                                    <td>${item?.amount || '0.00'}</td>
+                                                    <td>{item?.transactionId || 'N/A'}</td>
                                                     <td>{item?.createdAt ? new Date(item.createdAt).toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) : 'N/A'}</td>
                                                 </tr>
                                             ))
