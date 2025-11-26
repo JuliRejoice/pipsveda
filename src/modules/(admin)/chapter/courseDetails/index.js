@@ -515,13 +515,13 @@ export default function CourseDetails({
                     <div className={styles.detailValue}>
                       {selectedBatch.startDate
                         ? new Date(selectedBatch.startDate).toLocaleDateString(
-                            "en-US",
-                            {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            }
-                          )
+                          "en-US",
+                          {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          }
+                        )
                         : "N/A"}
                     </div>
                   </div>
@@ -531,13 +531,13 @@ export default function CourseDetails({
                     <div className={styles.detailValue}>
                       {selectedBatch.endDate
                         ? new Date(selectedBatch.endDate).toLocaleDateString(
-                            "en-US",
-                            {
-                              year: "numeric",
-                              month: "long",
-                              day: "numeric",
-                            }
-                          )
+                          "en-US",
+                          {
+                            year: "numeric",
+                            month: "long",
+                            day: "numeric",
+                          }
+                        )
                         : "N/A"}
                     </div>
                   </div>
@@ -772,17 +772,17 @@ export default function CourseDetails({
 
           {/* Intro Video */}
           <div className={styles.introVideo}>
-           
-              <CustomVideoPlayer
-                src={selectedCourse?.courseIntroVideo}
-                userId={user?._id}
-                controls
-                controlsList="nodownload"
-                disablePictureInPicture
-                noremoteplayback
-                isIntro={true}
-              />
-           
+
+            <CustomVideoPlayer
+              src={selectedCourse?.courseIntroVideo}
+              userId={user?._id}
+              controls
+              controlsList="nodownload"
+              disablePictureInPicture
+              noremoteplayback
+              isIntro={true}
+            />
+
           </div>
 
           {/* Course Syllabus */}
@@ -793,9 +793,8 @@ export default function CourseDetails({
                 {syllabus.map((item, index) => (
                   <div key={index} className={styles.accordionItem}>
                     <div
-                      className={`${styles.accordionHeader} ${
-                        expandedSection === index ? styles.active : ""
-                      }`}
+                      className={`${styles.accordionHeader} ${expandedSection === index ? styles.active : ""
+                        }`}
                       onClick={() =>
                         setExpandedSection(
                           expandedSection === index ? null : index
@@ -808,9 +807,8 @@ export default function CourseDetails({
                       <span>{expandedSection === index ? "−" : "+"}</span>
                     </div>
                     <div
-                      className={`${styles.accordionContent} ${
-                        expandedSection === index ? styles.active : ""
-                      }`}
+                      className={`${styles.accordionContent} ${expandedSection === index ? styles.active : ""
+                        }`}
                     >
                       <div className={styles.chapterContent}>
                         <p>
@@ -960,17 +958,17 @@ export default function CourseDetails({
           )}
 
           <div className={styles.introVideo}>
-            
-              <CustomVideoPlayer
-                src={selectedCourse?.courseIntroVideo}
-                userId={user?._id}
-                controls
-                controlsList="nodownload"
-                disablePictureInPicture
-                noremoteplayback
-                isIntro={true}
-              />
-            
+
+            <CustomVideoPlayer
+              src={selectedCourse?.courseIntroVideo}
+              userId={user?._id}
+              controls
+              controlsList="nodownload"
+              disablePictureInPicture
+              noremoteplayback
+              isIntro={true}
+            />
+
           </div>
           {/* <div className={styles.mainrelative}>
             <div className={styles.tabAlignment}>
@@ -1068,9 +1066,8 @@ export default function CourseDetails({
                 {syllabus.map((item, index) => (
                   <div key={index} className={styles.accordionItem}>
                     <div
-                      className={`${styles.accordionHeader} ${
-                        expandedSection === index ? styles.active : ""
-                      }`}
+                      className={`${styles.accordionHeader} ${expandedSection === index ? styles.active : ""
+                        }`}
                       onClick={() =>
                         setExpandedSection(
                           expandedSection === index ? null : index
@@ -1083,9 +1080,8 @@ export default function CourseDetails({
                       <span>{expandedSection === index ? "−" : "+"}</span>
                     </div>
                     <div
-                      className={`${styles.accordionContent} ${
-                        expandedSection === index ? styles.active : ""
-                      }`}
+                      className={`${styles.accordionContent} ${expandedSection === index ? styles.active : ""
+                        }`}
                     >
                       <div className={styles.chapterContent}>
                         <p>
@@ -1113,6 +1109,7 @@ export default function CourseDetails({
           onBatchSelect={handleBatchSelect}
           courseTitle={selectedCourse?.CourseName || "Course"}
           isLoading={isLoading}
+          showMatchLocation={isInPerson}
         />
       )}
 

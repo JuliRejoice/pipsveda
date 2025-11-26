@@ -169,77 +169,258 @@
     margin-bottom: 24px;
   }
 
-  .skeletonItem {
-    padding: 16px;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    background: var(--bg-white);
-    cursor: progress;
-  }
-
-  .batchInfo {
-    h4 {
-      margin: 0 0 8px 0;
-      color: var(--text-primary);
-      @include font16;
-    }
-
-    p {
-      margin: 4px 0;
-      color: var(--text-secondary);
-      @include font14;
-    }
-  }
-
-  .selectedBadge {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    background-color: var(--primary-color);
-    color: white;
-    padding: 4px 8px;
-    border-radius: 12px;
-    font-size: 12px;
-    font-weight: 500;
-  }
-
-}
-.modalActions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  padding-top: 16px;
-  border-top: 1px solid var(--border-color);
-  margin-top: 8px;
-  position: sticky;
-  bottom: 0;
-  background: white;
-  padding-right: 8px;
-  padding-bottom: 4px;
 }
 
-@include respond-to('sm') {
-  .modalContent {
-    max-width: 95%;
-    max-height: 95vh;
-  }
-
-  .modalHeader {
-    padding: 16px;
-  }
-  
-  .batchSelectionContainer {
-    .batchItem {
-      padding: 12px;
+    .modalOverlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+      padding: 16px;
+      backdrop-filter: blur(4px);
+      opacity: 0;
+      animation: fadeIn 0.2s ease-out forwards;
+      overflow-y: auto;
+      font-family: var(--font-lexend);
     }
-    
-    .modalActions {
-      flex-direction: column;
-      gap: 8px;
-      
-      button {
-        width: 100%;
+
+    .modalContent {
+      background: var(--bg-white);
+      border-radius: 12px;
+      width: 100%;
+      max-width: 550px;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      transform: translateY(20px);
+      animation: slideUp 0.3s ease-out forwards;
+      position: relative;
+    }
+
+    .modalHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 24px;
+      //   border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      background: var(--bg-white);
+      z-index: 1;
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+      cursor: pointer;
+
+      svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .modalTitle {
+        @include heading20;
+        font-family: var(--font-lexend) !important;
+        color: var(--black-500);
+        margin: 0;
+        text-transform: capitalize;
       }
     }
-  }
-}
+
+
+    .closeButton {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      margin: -8px -8px -8px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background-color 0.2s;
+      color: var(--grey-600);
+
+      &:hover {
+        background-color: var(--grey-100);
+        color: var(--black-500);
+      }
+
+      &:focus {
+        outline: none;
+        box-shadow: 0 0 0 3px var(--primary-light);
+      }
+    }
+
+    .modalBody {
+      padding: 0px 24px 24px 24px;
+
+      @include respond-to('sm') {
+        padding: 16px;
+      }
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes slideUp {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    // Batch Selection Modal Styles
+    .batchSelectionContainer {
+      padding-top: 16px;
+      height: 50vh;
+      overflow-y: auto;
+
+      .batchList {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .batchItem {
+        padding: 16px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        position: relative;
+        background-color: var(--bg-white);
+
+        &:hover {
+          border-color: var(--primary-color);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        &.selected {
+          border-color: var(--primary-color);
+          background-color: rgba(var(--primary-rgb), 0.05);
+        }
+      }
+
+      .skeletonContainer {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 16px;
+        width: 100%;
+        margin-bottom: 24px;
+      }
+
+      .skeletonItem {
+        padding: 16px;
+        border: 1px solid var(--border-color);
+        border-radius: 8px;
+        background: var(--bg-white);
+        cursor: progress;
+      }
+
+      .batchInfo {
+        h4 {
+          margin: 0 0 8px 0;
+          color: var(--text-primary);
+          @include font16;
+        }
+
+        p {
+          margin: 4px 0;
+          color: var(--text-secondary);
+          @include font14;
+        }
+      }
+
+      .selectedBadge {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        background-color: var(--primary-color);
+        color: white;
+        padding: 4px 8px;
+        border-radius: 12px;
+        font-size: 12px;
+        font-weight: 500;
+      }
+    }
+
+    .matchLocationContainer {
+      padding: 10px 0;
+      display: flex;
+      align-items: center;
+
+      .checkboxLabel {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-size: 14px;
+        color: var(--text-primary);
+        user-select: none;
+
+        input[type="checkbox"] {
+          width: 16px;
+          height: 16px;
+          cursor: pointer;
+          accent-color: var(--primary-color);
+        }
+      }
+    }
+
+    .modalActions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 12px;
+      padding-top: 16px;
+      border-top: 1px solid var(--border-color);
+      margin-top: 8px;
+      position: sticky;
+      bottom: 0;
+      background: white;
+      padding-right: 8px;
+      padding-bottom: 4px;
+    }
+
+    @include respond-to('sm') {
+      .modalContent {
+        max-width: 95%;
+        max-height: 95vh;
+      }
+
+      .modalHeader {
+        padding: 16px;
+      }
+
+      .batchSelectionContainer {
+        .batchItem {
+          padding: 12px;
+        }
+
+        .modalActions {
+          flex-direction: column;
+          gap: 8px;
+
+          button {
+            width: 100%;
+          }
+        }
+      }
+    }

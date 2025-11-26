@@ -9,18 +9,20 @@ import 'react-loading-skeleton/dist/skeleton.css';
 import { toast } from 'react-hot-toast';
 import { getCookie } from '../../../cookie';
 
-const BatchSelectionModal = ({ 
-  isOpen, 
-  onClose, 
+const BatchSelectionModal = ({
+  isOpen,
+  onClose,
   courseId,
   batches,
   onBatchSelect,
   courseTitle = 'Course',
   isLoading = false,
+  showMatchLocation = false,
 }) => {
   const [selectedBatchId, setSelectedBatchId] = useState(null);
   const [error, setError] = useState(null);
-  
+  const [isMatchLocation, setIsMatchLocation] = useState(false);
+
   const handleProceed = () => {
     if (!selectedBatchId) return;
     if (selectedBatchId) {
@@ -31,8 +33,8 @@ const BatchSelectionModal = ({
   if (!isOpen) return null;
 
   return (
-    <Modal 
-      isOpen={isOpen} 
+    <Modal
+      isOpen={isOpen}
       onClose={onClose}
       title={`Select a Batch for ${courseTitle}`}
     >
@@ -43,7 +45,7 @@ const BatchSelectionModal = ({
           <div className={styles.skeletonContainer}>
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className={styles.skeletonItem}>
-                <Skeleton height={90} width="100%"   />
+                <Skeleton height={90} width="100%" />
                 {/* <Skeleton height={16} width="60%" style={{ marginBottom: '8px' }} />
                 <Skeleton height={16} width="60%" style={{ marginBottom: '8px' }} />
                 {i % 2 === 0 && <Skeleton height={16} width="50%" />} */}
@@ -53,8 +55,8 @@ const BatchSelectionModal = ({
         ) : batches.length > 0 ? (
           <div className={styles.batchList}>
             {batches.map((batch) => (
-              <div 
-                key={batch._id} 
+              <div
+                key={batch._id}
                 className={`${styles.batchItem} ${selectedBatchId === batch._id ? styles.selected : ''}`}
                 onClick={() => setSelectedBatchId(batch._id)}
               >
@@ -73,21 +75,34 @@ const BatchSelectionModal = ({
         ) : (
           <p>No batches available at the moment. Please check back later.</p>
         )}
-        
+
       </div>
-        <div className={styles.modalActions}>
-          <Button 
-            text="Cancel" 
-            onClick={onClose} 
-            variant="outline"
-            disabled={isLoading}
-          />
-          <Button 
-            text={isLoading ? 'Loading...' : 'Proceed to Payment'} 
-            onClick={handleProceed}
-            disabled={!selectedBatchId || isLoading}
-          />
-        </div>
+      {showMatchLocation && (
+        <div className={styles.matchLocationContainer}>
+          <label className={styles.checkboxLabel}>
+            <input
+              type="checkbox"
+              checked={isMatchLocation}
+              onChange={(e) => setIsMatchLocation(e.target.checked)}
+            />
+            Match Location
+          </label>
+        </div>)
+      }
+
+      <div className={styles.modalActions}>
+        <Button
+          text="Cancel"
+          onClick={onClose}
+          variant="outline"
+          disabled={isLoading}
+        />
+        <Button
+          text={isLoading ? 'Loading...' : 'Proceed to Payment'}
+          onClick={handleProceed}
+          disabled={!selectedBatchId || isLoading}
+        />
+      </div>
     </Modal>
   );
 };

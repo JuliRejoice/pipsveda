@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "@/compoents/modal/Modal";
 import styles from "./beforePaymentModal.module.scss";
 import Button from "@/compoents/button";
+import ClockGreyIcon from "@/icons/clockGreyIcon";
 
 function BeforePaymentModal({
   isOpen,
@@ -13,8 +14,12 @@ function BeforePaymentModal({
   isInPerson = false,
   isLiveOnline = false,
   isRecorded = false,
+  user = null,
 }) {
+  const [useWallet, setUseWallet] = useState(false);
   if (!isOpen) return null;
+
+  console.log("user", user);
 
   if (!isRecorded && !selectedBatch) {
     return (
@@ -119,6 +124,25 @@ function BeforePaymentModal({
               </span>
             </div> */}
           </div>
+
+          {/* Wallet Section */}
+          {user?.earningBalance !== undefined && user?.earningBalance > 0 && (
+            <div className={styles.walletSection}>
+              <label className={styles.walletCheckbox}>
+                <input
+                  type="checkbox"
+                  checked={useWallet}
+                  onChange={(e) => setUseWallet(user.earningBalance)}
+                />
+                <span className={styles.walletLabel}>
+                  Use Wallet Balance
+                  <span className={styles.walletAmount}>
+                    (Available: ${user.earningBalance.toFixed(2)})
+                  </span>
+                </span>
+              </label>
+            </div>
+          )}
         </div>
       </>
     );
