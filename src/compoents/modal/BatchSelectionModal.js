@@ -8,6 +8,7 @@ import 'react-loading-skeleton/dist/skeleton.css';
 
 import { toast } from 'react-hot-toast';
 import { getCookie } from '../../../cookie';
+import { getBatches } from '../api/dashboard';
 
 const BatchSelectionModal = ({
   isOpen,
@@ -15,6 +16,7 @@ const BatchSelectionModal = ({
   courseId,
   batches,
   onBatchSelect,
+  onBatchesUpdate,
   courseTitle = 'Course',
   isLoading = false,
   showMatchLocation = false,
@@ -22,6 +24,7 @@ const BatchSelectionModal = ({
   const [selectedBatchId, setSelectedBatchId] = useState(null);
   const [error, setError] = useState(null);
   const [isMatchLocation, setIsMatchLocation] = useState(false);
+  const [isFetchingBatches, setIsFetchingBatches] = useState(false);
 
   const handleProceed = () => {
     if (!selectedBatchId) return;
@@ -30,7 +33,29 @@ const BatchSelectionModal = ({
     }
   };
 
+  const handleMatchLocationToggle = async (checked) => {
+    setIsMatchLocation(checked);
+    setIsFetchingBatches(true);
+    setError(null);
+    
+    try {
+      const response = await getBatches({ courseId, isMatchBatch: checked });
+      if (response?.payload?.data) {
+        // Update batches in parent component
+        onBatchesUpdate(response.payload.data);
+        // Clear selected batch since batches changed
+        setSelectedBatchId(null);
+      }
+    } catch (error) {
+      console.error('Error fetching batches:', error);
+      setError('Failed to fetch batches. Please try again.');
+    } finally {
+      setIsFetchingBatches(false);
+    }
+  };
+
   if (!isOpen) return null;
+  
 
   return (
     <Modal
@@ -41,7 +66,7 @@ const BatchSelectionModal = ({
       <div className={styles.batchSelectionContainer}>
         {error ? (
           <div className={styles.errorState}>{error}</div>
-        ) : isLoading ? (
+        ) : isLoading || isFetchingBatches ? (
           <div className={styles.skeletonContainer}>
             {[1, 2, 3, 4].map((i) => (
               <div key={i} className={styles.skeletonItem}>
@@ -79,13 +104,18 @@ const BatchSelectionModal = ({
       </div>
       {showMatchLocation && (
         <div className={styles.matchLocationContainer}>
-          <label className={styles.checkboxLabel}>
-            <input
-              type="checkbox"
-              checked={isMatchLocation}
-              onChange={(e) => setIsMatchLocation(e.target.checked)}
-            />
-            Match Location
+          <label className={styles.toggleLabel}>
+            <span className={styles.labelText}>Match Location</span>
+            <div className={styles.toggleSwitch}>
+              <input
+                type="checkbox"
+                checked={isMatchLocation}
+                onChange={(e) => handleMatchLocationToggle(e.target.checked)}
+                className={styles.toggleInput}
+                disabled={isFetchingBatches}
+              />
+              <span className={styles.toggleSlider}></span>
+            </div>
           </label>
         </div>)
       }

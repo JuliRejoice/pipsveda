@@ -12,6 +12,8 @@ import { getPaymentUrl, getTelegramChannels } from "@/compoents/api/dashboard";
 import { useRouter, useSearchParams } from "next/navigation";
 import Skeleton from 'react-loading-skeleton';
 import 'react-loading-skeleton/dist/skeleton.css';
+import { getProfile } from "@/compoents/api/auth";
+import { getCookie } from "../../../../../cookie";
 const RightIcon = "/assets/icons/right.svg";
 const MinusIcon = "/assets/icons/minus.svg";
 const PlusIcon = "/assets/icons/plus.svg";
@@ -37,6 +39,9 @@ function TelegramDetails({ id }) {
     const [commonDiscount, setCommonDiscount] = useState(0);
     const [appliedCoupon, setAppliedCoupon] = useState(null);
     const [telegramId, setTelegramId] = useState('');
+    const [useWallet, setUseWallet] = useState(false);
+    const [showWalletConfirm, setShowWalletConfirm] = useState(false);
+    const [user, setUser] = useState(null);
     const router = useRouter();
     const searchParams = useSearchParams();
 
@@ -45,6 +50,33 @@ function TelegramDetails({ id }) {
 
     const handleLanguageChange = (e) => {
         setSelectedLanguageIndex(Number(e.target.value));
+    };
+
+    useEffect(() => {
+        const fetchProfile = async () => {
+            try {
+                const userData = getCookie("user");
+                if (!userData) return;
+                
+                const parsedUser = JSON.parse(userData)._id;
+                const response = await getProfile(parsedUser);
+                const user = response.payload.data[0];
+                setUser(user);
+            } catch (error) {
+                console.error('Error fetching profile:', error);
+            }
+        };
+        
+        fetchProfile();
+    }, []);
+
+    const handleWalletToggle = (e) => {
+        setUseWallet(e.target.checked);
+    };
+
+    const handleWalletConfirm = () => {
+        setShowWalletConfirm(false);
+        processPayment();
     };
 
     const fetchTelegramData = async () => {
@@ -153,6 +185,17 @@ function TelegramDetails({ id }) {
             return;
         }
 
+        // If wallet is checked, show confirmation modal first
+        if (useWallet) {
+            setShowWalletConfirm(true);
+            return;
+        }
+
+        // Proceed with normal purchase if no wallet usage
+        processPayment();
+    };
+
+    const processPayment = async () => {
         try {
             setIsProcessingPayment(true);
             setError('');
@@ -162,7 +205,11 @@ function TelegramDetails({ id }) {
                 telegramAccountNo: telegramId.trim(),
                 couponId: couponId || undefined,
                 success_url: window.location.href,
-                cancel_url: window.location.href
+                cancel_url: window.location.href,
+                isWalletUse: useWallet || false,
+                walletAmount: useWallet ? Math.min(user?.earningBalance || 0, selectedPlan?.totalPrice || 0) : 0,
+                actualAmount: useWallet ? Math.max(0, (selectedPlan?.totalPrice || 0) - (user?.earningBalance || 0)) : selectedPlan?.totalPrice || 0,
+                price: selectedPlan?.totalPrice || 0,
             };
 
             const response = await getPaymentUrl(orderData);
@@ -428,6 +475,25 @@ function TelegramDetails({ id }) {
                                     <span>Total Amount:</span>
                                     <span>${selectedPlan.totalPrice?.toFixed(2) || '0.00'}</span>
                                 </h4>
+
+                                {/* Wallet Section */}
+                                {user?.earningBalance !== undefined && user?.earningBalance > 0 && (
+                                    <div className={styles.walletSection}>
+                                        <label className={styles.walletCheckbox}>
+                                            <input
+                                                type="checkbox"
+                                                checked={useWallet}
+                                                onChange={handleWalletToggle}
+                                            />
+                                            <span className={styles.walletLabel}>
+                                                Use Wallet Balance
+                                                <span className={styles.walletAmount}>
+                                                    (Available: ${user?.earningBalance.toFixed(2)})
+                                                </span>
+                                            </span>
+                                        </label>
+                                    </div>
+                                )}
                             </div>
 
 
@@ -467,6 +533,49 @@ function TelegramDetails({ id }) {
                             </div>
                         </div>
                     )}
+                </Modal>
+
+                {/* Wallet Confirmation Modal */}
+                <Modal
+                    isOpen={showWalletConfirm}
+                    onClose={() => {
+                        setShowWalletConfirm(false);
+                        setUseWallet(false);
+                    }}
+                    title="Confirm Wallet Usage"
+                >
+                    <div className={styles.modalContent}>
+                        <div className={styles.modalBody}>
+                            <div className={styles.note}>
+                                <ul>
+                                    <li style={{paddingBottom : "20px"}}>
+                                        Are you sure you want to use your wallet balance of{" "}
+                                        <strong>${parseFloat(user?.earningBalance || 0).toFixed(2)}</strong>?
+                                    </li>
+                                    <li>
+                                        {parseFloat(user?.earningBalance || 0) >= parseFloat(selectedPlan?.totalPrice || 0) 
+                                            ? `Your wallet balance covers the full purchase. $${parseFloat(selectedPlan?.totalPrice || 0).toFixed(2)} will be deducted from your wallet and $${(parseFloat(user?.earningBalance || 0) - parseFloat(selectedPlan?.totalPrice || 0)).toFixed(2)} will remain in your wallet.` 
+                                            : `This amount will be deducted from your wallet and the remaining $${Math.max(0, parseFloat(selectedPlan?.totalPrice || 0) - parseFloat(user?.earningBalance || 0)).toFixed(2)} will be charged to your payment method.` 
+                                        }
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div className={styles.modalFooter}>
+                            <Button
+                                text="Cancel"
+                                onClick={() => {
+                                    setShowWalletConfirm(false);
+                                    setUseWallet(false);
+                                }}
+                                variant="outline"
+                            />
+                            <Button
+                                text="Confirm"
+                                onClick={handleWalletConfirm}
+                            />
+                        </div>
+                    </div>
                 </Modal>
             </div>
         </div>

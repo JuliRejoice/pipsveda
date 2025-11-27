@@ -15,6 +15,8 @@ import "react-loading-skeleton/dist/skeleton.css";
 
 import { marked } from "marked";
 import Dropdownarrow from "@/icons/dropdownarrow";
+import { getCookie } from "../../../../../cookie";
+import { getProfile } from "@/compoents/api/auth";
 const RightIcon = "/assets/icons/right.svg";
 const MinusIcon = "/assets/icons/minus.svg";
 const PlusIcon = "/assets/icons/plus.svg";
@@ -43,11 +45,40 @@ function AlgobotDetails({ id }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLanguageIndex, setSelectedLanguageIndex] = useState(0);
   const [availableLanguages, setAvailableLanguages] = useState([]);
+  const [useWallet, setUseWallet] = useState(false);
+  const [showWalletConfirm, setShowWalletConfirm] = useState(false);
+  const [user, setUser] = useState(null); // Replace with actual user data
 
+  useEffect(() => {
+    const fetchProfile = async () => {
+      try {
+        const userData = getCookie("user");
+        if (!userData) return;
+        
+        const parsedUser = JSON.parse(userData)._id;
+        const response = await getProfile(parsedUser);
+        const user = response.payload.data[0];
+        setUser(user);
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+      }
+    };
+    
+    fetchProfile();
+  }, []); // Remove [isOpen] dependency and add empty array to run only once on mount
 
   const handleLanguageChange = (index) => {
     setSelectedLanguageIndex(index);
     setIsOpen(false);
+  };
+
+  const handleWalletToggle = (e) => {
+    setUseWallet(e.target.checked);
+  };
+
+  const handleWalletConfirm = () => {
+    setShowWalletConfirm(false);
+    processPayment();
   };
 
   useEffect(() => {
@@ -175,6 +206,17 @@ function AlgobotDetails({ id }) {
   const handlePurchase = async () => {
     if (!selectedPlan) return;
 
+    // If wallet is checked, show confirmation modal first
+    if (useWallet) {
+      setShowWalletConfirm(true);
+      return;
+    }
+
+    // Proceed with normal purchase if no wallet usage
+    processPayment();
+  };
+
+  const processPayment = async () => {
     try {
       setIsProcessingPayment(true);
       setError("");
@@ -186,6 +228,10 @@ function AlgobotDetails({ id }) {
         noOfBots: planQuantities[selectedPlan._id] || 1,
         success_url: window.location.href,
         cancel_url: window.location.href,
+        isWalletUse: useWallet,
+        walletAmount: useWallet ? Math.min(user?.earningBalance || 0, selectedPlan?.totalPrice || 0) : 0,
+        actualAmount: useWallet ? Math.max(0, (selectedPlan?.totalPrice || 0) - (user?.earningBalance || 0)) : selectedPlan?.totalPrice || 0,
+        price: selectedPlan?.totalPrice || 0,
       };
 
       const response = await getPaymentUrl(orderData);
@@ -646,6 +692,25 @@ function AlgobotDetails({ id }) {
                 <span>Total Amount:</span>
                 <span>${selectedPlan.totalPrice.toFixed(2)}</span>
               </h4>
+
+              {/* Wallet Section */}
+              {user?.earningBalance !== undefined && user?.earningBalance > 0 && (
+                <div className={styles.walletSection}>
+                  <label className={styles.walletCheckbox}>
+                    <input
+                      type="checkbox"
+                      checked={useWallet}
+                      onChange={handleWalletToggle}
+                    />
+                    <span className={styles.walletLabel}>
+                      Use Wallet Balance
+                      <span className={styles.walletAmount}>
+                        (Available: ${user?.earningBalance.toFixed(2)})
+                      </span>
+                    </span>
+                  </label>
+                </div>
+              )}
             </div>
 
             <div className={styles.couponSection}>
@@ -692,6 +757,49 @@ function AlgobotDetails({ id }) {
             </div>
           </div>
         )}
+      </Modal>
+
+      {/* Wallet Confirmation Modal */}
+      <Modal
+        isOpen={showWalletConfirm}
+        onClose={() => {
+          setShowWalletConfirm(false);
+          setUseWallet(false);
+        }}
+        title="Confirm Wallet Usage"
+      >
+        <div className={styles.modalContent}>
+          <div className={styles.modalBody}>
+            <div className={styles.note}>
+              <ul>
+                <li style={{paddingBottom : "20px"}}>
+                  Are you sure you want to use your wallet balance of{" "}
+                  <strong>${parseFloat(user?.earningBalance || 0).toFixed(2)}</strong>?
+                </li>
+                <li>
+                  {parseFloat(user?.earningBalance || 0) >= parseFloat(selectedPlan?.totalPrice || 0) 
+                    ? `Your wallet balance covers the full purchase. $${parseFloat(selectedPlan?.totalPrice || 0).toFixed(2)} will be deducted from your wallet and $${(parseFloat(user?.earningBalance || 0) - parseFloat(selectedPlan?.totalPrice || 0)).toFixed(2)} will remain in your wallet.` 
+                    : `This amount will be deducted from your wallet and the remaining $${Math.max(0, parseFloat(selectedPlan?.totalPrice || 0) - parseFloat(user?.earningBalance || 0)).toFixed(2)} will be charged to your payment method.` 
+                  }
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div className={styles.modalFooter}>
+            <Button
+              text="Cancel"
+              onClick={() => {
+                setShowWalletConfirm(false);
+                setUseWallet(false);
+              }}
+              variant="outline"
+            />
+            <Button
+              text="Confirm"
+              onClick={handleWalletConfirm}
+            />
+          </div>
+        </div>
       </Modal>
     </div>
   );

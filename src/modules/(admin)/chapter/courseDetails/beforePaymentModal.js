@@ -1,8 +1,11 @@
-import React, { useState } from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import Modal from "@/compoents/modal/Modal";
 import styles from "./beforePaymentModal.module.scss";
 import Button from "@/compoents/button";
 import ClockGreyIcon from "@/icons/clockGreyIcon";
+import { getProfile } from "@/compoents/api/auth";
+import { getCookie } from "../../../../../cookie";
 
 function BeforePaymentModal({
   isOpen,
@@ -14,12 +17,34 @@ function BeforePaymentModal({
   isInPerson = false,
   isLiveOnline = false,
   isRecorded = false,
-  user = null,
+  coursePrice,
 }) {
   const [useWallet, setUseWallet] = useState(false);
-  if (!isOpen) return null;
+  const [user, setUser] = useState(null);
+  const [showWalletConfirm, setShowWalletConfirm] = useState(false);
 
-  console.log("user", user);
+  useEffect(() => {
+    if (!isOpen) return;
+    
+    const fetchProfile = async () => {
+      try {
+        const userData = getCookie("user");
+        const parsedUser = JSON.parse(userData)._id;
+        const response = await getProfile(parsedUser);
+        const user = response.payload.data[0];
+
+        setUser(user);
+
+      } catch (error) {
+        console.error('Error fetching profile:', error);
+        // toast.error('Failed to load profile data');
+      }
+    };
+
+    fetchProfile();
+  }, [isOpen]);
+
+  if (!isOpen) return null;
 
   if (!isRecorded && !selectedBatch) {
     return (
@@ -43,6 +68,38 @@ function BeforePaymentModal({
   }
 
   //   const { city, state, country, courseId, batchName, startDate, endDate, timing } = selectedBatch;
+
+  const handleConfirm = () => {
+    // Show wallet confirmation modal if wallet is being used
+    if (useWallet) {
+      setShowWalletConfirm(true);
+      return;
+    }
+
+    proceedWithPayment();
+  };
+
+  const proceedWithPayment = () => {
+    console.log(coursePrice,"coursePrice");
+    console.log(user?.earningBalance,"user?.earningBalance");
+    
+    const walletBalance = parseFloat(user?.earningBalance) || 0;
+    const price = parseFloat(coursePrice) || 0;
+    
+    const walletData = {
+      isWalletUse: useWallet,
+      walletAmount: useWallet ? Math.min(walletBalance, price) : 0,
+      actualAmount: useWallet ? (walletBalance > price ? 0 : price - walletBalance) : price,
+      price: price,
+    };
+    console.log('Final walletData:', walletData);
+    onConfirm(walletData);
+  };
+
+  const handleWalletConfirm = () => {
+    setShowWalletConfirm(false);
+    proceedWithPayment();
+  };
 
   const renderContent = () => {
     if (isRecorded) {
@@ -132,12 +189,12 @@ function BeforePaymentModal({
                 <input
                   type="checkbox"
                   checked={useWallet}
-                  onChange={(e) => setUseWallet(user.earningBalance)}
+                  onChange={(e) => setUseWallet(e.target.checked)}
                 />
                 <span className={styles.walletLabel}>
                   Use Wallet Balance
                   <span className={styles.walletAmount}>
-                    (Available: ${user.earningBalance.toFixed(2)})
+                    (Available: ${user?.earningBalance.toFixed(2)})
                   </span>
                 </span>
               </label>
@@ -149,36 +206,76 @@ function BeforePaymentModal({
   };
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title="Before You Proceed"
-    >
-      <div className={styles.modalContent}>
-        {renderContent()}
+    <>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        title="Before You Proceed"
+      >
+        <div className={styles.modalContent}>
+          {renderContent()}
 
-        <div className={styles.commonnote}>
-          <p>
-            <strong>Note:</strong> Please verify all the details before
-            proceeding to payment. Once payment is made, it cannot be refunded.
-          </p>
-        </div>
+          <div className={styles.commonnote}>
+            <p>
+              <strong>Note:</strong> Please verify all the details before
+              proceeding to payment. Once payment is made, it cannot be refunded.
+            </p>
+          </div>
 
-        <div className={styles.modalFooter}>
-          <Button
-            text="Cancel"
-            onClick={onClose}
-            variant="outline"
-            disabled={isProcessing}
-          />
-          <Button
-            text={isProcessing ? "Processing..." : "Proceed to Payment"}
-            onClick={onConfirm}
-            disabled={isProcessing}
-          />
+          <div className={styles.modalFooter}>
+            <Button
+              text="Cancel"
+              onClick={onClose}
+              variant="outline"
+              disabled={isProcessing}
+            />
+            <Button
+              text={isProcessing ? "Processing..." : "Proceed to Payment"}
+              onClick={handleConfirm}
+              disabled={isProcessing}
+            />
+          </div>
         </div>
-      </div>
-    </Modal>
+      </Modal>
+
+      {/* Wallet Confirmation Modal */}
+      <Modal
+        isOpen={showWalletConfirm}
+        onClose={() => setShowWalletConfirm(false)}
+        title="Confirm Wallet Usage"
+      >
+        <div className={styles.modalContent}>
+          <div className={styles.modalBody}>
+            <div className={styles.note}>
+              <ul>
+                <li style={{paddingBottom : "20px"}}>
+                  Are you sure you want to use your wallet balance of{" "}
+                  <strong>${parseFloat(user?.earningBalance || 0).toFixed(2)}</strong>?
+                </li>
+                <li>
+                  {parseFloat(user?.earningBalance || 0) >= parseFloat(coursePrice || 0) 
+                    ? `Your wallet balance covers the full course price. $${parseFloat(coursePrice || 0).toFixed(2)} will be deducted from your wallet and $${(parseFloat(user?.earningBalance || 0) - parseFloat(coursePrice || 0)).toFixed(2)} will remain in your wallet.`
+                    : `This amount will be deducted from your wallet and the remaining $${Math.max(0, parseFloat(coursePrice || 0) - parseFloat(user?.earningBalance || 0)).toFixed(2)} will be charged to your payment method.`
+                  }
+                </li>
+              </ul>
+            </div>
+          </div>
+
+          <div className={styles.modalFooter}>
+            <Button
+              text="Cancel"
+              onClick={() => setShowWalletConfirm(false)}
+              variant="outline"
+            />
+            <Button
+              text="Confirm"
+              onClick={handleWalletConfirm}
+            />
+          </div>
+        </div>
+      </Modal>
+    </>
   );
 }
 

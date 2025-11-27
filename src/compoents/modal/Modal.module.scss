@@ -289,7 +289,7 @@
     // Batch Selection Modal Styles
     .batchSelectionContainer {
       padding-top: 16px;
-      height: 50vh;
+      height: 46vh;
       overflow-y: auto;
 
       .batchList {
@@ -367,20 +367,76 @@
       display: flex;
       align-items: center;
 
-      .checkboxLabel {
+      .toggleLabel {
         display: flex;
         align-items: center;
-        gap: 8px;
+        justify-content: space-between;
+        width: 100%;
         cursor: pointer;
-        font-size: 14px;
-        color: var(--text-primary);
         user-select: none;
 
-        input[type="checkbox"] {
-          width: 16px;
-          height: 16px;
-          cursor: pointer;
-          accent-color: var(--primary-color);
+        .labelText {
+          font-size: 14px;
+          color: var(--text-primary);
+          font-weight: 500;
+        }
+
+        .toggleSwitch {
+          position: relative;
+          display: inline-block;
+          width: 44px;
+          height: 22px;
+
+          .toggleInput {
+            opacity: 0;
+            width: 0;
+            height: 0;
+
+            &:checked + .toggleSlider {
+              background: linear-gradient(135deg, #6B4FD8 0%, #8B5CF6 100%);
+              box-shadow: 0 2px 8px rgba(107, 79, 216, 0.3);
+
+              &:before {
+                transform: translateX(22px);
+                background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+              }
+            }
+
+            &:focus + .toggleSlider {
+              box-shadow: 0 0 0 3px rgba(107, 79, 216, 0.2);
+            }
+          }
+
+          .toggleSlider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, #e2e8f0 0%, #cbd5e1 100%);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border-radius: 22px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+
+            &:before {
+              position: absolute;
+              content: "";
+              height: 16px;
+              width: 16px;
+              left: 3px;
+              bottom: 3px;
+              background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%);
+              transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+              border-radius: 50%;
+              box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            }
+
+            &:hover {
+              background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
+            }
+          }
         }
       }
     }

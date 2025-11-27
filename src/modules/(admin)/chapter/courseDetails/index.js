@@ -276,7 +276,7 @@ export default function CourseDetails({
     if (batchId) {
       const fetchBatchDetails = async () => {
         try {
-          const response = await getBatches({ courseId: id });
+          const response = await getBatches({ courseId: id, isMatchBatch: false });
           if (response?.payload?.data) {
             console.log(
               response.payload.data,
@@ -377,7 +377,7 @@ export default function CourseDetails({
       try {
         setIsBeforepaymentModal(true);
         setIsLoading(true);
-        const response = await getBatches({ courseId });
+        const response = await getBatches({ courseId: id, isMatchBatch: false });
         setBatches(response?.payload?.data);
       } catch (error) {
         console.error("Error fetching batches:", error);
@@ -398,7 +398,11 @@ export default function CourseDetails({
     setIsBeforepaymentModal(false);
   };
 
-  const handleConfirmPayment = async () => {
+  const handleBatchesUpdate = (updatedBatches) => {
+    setBatches(updatedBatches);
+  };
+
+  const handleConfirmPayment = async (walletData) => {
     try {
       setIsProcessingPayment(true);
 
@@ -411,6 +415,10 @@ export default function CourseDetails({
         success_url: successUrl.toString(),
         cancel_url: window.location.href,
         courseId: id,
+        isWalletUse: walletData?.isWalletUse || false,
+        walletAmount: walletData?.walletAmount || 0,
+        actualAmount: walletData?.actualAmount || 0,
+        price: walletData?.price || selectedCourse?.price || 0,
       };
 
       // Only add batchId for non-recorded courses
@@ -1107,9 +1115,11 @@ export default function CourseDetails({
           onClose={() => setIsBeforepaymentModal(false)}
           batches={batches}
           onBatchSelect={handleBatchSelect}
+          onBatchesUpdate={handleBatchesUpdate}
           courseTitle={selectedCourse?.CourseName || "Course"}
           isLoading={isLoading}
           showMatchLocation={isInPerson}
+          courseId={id}
         />
       )}
 
@@ -1124,6 +1134,7 @@ export default function CourseDetails({
         isInPerson={isInPerson}
         isLiveOnline={isLiveOnline}
         isRecorded={isRecorded}
+        coursePrice={selectedCourse?.price || 0}
       />
     </div>
   );

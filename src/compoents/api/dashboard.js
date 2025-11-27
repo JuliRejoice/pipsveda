@@ -301,8 +301,15 @@ export const submitReview = async (data) => {
 
 export const getBatches = async (data) => {
   try {
+    const params = new URLSearchParams();
+    params.append('courseId', data.courseId);
+    
+    if (data.isMatchBatch !== undefined) {
+      params.append('isMatchBatch', data.isMatchBatch);
+    }
+    
     const response = await api.get(
-      `/batch/getBatchByCourse?courseId=${data.courseId}`
+      `/batch/getBatchByCourse?${params.toString()}`
     );
     return response.data;
   } catch (error) {

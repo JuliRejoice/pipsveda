@@ -2,6 +2,46 @@
 @use "../../../../scss/breakpoints/breakpoints.scss" as *;
 @use "../../../../scss/typography/typography.scss" as *;
 
+// Wallet styles
+.walletSection {
+  margin: 31px 0 15px 0;
+  padding: 10px 20px;
+  border: 1px solid var(--border-color5);
+  border-radius: 4px;
+  background-color: var(--bg-white);
+}
+
+.walletCheckbox {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  cursor: pointer;
+  
+  input[type="checkbox"] {
+    margin: 0;
+    width: 16px;
+    height: 16px;
+  }
+}
+
+.walletLabel {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  
+  .walletAmount {
+    font-size: 0.875rem;
+    color: var(--text-color2);
+  }
+}
+
+.modalFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+}
+
 .algobotDetailsAlignment {
   background-color: var(--bg-white);
   padding: 30px;
@@ -167,17 +207,7 @@
       padding: 0 0 30px 0;
 
       .griditems {
-        // &:first-child {
-        //   float: left;
-        //   width: 50%;
-        //   margin: 0 40px 30px 0;
-
-        //   @media (max-width:768px) {
-        //     float: none;
-        //     width: 100%;
-        //     margin: 0 0 40px 0;
-        //   }
-        // }
+        /* This class can be used for future styling */
       }
 
       .box {
@@ -613,7 +643,7 @@
 .couponSection {
   display: flex;
   justify-content: space-between;
-  gap: 12px;
+  gap: 10px;
   margin-bottom: 20px;
   align-items: center;
   width: 100%;
