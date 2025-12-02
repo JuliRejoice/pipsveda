@@ -19,7 +19,7 @@ export default function middleware(req) {
     "/course",
     "/categories",
     "/instructor",
-    
+    "/refer-and-earn"
   ];
 
   const isProtected = protectedPaths.some((path) =>
@@ -56,6 +56,7 @@ export const config = {
     "/telegram/:path*",
     "/categories/:path*",
     "/instructor/:path*",
+    "/refer-and-earn/:path*",
   ],
 };
 

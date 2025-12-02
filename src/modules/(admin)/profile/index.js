@@ -114,14 +114,31 @@ export default function Profile() {
       if (user?.countryCode) {
         setSelectedCountryCode(user.countryCode);
       }
+
+      // Set gender if available
+      if (user?.gender) {
+        setSelectedGender(user.gender);
+      }
+
+      // Find and set countryId and stateId based on user data
+      if (user?.country) {
+        const country = regions.find(c => c.name === user.country);
+        if (country) {
+          setCountryId(country.id);
+          setIsCountrySet(true);
+          
+          // Find and set stateId if user has a state
+          if (user?.state && country.states) {
+            const state = country.states.find(s => s.name === user.state);
+            if (state) {
+              setStateId(state.id);
+            }
+          }
+        }
+      }
     } catch (error) {
       console.error('Error fetching profile:', error);
       toast.error('Failed to load profile data');
-    }
-
-    // Set gender if available
-    if (user?.gender) {
-      setSelectedGender(user.gender);
     }
   };
 
@@ -436,7 +453,7 @@ export default function Profile() {
               <label className={styles.labelStyle}>State</label>
               <div className={styles.selectWrapper}>
                 <StateSelect
-                  defaultValue={user?.state || ""}
+                  defaultValue={user?.state ? { name: user.state } : null}
                   countryid={countryId || 101}
                   onChange={(val) => {
                     setUser((prev) => ({

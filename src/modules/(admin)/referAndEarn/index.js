@@ -365,95 +365,119 @@ export default function ReferAndEarn() {
                     <p>Connect with us to start referring and earning effortlessly!</p>
                 </div>
 
+                {loading ? (
+                    // Full page skeleton loader
+                    <div className={styles.skeletonPage}>
+                        
+                        <div className={styles.skeletonStatsGrid}>
+                            <div className={`${styles.skeletonStatCard} ${styles.skeletonColSpan2}`}>
+                                <div className={styles.skeletonIcon}></div>
+                                <div className={styles.skeletonContent}>
+                                    <div className={styles.skeletonText}></div>
+                                    <div className={styles.skeletonReferralCode}></div>
+                                </div>
+                            </div>
+                            <div className={styles.skeletonStatCard}>
+                                <div className={styles.skeletonIcon}></div>
+                                <div className={styles.skeletonContent}>
+                                    <div className={styles.skeletonText}></div>
+                                    <div className={styles.skeletonAmount}></div>
+                                </div>
+                            </div>
+                            <div className={styles.skeletonStatCard}>
+                                <div className={styles.skeletonIcon}></div>
+                                <div className={styles.skeletonContent}>
+                                    <div className={styles.skeletonText}></div>
+                                    <div className={styles.skeletonAmount}></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className={styles.skeletonTabsSection}>
+                            <div className={styles.skeletonTabs}>
+                                <div className={`${styles.skeletonTab} ${styles.skeletonTabActive}`}></div>
+                                <div className={styles.skeletonTab}></div>
+                                <div className={styles.skeletonTab}></div>
+                            </div>
+                            
+                            <div className={styles.skeletonTableContainer}>
+                                <div className={styles.skeletonTableHeader}>
+                                    <div className={styles.skeletonTh}></div>
+                                    <div className={styles.skeletonTh}></div>
+                                    <div className={styles.skeletonTh}></div>
+                                    <div className={styles.skeletonTh}></div>
+                                    <div className={styles.skeletonTh}></div>
+                                    <div className={styles.skeletonTh}></div>
+                                    <div className={styles.skeletonTh}></div>
+                                </div>
+                                
+                                {[...Array(5)].map((_, index) => (
+                                    <div key={index} className={styles.skeletonTableRow}>
+                                        <div className={styles.skeletonTd}></div>
+                                        <div className={styles.skeletonTd}></div>
+                                        <div className={styles.skeletonTd}></div>
+                                        <div className={styles.skeletonTd}></div>
+                                        <div className={styles.skeletonTd}></div>
+                                        <div className={styles.skeletonTd}></div>
+                                        <div className={styles.skeletonTd}></div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </div>
+                ) : (
+                    <>
                 <div className={styles.statsSection}>
                     <div className={styles.statsGrid}>
-                        {loading ? (
-                            // Loading skeleton
-                            <>
-                                <div className={`${styles.statCard} ${styles.colSpan2}`}>
-                                    <div className={styles.cardContent}>
-                                        <div className={`${styles.statIcon} ${styles.skeleton}`}></div>
-                                        <div className={styles.cardInfo}>
-                                            <h4 className={styles.skeleton}>Loading...</h4>
-                                            <div className={`${styles.referralCodeDisplay} ${styles.skeleton}`}>Loading...</div>
-                                        </div>
+                        {cardData.map((card, index) => (
+                            <div
+                                className={`${styles.statCard} ${card.colSpan ? styles.colSpan2 : ''} ${card.onClick ? styles.clickable : ''}`}
+                                key={card.id}
+                                onClick={card.onClick}
+                            >
+                                <div className={styles.cardContent}>
+                                    <div className={styles.statIcon}>
+                                        {card.icon}
                                     </div>
-                                </div>
-                                <div className={styles.statCard}>
-                                    <div className={styles.cardContent}>
-                                        <div className={`${styles.statIcon} ${styles.skeleton}`}></div>
-                                        <div className={styles.cardInfo}>
-                                            <h4 className={styles.skeleton}>Loading...</h4>
-                                            <div className={styles.cardAmount}>
-                                                <p className={styles.skeleton}>$0.00</p>
+                                    <div className={styles.cardInfo}>
+                                        <h4>{card.title}</h4>
+                                        {card.isReferral ? (
+                                            <div className={styles.referralCodeDisplay}>
+                                                <span>
+                                                    {user?.referralCode}
+                                                    <div className={styles.buttonGroup}>
+                                                        <button
+                                                            className={styles.copyButton}
+                                                            onClick={handleCopyReferralCode}
+                                                        >
+                                                            <img
+                                                                src={copied ? copiedIcon : copyIcon}
+                                                                alt={copied ? "Copied" : "Copy"}
+                                                                className={styles.copyIcon}
+                                                            />
+                                                        </button>
+                                                        <button
+                                                            className={styles.shareButton}
+                                                            onClick={handleShareReferralCode}
+                                                        >
+                                                            <img
+                                                                src={ShareIcon}
+                                                                alt="Share"
+                                                                className={styles.copyIcon}
+                                                            />
+                                                        </button>
+                                                    </div>
+                                                </span>
                                             </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className={styles.statCard}>
-                                    <div className={styles.cardContent}>
-                                        <div className={`${styles.statIcon} ${styles.skeleton}`}></div>
-                                        <div className={styles.cardInfo}>
-                                            <h4 className={styles.skeleton}>Loading...</h4>
+                                        ) : (
                                             <div className={styles.cardAmount}>
-                                                <p className={styles.skeleton}>$0.00</p>
+                                                <p>${card.amount}</p>
                                             </div>
-                                        </div>
+                                        )}
                                     </div>
                                 </div>
-                            </>
-                        ) : (
-                            // Actual data
-                            cardData.map((card, index) => (
-                                <div
-                                    className={`${styles.statCard} ${card.colSpan ? styles.colSpan2 : ''} ${card.onClick ? styles.clickable : ''}`}
-                                    key={card.id}
-                                    onClick={card.onClick}
-                                >
-                                    <div className={styles.cardContent}>
-                                        <div className={styles.statIcon}>
-                                            {card.icon}
-                                        </div>
-                                        <div className={styles.cardInfo}>
-                                            <h4>{card.title}</h4>
-                                            {card.isReferral ? (
-                                                <div className={styles.referralCodeDisplay}>
-                                                    <span>
-                                                        {user?.referralCode}
-                                                        <div className={styles.buttonGroup}>
-                                                            <button
-                                                                className={styles.copyButton}
-                                                                onClick={handleCopyReferralCode}
-                                                            >
-                                                                <img
-                                                                    src={copied ? copiedIcon : copyIcon}
-                                                                    alt={copied ? "Copied" : "Copy"}
-                                                                    className={styles.copyIcon}
-                                                                />
-                                                            </button>
-                                                            <button
-                                                                className={styles.shareButton}
-                                                                onClick={handleShareReferralCode}
-                                                            >
-                                                                <img
-                                                                    src={ShareIcon}
-                                                                    alt="Share"
-                                                                    className={styles.copyIcon}
-                                                                />
-                                                            </button>
-                                                        </div>
-                                                    </span>
-                                                </div>
-                                            ) : (
-                                                <div className={styles.cardAmount}>
-                                                    <p>${card.amount}</p>
-                                                </div>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                            ))
-                        )}
+                            </div>
+                        ))}
                     </div>
                 </div>
 
@@ -776,6 +800,8 @@ export default function ReferAndEarn() {
                             </div>
                         </div>
                     </div>
+                )}
+                    </>
                 )}
             </div>
         </div>
