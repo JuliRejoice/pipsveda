@@ -333,7 +333,7 @@ export default function ReferAndEarn() {
             id: 3
         },
         {
-            title: 'Withdrawal Request',
+            title: 'Withdrawable Amount',
             amount: dashboardData ? dashboardData.pendingWithdrawal?.toFixed(2) || "0.00" : "0.00",
             icon: <WithdrawalIcon />,
             isReferral: false,
@@ -506,7 +506,7 @@ export default function ReferAndEarn() {
                             className={`${styles.tab} ${activeTab === 'withdrawalRequest' ? styles.active : ''}`}
                             onClick={() => setActiveTab('withdrawalRequest')}
                         >
-                            Withdrawable Amount
+                            Withdraw Request
                         </button>
                     </div>
 
