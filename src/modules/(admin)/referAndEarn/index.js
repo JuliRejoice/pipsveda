@@ -314,23 +314,30 @@ export default function ReferAndEarn() {
         {
             title: 'Referral Code',
             value: referralCode,
-            icon: <TotalEarningIcon />,
+            icon: <img src="/assets/icons/refferalCode.svg" alt="Referral Code" style={{ width: '24px', height: '24px' }} />,
             isReferral: true,
             id: 1
         },
         {
-            title: 'Wallet Balance',
+            title: 'Total Earning',
             amount: dashboardData ? dashboardData.totalEarning?.toFixed(2) || "0.00" : "0.00",
-            icon: <PendingWithdrawalIcon />,
+            icon: <TotalEarningIcon />,
             isReferral: false,
             id: 2
+        },
+        {
+            title: 'Wallet Balance',
+            amount: dashboardData ? dashboardData.walletBalance?.toFixed(2) || "0.00" : "0.00",
+            icon: <PendingWithdrawalIcon />,
+            isReferral: false,
+            id: 3
         },
         {
             title: 'Withdrawal Request',
             amount: dashboardData ? dashboardData.pendingWithdrawal?.toFixed(2) || "0.00" : "0.00",
             icon: <WithdrawalIcon />,
             isReferral: false,
-            id: 3,
+            id: 4,
             onClick: handleWithdrawalRequestClick
         },
     ];
@@ -487,7 +494,7 @@ export default function ReferAndEarn() {
                             className={`${styles.tab} ${activeTab === 'wallet' ? styles.active : ''}`}
                             onClick={() => setActiveTab('wallet')}
                         >
-                            Total Earnings
+                            Earning History
                         </button>
                         <button
                             className={`${styles.tab} ${activeTab === 'withdrawal' ? styles.active : ''}`}
