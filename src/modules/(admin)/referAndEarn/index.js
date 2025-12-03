@@ -506,7 +506,7 @@ export default function ReferAndEarn() {
                             className={`${styles.tab} ${activeTab === 'withdrawalRequest' ? styles.active : ''}`}
                             onClick={() => setActiveTab('withdrawalRequest')}
                         >
-                            Withdrawal Request
+                            Withdrawable Amount
                         </button>
                     </div>
 
