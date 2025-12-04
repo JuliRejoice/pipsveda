@@ -116,6 +116,24 @@ function BeforePaymentModal({
                 payment.
               </p>
             </div>
+            {/* Wallet Section for Recorded Courses */}
+            {user?.earningBalance !== undefined && user?.earningBalance > 0 && (
+              <div className={styles.walletSection}>
+                <label className={styles.walletCheckbox}>
+                  <input
+                    type="checkbox"
+                    checked={useWallet}
+                    onChange={(e) => setUseWallet(e.target.checked)}
+                  />
+                  <span className={styles.walletLabel}>
+                    Use Wallet Balance
+                    <span className={styles.walletAmount}>
+                      (Available: ${user?.earningBalance.toFixed(2)})
+                    </span>
+                  </span>
+                </label>
+              </div>
+            )}
           </div>
         </>
       );

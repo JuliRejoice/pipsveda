@@ -1,31 +1,32 @@
-'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
-import styles from './insights.module.scss';
-import UserIcon from '@/icons/userIcon';
-import CalanderIcon from '@/icons/calanderIcon';
-import Button from '@/compoents/button';
-import { GET_ALL_BLOG_DATA, GET_BLOG_CATEGORIES } from '@/graphql/getBlogData';
-import { useRouter } from 'next/navigation';
-import { useQuery } from '@apollo/client/react';
-import ProfileIcon from '@/icons/profileIcon';
-import DateIcon from '@/icons/dateIcon';
-import OutlineButton from '@/compoents/outlineButton';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+"use client";
+import React, { useEffect, useRef, useState } from "react";
+import { motion, useInView } from "framer-motion";
+import styles from "./insights.module.scss";
+import UserIcon from "@/icons/userIcon";
+import CalanderIcon from "@/icons/calanderIcon";
+import Button from "@/compoents/button";
+import { GET_ALL_BLOG_DATA, GET_BLOG_CATEGORIES } from "@/graphql/getBlogData";
+import { useRouter } from "next/navigation";
+import { useQuery } from "@apollo/client/react";
+import ProfileIcon from "@/icons/profileIcon";
+import DateIcon from "@/icons/dateIcon";
+import OutlineButton from "@/compoents/outlineButton";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-const BottomVec = '/assets/images/bottomvec.png';
-const LeftDesign = '/assets/images/left-design.png';
-const BlogImage = '/assets/images/blog-img.png';
-const CardImage = '/assets/images/dummy-img.png';
-const RightIcon = '/assets/icons/right-white.svg';
+const BottomVec = "/assets/images/bottomvec.png";
+const LeftDesign = "/assets/images/left-design.png";
+const BlogImage = "/assets/images/blog-img.png";
+const CardImage = "/assets/images/dummy-img.png";
+const RightIcon = "/assets/icons/right-white.svg";
+const YTplay = "/assets/icons/youtube.png";
 import Slider from "react-slick";
-import { getYoutubeVideo } from '@/compoents/api/dashboard';
+import { getYoutubeVideo } from "@/compoents/api/dashboard";
 
 // Animation Variants
 const titleVariants = {
   hidden: { opacity: 0, y: 30 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
 // Keep variants free of transform properties to avoid conflicts with hover tilt
@@ -36,7 +37,7 @@ const cardVariants = {
     transition: {
       delay: i * 0.2,
       duration: 0.6,
-      ease: 'easeOut',
+      ease: "easeOut",
     },
   }),
 };
@@ -66,8 +67,8 @@ export default function Insights() {
           slidesToShow: 2,
           slidesToScroll: 1,
           infinite: true,
-          dots: true
-        }
+          dots: true,
+        },
       },
       {
         breakpoint: 700,
@@ -75,18 +76,22 @@ export default function Insights() {
           slidesToShow: 1,
           slidesToScroll: 1,
           infinite: true,
-          dots: true
-        }
+          dots: true,
+        },
       },
-    ]
+    ],
   };
-  const { data: blogData, loading, error } = useQuery(GET_ALL_BLOG_DATA, {
+  const {
+    data: blogData,
+    loading,
+    error,
+  } = useQuery(GET_ALL_BLOG_DATA, {
     variables: {
       pagination: {
         pageSize: itemsPerPage,
-        page: currentPage
+        page: currentPage,
       },
-    }
+    },
   });
 
   useEffect(() => {
@@ -99,10 +104,10 @@ export default function Insights() {
     const fetchYoutubeVideos = async () => {
       try {
         setYoutubeLoading(true);
-        const data = await getYoutubeVideo();        
+        const data = await getYoutubeVideo();
         setYoutubeVideos(data?.payload?.data || []);
       } catch (error) {
-        console.error('Error fetching YouTube videos:', error);
+        console.error("Error fetching YouTube videos:", error);
       } finally {
         setYoutubeLoading(false);
       }
@@ -113,40 +118,47 @@ export default function Insights() {
 
   // Skeleton loading component
   const renderSkeletonCards = () => {
-    return Array(3).fill(0).map((_, index) => (
-      <motion.div
-        className={styles.griditems}
-        key={`skeleton-${index}`}
-        variants={cardVariants}
-        custom={index}
-        initial="hidden"
-        animate={isInView ? 'visible' : 'hidden'}
-      >
-        <div className={styles.image}>
-          <Skeleton height={200} style={{ marginBottom: '1rem' }} />
-        </div>
-        <div className={styles.content}>
-          <div className={styles.category}>
-            <Skeleton width={100} height={24} />
+    return Array(3)
+      .fill(0)
+      .map((_, index) => (
+        <motion.div
+          className={styles.griditems}
+          key={`skeleton-${index}`}
+          variants={cardVariants}
+          custom={index}
+          initial="hidden"
+          animate={isInView ? "visible" : "hidden"}
+        >
+          <div className={styles.image}>
+            <Skeleton height={200} style={{ marginBottom: "1rem" }} />
           </div>
-          <h3>
-            <Skeleton count={2} />
-          </h3>
-          <p className={styles.desc}>
-            <Skeleton count={3} />
-          </p>
-          <div className={styles.author}>
-            <div className={styles.authorInfo}>
-              <Skeleton circle width={32} height={32} style={{ marginRight: '0.5rem' }} />
-              <Skeleton width={100} height={16} />
+          <div className={styles.content}>
+            <div className={styles.category}>
+              <Skeleton width={100} height={24} />
             </div>
-            <div className={styles.date}>
-              <Skeleton width={80} height={16} />
+            <h3>
+              <Skeleton count={2} />
+            </h3>
+            <p className={styles.desc}>
+              <Skeleton count={3} />
+            </p>
+            <div className={styles.author}>
+              <div className={styles.authorInfo}>
+                <Skeleton
+                  circle
+                  width={32}
+                  height={32}
+                  style={{ marginRight: "0.5rem" }}
+                />
+                <Skeleton width={100} height={16} />
+              </div>
+              <div className={styles.date}>
+                <Skeleton width={80} height={16} />
+              </div>
             </div>
           </div>
-        </div>
-      </motion.div>
-    ));
+        </motion.div>
+      ));
   };
 
   const handleMouseMove = (e) => {
@@ -162,150 +174,182 @@ export default function Insights() {
     const rotateY = ((x - midX) / midX) * rotateRange; // left/right
     const rotateX = -((y - midY) / midY) * rotateRange; // up/down (invert for natural feel)
 
-    card.style.setProperty('--rx', `${rotateX.toFixed(2)}deg`);
-    card.style.setProperty('--ry', `${rotateY.toFixed(2)}deg`);
+    card.style.setProperty("--rx", `${rotateX.toFixed(2)}deg`);
+    card.style.setProperty("--ry", `${rotateY.toFixed(2)}deg`);
   };
 
   const handleMouseEnter = (e) => {
     const card = e.currentTarget;
-    card.style.setProperty('--s', '1.03');
-    card.style.setProperty('--rx', '0deg');
-    card.style.setProperty('--ry', '0deg');
+    card.style.setProperty("--s", "1.03");
+    card.style.setProperty("--rx", "0deg");
+    card.style.setProperty("--ry", "0deg");
   };
 
   const handleMouseLeave = (e) => {
     const card = e.currentTarget;
-    card.style.setProperty('--s', '1');
-    card.style.setProperty('--rx', '0deg');
-    card.style.setProperty('--ry', '0deg');
+    card.style.setProperty("--s", "1");
+    card.style.setProperty("--rx", "0deg");
+    card.style.setProperty("--ry", "0deg");
   };
 
   return (
     <div className={styles.insights}>
-      <div className='container' ref={ref}>
+      <div className="container" ref={ref}>
         <motion.div
           className={styles.title}
           variants={titleVariants}
           initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
+          animate={isInView ? "visible" : "hidden"}
         >
           <h2>Latest Trading Videos</h2>
           <p>
-            Explore fresh trading content to boost your skills and keep you ahead in the markets.
+            Explore fresh trading content to boost your skills and keep you
+            ahead in the markets.
           </p>
         </motion.div>
         <div className={styles.cardBottomAlignment}>
           <Slider {...settings}>
-            {youtubeLoading ? (
-              [...Array(5)].map((_, index) => (
-                <div key={`skeleton-${index}`}>
-                  <div className={styles.whiteBoxDesign}>
-                    <div className={styles.image}>
-                      <Skeleton height={276} />
-                    </div>
-                    <div className={styles.details}>
-                      <Skeleton height={24} count={2} />
-                    </div>
-                  </div>
-                </div>
-              ))
-            ) : (
-              youtubeVideos.map((video, index) => (
-                <div key={index}>
-                  <div className={styles.whiteBoxDesign} onClick={() => window.open(video.videoUrl, '_blank')}>
-                    <div className={styles.image}>
-                      <img 
-                        src={video.thumbnail || CardImage} 
-                        alt="YouTube Video"
-                        onError={(e) => {
-                          e.target.onerror = null;
-                          e.target.src = CardImage;
-                        }}
-                      />
-                    </div>
-                    <div className={styles.details}>
-                      <p>
-                        {video.description || 'No title available'}
-                      </p>
+            {youtubeLoading
+              ? [...Array(5)].map((_, index) => (
+                  <div key={`skeleton-${index}`}>
+                    <div className={styles.whiteBoxDesign}>
+                      <div className={styles.image}>
+                        <Skeleton height={276} />
+                      </div>
+                      <div className={styles.details}>
+                        <Skeleton height={24} count={2} />
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))
-            )}
+                ))
+              : youtubeVideos.map((video, index) => (
+                  <div key={index}>
+                    <div
+                      className={styles.whiteBoxDesign}
+                      onClick={() => window.open(video.videoUrl, "_blank")}
+                    >
+                      <div className={styles.image}>
+                        <img
+                          src={video.thumbnail || CardImage}
+                          alt="YouTube Video"
+                          onError={(e) => {
+                            e.target.onerror = null;
+                            e.target.src = CardImage;
+                          }}
+                        />
+                        <div
+                          className={styles.playButton}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(video.videoUrl, "_blank");
+                          }}
+                        >
+                          <img
+                            src={YTplay}
+                            alt="Play"
+                            className={styles.playIcon}
+                          />
+                        </div>
+                      </div>
+                      <div className={styles.details}>
+                        <p>{video.description || "No title available"}</p>
+                      </div>
+                    </div>
+                  </div>
+                ))}
           </Slider>
+          <div className={styles.viewAllContainer}>
+            <Button
+              text="View All Videos"
+              onClick={() => router.push("/youtube")}
+            />
+          </div>
         </div>
         {/* Section Title */}
         <motion.div
           className={styles.title}
           variants={titleVariants}
           initial="hidden"
-          animate={isInView ? 'visible' : 'hidden'}
+          animate={isInView ? "visible" : "hidden"}
         >
           <h2>Financial Insights & Articles</h2>
-          <p>
-            Explore our curated writings on markets, strategies, and more
-          </p>
+          <p>Explore our curated writings on markets, strategies, and more</p>
         </motion.div>
 
         {/* Blog Cards */}
         <div className={styles.grid}>
-          {loading ? (
-            renderSkeletonCards()
-          ) : (
-            [...blogs]
-              .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
-              .slice(0, 3)
-              .map((blog, i) => (
-                <motion.div
-                  className={styles.griditems}
-                  key={i}
-                  variants={cardVariants}
-                  custom={i}
-                  initial="hidden"
-                  animate={isInView ? 'visible' : 'hidden'}
-                  onMouseMove={handleMouseMove}
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
-                  style={{
-                    transform:
-                      'perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(var(--s, 1))',
-                    transformStyle: 'preserve-3d',
-                    transition: 'transform 150ms ease',
-                    willChange: 'transform',
-                  }}
-                >
-                  <div className={styles.image}>
-                    <img
-                      src={process.env.NEXT_PUBLIC_NEXT_GRAPHQL_IMAGE_URL + blog?.coverImage?.url}
-                      alt={blog.title}
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = BlogImage;
-                      }}
-                    />
-                  </div>
-                  <div className={styles.details}>
-                    <div className={styles.allIconText}>
-                      <div className={styles.iconText}>
-                        <UserIcon />
-                        <span>{blog.author?.name || 'Anonymous'}</span>
-                      </div>
-                      <div className={styles.iconText}>
-                        <CalanderIcon />
-                        <span>{new Date(blog.createdAt).toLocaleDateString('en-US', {
-                          year: 'numeric',
-                          month: 'short',
-                          day: 'numeric'
-                        })}</span>
-                      </div>
+          {loading
+            ? renderSkeletonCards()
+            : [...blogs]
+                .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+                .slice(0, 3)
+                .map((blog, i) => (
+                  <motion.div
+                    className={styles.griditems}
+                    key={i}
+                    variants={cardVariants}
+                    custom={i}
+                    initial="hidden"
+                    animate={isInView ? "visible" : "hidden"}
+                    onMouseMove={handleMouseMove}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                    style={{
+                      transform:
+                        "perspective(1000px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(var(--s, 1))",
+                      transformStyle: "preserve-3d",
+                      transition: "transform 150ms ease",
+                      willChange: "transform",
+                    }}
+                  >
+                    <div className={styles.image}>
+                      <img
+                        src={
+                          process.env.NEXT_PUBLIC_NEXT_GRAPHQL_IMAGE_URL +
+                          blog?.coverImage?.url
+                        }
+                        alt={blog.title}
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = BlogImage;
+                        }}
+                      />
                     </div>
-                    <h3>{blog.title}</h3>
-                    <p>{blog.shortDescription}</p>
-                    <Button onClick={() => router.push(`/blog/${blog.slug}`)} text="Read More" />
-                  </div>
-                </motion.div>
-              ))
-          )}
+                    <div className={styles.details}>
+                      <div className={styles.allIconText}>
+                        <div className={styles.iconText}>
+                          <UserIcon />
+                          <span>{blog.author?.name || "Anonymous"}</span>
+                        </div>
+                        <div className={styles.iconText}>
+                          <CalanderIcon />
+                          <span>
+                            {new Date(blog.createdAt).toLocaleDateString(
+                              "en-US",
+                              {
+                                year: "numeric",
+                                month: "short",
+                                day: "numeric",
+                              }
+                            )}
+                          </span>
+                        </div>
+                      </div>
+                      <h3>{blog.title}</h3>
+                      <p>{blog.shortDescription}</p>
+                      <Button
+                        onClick={() => router.push(`/blog/${blog.slug}`)}
+                        text="Read More"
+                      />
+                    </div>
+                  </motion.div>
+                ))}
+        </div>
+        <div className={styles.viewAllContainer}>
+          <Button
+            text="View All Articles"
+            onClick={() => router.push("/blog")}
+          />
         </div>
       </div>
     </div>

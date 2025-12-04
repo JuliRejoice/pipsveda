@@ -1,14 +1,14 @@
-'use client';
-import React, { useEffect, useState } from 'react';
-import Modal from './Modal';
-import styles from './Modal.module.scss';
-import Button from '../button';
-import Skeleton from 'react-loading-skeleton';
-import 'react-loading-skeleton/dist/skeleton.css';
+"use client";
+import React, { useEffect, useState } from "react";
+import Modal from "./Modal";
+import styles from "./Modal.module.scss";
+import Button from "../button";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
 
-import { toast } from 'react-hot-toast';
-import { getCookie } from '../../../cookie';
-import { getBatches } from '../api/dashboard';
+import { toast } from "react-hot-toast";
+import { getCookie } from "../../../cookie";
+import { getBatches } from "../api/dashboard";
 
 const BatchSelectionModal = ({
   isOpen,
@@ -17,7 +17,7 @@ const BatchSelectionModal = ({
   batches,
   onBatchSelect,
   onBatchesUpdate,
-  courseTitle = 'Course',
+  courseTitle = "Course",
   isLoading = false,
   showMatchLocation = false,
 }) => {
@@ -37,7 +37,7 @@ const BatchSelectionModal = ({
     setIsMatchLocation(checked);
     setIsFetchingBatches(true);
     setError(null);
-    
+
     try {
       const response = await getBatches({ courseId, isMatchBatch: checked });
       if (response?.payload?.data) {
@@ -47,22 +47,17 @@ const BatchSelectionModal = ({
         setSelectedBatchId(null);
       }
     } catch (error) {
-      console.error('Error fetching batches:', error);
-      setError('Failed to fetch batches. Please try again.');
+      console.error("Error fetching batches:", error);
+      setError("Failed to fetch batches. Please try again.");
     } finally {
       setIsFetchingBatches(false);
     }
   };
 
   if (!isOpen) return null;
-  
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onClose={onClose}
-      title={`Select a Batch for ${courseTitle}`}
-    >
+    <Modal isOpen={isOpen} onClose={onClose} title={`Select a Batch`}>
       <div className={styles.batchSelectionContainer}>
         {error ? (
           <div className={styles.errorState}>{error}</div>
@@ -82,14 +77,26 @@ const BatchSelectionModal = ({
             {batches.map((batch) => (
               <div
                 key={batch._id}
-                className={`${styles.batchItem} ${selectedBatchId === batch._id ? styles.selected : ''}`}
+                className={`${styles.batchItem} ${
+                  selectedBatchId === batch._id ? styles.selected : ""
+                }`}
                 onClick={() => setSelectedBatchId(batch._id)}
               >
                 <div className={styles.batchInfo}>
-                  <h4>{batch.batchName || `Batch ${new Date(batch.startDate).getFullYear()}`}</h4>
-                  <p>Starts: {new Date(batch.startDate).toLocaleDateString("en-GB")}</p>
-                  <p>Ends: {new Date(batch.endDate).toLocaleDateString("en-GB")}</p>
-                  {batch?.centerId?.centerName && <p>Center: {batch?.centerId?.centerName || 'N/A'}</p>}
+                  <h4>
+                    {batch.batchName ||
+                      `Batch ${new Date(batch.startDate).getFullYear()}`}
+                  </h4>
+                  <p>
+                    Starts:{" "}
+                    {new Date(batch.startDate).toLocaleDateString("en-GB")}
+                  </p>
+                  <p>
+                    Ends: {new Date(batch.endDate).toLocaleDateString("en-GB")}
+                  </p>
+                  {batch?.centerId?.centerName && (
+                    <p>Center: {batch?.centerId?.centerName || "N/A"}</p>
+                  )}
                 </div>
                 {selectedBatchId === batch._id && (
                   <div className={styles.selectedBadge}>Selected</div>
@@ -100,12 +107,13 @@ const BatchSelectionModal = ({
         ) : (
           <p>No batches available at the moment. Please check back later.</p>
         )}
-
       </div>
       {showMatchLocation && (
         <div className={styles.matchLocationContainer}>
           <label className={styles.toggleLabel}>
-            <span className={styles.labelText}>Match Location</span>
+            <span className={styles.labelText}>
+              Find centers in the nearby area
+            </span>
             <div className={styles.toggleSwitch}>
               <input
                 type="checkbox"
@@ -117,8 +125,8 @@ const BatchSelectionModal = ({
               <span className={styles.toggleSlider}></span>
             </div>
           </label>
-        </div>)
-      }
+        </div>
+      )}
 
       <div className={styles.modalActions}>
         <Button
@@ -128,7 +136,7 @@ const BatchSelectionModal = ({
           disabled={isLoading}
         />
         <Button
-          text={isLoading ? 'Loading...' : 'Proceed to Payment'}
+          text={isLoading ? "Loading..." : "Proceed to Payment"}
           onClick={handleProceed}
           disabled={!selectedBatchId || isLoading}
         />

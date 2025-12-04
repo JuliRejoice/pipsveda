@@ -1,234 +1,273 @@
-@use '../../../scss/main.scss' as *;
-@use '../../../scss/typography/typography.scss' as *;
-@use '../../../scss/breakpoints/breakpoints.scss' as *;
+@use "../../../scss/main.scss" as *;
+@use "../../../scss/typography/typography.scss" as *;
+@use "../../../scss/breakpoints/breakpoints.scss" as *;
 
 .insights {
-    padding: 100px 0;
-    position: relative;
-    background-color: #fff;
-    background-image: url('/assets/images/banner3.png');
-    background-repeat: no-repeat;
-    background-size: cover;
+  padding: 100px 0;
+  position: relative;
+  background-color: #fff;
+  background-image: url("/assets/images/banner3.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  background-position: top;
+
+  @include respond-to("md") {
+    padding: 80px 0;
+  }
+
+  @include respond-to("sm") {
+    padding: 60px 0;
+  }
+
+  :global(.slick-slide) {
+    padding: 0 10px 5px 10px;
+  }
+
+  :global(.slick-prev) {
+    display: none !important;
+  }
+
+  :global(.slick-next) {
+    display: none !important;
+  }
+
+  :global(.slick-list) {
+    margin: 0 -10px;
+  }
+
+  .cardBottomAlignment {
+    padding: 0 0 100px 0;
+
+    @include respond-to("sm") {
+      padding: 0 0 80px 0;
+    }
+
+    .whiteBoxDesign {
+      border-radius: 16px;
+      background: #fff;
+      box-shadow: 0 2px 10px 1px rgba(0, 0, 0, 0.06);
+      padding: 15px;
+      cursor: pointer;
+
+      @include respond-to("sm") {
+        border-radius: 8px;
+        padding: 12px;
+      }
+
+      .image {
+        position: relative;
+
+        img {
+          display: block;
+          width: 100%;
+          height: 276px;
+          border-radius: 8px;
+          object-fit: cover;
+
+          @include respond-to("sm") {
+            height: 200px;
+          }
+        }
+
+        .playButton {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          z-index: 2;
+          background: rgba(0, 0, 0, 0.2);
+          border-radius: 8px;
+          transition: all 0.3s ease;
+
+          &:hover {
+            background: rgba(0, 0, 0, 0.3);
+
+            .playIcon {
+              transform: scale(1.1);
+            }
+          }
+
+          .playIcon {
+            width: 60px;
+            height: 60px;
+            transition: transform 0.3s ease;
+
+            @include respond-to("sm") {
+              width: 48px;
+              height: 48px;
+            }
+          }
+        }
+      }
+
+      .details {
+        padding: 15px 0 0 0;
+
+        p {
+          color: #051600;
+          font-size: 18px;
+          font-style: normal;
+          font-weight: 600;
+          line-height: normal;
+          min-height: 50px;
+          text-transform: capitalize;
+
+          @include respond-to("sm") {
+            font-size: 16px;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+  }
+
+  .bottomVec {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+
+    @include respond-to("sm") {
+      img {
+        width: 100%;
+      }
+    }
+  }
+
+  .title {
+    padding: 0 0 60px 0;
+
+    @include respond-to("sm") {
+      padding: 0 0 40px 0;
+    }
+
+    h2 {
+      @include heading2;
+      color: var(--black-500);
+      text-transform: capitalize;
+      margin: 0 0 16px 0;
+      text-align: center;
+
+      @include respond-to("md") {
+        @include heading40;
+      }
+
+      @include respond-to("sm") {
+        @include heading32;
+      }
+    }
+
+    p {
+      @include font18;
+      color: var(--black-500);
+      max-width: 777px;
+      margin: 0 auto;
+      opacity: 0.9;
+      text-align: center;
+
+      @include respond-to("sm") {
+        @include font16normal;
+      }
+    }
+  }
+
+  .viewAllContainer {
+    display: flex;
+    justify-content: end;
     width: 100%;
-    background-position: top;
+    margin-top: 20px;
 
+    @include respond-to("sm") {
+      margin-top: 15px;
+    }
+  }
 
-
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
 
     @include respond-to("md") {
-        padding: 80px 0;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
     }
 
     @include respond-to("sm") {
-        padding: 60px 0;
+      grid-template-columns: 1fr;
     }
 
-    :global(.slick-slide) {
-        padding: 0 10px 5px 10px;
-    }
+    .griditems {
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
 
-    :global(.slick-prev) {
-        display: none !important;
-    }
+      .image {
+        img {
+          display: block;
+          width: 100%;
+          border-radius: 12px;
+          aspect-ratio: 16 / 9;
 
-    :global(.slick-next) {
-        display: none !important;
-    }
-
-    :global(.slick-list) {
-        margin: 0 -10px;
-    }
-
-    .cardBottomAlignment {
-        padding: 0 0 100px 0;
-
-        @include respond-to("sm") {
-            padding: 0 0 80px 0;
+          @include respond-to("md") {
+            height: 190px;
+          }
         }
+      }
 
-        .whiteBoxDesign {
-            border-radius: 16px;
-            background: #FFF;
-            box-shadow: 0 2px 10px 1px rgba(0, 0, 0, 0.06);
-            padding: 15px;
-            cursor: pointer;
+      .details {
+        padding: 15px 0 0 0;
 
-            @include respond-to("sm") {
-                border-radius: 8px;
-                padding: 12px;
-            }
-
-            .image {
-                img {
-                    display: block;
-                    width: 100%;
-                    height: 276px;
-                    border-radius: 8px;
-
-                    @include respond-to("sm") {
-                        height: 200px;
-                    }
-                }
-            }
-
-            .details {
-                padding: 15px 0 0 0;
-
-                p {
-                    color: #051600;
-                    font-size: 18px;
-                    font-style: normal;
-                    font-weight: 600;
-                    line-height: normal;
-                    min-height: 50px;
-                    text-transform: capitalize;
-
-                    @include respond-to("sm") {
-                        font-size: 16px;
-                        font-weight: 500;
-                    }
-                }
-            }
-        }
-    }
-
-    .bottomVec {
-        position: absolute;
-        right: 0;
-        bottom: 0;
-        z-index: -1;
-
-        @include respond-to("sm") {
-            img {
-                width: 100%;
-            }
-        }
-    }
-
-
-
-    .title {
-        padding: 0 0 60px 0;
-
-        @include respond-to("sm") {
-            padding: 0 0 40px 0;
-        }
-
-        h2 {
-            @include heading2;
-            color: var(--black-500);
-            text-transform: capitalize;
-            margin: 0 0 16px 0;
-            text-align: center;
-
-            @include respond-to("md") {
-                @include heading40;
-            }
-
-            @include respond-to("sm") {
-                @include heading32;
-            }
+        h3 {
+          @include heading20;
+          margin: 0 0 5px 0;
+          color: var(--black-500);
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
         }
 
         p {
-            @include font18;
-            color: var(--black-500);
-            max-width: 777px;
-            margin: 0 auto;
-            opacity: 0.9;
-            text-align: center;
+          @include font16normal;
+          color: var(--grey-600);
+          margin: 0 0 18px 0;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          margin: 0 0 12px 0;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
 
-            @include respond-to("sm") {
-                @include font16normal;
-            }
-
+          @include respond-to("md") {
+            @include font16normal;
+          }
         }
+
+        .allIconText {
+          display: flex;
+          align-items: center;
+          gap: 24px;
+          padding: 0 0 10px 0;
+
+          .iconText {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+
+            span {
+              display: block;
+              @include font16normal;
+              color: var(--grey-650);
+            }
+          }
+        }
+      }
     }
-
-    .grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 40px;
-
-        @include respond-to("md") {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-
-        }
-
-        @include respond-to("sm") {
-            grid-template-columns: 1fr;
-        }
-
-        .griditems {
-            background-color: #ffffff;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
-
-            .image {
-                img {
-                    display: block;
-                    width: 100%;
-                    border-radius: 12px;
-                    aspect-ratio: 16 / 9;
-
-
-                    @include respond-to("md") {
-                        height: 190px;
-                    }
-                }
-            }
-
-            .details {
-                padding: 15px 0 0 0;
-
-                h3 {
-                    @include heading20;
-                    margin: 0 0 5px 0;
-                    color: var(--black-500);
-                    display: -webkit-box;
-                    -webkit-line-clamp: 1;
-                    -webkit-box-orient: vertical;
-                    overflow: hidden;
-                }
-
-                p {
-                    @include font16normal;
-                    color: var(--grey-600);
-                    margin: 0 0 18px 0;
-                    display: -webkit-box;
-                    -webkit-line-clamp: 2;
-                    margin: 0 0 12px 0;
-                    -webkit-box-orient: vertical;
-                    overflow: hidden;
-
-                    @include respond-to("md") {
-                        @include font16normal;
-                    }
-                }
-
-                .allIconText {
-                    display: flex;
-                    align-items: center;
-                    gap: 24px;
-                    padding: 0 0 10px 0;
-
-                    .iconText {
-                        display: flex;
-                        align-items: center;
-                        gap: 5px;
-
-                        span {
-                            display: block;
-                            @include font16normal;
-                            color: var(--grey-650);
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-
+  }
 }

@@ -1,0 +1,209 @@
+@use "../../../scss/main.scss" as *;
+@use "../../../scss/breakpoints/breakpoints.scss" as *;
+@use "../../../scss/typography/typography.scss" as *;
+
+.videoListingCard {
+  background: var(--bg-white);
+  margin-bottom: 40px;
+
+  @include respond-to("md") {
+    padding: 40px 0 60px;
+  }
+
+  @include respond-to("sm") {
+    padding: 30px 0 40px;
+  }
+
+  .container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 30px;
+
+    @include respond-to("sm") {
+      padding: 0 15px;
+    }
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-top: 40px;
+
+    @include respond-to("lg") {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include respond-to("sm") {
+      grid-template-columns: 1fr;
+      gap: 20px;
+      margin-top: 30px;
+    }
+  }
+
+  .griditems {
+    background: #ffffff;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.09);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    &:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+
+      .image::before {
+        opacity: 0.7;
+      }
+
+      .playButton {
+        transform: translate(-50%, -50%) scale(1.1);
+      }
+    }
+  }
+
+  .image {
+    position: relative;
+    padding-top: 56.25%; /* 16:9 Aspect Ratio */
+    background: var(--grey-50);
+
+    img {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.2);
+      z-index: 1;
+      transition: opacity 0.3s ease;
+    }
+  }
+
+  .playButton {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    width: 60px;
+    height: 60px;
+    transition: transform 0.3s ease;
+
+    @include respond-to("sm") {
+      width: 50px;
+      height: 50px;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .details {
+    padding: 20px;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+
+    h3 {
+      @include font18;
+      font-weight: 600;
+      color: var(--black-500);
+      margin: 0 0 15px;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      line-clamp: 2;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      min-height: 54px;
+
+      @include respond-to("sm") {
+        @include font16;
+        min-height: auto;
+        margin-bottom: 10px;
+      }
+    }
+  }
+
+  .paginationWrapper {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+
+    @include respond-to("sm") {
+      margin-top: 30px;
+    }
+  }
+}
+
+// Skeleton Loading
+.skeletonGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 30px;
+  margin-top: 40px;
+
+  @include respond-to("lg") {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include respond-to("sm") {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    margin-top: 30px;
+  }
+}
+
+.skeletonItem {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+
+  .skeletonImage {
+    width: 100%;
+    padding-top: 56.25%;
+    background: var(--grey-100);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .skeletonContent {
+    padding: 20px;
+
+    .skeletonLine {
+      height: 16px;
+      background: var(--grey-100);
+      margin-bottom: 10px;
+      border-radius: 4px;
+
+      &:first-child {
+        width: 90%;
+      }
+
+      &:last-child {
+        width: 70%;
+        margin-bottom: 0;
+      }
+    }
+  }
+}
