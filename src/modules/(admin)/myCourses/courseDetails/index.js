@@ -1217,8 +1217,10 @@ export default function CourseDetails({ params }) {
                             onPercentageChange={(percentage) =>
                               updateVideoPercentage(percentage)
                             }
+                            subtitleOffset={-2.5} 
                             thumbnail={selectedChapter.chapterImage} 
                             src={selectedChapter.chapterVideo}
+                            srtFile={selectedChapter?.srtVideoFile}
                             // src="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
                             // src="https://pipsveda.s3.us-east-1.azonaws.com/pipsveda/blob-1757418874956new%20latest.mp4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAVJSBBJ5XMZUEA2XW%2F20250913%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20250913T063038Z&X-Amz-Expires=3600&X-Amz-Signature=e0ed6c6d43a4038201fd1206007456c1387457b7cb86fb7335d92417d65ba51b&X-Amz-SignedHeaders=host&x-amz-checksum-mode=ENABLED&x-id=GetObject"
                             userId={user?._id}
