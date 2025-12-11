@@ -1,6 +1,6 @@
 import React from 'react'
 import styles from './logo.module.scss';
-const PipsVedaLogo = '/assets/logo/logo.png';
+const PipsVedaLogo = '/assets/logo/fiveVeda-logo.png';
 export default function Logo({logo}) {
   return (
     <div className={styles.logo}>
