@@ -436,7 +436,6 @@ export default function CourseDetails({ params }) {
   const updateVideoPercentage = async (percentage) => {
     const numericPercentage = typeof percentage === "number" ? percentage : parseFloat(percentage);
 
-    console.log('dfhdbfhjf----------------', numericPercentage)
     // if (!Number.isFinite(numericPercentage)) {
     //   return;
     // }
@@ -447,16 +446,11 @@ export default function CourseDetails({ params }) {
 
     }
 
-    console.log('percentage----------------', percentage, videoWatchingPercentage)
     // Fallback to the maximum of state and chapter percentage
     const currentStatePercentage = Number.isFinite(Number(numericPercentage)) ? Number(numericPercentage) : 0;
-    console.log(currentStatePercentage, 'currentStatePercentage')
     const currentChapterPercentage = Number.isFinite(Number(selectedChapter?.courseTracking?.percentage)) ? Number(selectedChapter?.courseTracking?.percentage) : 0;
-    console.log(currentChapterPercentage, 'currentChapterPercentage')
     const maxPercentage = Math.max(currentStatePercentage, currentChapterPercentage);
-    console.log(maxPercentage, 'maxPercentage')
     setVideoWatchingPercentage(Number(maxPercentage.toFixed(2)));
-    console.log(videoWatchingPercentage, 'videoWatchingPercentage')
 
     setSelectedChapter((prev) => {
       if (!prev) return prev;
@@ -486,9 +480,6 @@ export default function CourseDetails({ params }) {
       !selectedCourse?._id
     ) {
       console.log(selectedChapter)
-      console.log('selectedChapter?.courseTracking?._id', selectedChapter?.courseTracking?._id)
-      console.log('selectedChapter?._id', selectedChapter?._id)
-      console.log('selectedCourse?._id', selectedCourse?._id)
       return;
     }
 
