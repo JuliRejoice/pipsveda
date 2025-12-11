@@ -758,7 +758,6 @@ export default function CourseDetails({ params }) {
     );
   }
 
-  console.log(selectedChapter,'-------------------selectedChapter-----------');
 
   return (
     <div className={styles.courseDetailsBox}>
