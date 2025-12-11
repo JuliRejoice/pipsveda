@@ -1,11 +1,11 @@
 "use client";
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import styles from "./journeySection.module.scss";
 import OutlineButton from "@/compoents/outlineButton";
 import { getUtilityData } from "@/compoents/api/dashboard";
 
-const JourneyImge = "/assets/images/journey.png";
+const JourneyImge = "/assets/images/journey-image.png";
 const MessageIcon = "/assets/icons/message.svg";
 
 // Animation Variants
@@ -56,6 +56,19 @@ export default function JourneySection() {
 
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const [telegramData, setTelegramData] = useState([]);
+
+  useEffect(() => {
+    const fetchFooterData = async () => {
+      try {
+        const response = await getUtilityData();
+        setTelegramData(response.payload);
+      } catch (error) {
+        console.error("Error fetching footer data:", error);
+      }
+    };
+    fetchFooterData();
+  }, []);  
 
   return (
     <div className={styles.journeySection}>
@@ -95,14 +108,20 @@ export default function JourneySection() {
                     live discussions
                   </p>
                 </div>
-                <a
-                  href={telegramLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <OutlineButton text="Visit Forum" />
-                </a>
-              </motion.div>
+               
+                  <div>
+                    <img src={MessageIcon} alt="MessageIcon" />
+                  </div>
+                  <div className={styles.cardmiddlecontent}>
+                    <h3>Join Telegram Group</h3>
+                    <p>
+                      Connect with 15,000+ active traders for daily insights and
+                      live discussions
+                    </p>
+                  </div>
+                  <OutlineButton onClick={() => window.open(telegramData.telegramLink, "_blank")} text="Visit Forum" />
+                </motion.div>
+         
             </div>
           </div>
 

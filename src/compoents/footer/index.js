@@ -59,7 +59,7 @@ export default function Footer() {
         <div className="container">
           <div className={styles.grid}>
             <div className={styles.gridItems}>
-              <Logo logo={"/assets/logo/logo-white.png"} />
+              <Logo logo={"/assets/logo/logo white.png"} />
               <div className={styles.mainText}>
                 <p>
                   Empowering traders with knowledge, community and proven
