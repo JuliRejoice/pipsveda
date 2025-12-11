@@ -10,7 +10,7 @@ const PreCardImage = "/assets/images/pre-recorded.png";
 const LiveCardImage = "/assets/images/live-online.png";
 const PhysicalCardImage = "/assets/images/in-person-card.png";
 const ArrowLine = "/assets/icons/arrow-line.svg";
-const VecIcon = "/assets/icons/vec4.svg";
+const VecIcon = "/assets/icons/logo-pages.svg";
 
 export default function OurCourseBanner({ course }) {
   const pathname = usePathname();

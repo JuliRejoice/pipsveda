@@ -236,7 +236,7 @@ export default function ReferAndEarn() {
           setWalletIdError("Wallet ID is required");
           hasErrors = true;
         }
-        if (!selectedChainId || selectedChainId.trim() === "") {
+        if (!selectedChainId || selectedChainId.trim() === "" || !chain) {
           setChainError("Chain is required");
           hasErrors = true;
         }
@@ -883,9 +883,10 @@ export default function ReferAndEarn() {
                                       selectedChain?._id || ""
                                     );
                                     setChainError(""); // Clear error on input change
-                                  }}
+                                      }}
+                                      
                                 >
-                                  <option value="" disabled>
+                                  <option value="" disabled hidden>
                                     Select Network
                                   </option>
                                   {chains.map((chain) => (

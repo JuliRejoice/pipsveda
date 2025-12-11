@@ -4,6 +4,7 @@
     img {
         display: block;
         max-width: 100px;
+        height: 56px;
         cursor: pointer;
         @include respond-to("md") {
             max-width: 80px;

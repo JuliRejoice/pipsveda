@@ -2,7 +2,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import styles from "./aboutBanner.module.scss";
-const AboutImage = "/assets/images/about-banner.png";
+const AboutImage = "/assets/images/about-image.png";
 
 export default function AboutBanner() {
   const textVariants = {
