@@ -98,16 +98,7 @@ export default function JourneySection() {
                 initial="hidden"
                 animate={isInView ? "visible" : "hidden"}
               >
-                <div>
-                  <img src={MessageIcon} alt="MessageIcon" />
-                </div>
-                <div className={styles.cardmiddlecontent}>
-                  <h3>Join Telegram Group</h3>
-                  <p>
-                    Connect with 15,000+ active traders for daily insights and
-                    live discussions
-                  </p>
-                </div>
+           
                
                   <div>
                     <img src={MessageIcon} alt="MessageIcon" />
