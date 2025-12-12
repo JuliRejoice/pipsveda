@@ -26,12 +26,12 @@ export default function Authentication() {
         setCookie("userToken", data.payload.token);
         setCookie("user", data.payload);
         
-        // Check if user has location details
+       
         if (!data.payload.location) {
           setUserData(data.payload);
           setShowLocationModal(true);
         } else {
-          router.push("/profile");
+          router.push("/course");
         }
       } else {
         toast.error(errorMessages[data?.message] ?? errorMessages["default"]);
@@ -51,7 +51,6 @@ export default function Authentication() {
       {/* Location Modal */}
       <Modal
         isOpen={showLocationModal}
-        onClose={() => setShowLocationModal(false)}
         title="Complete Your Profile"
       >
         <LocationForm 

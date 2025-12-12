@@ -23,6 +23,17 @@
   .selectContainer {
     width: 100%;
     border-radius: 8px;
+
+    &.errorInput {
+      input, .selectInput {
+        border-color: #ff4d4f;
+
+        &:focus {
+          border-color: #ff4d4f;
+          box-shadow: 0 0 0 2px rgba(255, 77, 79, 0.2);
+        }
+      }
+    }
   }
 
   input {
@@ -53,6 +64,14 @@
       border-color: #0070f3;
       box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.2);
     }
+  }
+
+  .errorText {
+    display: block;
+    margin-top: 0.25rem;
+    color: #ff4d4f;
+    font-size: 0.875rem;
+    line-height: 1.5;
   }
 
   .dropdown {

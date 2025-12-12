@@ -19,6 +19,8 @@ const LocationForm = ({ setShowLocationModal , initialData }) => {
   const [countryId, setCountryId] = useState(0);
   const [stateId, setStateId] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState({});
+  const [isTouched, setIsTouched] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -65,8 +67,38 @@ const LocationForm = ({ setShowLocationModal , initialData }) => {
     }));
   };
 
+  const validateForm = () => {
+    const newErrors = {};
+    
+    if (!formData.location?.trim()) {
+      newErrors.location = 'Address is required';
+    }
+    if (!formData.country) {
+      newErrors.country = 'Country is required';
+    }
+    if (!formData.state) {
+      newErrors.state = 'State is required';
+    }
+    if (!formData.city) {
+      newErrors.city = 'City is required';
+    }
+    
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
+  const handleBlur = (field) => {
+    if (!isTouched) return;
+    validateForm();
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsTouched(true);
+    
+    const isValid = validateForm();
+    if (!isValid) return;
+    
     setIsLoading(true);
     
     try {
@@ -104,8 +136,11 @@ const LocationForm = ({ setShowLocationModal , initialData }) => {
           name="location"
           value={formData.location || ''}
           onChange={(e) => handleChange('location', e.target.value)}
+          onBlur={() => handleBlur('location')}
           placeholder="Enter your address"
+          className={errors.location ? styles.errorInput : ''}
         />
+        {errors.location && <span className={styles.errorText}>{errors.location}</span>}
       </div>
 
       <div className={styles.formGroup}>
@@ -116,8 +151,11 @@ const LocationForm = ({ setShowLocationModal , initialData }) => {
           dropdownClassName={styles.dropdown}
           value={formData.country}
           onChange={handleCountryChange}
+          onBlur={() => handleBlur('country')}
           placeHolder="Select Country"
+          className={errors.country ? styles.errorInput : ''}
         />
+        {errors.country && <span className={styles.errorText}>{errors.country}</span>}
       </div>
 
       <div className={styles.formGroup}>
@@ -129,8 +167,11 @@ const LocationForm = ({ setShowLocationModal , initialData }) => {
           dropdownClassName={styles.dropdown}
           value={formData.state}
           onChange={handleStateChange}
+          onBlur={() => handleBlur('state')}
           placeHolder="Select State"
+          className={errors.state ? styles.errorInput : ''}
         />
+        {errors.state && <span className={styles.errorText}>{errors.state}</span>}
       </div>
 
       <div className={styles.formGroup}>
@@ -143,8 +184,11 @@ const LocationForm = ({ setShowLocationModal , initialData }) => {
           dropdownClassName={styles.dropdown}
           value={formData.city}
           onChange={handleCityChange}
+          onBlur={() => handleBlur('city')}
           placeHolder="Select City"
+          className={errors.city ? styles.errorInput : ''}
         />
+        {errors.city && <span className={styles.errorText}>{errors.city}</span>}
       </div>
 
       <div className={styles.buttonContainer}>

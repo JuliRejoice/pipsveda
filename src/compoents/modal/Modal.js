@@ -50,7 +50,7 @@ const Modal = ({ isOpen, onClose, children, title, showCloseButton = true }) => 
                 X
               </button>
             )} */}
-            <div onClick={onClose}><CloseIcon /></div>
+            {onClose && <div onClick={onClose}><CloseIcon /></div>}
           </div>
         )}
         <div className={styles.modalBody}>
