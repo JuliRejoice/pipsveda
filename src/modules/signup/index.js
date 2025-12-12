@@ -48,13 +48,14 @@ export default function Signup() {
   // Name: Only letters, spaces, apostrophes, hyphens; min 2 chars
   const validateName = (value) => {
     if (!value) return "Name is required.";
-    const nameRegex = /^[A-Za-z\s'-]{2,}$/;
-    if (!nameRegex.test(value)) {
-      return "Name must be at least 2 characters and contain only letters.";
+    const trimmedValue = value.trim();
+    if (trimmedValue.length < 2) return "Name must be at least 2 characters long.";
+    const nameRegex = /^[A-Za-z\s'-]+$/;
+    if (!nameRegex.test(trimmedValue)) {
+      return "Name can only contain letters, spaces, hyphens, and apostrophes.";
     }
     return "";
   };
-
   // Email: RFC-like but practical for web use
   const validateEmail = (value) => {
     const trimmedValue = value.trim().toLowerCase(); // 👈 force lowercase
@@ -139,7 +140,7 @@ export default function Signup() {
       return;
     }
     setIsSubmitting(true);
-    console.log(data.refferalCode,"-------data.refferalCode");
+    console.log(data, "-------data.refferalCode");
     signUp({
       name: data.name,
       email: data.email,
@@ -211,13 +212,13 @@ export default function Signup() {
                   label="Name"
                   placeholder="Enter your name"
                   value={data.name}
-                  onKeyDown={(e) => {
-                    if (e.key === ' ') {
-                      e.preventDefault();
-                    }
-                  }}
+                  // onKeyDown={(e) => {
+                  //   if (e.key === ' ') {
+                  //     e.preventDefault();
+                  //   }
+                  // }}
                   onChange={(e) => {
-                    setData({ ...data, name: e.target.value.trim() });
+                    setData({ ...data, name: e.target.value.trimStart() });
                     setErrors((prev) => ({
                       ...prev,
                       name: validateName(e.target.value),
@@ -309,7 +310,7 @@ export default function Signup() {
                   <div className={styles.error}>{errors.confirmPassword}</div>
                 )}
               </div>
-                <div className={styles.inputAlignment}>
+              <div className={styles.inputAlignment}>
                 <Input
                   name="refferalCode"
                   type="text"

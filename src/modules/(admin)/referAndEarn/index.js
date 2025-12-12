@@ -18,6 +18,7 @@ import WithdrawalIcon from "../../../../public/assets/icons/totalWithdrawalIcon"
 import PendingWithdrawalIcon from "../../../../public/assets/icons/pendingWithdrawalIcon";
 import { getCookie } from "../../../../cookie";
 import { getProfile } from "@/compoents/api/auth";
+import Pagination from "@/compoents/pagination";
 
 const copyIcon = "/assets/images/copyCode.png";
 const copiedIcon = "/assets/images/copiedCode.png";
@@ -49,6 +50,13 @@ export default function ReferAndEarn() {
   const [walletData, setWalletData] = useState([]);
   const [withdrawalData, setWithdrawalData] = useState([]);
   const [tableLoading, setTableLoading] = useState(false);
+  
+  // Pagination states
+  const [pagination, setPagination] = useState({
+    currentPage: 1,
+    itemsPerPage: 10,
+    totalItems: 0
+  });
 
   // Form validation errors
   const [walletIdError, setWalletIdError] = useState("");
@@ -71,22 +79,37 @@ export default function ReferAndEarn() {
   }, []);
 
   useEffect(() => {
-    fetchTableData();
+    // Reset to first page when tab changes
+    setPagination(prev => ({ ...prev, currentPage: 1 }));
+    fetchTableData(1);
   }, [activeTab]);
+  
+  const handlePageChange = (newPage) => {
+    fetchTableData(newPage);
+  };
 
-  const fetchTableData = async () => {
+  const fetchTableData = async (page = 1) => {
     try {
       setTableLoading(true);
-      const type =
-        activeTab === "wallet" ? "User Payments" : "Total Withdrawal";
-      const data = await getWithdrawalHistory(type);
-
-      console.log(data, "=====data");
+      const type = activeTab === "wallet" ? "User Payments" : "Total Withdrawal";
+      const { itemsPerPage } = pagination;
+      
+      const data = await getWithdrawalHistory(type, page, itemsPerPage);
 
       if (activeTab === "wallet") {
         setWalletData(data?.payload?.userPayment || []);
+        setPagination(prev => ({
+          ...prev,
+          currentPage: page,
+          totalItems: data?.payload?.count || 0
+        }));
       } else {
         setWithdrawalData(data?.payload?.findTotalWithdrawal || []);
+        setPagination(prev => ({
+          ...prev,
+          currentPage: page,
+          totalItems: data?.payload?.count || 0
+        }));
       }
     } catch (error) {
       console.error("Failed to fetch table data:", error);
@@ -314,55 +337,6 @@ export default function ReferAndEarn() {
     }
   };
 
-  const mockWalletBalance = [
-    {
-      id: 1,
-      date: "2024-01-15",
-      type: "Referral Bonus",
-      amount: 50,
-      status: "Available",
-    },
-    {
-      id: 2,
-      date: "2024-01-10",
-      type: "Commission",
-      amount: 25,
-      status: "Available",
-    },
-    {
-      id: 3,
-      date: "2024-01-05",
-      type: "Referral Bonus",
-      amount: 75,
-      status: "Pending",
-    },
-  ];
-
-  const mockWithdrawals = [
-    {
-      id: 1,
-      date: "2024-01-12",
-      amount: 100,
-      method: "Bank Transfer",
-      status: "Completed",
-    },
-    {
-      id: 2,
-      date: "2024-01-08",
-      amount: 50,
-      method: "Crypto Wallet",
-      status: "Processing",
-    },
-    {
-      id: 3,
-      date: "2024-01-03",
-      amount: 25,
-      method: "Bank Transfer",
-      status: "Completed",
-    },
-  ];
-
-  console.log(dashboardData, "dashboardData");
 
   const cardData = [
     {
@@ -628,28 +602,31 @@ export default function ReferAndEarn() {
                             </td>
                           </tr>
                         ) : walletData.length > 0 ? (
-                          walletData.map((item, index) => (
-                            <tr key={item.id || index}>
-                              <td>{index + 1}</td>
-                              <td>{item?.user?.name || "N/A"}</td>
-                              <td>{item?.user?.email || "N/A"}</td>
-                              <td>${item?.price || "0.00"}</td>
-                              <td>{item?.referredByPercentage || "0"}%</td>
-                              <td>${item?.commission || "0.00"}</td>
-                              <td>
-                                {item?.createdAt
-                                  ? new Date(item.createdAt).toLocaleDateString(
-                                      "en-US",
-                                      {
-                                        month: "2-digit",
-                                        day: "2-digit",
-                                        year: "numeric",
-                                      }
-                                    )
-                                  : "N/A"}
-                              </td>
-                            </tr>
-                          ))
+                          walletData.map((item, index) => {
+                            const serialNumber = (pagination.currentPage - 1) * pagination.itemsPerPage + index + 1;
+                            return (
+                              <tr key={item.id || index}>
+                                <td>{serialNumber}</td>
+                                <td>{item?.user?.name || "N/A"}</td>
+                                <td>{item?.user?.email || "N/A"}</td>
+                                <td>${item?.price || "0.00"}</td>
+                                <td>{item?.referredByPercentage || "0"}%</td>
+                                <td>${item?.commission || "0.00"}</td>
+                                <td>
+                                  {item?.createdAt
+                                    ? new Date(item.createdAt).toLocaleDateString(
+                                        "en-US",
+                                        {
+                                          month: "2-digit",
+                                          day: "2-digit",
+                                          year: "numeric",
+                                        }
+                                      )
+                                    : "N/A"}
+                                </td>
+                              </tr>
+                            );
+                          })
                         ) : (
                           <tr>
                             <td
@@ -662,6 +639,14 @@ export default function ReferAndEarn() {
                         )}
                       </tbody>
                     </table>
+                    <div className={styles.paginationContainer}>
+                    <Pagination
+                      currentPage={pagination.currentPage}
+                      totalItems={pagination.totalItems}
+                      itemsPerPage={pagination.itemsPerPage}
+                      onPageChange={handlePageChange}
+                    />
+                    </div>
                   </div>
                 ) : activeTab === "withdrawal" ? (
                   <div className={styles.withdrawalTable}>
@@ -687,35 +672,38 @@ export default function ReferAndEarn() {
                             </td>
                           </tr>
                         ) : withdrawalData.length > 0 ? (
-                          withdrawalData.map((item, index) => (
-                            <tr key={item.id || index}>
-                              <td>{index + 1}</td>
-                              <td>
-                                <span
-                                  className={`${styles.status} ${
-                                    styles[item.status?.toLowerCase()]
-                                  }`}
-                                >
-                                  {item.status || "N/A"}
-                                </span>
-                              </td>
-                              <td>{item?.withdrawalType || "-"}</td>
-                              <td>${item?.amount || "0.00"}</td>
-                              <td>{item?.transactionId || "N/A"}</td>
-                              <td>
-                                {item?.createdAt
-                                  ? new Date(item.createdAt).toLocaleDateString(
-                                      "en-US",
-                                      {
-                                        month: "2-digit",
-                                        day: "2-digit",
-                                        year: "numeric",
-                                      }
-                                    )
-                                  : "N/A"}
-                              </td>
-                            </tr>
-                          ))
+                          withdrawalData.map((item, index) => {
+                            const serialNumber = (pagination.currentPage - 1) * pagination.itemsPerPage + index + 1;
+                            return (
+                              <tr key={item.id || index}>
+                                <td>{serialNumber}</td>
+                                <td>
+                                  <span
+                                    className={`${styles.status} ${
+                                      styles[item.status?.toLowerCase()]
+                                    }`}
+                                  >
+                                    {item.status || "N/A"}
+                                  </span>
+                                </td>
+                                <td>{item?.withdrawalType || "-"}</td>
+                                <td>${item?.amount || "0.00"}</td>
+                                <td>{item?.transactionId || "N/A"}</td>
+                                <td>
+                                  {item?.createdAt
+                                    ? new Date(item.createdAt).toLocaleDateString(
+                                        "en-US",
+                                        {
+                                          month: "2-digit",
+                                          day: "2-digit",
+                                          year: "numeric",
+                                        }
+                                      )
+                                    : "N/A"}
+                                </td>
+                              </tr>
+                            );
+                          })
                         ) : (
                           <tr>
                             <td
@@ -728,6 +716,14 @@ export default function ReferAndEarn() {
                         )}
                       </tbody>
                     </table>
+                     <div className={styles.paginationContainer}>
+                    <Pagination
+                      currentPage={pagination.currentPage}
+                      totalItems={pagination.totalItems}
+                      itemsPerPage={pagination.itemsPerPage}
+                      onPageChange={handlePageChange}
+                    />
+                    </div>
                   </div>
                 ) : activeTab === "withdrawalRequest" ? (
                   <div className={styles.withdrawalRequestFormContainer}>
@@ -889,11 +885,13 @@ export default function ReferAndEarn() {
                                   <option value="" disabled hidden>
                                     Select Network
                                   </option>
-                                  {chains.map((chain) => (
-                                    <option key={chain._id} value={chain.chain}>
-                                      {chain.chain || "empty"}
-                                    </option>
-                                  ))}
+                                  {chains.map((chain) => {
+                                    return (
+                                      <option key={chain._id} value={chain.chain}>
+                                        {chain.chain || "empty"}
+                                      </option>
+                                    );
+                                  })}
                                 </select>
                                 {chainError && (
                                   <div className={styles.errorMessage}>

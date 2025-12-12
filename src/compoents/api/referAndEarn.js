@@ -23,10 +23,10 @@ export const addWithdrawalRequest = async (withdrawalData) => {
   }
 };
 
-export const getWithdrawalHistory = async (type) => {
+export const getWithdrawalHistory = async (type,page,limit) => {
   try {
     const response = await api.get(
-      `/withdrawal/getWithdrawalHistory?type=${type}`
+      `/withdrawal/getWithdrawalHistory?type=${type}&page=${page}&limit=${limit}`
     );
     return response.data;
   } catch (error) {
